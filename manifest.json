@@ -1,0 +1,18 @@
+{
+  "name": "وردي - حفظ القرآن الكريم",
+  "short_name": "وردي",
+  "description": "تطبيق لحفظ القرآن الكريم مقسم على الأجزاء الثلاثين مع تتبع الحفظ وقراءة السور",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F6F1E3",
+  "theme_color": "#0E6E5F",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
