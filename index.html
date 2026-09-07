@@ -1060,6 +1060,10 @@ const EVENING_ADHKAR = [
     toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 2200);
   }
 
+  // Wraps a "X / Y" style fraction in Unicode isolate marks so the RTL
+  // paragraph context can't bidi-reorder the two numbers around the slash.
+  function ltrFraction(a,b){ return "⁦" + a + " / " + b + "⁩"; }
+
   // ============================================================
   // Navigation
   // ============================================================
@@ -1338,7 +1342,7 @@ const EVENING_ADHKAR = [
       html += '<div class="dhikr-card' + (done?" done":"") + '">' +
         '<div class="dhikr-text">' + item.text + '</div>' +
         (item.note ? '<div class="dhikr-note">' + item.note + '</div>' : '') +
-        '<div class="dhikr-controls"><span class="counter-label">' + count + ' / ' + item.repeat + '</span>' +
+        '<div class="dhikr-controls"><span class="counter-label">' + ltrFraction(count, item.repeat) + '</span>' +
         '<button class="counter-btn" data-inc="' + idx + '" ' + (done?'disabled':'') + '>' + (done ? "✓" : "+") + '</button></div>' +
       '</div>';
     });
@@ -1354,7 +1358,7 @@ const EVENING_ADHKAR = [
   function renderAdhkarSummary(which){
     var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
     var done = adhkarDoneCount(which);
-    document.getElementById(which === "morning" ? "morningSummaryText" : "eveningSummaryText").textContent = done + " / " + list.length;
+    document.getElementById(which === "morning" ? "morningSummaryText" : "eveningSummaryText").textContent = ltrFraction(done, list.length);
     var pct = Math.round((done/list.length)*100);
     var bar = document.getElementById(which === "morning" ? "morningBar" : "eveningBar");
     bar.style.width = pct + "%";
