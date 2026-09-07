@@ -1,4 +1,4 @@
-const CACHE_NAME = "wirdi-cache-v2";
+const CACHE_NAME = "wirdi-cache-v3";
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", function(event) {
@@ -21,8 +21,32 @@ self.addEventListener("activate", function(event) {
   self.clients.claim();
 });
 
+// The HTML document changes often as the app is updated, so it must always be
+// fetched fresh when online (network-first) — falling back to the cached copy
+// only when offline. Other assets (icons, manifest, fonts) rarely change, so a
+// cache-first strategy for those avoids unnecessary refetching.
 self.addEventListener("fetch", function(event) {
   if (event.request.method !== "GET") return;
+
+  var isDocument = event.request.mode === "navigate" || event.request.destination === "document";
+
+  if (isDocument) {
+    event.respondWith(
+      fetch(event.request)
+        .then(function(response) {
+          var copy = response.clone();
+          caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, copy); });
+          return response;
+        })
+        .catch(function() {
+          return caches.match(event.request).then(function(cached) {
+            return cached || caches.match("./index.html");
+          });
+        })
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(function(cached) {
       return (
