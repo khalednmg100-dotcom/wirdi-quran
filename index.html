@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>وردي - حفظ القرآن الكريم</title>
+<title>وردي - حفظ القرآن الكريم والأذكار</title>
 <meta name="theme-color" content="#0E6E5F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,328 +16,450 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
 <style>
   :root{
-    --paper:#F6F1E3;
-    --paper-2:#EDE4CB;
-    --paper-3:#DED0A6;
-    --ink:#2A2015;
-    --ink-soft:#6B5C42;
-    --teal:#0E6E5F;
-    --teal-deep:#094B41;
-    --teal-tint:#DCEDE7;
-    --gold:#A9822A;
-    --gold-tint:#F1E4BE;
-    --shadow: rgba(42,32,21,0.14);
-    --danger:#A23B2E;
+    --paper:#F6F1E3; --paper-2:#EDE4CB; --paper-3:#DED0A6;
+    --ink:#2A2015; --ink-soft:#6B5C42;
+    --teal:#0E6E5F; --teal-deep:#094B41; --teal-tint:#DCEDE7;
+    --gold:#A9822A; --gold-tint:#F1E4BE;
+    --shadow: rgba(42,32,21,0.14); --danger:#A23B2E;
+    --warn:#8A5A1E; --warn-tint:#F3E6C8;
+    --font-scale: 1;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --paper:#171310;
-      --paper-2:#211A13;
-      --paper-3:#3B301F;
-      --ink:#F0E6CE;
-      --ink-soft:#C4B392;
-      --teal:#45B7A2;
-      --teal-deep:#2E8C7B;
-      --teal-tint:#1C2C28;
-      --gold:#DCB44E;
-      --gold-tint:#332810;
-      --shadow: rgba(0,0,0,0.45);
-      --danger:#E37662;
+      --paper:#171310; --paper-2:#211A13; --paper-3:#3B301F;
+      --ink:#F0E6CE; --ink-soft:#C4B392;
+      --teal:#45B7A2; --teal-deep:#2E8C7B; --teal-tint:#1C2C28;
+      --gold:#DCB44E; --gold-tint:#332810;
+      --shadow: rgba(0,0,0,0.45); --danger:#E37662;
+      --warn:#E3B563; --warn-tint:#332A16;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"]{
-    --paper:#171310;
-    --paper-2:#211A13;
-    --paper-3:#3B301F;
-    --ink:#F0E6CE;
-    --ink-soft:#C4B392;
-    --teal:#45B7A2;
-    --teal-deep:#2E8C7B;
-    --teal-tint:#1C2C28;
-    --gold:#DCB44E;
-    --gold-tint:#332810;
-    --shadow: rgba(0,0,0,0.45);
-    --danger:#E37662;
+    --paper:#171310; --paper-2:#211A13; --paper-3:#3B301F;
+    --ink:#F0E6CE; --ink-soft:#C4B392;
+    --teal:#45B7A2; --teal-deep:#2E8C7B; --teal-tint:#1C2C28;
+    --gold:#DCB44E; --gold-tint:#332810;
+    --shadow: rgba(0,0,0,0.45); --danger:#E37662;
+    --warn:#E3B563; --warn-tint:#332A16;
     color-scheme: dark;
   }
 
   *{box-sizing:border-box;}
+  html{font-size:calc(16px * var(--font-scale));}
   body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:"Tajawal","Segoe UI",Tahoma,sans-serif;
-    direction:rtl;
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Tajawal","Segoe UI",Tahoma,sans-serif; direction:rtl;
   }
   h1,h2,h3{font-family:"Amiri","Traditional Arabic",serif; text-wrap:balance; margin:0;}
   .muted{color:var(--ink-soft);}
   button{font-family:inherit; cursor:pointer;}
+  a{color:inherit;}
   :focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
-  @media (prefers-reduced-motion: reduce){
-    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
-  }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
 
-  .app{max-width:720px; margin:0 auto; padding:20px 16px 64px; min-height:100vh;}
+  .app{max-width:720px; margin:0 auto; padding:16px 16px 90px; min-height:100vh;}
 
-  .topbar{
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
-    padding-bottom:18px; margin-bottom:18px; border-bottom:1px solid var(--paper-3);
-  }
-  .brand h1{font-size:2rem; color:var(--teal-deep);}
-  .brand .tagline{margin:4px 0 0; font-size:0.85rem; color:var(--ink-soft);}
-
-  .ring-btn{
-    position:relative; width:64px; height:64px; flex:none;
-    background:none; border:none; padding:0; border-radius:50%;
-  }
-  .ring-btn svg{transform:rotate(-90deg); width:64px; height:64px;}
-  .ring-btn circle{fill:none; stroke-width:8;}
-  .ring-track{stroke:var(--paper-3);}
-  .ring-fill{stroke:var(--teal); stroke-linecap:round; transition:stroke-dashoffset .5s ease, stroke .3s ease;}
-  .ring-fill.complete{stroke:var(--gold);}
-  .ring-label{
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-size:0.8rem; font-weight:800; font-variant-numeric:tabular-nums; color:var(--ink);
-  }
-
-  .stat-strip{
-    background:var(--teal-tint); border:1px solid var(--paper-3); border-radius:12px;
-    padding:12px 16px; margin-bottom:18px; font-weight:700; color:var(--teal-deep);
-    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
-  }
-  .stat-strip .hint{font-weight:400; font-size:0.8rem; color:var(--ink-soft);}
-
-  .juz-grid{
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(120px,1fr)); gap:10px;
-  }
-  .juz-card{
-    position:relative; background:var(--paper-2); border:1px solid var(--paper-3); border-radius:14px;
-    padding:14px 10px 12px; text-align:center; box-shadow:0 1px 2px var(--shadow);
-    transition:transform .15s ease, box-shadow .15s ease; display:flex; flex-direction:column; gap:6px; align-items:center;
-  }
-  .juz-card:hover{transform:translateY(-2px); box-shadow:0 6px 14px var(--shadow);}
-  .juz-card .num{font-family:"Amiri",serif; font-size:1.7rem; font-weight:700; color:var(--teal-deep); line-height:1;}
-  .juz-card .name{font-size:0.78rem; color:var(--ink-soft); min-height:1.2em;}
-  .juz-card .bar{width:100%;}
-  .juz-card .frac{font-size:0.7rem; color:var(--ink-soft); font-variant-numeric:tabular-nums;}
-  .juz-card .done-badge{
-    position:absolute; top:-6px; left:-6px; width:22px; height:22px; border-radius:50%;
-    background:var(--gold); color:var(--paper); display:flex; align-items:center; justify-content:center;
-    font-size:0.7rem; box-shadow:0 1px 3px var(--shadow);
-  }
-
-  .bar{height:7px; border-radius:99px; background:var(--paper-3); overflow:hidden;}
-  .bar .fill{height:100%; background:var(--teal); border-radius:99px; transition:width .4s ease, background .3s ease;}
-  .bar .fill.complete{background:var(--gold);}
-  .bar.big{height:9px; margin:14px 0 18px;}
+  /* ---------- header ---------- */
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid var(--paper-3);}
+  .topbar .brand{display:flex; align-items:center; gap:10px;}
+  .topbar h1{font-size:1.5rem; color:var(--teal-deep);}
+  .icon-btn{background:var(--paper-2); border:1px solid var(--paper-3); border-radius:10px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; flex:none;}
+  .icon-btn svg{width:19px; height:19px; color:var(--ink-soft);}
+  .back-row{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .back-btn{display:inline-flex; align-items:center; gap:6px; background:none; border:none; color:var(--teal-deep); font-weight:700; font-size:0.95rem; padding:6px 0;}
+  .back-btn svg{width:18px; height:18px;}
+  .view-title{font-size:1.15rem; font-weight:800;}
 
   .view[hidden]{display:none;}
 
-  .back-btn{
-    display:inline-flex; align-items:center; gap:6px; background:none; border:none;
-    color:var(--teal-deep); font-weight:700; font-size:0.95rem; padding:6px 0; margin-bottom:10px;
-  }
-  .back-btn svg{width:18px; height:18px;}
+  /* ---------- home ---------- */
+  .greeting{font-size:1.05rem; font-weight:500; margin-bottom:2px;}
+  .greeting-sub{font-family:"Amiri",serif; font-size:1.6rem; color:var(--teal-deep); font-weight:700; margin-bottom:16px;}
 
-  .juz-header{display:flex; align-items:center; gap:14px;}
-  .juz-header .juz-num{
-    font-family:"Amiri",serif; font-size:2.2rem; font-weight:700; color:var(--teal-deep);
-    background:var(--teal-tint); border-radius:12px; width:64px; height:64px; flex:none;
-    display:flex; align-items:center; justify-content:center;
+  .stat-card{
+    background:var(--paper-2); border:1px solid var(--paper-3); border-radius:16px; padding:16px;
+    margin-bottom:12px; box-shadow:0 1px 2px var(--shadow);
   }
-  .juz-header h2{font-size:1.4rem;}
-  .juz-header p{margin:4px 0 0; font-size:0.85rem;}
+  .stat-card .stat-top{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:8px;}
+  .stat-card .stat-headline{font-weight:800; font-size:1.05rem;}
+  .stat-card .stat-headline b{color:var(--teal-deep); font-size:1.3rem; font-variant-numeric:tabular-nums;}
+  .stat-card .stat-pct{font-weight:800; color:var(--gold); font-variant-numeric:tabular-nums;}
+  .bar{height:9px; border-radius:99px; background:var(--paper-3); overflow:hidden;}
+  .bar .fill{height:100%; background:var(--teal); border-radius:99px; transition:width .4s ease;}
+  .bar .fill.complete{background:var(--gold);}
+  .stat-sub{display:flex; justify-content:space-between; margin-top:6px; font-size:0.78rem; color:var(--ink-soft);}
 
-  .surah-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
-  .surah-row{
+  .wird-card{background:var(--teal-tint); border:1px solid var(--paper-3); border-radius:16px; padding:16px; margin-bottom:16px;}
+  .wird-card .wird-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+  .wird-card .wird-title{font-weight:800; color:var(--teal-deep);}
+  .wird-card .wird-target{font-family:"Amiri",serif; font-size:1.3rem; font-weight:700; color:var(--teal-deep);}
+  .wird-actions{display:flex; gap:8px; margin-top:12px;}
+  .btn{border-radius:10px; padding:10px 14px; font-weight:700; font-size:0.85rem; border:1px solid var(--paper-3); background:var(--paper);}
+  .btn.primary{background:var(--teal); color:#fff; border-color:var(--teal);}
+  .btn.primary:disabled{opacity:0.55;}
+  .btn.ghost{background:none; color:var(--teal-deep); border-color:var(--teal);}
+  .btn.danger{color:var(--danger); border-color:var(--danger);}
+  .btn.block{width:100%;}
+
+  .quick-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:6px;}
+  @media (min-width:480px){ .quick-grid{grid-template-columns:repeat(4,1fr);} }
+  .quick-btn{
+    display:flex; flex-direction:column; align-items:center; gap:6px; background:var(--paper-2);
+    border:1px solid var(--paper-3); border-radius:14px; padding:14px 6px; font-size:0.8rem; font-weight:700; color:var(--ink);
+  }
+  .quick-btn .emoji{font-size:1.5rem;}
+  .quick-btn:hover{transform:translateY(-2px);}
+
+  /* ---------- search ---------- */
+  .search-box{display:flex; align-items:center; gap:8px; background:var(--paper-2); border:1px solid var(--paper-3); border-radius:12px; padding:10px 12px; margin-bottom:14px;}
+  .search-box input{flex:1; border:none; background:none; font-family:inherit; font-size:0.95rem; color:var(--ink); outline:none;}
+  .search-box svg{width:18px; height:18px; color:var(--ink-soft); flex:none;}
+  .search-results{display:flex; flex-direction:column; gap:8px;}
+  .search-result{background:var(--paper-2); border:1px solid var(--paper-3); border-radius:10px; padding:10px 12px; font-size:0.85rem;}
+  .search-result b{color:var(--teal-deep);}
+
+  /* ---------- lists (surahs / juz) ---------- */
+  .filter-row{display:flex; gap:8px; margin-bottom:12px; overflow-x:auto; padding-bottom:2px;}
+  .filter-chip{flex:none; padding:6px 14px; border-radius:99px; border:1px solid var(--paper-3); background:var(--paper-2); font-size:0.78rem; font-weight:700; color:var(--ink-soft);}
+  .filter-chip.active{background:var(--teal); color:#fff; border-color:var(--teal);}
+
+  .card-list{display:flex; flex-direction:column; gap:8px;}
+  .surah-card{
     display:flex; align-items:center; gap:12px; background:var(--paper-2); border:1px solid var(--paper-3);
     border-radius:12px; padding:12px; text-align:right;
   }
-  .check{
-    flex:none; width:30px; height:30px; border-radius:50%; border:2px solid var(--teal);
-    background:transparent; display:flex; align-items:center; justify-content:center; transition:background .2s ease, transform .15s ease;
+  .surah-card .badge-num{
+    flex:none; width:38px; height:38px; border-radius:10px; background:var(--teal-tint); color:var(--teal-deep);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-family:"Amiri",serif; font-size:1rem;
   }
-  .check svg{width:16px; height:16px; opacity:0; transform:scale(.5); transition:opacity .15s ease, transform .15s ease; fill:var(--paper);}
-  .check.checked{background:var(--gold); border-color:var(--gold); transform:scale(1.04);}
-  .check.checked svg{opacity:1; transform:scale(1);}
-  .surah-info{flex:1; min-width:0;}
-  .surah-info .sname{font-family:"Amiri",serif; font-size:1.15rem; font-weight:700;}
-  .surah-info .srange{font-size:0.78rem; color:var(--ink-soft); margin-top:2px;}
-  .surah-row.checked .sname{color:var(--gold);}
-  .surah-actions{display:flex; flex-direction:column; gap:6px; flex:none;}
-  .action-btn{
-    display:inline-flex; align-items:center; gap:5px; background:var(--paper); border:1px solid var(--paper-3);
-    border-radius:8px; padding:5px 10px; font-size:0.75rem; font-weight:700; color:var(--teal-deep);
-    text-decoration:none; white-space:nowrap;
-  }
-  .action-btn.listen{color:var(--ink-soft);}
-  .action-btn svg{width:13px; height:13px; flex:none;}
+  .surah-card .s-info{flex:1; min-width:0;}
+  .surah-card .s-name{font-family:"Amiri",serif; font-size:1.1rem; font-weight:700;}
+  .surah-card .s-meta{font-size:0.72rem; color:var(--ink-soft); display:flex; gap:8px; margin-top:2px; flex-wrap:wrap;}
+  .rev-badge{padding:1px 7px; border-radius:99px; font-size:0.68rem; font-weight:700;}
+  .rev-badge.meccan{background:var(--gold-tint); color:var(--warn);}
+  .rev-badge.medinan{background:var(--teal-tint); color:var(--teal-deep);}
+  .status-dot{flex:none; font-size:1.3rem; width:30px; text-align:center;}
+  .status-dot.done{color:var(--gold);}
+  .status-dot.progress{color:var(--teal);}
+  .status-dot.none{color:var(--paper-3);}
 
-  .read-header{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:6px;}
+  .juz-card{
+    display:flex; align-items:center; gap:12px; background:var(--paper-2); border:1px solid var(--paper-3);
+    border-radius:12px; padding:12px;
+  }
+  .juz-card .badge-num{flex:none; width:42px; height:42px; border-radius:10px; background:var(--teal-tint); color:var(--teal-deep); display:flex; align-items:center; justify-content:center; font-weight:800; font-family:"Amiri",serif; font-size:1.2rem;}
+  .juz-card .j-info{flex:1; min-width:0;}
+  .juz-card .j-title{font-weight:700; margin-bottom:4px; font-size:0.92rem;}
+  .juz-card .j-pct{font-weight:800; color:var(--gold); font-variant-numeric:tabular-nums; flex:none; font-size:0.85rem; width:40px; text-align:left;}
+
+  /* ---------- surah reader ---------- */
+  .read-header{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:10px;}
   .read-header h2{font-size:1.5rem;}
-  .read-header p{margin:4px 0 0;}
-  .ayah-flow{
-    font-family:"Amiri",serif; font-size:1.5rem; line-height:2.7; text-align:justify;
-    background:var(--paper-2); border:1px solid var(--paper-3); border-radius:14px; padding:20px;
-  }
-  .bismillah{
-    font-family:"Amiri",serif; font-size:1.4rem; text-align:center; color:var(--teal-deep);
-    font-weight:700; margin:0 0 14px;
-  }
-  .ayah-num{
-    display:inline-flex; align-items:center; justify-content:center; width:1.7em; height:1.7em;
-    border:1.5px solid var(--gold); border-radius:50%; color:var(--gold); font-size:0.55em;
-    font-family:"Tajawal",sans-serif; font-weight:700; vertical-align:middle; margin:0 2px;
-  }
+  .read-meta{display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;}
+  .ayah-flow{font-family:"Amiri",serif; font-size:calc(1.4rem * var(--font-scale)); line-height:2.6; text-align:justify; background:var(--paper-2); border:1px solid var(--paper-3); border-radius:14px; padding:18px; margin-bottom:16px;}
+  .bismillah{font-family:"Amiri",serif; font-size:1.35rem; text-align:center; color:var(--teal-deep); font-weight:700; margin:0 0 14px;}
+  .ayah-num{display:inline-flex; align-items:center; justify-content:center; width:1.7em; height:1.7em; border:1.5px solid var(--gold); border-radius:50%; color:var(--gold); font-size:0.5em; font-family:"Tajawal",sans-serif; font-weight:700; vertical-align:middle; margin:0 2px;}
+  .status-actions{display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;}
 
-  .install-tip{
-    display:flex; align-items:center; gap:10px; background:var(--gold-tint);
-    border:1px solid var(--paper-3); border-radius:12px; padding:10px 14px; margin-bottom:14px; font-size:0.82rem;
-    flex-wrap:wrap;
-  }
-  .install-tip span{flex:1; min-width:180px;}
-  .install-tip #installNowBtn{flex:none; background:var(--teal); color:var(--paper); border-color:var(--teal);}
-  .install-tip #dismissInstallTip{background:none; border:none; color:var(--ink-soft); font-size:1rem; line-height:1; flex:none;}
+  /* ---------- juz detail ---------- */
+  .juz-header{display:flex; align-items:center; gap:14px; margin-bottom:6px;}
+  .juz-header .juz-num{font-family:"Amiri",serif; font-size:2rem; font-weight:700; color:var(--teal-deep); background:var(--teal-tint); border-radius:12px; width:58px; height:58px; flex:none; display:flex; align-items:center; justify-content:center;}
+  .juz-header h2{font-size:1.3rem;}
+  .segment-row{display:flex; align-items:center; gap:12px; background:var(--paper-2); border:1px solid var(--paper-3); border-radius:12px; padding:12px; margin-bottom:8px;}
+  .segment-row .s-info{flex:1;}
+  .segment-row .sname{font-family:"Amiri",serif; font-weight:700; font-size:1.05rem;}
+  .segment-row .srange{font-size:0.75rem; color:var(--ink-soft); margin-top:2px;}
 
-  .modal-overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,.4); display:flex; align-items:flex-end;
-    justify-content:center; z-index:10;
+  /* ---------- adhkar ---------- */
+  .adhkar-summary{background:var(--teal-tint); border-radius:14px; padding:14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;}
+  .adhkar-summary b{color:var(--teal-deep); font-size:1.1rem;}
+  .dhikr-card{background:var(--paper-2); border:1px solid var(--paper-3); border-radius:14px; padding:16px; margin-bottom:10px;}
+  .dhikr-card.done{border-color:var(--gold); background:var(--gold-tint);}
+  .dhikr-text{font-family:"Amiri",serif; font-size:calc(1.2rem * var(--font-scale)); line-height:2.1; margin-bottom:10px;}
+  .dhikr-note{font-size:0.78rem; color:var(--ink-soft); margin-bottom:10px; border-right:3px solid var(--gold); padding-right:8px;}
+  .dhikr-controls{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .counter-btn{width:44px; height:44px; border-radius:50%; background:var(--teal); color:#fff; border:none; font-size:1.3rem; font-weight:800; flex:none;}
+  .counter-btn:disabled{background:var(--gold); }
+  .counter-label{font-weight:800; font-variant-numeric:tabular-nums; font-size:1rem;}
+
+  /* ---------- progress / log ---------- */
+  .week-strip{display:flex; justify-content:space-between; gap:6px; margin-bottom:16px;}
+  .day-pill{flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; background:var(--paper-2); border:1px solid var(--paper-3); border-radius:10px; padding:8px 4px;}
+  .day-pill.done{background:var(--teal-tint); border-color:var(--teal);}
+  .day-pill .d-icon{font-size:1.1rem;}
+  .day-pill .d-label{font-size:0.65rem; color:var(--ink-soft);}
+  .streak-banner{background:var(--gold-tint); border-radius:14px; padding:14px; text-align:center; margin-bottom:16px; font-weight:700; color:var(--warn);}
+  .log-list{display:flex; flex-direction:column; gap:6px;}
+  .log-row{display:flex; justify-content:space-between; background:var(--paper-2); border:1px solid var(--paper-3); border-radius:10px; padding:10px 12px; font-size:0.82rem;}
+
+  /* ---------- settings ---------- */
+  .settings-section{margin-bottom:22px;}
+  .settings-section h3{font-size:1rem; margin-bottom:10px; color:var(--teal-deep);}
+  .settings-row{display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--paper-2); border:1px solid var(--paper-3); border-radius:12px; padding:12px 14px; margin-bottom:8px;}
+  .settings-row label{font-weight:700; font-size:0.88rem;}
+  .settings-row .hint{font-size:0.72rem; color:var(--ink-soft); margin-top:2px; display:block;}
+  .settings-row input[type="time"], .settings-row select{
+    font-family:inherit; border:1px solid var(--paper-3); border-radius:8px; padding:6px 10px; background:var(--paper); color:var(--ink); font-size:0.85rem;
   }
+  .switch{position:relative; width:46px; height:26px; flex:none;}
+  .switch input{opacity:0; width:0; height:0;}
+  .switch .slider{position:absolute; inset:0; background:var(--paper-3); border-radius:99px; transition:.2s;}
+  .switch .slider:before{content:""; position:absolute; width:20px; height:20px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.2s;}
+  .switch input:checked + .slider{background:var(--teal);}
+  .switch input:checked + .slider:before{transform:translateX(-20px);}
+  .notice-box{background:var(--warn-tint); border:1px solid var(--paper-3); border-radius:12px; padding:12px 14px; font-size:0.78rem; color:var(--warn); margin-bottom:14px; line-height:1.6;}
+
+  .modal-overlay{position:fixed; inset:0; background:rgba(0,0,0,.4); display:flex; align-items:flex-end; justify-content:center; z-index:10;}
   .modal-overlay[hidden]{display:none;}
-  .modal{
-    background:var(--paper); width:100%; max-width:720px; max-height:80vh; overflow-y:auto;
-    border-radius:18px 18px 0 0; padding:18px 18px 24px; box-shadow:0 -8px 30px var(--shadow);
-  }
-  .modal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
-  .modal-head button{background:none; border:none; font-size:1.2rem; color:var(--ink-soft); line-height:1;}
-  .modal-summary{
-    background:var(--teal-tint); border-radius:12px; padding:12px 14px; margin-bottom:14px;
-    font-weight:700; color:var(--teal-deep); display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
-  }
-  .stats-list{list-style:none; margin:0 0 16px; padding:0; display:flex; flex-direction:column; gap:6px;}
-  .stats-list li{display:flex; justify-content:space-between; padding:8px 10px; border-radius:8px; font-size:0.88rem;}
-  .stats-list li:nth-child(odd){background:var(--paper-2);}
-  .stats-list .srow-name{font-weight:700;}
-  .stats-list .srow-frac{color:var(--ink-soft); font-variant-numeric:tabular-nums;}
-  .reset-btn{
-    width:100%; padding:12px; border-radius:10px; border:1px solid var(--danger); background:none;
-    color:var(--danger); font-weight:700;
-  }
+  .modal{background:var(--paper); width:100%; max-width:720px; max-height:85vh; overflow-y:auto; border-radius:18px 18px 0 0; padding:18px 18px 24px; box-shadow:0 -8px 30px var(--shadow);}
+  .modal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+  .modal-head button{background:none; border:none; font-size:1.2rem; color:var(--ink-soft);}
+  .radio-row{display:flex; align-items:center; gap:8px; padding:10px 0; border-bottom:1px solid var(--paper-3);}
+  .radio-row input{width:18px; height:18px;}
+  .amount-input{display:flex; align-items:center; gap:8px; margin-top:12px;}
+  .amount-input input{width:80px; padding:8px; border-radius:8px; border:1px solid var(--paper-3); font-family:inherit; font-size:1rem; text-align:center; background:var(--paper); color:var(--ink);}
+
+  .toast{position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--teal-deep); color:#fff; padding:10px 18px; border-radius:99px; font-size:0.85rem; font-weight:700; box-shadow:0 4px 14px var(--shadow); z-index:20; opacity:0; transition:opacity .25s;}
+  .toast.show{opacity:1;}
+
+  .install-tip{display:flex; align-items:center; gap:10px; background:var(--gold-tint); border:1px solid var(--paper-3); border-radius:12px; padding:10px 14px; margin-bottom:14px; font-size:0.8rem; flex-wrap:wrap;}
+  .install-tip span{flex:1; min-width:180px;}
+  .install-tip #installNowBtn{flex:none; background:var(--teal); color:#fff; border-color:var(--teal);}
+  .install-tip #dismissInstallTip{background:none; border:none; color:var(--ink-soft); font-size:1rem; flex:none;}
+
+  .empty-state{text-align:center; padding:30px 10px; color:var(--ink-soft); font-size:0.88rem;}
 </style>
 </head>
 <body>
-
 <div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <h1>وردي</h1>
-      <p class="tagline">رفيقك في حفظ القرآن الكريم، جزءًا بعد جزء</p>
-    </div>
-    <button class="ring-btn" id="statsBtn" aria-label="عرض الإحصائيات">
-      <svg viewBox="0 0 64 64">
-        <circle class="ring-track" cx="32" cy="32" r="27"></circle>
-        <circle class="ring-fill" id="ringFill" cx="32" cy="32" r="27"></circle>
-      </svg>
-      <span class="ring-label" id="ringLabel">0%</span>
-    </button>
-  </header>
 
-  <main id="homeView" class="view">
+  <!-- ================= HOME ================= -->
+  <main id="view-home" class="view">
+    <div class="topbar">
+      <div class="brand"><h1>وردي</h1></div>
+      <div style="display:flex; gap:8px;">
+        <button class="icon-btn" id="openSearchBtn" aria-label="بحث">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+        <button class="icon-btn" id="openSettingsBtn" aria-label="الإعدادات">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </button>
+      </div>
+    </div>
+
     <div class="install-tip" id="installTip" hidden>
-      <span id="installTipText">ثبّت وردي على هاتفك: من قائمة المتصفح اختر «تثبيت التطبيق» (أندرويد) أو «إضافة إلى الشاشة الرئيسية» (آيفون) ليصبح أيقونة ثابتة تفتح كتطبيق مستقل.</span>
-      <button class="action-btn" id="installNowBtn" hidden>تثبيت الآن</button>
+      <span id="installTipText">ثبّت وردي على هاتفك: من قائمة المتصفح اختر «تثبيت التطبيق» (أندرويد) أو «إضافة إلى الشاشة الرئيسية» (آيفون).</span>
+      <button class="btn" id="installNowBtn" hidden>تثبيت الآن</button>
       <button id="dismissInstallTip" aria-label="إغلاق">✕</button>
     </div>
-    <div class="stat-strip">
-      <span id="statText">جارِ التحميل…</span>
-      <span class="hint">اضغط الدائرة بالأعلى لعرض التفاصيل</span>
+
+    <div class="greeting" id="greetingLine">السلام عليكم 👋</div>
+    <div class="greeting-sub">رحلتك مع القرآن</div>
+
+    <div class="stat-card" id="surahStatCard"></div>
+    <div class="stat-card" id="juzStatCard"></div>
+
+    <div class="wird-card" id="wirdCard"></div>
+
+    <div class="quick-grid">
+      <button class="quick-btn" data-nav="continueReading"><span class="emoji">📖</span>القرآن</button>
+      <button class="quick-btn" data-nav="surahs"><span class="emoji">📚</span>السور</button>
+      <button class="quick-btn" data-nav="juzList"><span class="emoji">🕌</span>الأجزاء</button>
+      <button class="quick-btn" data-nav="morningAdhkar"><span class="emoji">📿</span>أذكار الصباح</button>
+      <button class="quick-btn" data-nav="eveningAdhkar"><span class="emoji">🌙</span>أذكار المساء</button>
+      <button class="quick-btn" data-nav="progress"><span class="emoji">📊</span>تقدمي</button>
+      <button class="quick-btn" data-nav="settings"><span class="emoji">⚙️</span>الإعدادات</button>
     </div>
-    <div class="juz-grid" id="juzGrid"></div>
   </main>
 
-  <main id="juzView" class="view" hidden>
-    <button class="back-btn" id="backBtn">
-      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span>رجوع</span>
-    </button>
-    <div class="juz-header">
-      <div class="juz-num" id="juzViewNum"></div>
-      <div>
-        <h2 id="juzViewTitle"></h2>
-        <p class="muted" id="juzViewRange"></p>
+  <!-- ================= SEARCH MODAL ================= -->
+  <div class="modal-overlay" id="searchModal" hidden>
+    <div class="modal">
+      <div class="modal-head"><h2>البحث</h2><button id="closeSearch">✕</button></div>
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="searchInput" placeholder="اسم سورة، رقمها، رقم جزء، أو كلمة من آية...">
       </div>
+      <div class="search-results" id="searchResults"></div>
     </div>
-    <div class="bar big"><div class="fill" id="juzViewBar"></div></div>
-    <ul class="surah-list" id="surahList"></ul>
+  </div>
+
+  <!-- ================= WIRD SETTINGS MODAL ================= -->
+  <div class="modal-overlay" id="wirdModal" hidden>
+    <div class="modal">
+      <div class="modal-head"><h2>وردي اليومي</h2><button id="closeWirdModal">✕</button></div>
+      <div id="wirdTypeOptions"></div>
+      <div class="amount-input" id="wirdAmountRow" hidden>
+        <input type="number" min="1" id="wirdAmountInput">
+        <span class="muted" id="wirdAmountUnit"></span>
+      </div>
+      <button class="btn primary block" id="saveWirdBtn" style="margin-top:16px;">حفظ</button>
+    </div>
+  </div>
+
+  <!-- ================= SURAHS LIST ================= -->
+  <main id="view-surahs" class="view" hidden>
+    <div class="back-row">
+      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
+      <span class="view-title">السور (114)</span>
+    </div>
+    <div class="filter-row" id="surahFilterRow">
+      <button class="filter-chip active" data-filter="all">الكل</button>
+      <button class="filter-chip" data-filter="done">محفوظة</button>
+      <button class="filter-chip" data-filter="progress">قيد الحفظ</button>
+      <button class="filter-chip" data-filter="none">لم تبدأ</button>
+    </div>
+    <div class="card-list" id="surahsListContainer"></div>
   </main>
 
-  <main id="readView" class="view" hidden>
-    <button class="back-btn" id="readBackBtn">
-      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span>رجوع</span>
-    </button>
+  <!-- ================= SURAH READER ================= -->
+  <main id="view-reader" class="view" hidden>
+    <div class="back-row">
+      <button class="back-btn" data-back="dynamic" id="readerBackBtn"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
+    </div>
     <div class="read-header">
       <div>
-        <h2 id="readTitle"></h2>
-        <p class="muted" id="readRange"></p>
+        <h2 id="readerTitle"></h2>
+        <div class="read-meta" id="readerMeta"></div>
       </div>
-      <a class="action-btn listen" id="readListenLink" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M4 10v4h4l5 5V5l-5 5H4z" fill="currentColor"/><path d="M16 8a5 5 0 010 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <span>استماع</span>
-      </a>
+      <a class="btn ghost" id="readerListenLink" href="#" target="_blank" rel="noopener">🎧 استماع</a>
     </div>
-    <div id="readBody"></div>
+    <div id="readerBody"></div>
+    <div class="status-actions" id="readerStatusActions"></div>
   </main>
-</div>
 
-<div class="modal-overlay" id="statsModal" hidden>
-  <div class="modal">
-    <div class="modal-head">
-      <h2>الإحصائيات</h2>
-      <button id="closeStats" aria-label="إغلاق">✕</button>
+  <!-- ================= JUZ LIST ================= -->
+  <main id="view-juzlist" class="view" hidden>
+    <div class="back-row">
+      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
+      <span class="view-title">أجزاء القرآن (30)</span>
     </div>
-    <div class="modal-summary">
-      <span id="modalTotal">0 من 0 سورة محفوظة</span>
-      <span id="modalPercent">0%</span>
-    </div>
-    <ul class="stats-list" id="statsList"></ul>
-    <button class="reset-btn" id="resetBtn">إعادة تعيين كل التقدّم</button>
-  </div>
-</div>
+    <div class="card-list" id="juzListContainer"></div>
+  </main>
 
+  <!-- ================= JUZ DETAIL ================= -->
+  <main id="view-juzdetail" class="view" hidden>
+    <div class="back-row">
+      <button class="back-btn" data-back="juzList"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
+    </div>
+    <div class="juz-header">
+      <div class="juz-num" id="juzDetailNum"></div>
+      <div>
+        <h2 id="juzDetailTitle"></h2>
+        <p class="muted" id="juzDetailRange" style="margin:4px 0 0; font-size:0.82rem;"></p>
+      </div>
+    </div>
+    <div class="bar" style="margin:14px 0 18px; height:10px;"><div class="fill" id="juzDetailBar"></div></div>
+    <div id="juzDetailSegments"></div>
+  </main>
+
+  <!-- ================= MORNING ADHKAR ================= -->
+  <main id="view-morning" class="view" hidden>
+    <div class="back-row">
+      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
+      <span class="view-title">🌅 أذكار الصباح</span>
+    </div>
+    <div class="adhkar-summary"><span>التقدم</span><b id="morningSummaryText">0 / 0</b></div>
+    <div class="bar" style="margin-bottom:16px;"><div class="fill" id="morningBar"></div></div>
+    <div id="morningList"></div>
+  </main>
+
+  <!-- ================= EVENING ADHKAR ================= -->
+  <main id="view-evening" class="view" hidden>
+    <div class="back-row">
+      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
+      <span class="view-title">🌙 أذكار المساء</span>
+    </div>
+    <div class="adhkar-summary"><span>التقدم</span><b id="eveningSummaryText">0 / 0</b></div>
+    <div class="bar" style="margin-bottom:16px;"><div class="fill" id="eveningBar"></div></div>
+    <div id="eveningList"></div>
+  </main>
+
+  <!-- ================= PROGRESS ================= -->
+  <main id="view-progress" class="view" hidden>
+    <div class="back-row">
+      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
+      <span class="view-title">📊 تقدمي</span>
+    </div>
+    <div class="stat-card" id="progressSurahCard"></div>
+    <div class="stat-card" id="progressJuzCard"></div>
+    <div class="streak-banner" id="streakBanner"></div>
+    <h3 style="margin-bottom:10px;">آخر 7 أيام</h3>
+    <div class="week-strip" id="weekStrip"></div>
+    <h3 style="margin-bottom:10px;">سجل الحفظ (السور)</h3>
+    <div class="log-list" id="memLogList"></div>
+  </main>
+
+  <!-- ================= SETTINGS ================= -->
+  <main id="view-settings" class="view" hidden>
+    <div class="back-row">
+      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
+      <span class="view-title">⚙️ الإعدادات</span>
+    </div>
+
+    <div class="notice-box" id="notificationNotice"></div>
+
+    <div class="settings-section">
+      <h3>التنبيهات</h3>
+      <div class="settings-row">
+        <div><label>تفعيل التنبيهات</label><span class="hint">يطلب إذن المتصفح لإظهار الإشعارات</span></div>
+        <label class="switch"><input type="checkbox" id="notifToggle"><span class="slider"></span></label>
+      </div>
+      <div class="settings-row"><label>وقت أذكار الصباح</label><input type="time" id="morningTimeInput"></div>
+      <div class="settings-row"><label>وقت أذكار المساء</label><input type="time" id="eveningTimeInput"></div>
+      <div class="settings-row"><label>وقت الورد اليومي</label><input type="time" id="wirdTimeInput"></div>
+    </div>
+
+    <div class="settings-section">
+      <h3>الورد اليومي</h3>
+      <div class="settings-row">
+        <div><label id="wirdCurrentLabel">-</label><span class="hint">الهدف اليومي الحالي</span></div>
+        <button class="btn ghost" id="editWirdFromSettings">تعديل</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3>العرض</h3>
+      <div class="settings-row">
+        <div><label>الوضع الليلي</label></div>
+        <select id="darkModeSelect">
+          <option value="system">حسب النظام</option>
+          <option value="light">فاتح دائمًا</option>
+          <option value="dark">داكن دائمًا</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <div><label>حجم الخط</label></div>
+        <select id="fontSizeSelect">
+          <option value="0.9">صغير</option>
+          <option value="1">متوسط</option>
+          <option value="1.15">كبير</option>
+          <option value="1.3">كبير جدًا</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3>البيانات</h3>
+      <div class="settings-row"><label>تصدير نسخة احتياطية</label><button class="btn ghost" id="exportBtn">تصدير</button></div>
+      <div class="settings-row">
+        <label>استيراد نسخة احتياطية</label>
+        <input type="file" id="importFile" accept="application/json" style="display:none;">
+        <button class="btn ghost" id="importBtn">استيراد</button>
+      </div>
+      <div class="settings-row"><label style="color:var(--danger);">إعادة ضبط كل التقدم</label><button class="btn danger" id="resetAllBtn">إعادة ضبط</button></div>
+    </div>
+  </main>
+
+</div>
+<div class="toast" id="toast"></div>
 <script>
 (function(){
   "use strict";
 
-  if ("serviceWorker" in navigator){
-    window.addEventListener("load", function(){
-      navigator.serviceWorker.register("sw.js").catch(function(){ /* offline caching is optional */ });
-    });
-  }
-
-  var deferredInstallPrompt = null;
-  window.addEventListener("beforeinstallprompt", function(e){
-    e.preventDefault();
-    deferredInstallPrompt = e;
-    var tip = document.getElementById("installTip");
-    var tipText = document.getElementById("installTipText");
-    var installBtn = document.getElementById("installNowBtn");
-    if (tip && installBtn){
-      tipText.textContent = "ثبّت وردي كتطبيق مستقل على هاتفك بضغطة واحدة.";
-      installBtn.hidden = false;
-      var dismissed = false;
-      try { dismissed = localStorage.getItem("wirdi-install-tip-dismissed") === "1"; } catch(err){}
-      if (!dismissed) tip.hidden = false;
-    }
-  });
-  window.addEventListener("appinstalled", function(){
-    document.getElementById("installTip").hidden = true;
-    try { localStorage.setItem("wirdi-install-tip-dismissed", "1"); } catch(e){}
-  });
-
-const BISMILLAH ="بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ";
+const BISMILLAH = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ";
 const QURAN_AYAHS = [
 ["بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ","ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ","ٱلرَّحْمَٰنِ ٱلرَّحِيمِ","مَٰلِكِ يَوْمِ ٱلدِّينِ","إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ","ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ","صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"],
 ["الٓمٓ","ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًۭى لِّلْمُتَّقِينَ","ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ","وَٱلَّذِينَ يُؤْمِنُونَ بِمَآ أُنزِلَ إِلَيْكَ وَمَآ أُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ","أُو۟لَٰٓئِكَ عَلَىٰ هُدًۭى مِّن رَّبِّهِمْ ۖ وَأُو۟لَٰٓئِكَ هُمُ ٱلْمُفْلِحُونَ","إِنَّ ٱلَّذِينَ كَفَرُوا۟ سَوَآءٌ عَلَيْهِمْ ءَأَنذَرْتَهُمْ أَمْ لَمْ تُنذِرْهُمْ لَا يُؤْمِنُونَ","خَتَمَ ٱللَّهُ عَلَىٰ قُلُوبِهِمْ وَعَلَىٰ سَمْعِهِمْ ۖ وَعَلَىٰٓ أَبْصَٰرِهِمْ غِشَٰوَةٌۭ ۖ وَلَهُمْ عَذَابٌ عَظِيمٌۭ","وَمِنَ ٱلنَّاسِ مَن يَقُولُ ءَامَنَّا بِٱللَّهِ وَبِٱلْيَوْمِ ٱلْءَاخِرِ وَمَا هُم بِمُؤْمِنِينَ","يُخَٰدِعُونَ ٱللَّهَ وَٱلَّذِينَ ءَامَنُوا۟ وَمَا يَخْدَعُونَ إِلَّآ أَنفُسَهُمْ وَمَا يَشْعُرُونَ","فِى قُلُوبِهِم مَّرَضٌۭ فَزَادَهُمُ ٱللَّهُ مَرَضًۭا ۖ وَلَهُمْ عَذَابٌ أَلِيمٌۢ بِمَا كَانُوا۟ يَكْذِبُونَ","وَإِذَا قِيلَ لَهُمْ لَا تُفْسِدُوا۟ فِى ٱلْأَرْضِ قَالُوٓا۟ إِنَّمَا نَحْنُ مُصْلِحُونَ","أَلَآ إِنَّهُمْ هُمُ ٱلْمُفْسِدُونَ وَلَٰكِن لَّا يَشْعُرُونَ","وَإِذَا قِيلَ لَهُمْ ءَامِنُوا۟ كَمَآ ءَامَنَ ٱلنَّاسُ قَالُوٓا۟ أَنُؤْمِنُ كَمَآ ءَامَنَ ٱلسُّفَهَآءُ ۗ أَلَآ إِنَّهُمْ هُمُ ٱلسُّفَهَآءُ وَلَٰكِن لَّا يَعْلَمُونَ","وَإِذَا لَقُوا۟ ٱلَّذِينَ ءَامَنُوا۟ قَالُوٓا۟ ءَامَنَّا وَإِذَا خَلَوْا۟ إِلَىٰ شَيَٰطِينِهِمْ قَالُوٓا۟ إِنَّا مَعَكُمْ إِنَّمَا نَحْنُ مُسْتَهْزِءُونَ","ٱللَّهُ يَسْتَهْزِئُ بِهِمْ وَيَمُدُّهُمْ فِى طُغْيَٰنِهِمْ يَعْمَهُونَ","أُو۟لَٰٓئِكَ ٱلَّذِينَ ٱشْتَرَوُا۟ ٱلضَّلَٰلَةَ بِٱلْهُدَىٰ فَمَا رَبِحَت تِّجَٰرَتُهُمْ وَمَا كَانُوا۟ مُهْتَدِينَ","مَثَلُهُمْ كَمَثَلِ ٱلَّذِى ٱسْتَوْقَدَ نَارًۭا فَلَمَّآ أَضَآءَتْ مَا حَوْلَهُۥ ذَهَبَ ٱللَّهُ بِنُورِهِمْ وَتَرَكَهُمْ فِى ظُلُمَٰتٍۢ لَّا يُبْصِرُونَ","صُمٌّۢ بُكْمٌ عُمْىٌۭ فَهُمْ لَا يَرْجِعُونَ","أَوْ كَصَيِّبٍۢ مِّنَ ٱلسَّمَآءِ فِيهِ ظُلُمَٰتٌۭ وَرَعْدٌۭ وَبَرْقٌۭ يَجْعَلُونَ أَصَٰبِعَهُمْ فِىٓ ءَاذَانِهِم مِّنَ ٱلصَّوَٰعِقِ حَذَرَ ٱلْمَوْتِ ۚ وَٱللَّهُ مُحِيطٌۢ بِٱلْكَٰفِرِينَ","يَكَادُ ٱلْبَرْقُ يَخْطَفُ أَبْصَٰرَهُمْ ۖ كُلَّمَآ أَضَآءَ لَهُم مَّشَوْا۟ فِيهِ وَإِذَآ أَظْلَمَ عَلَيْهِمْ قَامُوا۟ ۚ وَلَوْ شَآءَ ٱللَّهُ لَذَهَبَ بِسَمْعِهِمْ وَأَبْصَٰرِهِمْ ۚ إِنَّ ٱللَّهَ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرٌۭ","يَٰٓأَيُّهَا ٱلنَّاسُ ٱعْبُدُوا۟ رَبَّكُمُ ٱلَّذِى خَلَقَكُمْ وَٱلَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ","ٱلَّذِى جَعَلَ لَكُمُ ٱلْأَرْضَ فِرَٰشًۭا وَٱلسَّمَآءَ بِنَآءًۭ وَأَنزَلَ مِنَ ٱلسَّمَآءِ مَآءًۭ فَأَخْرَجَ بِهِۦ مِنَ ٱلثَّمَرَٰتِ رِزْقًۭا لَّكُمْ ۖ فَلَا تَجْعَلُوا۟ لِلَّهِ أَندَادًۭا وَأَنتُمْ تَعْلَمُونَ","وَإِن كُنتُمْ فِى رَيْبٍۢ مِّمَّا نَزَّلْنَا عَلَىٰ عَبْدِنَا فَأْتُوا۟ بِسُورَةٍۢ مِّن مِّثْلِهِۦ وَٱدْعُوا۟ شُهَدَآءَكُم مِّن دُونِ ٱللَّهِ إِن كُنتُمْ صَٰدِقِينَ","فَإِن لَّمْ تَفْعَلُوا۟ وَلَن تَفْعَلُوا۟ فَٱتَّقُوا۟ ٱلنَّارَ ٱلَّتِى وَقُودُهَا ٱلنَّاسُ وَٱلْحِجَارَةُ ۖ أُعِدَّتْ لِلْكَٰفِرِينَ","وَبَشِّرِ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ أَنَّ لَهُمْ جَنَّٰتٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ۖ كُلَّمَا رُزِقُوا۟ مِنْهَا مِن ثَمَرَةٍۢ رِّزْقًۭا ۙ قَالُوا۟ هَٰذَا ٱلَّذِى رُزِقْنَا مِن قَبْلُ ۖ وَأُتُوا۟ بِهِۦ مُتَشَٰبِهًۭا ۖ وَلَهُمْ فِيهَآ أَزْوَٰجٌۭ مُّطَهَّرَةٌۭ ۖ وَهُمْ فِيهَا خَٰلِدُونَ","۞ إِنَّ ٱللَّهَ لَا يَسْتَحْىِۦٓ أَن يَضْرِبَ مَثَلًۭا مَّا بَعُوضَةًۭ فَمَا فَوْقَهَا ۚ فَأَمَّا ٱلَّذِينَ ءَامَنُوا۟ فَيَعْلَمُونَ أَنَّهُ ٱلْحَقُّ مِن رَّبِّهِمْ ۖ وَأَمَّا ٱلَّذِينَ كَفَرُوا۟ فَيَقُولُونَ مَاذَآ أَرَادَ ٱللَّهُ بِهَٰذَا مَثَلًۭا ۘ يُضِلُّ بِهِۦ كَثِيرًۭا وَيَهْدِى بِهِۦ كَثِيرًۭا ۚ وَمَا يُضِلُّ بِهِۦٓ إِلَّا ٱلْفَٰسِقِينَ","ٱلَّذِينَ يَنقُضُونَ عَهْدَ ٱللَّهِ مِنۢ بَعْدِ مِيثَٰقِهِۦ وَيَقْطَعُونَ مَآ أَمَرَ ٱللَّهُ بِهِۦٓ أَن يُوصَلَ وَيُفْسِدُونَ فِى ٱلْأَرْضِ ۚ أُو۟لَٰٓئِكَ هُمُ ٱلْخَٰسِرُونَ","كَيْفَ تَكْفُرُونَ بِٱللَّهِ وَكُنتُمْ أَمْوَٰتًۭا فَأَحْيَٰكُمْ ۖ ثُمَّ يُمِيتُكُمْ ثُمَّ يُحْيِيكُمْ ثُمَّ إِلَيْهِ تُرْجَعُونَ","هُوَ ٱلَّذِى خَلَقَ لَكُم مَّا فِى ٱلْأَرْضِ جَمِيعًۭا ثُمَّ ٱسْتَوَىٰٓ إِلَى ٱلسَّمَآءِ فَسَوَّىٰهُنَّ سَبْعَ سَمَٰوَٰتٍۢ ۚ وَهُوَ بِكُلِّ شَىْءٍ عَلِيمٌۭ","وَإِذْ قَالَ رَبُّكَ لِلْمَلَٰٓئِكَةِ إِنِّى جَاعِلٌۭ فِى ٱلْأَرْضِ خَلِيفَةًۭ ۖ قَالُوٓا۟ أَتَجْعَلُ فِيهَا مَن يُفْسِدُ فِيهَا وَيَسْفِكُ ٱلدِّمَآءَ وَنَحْنُ نُسَبِّحُ بِحَمْدِكَ وَنُقَدِّسُ لَكَ ۖ قَالَ إِنِّىٓ أَعْلَمُ مَا لَا تَعْلَمُونَ","وَعَلَّمَ ءَادَمَ ٱلْأَسْمَآءَ كُلَّهَا ثُمَّ عَرَضَهُمْ عَلَى ٱلْمَلَٰٓئِكَةِ فَقَالَ أَنۢبِـُٔونِى بِأَسْمَآءِ هَٰٓؤُلَآءِ إِن كُنتُمْ صَٰدِقِينَ","قَالُوا۟ سُبْحَٰنَكَ لَا عِلْمَ لَنَآ إِلَّا مَا عَلَّمْتَنَآ ۖ إِنَّكَ أَنتَ ٱلْعَلِيمُ ٱلْحَكِيمُ","قَالَ يَٰٓـَٔادَمُ أَنۢبِئْهُم بِأَسْمَآئِهِمْ ۖ فَلَمَّآ أَنۢبَأَهُم بِأَسْمَآئِهِمْ قَالَ أَلَمْ أَقُل لَّكُمْ إِنِّىٓ أَعْلَمُ غَيْبَ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَأَعْلَمُ مَا تُبْدُونَ وَمَا كُنتُمْ تَكْتُمُونَ","وَإِذْ قُلْنَا لِلْمَلَٰٓئِكَةِ ٱسْجُدُوا۟ لِءَادَمَ فَسَجَدُوٓا۟ إِلَّآ إِبْلِيسَ أَبَىٰ وَٱسْتَكْبَرَ وَكَانَ مِنَ ٱلْكَٰفِرِينَ","وَقُلْنَا يَٰٓـَٔادَمُ ٱسْكُنْ أَنتَ وَزَوْجُكَ ٱلْجَنَّةَ وَكُلَا مِنْهَا رَغَدًا حَيْثُ شِئْتُمَا وَلَا تَقْرَبَا هَٰذِهِ ٱلشَّجَرَةَ فَتَكُونَا مِنَ ٱلظَّٰلِمِينَ","فَأَزَلَّهُمَا ٱلشَّيْطَٰنُ عَنْهَا فَأَخْرَجَهُمَا مِمَّا كَانَا فِيهِ ۖ وَقُلْنَا ٱهْبِطُوا۟ بَعْضُكُمْ لِبَعْضٍ عَدُوٌّۭ ۖ وَلَكُمْ فِى ٱلْأَرْضِ مُسْتَقَرٌّۭ وَمَتَٰعٌ إِلَىٰ حِينٍۢ","فَتَلَقَّىٰٓ ءَادَمُ مِن رَّبِّهِۦ كَلِمَٰتٍۢ فَتَابَ عَلَيْهِ ۚ إِنَّهُۥ هُوَ ٱلتَّوَّابُ ٱلرَّحِيمُ","قُلْنَا ٱهْبِطُوا۟ مِنْهَا جَمِيعًۭا ۖ فَإِمَّا يَأْتِيَنَّكُم مِّنِّى هُدًۭى فَمَن تَبِعَ هُدَاىَ فَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ","وَٱلَّذِينَ كَفَرُوا۟ وَكَذَّبُوا۟ بِـَٔايَٰتِنَآ أُو۟لَٰٓئِكَ أَصْحَٰبُ ٱلنَّارِ ۖ هُمْ فِيهَا خَٰلِدُونَ","يَٰبَنِىٓ إِسْرَٰٓءِيلَ ٱذْكُرُوا۟ نِعْمَتِىَ ٱلَّتِىٓ أَنْعَمْتُ عَلَيْكُمْ وَأَوْفُوا۟ بِعَهْدِىٓ أُوفِ بِعَهْدِكُمْ وَإِيَّٰىَ فَٱرْهَبُونِ","وَءَامِنُوا۟ بِمَآ أَنزَلْتُ مُصَدِّقًۭا لِّمَا مَعَكُمْ وَلَا تَكُونُوٓا۟ أَوَّلَ كَافِرٍۭ بِهِۦ ۖ وَلَا تَشْتَرُوا۟ بِـَٔايَٰتِى ثَمَنًۭا قَلِيلًۭا وَإِيَّٰىَ فَٱتَّقُونِ","وَلَا تَلْبِسُوا۟ ٱلْحَقَّ بِٱلْبَٰطِلِ وَتَكْتُمُوا۟ ٱلْحَقَّ وَأَنتُمْ تَعْلَمُونَ","وَأَقِيمُوا۟ ٱلصَّلَوٰةَ وَءَاتُوا۟ ٱلزَّكَوٰةَ وَٱرْكَعُوا۟ مَعَ ٱلرَّٰكِعِينَ","۞ أَتَأْمُرُونَ ٱلنَّاسَ بِٱلْبِرِّ وَتَنسَوْنَ أَنفُسَكُمْ وَأَنتُمْ تَتْلُونَ ٱلْكِتَٰبَ ۚ أَفَلَا تَعْقِلُونَ","وَٱسْتَعِينُوا۟ بِٱلصَّبْرِ وَٱلصَّلَوٰةِ ۚ وَإِنَّهَا لَكَبِيرَةٌ إِلَّا عَلَى ٱلْخَٰشِعِينَ","ٱلَّذِينَ يَظُنُّونَ أَنَّهُم مُّلَٰقُوا۟ رَبِّهِمْ وَأَنَّهُمْ إِلَيْهِ رَٰجِعُونَ","يَٰبَنِىٓ إِسْرَٰٓءِيلَ ٱذْكُرُوا۟ نِعْمَتِىَ ٱلَّتِىٓ أَنْعَمْتُ عَلَيْكُمْ وَأَنِّى فَضَّلْتُكُمْ عَلَى ٱلْعَٰلَمِينَ","وَٱتَّقُوا۟ يَوْمًۭا لَّا تَجْزِى نَفْسٌ عَن نَّفْسٍۢ شَيْـًۭٔا وَلَا يُقْبَلُ مِنْهَا شَفَٰعَةٌۭ وَلَا يُؤْخَذُ مِنْهَا عَدْلٌۭ وَلَا هُمْ يُنصَرُونَ","وَإِذْ نَجَّيْنَٰكُم مِّنْ ءَالِ فِرْعَوْنَ يَسُومُونَكُمْ سُوٓءَ ٱلْعَذَابِ يُذَبِّحُونَ أَبْنَآءَكُمْ وَيَسْتَحْيُونَ نِسَآءَكُمْ ۚ وَفِى ذَٰلِكُم بَلَآءٌۭ مِّن رَّبِّكُمْ عَظِيمٌۭ","وَإِذْ فَرَقْنَا بِكُمُ ٱلْبَحْرَ فَأَنجَيْنَٰكُمْ وَأَغْرَقْنَآ ءَالَ فِرْعَوْنَ وَأَنتُمْ تَنظُرُونَ","وَإِذْ وَٰعَدْنَا مُوسَىٰٓ أَرْبَعِينَ لَيْلَةًۭ ثُمَّ ٱتَّخَذْتُمُ ٱلْعِجْلَ مِنۢ بَعْدِهِۦ وَأَنتُمْ ظَٰلِمُونَ","ثُمَّ عَفَوْنَا عَنكُم مِّنۢ بَعْدِ ذَٰلِكَ لَعَلَّكُمْ تَشْكُرُونَ","وَإِذْ ءَاتَيْنَا مُوسَى ٱلْكِتَٰبَ وَٱلْفُرْقَانَ لَعَلَّكُمْ تَهْتَدُونَ","وَإِذْ قَالَ مُوسَىٰ لِقَوْمِهِۦ يَٰقَوْمِ إِنَّكُمْ ظَلَمْتُمْ أَنفُسَكُم بِٱتِّخَاذِكُمُ ٱلْعِجْلَ فَتُوبُوٓا۟ إِلَىٰ بَارِئِكُمْ فَٱقْتُلُوٓا۟ أَنفُسَكُمْ ذَٰلِكُمْ خَيْرٌۭ لَّكُمْ عِندَ بَارِئِكُمْ فَتَابَ عَلَيْكُمْ ۚ إِنَّهُۥ هُوَ ٱلتَّوَّابُ ٱلرَّحِيمُ","وَإِذْ قُلْتُمْ يَٰمُوسَىٰ لَن نُّؤْمِنَ لَكَ حَتَّىٰ نَرَى ٱللَّهَ جَهْرَةًۭ فَأَخَذَتْكُمُ ٱلصَّٰعِقَةُ وَأَنتُمْ تَنظُرُونَ","ثُمَّ بَعَثْنَٰكُم مِّنۢ بَعْدِ مَوْتِكُمْ لَعَلَّكُمْ تَشْكُرُونَ","وَظَلَّلْنَا عَلَيْكُمُ ٱلْغَمَامَ وَأَنزَلْنَا عَلَيْكُمُ ٱلْمَنَّ وَٱلسَّلْوَىٰ ۖ كُلُوا۟ مِن طَيِّبَٰتِ مَا رَزَقْنَٰكُمْ ۖ وَمَا ظَلَمُونَا وَلَٰكِن كَانُوٓا۟ أَنفُسَهُمْ يَظْلِمُونَ","وَإِذْ قُلْنَا ٱدْخُلُوا۟ هَٰذِهِ ٱلْقَرْيَةَ فَكُلُوا۟ مِنْهَا حَيْثُ شِئْتُمْ رَغَدًۭا وَٱدْخُلُوا۟ ٱلْبَابَ سُجَّدًۭا وَقُولُوا۟ حِطَّةٌۭ نَّغْفِرْ لَكُمْ خَطَٰيَٰكُمْ ۚ وَسَنَزِيدُ ٱلْمُحْسِنِينَ","فَبَدَّلَ ٱلَّذِينَ ظَلَمُوا۟ قَوْلًا غَيْرَ ٱلَّذِى قِيلَ لَهُمْ فَأَنزَلْنَا عَلَى ٱلَّذِينَ ظَلَمُوا۟ رِجْزًۭا مِّنَ ٱلسَّمَآءِ بِمَا كَانُوا۟ يَفْسُقُونَ","۞ وَإِذِ ٱسْتَسْقَىٰ مُوسَىٰ لِقَوْمِهِۦ فَقُلْنَا ٱضْرِب بِّعَصَاكَ ٱلْحَجَرَ ۖ فَٱنفَجَرَتْ مِنْهُ ٱثْنَتَا عَشْرَةَ عَيْنًۭا ۖ قَدْ عَلِمَ كُلُّ أُنَاسٍۢ مَّشْرَبَهُمْ ۖ كُلُوا۟ وَٱشْرَبُوا۟ مِن رِّزْقِ ٱللَّهِ وَلَا تَعْثَوْا۟ فِى ٱلْأَرْضِ مُفْسِدِينَ","وَإِذْ قُلْتُمْ يَٰمُوسَىٰ لَن نَّصْبِرَ عَلَىٰ طَعَامٍۢ وَٰحِدٍۢ فَٱدْعُ لَنَا رَبَّكَ يُخْرِجْ لَنَا مِمَّا تُنۢبِتُ ٱلْأَرْضُ مِنۢ بَقْلِهَا وَقِثَّآئِهَا وَفُومِهَا وَعَدَسِهَا وَبَصَلِهَا ۖ قَالَ أَتَسْتَبْدِلُونَ ٱلَّذِى هُوَ أَدْنَىٰ بِٱلَّذِى هُوَ خَيْرٌ ۚ ٱهْبِطُوا۟ مِصْرًۭا فَإِنَّ لَكُم مَّا سَأَلْتُمْ ۗ وَضُرِبَتْ عَلَيْهِمُ ٱلذِّلَّةُ وَٱلْمَسْكَنَةُ وَبَآءُو بِغَضَبٍۢ مِّنَ ٱللَّهِ ۗ ذَٰلِكَ بِأَنَّهُمْ كَانُوا۟ يَكْفُرُونَ بِـَٔايَٰتِ ٱللَّهِ وَيَقْتُلُونَ ٱلنَّبِيِّۦنَ بِغَيْرِ ٱلْحَقِّ ۗ ذَٰلِكَ بِمَا عَصَوا۟ وَّكَانُوا۟ يَعْتَدُونَ","إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَٱلَّذِينَ هَادُوا۟ وَٱلنَّصَٰرَىٰ وَٱلصَّٰبِـِٔينَ مَنْ ءَامَنَ بِٱللَّهِ وَٱلْيَوْمِ ٱلْءَاخِرِ وَعَمِلَ صَٰلِحًۭا فَلَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ","وَإِذْ أَخَذْنَا مِيثَٰقَكُمْ وَرَفَعْنَا فَوْقَكُمُ ٱلطُّورَ خُذُوا۟ مَآ ءَاتَيْنَٰكُم بِقُوَّةٍۢ وَٱذْكُرُوا۟ مَا فِيهِ لَعَلَّكُمْ تَتَّقُونَ","ثُمَّ تَوَلَّيْتُم مِّنۢ بَعْدِ ذَٰلِكَ ۖ فَلَوْلَا فَضْلُ ٱللَّهِ عَلَيْكُمْ وَرَحْمَتُهُۥ لَكُنتُم مِّنَ ٱلْخَٰسِرِينَ","وَلَقَدْ عَلِمْتُمُ ٱلَّذِينَ ٱعْتَدَوْا۟ مِنكُمْ فِى ٱلسَّبْتِ فَقُلْنَا لَهُمْ كُونُوا۟ قِرَدَةً خَٰسِـِٔينَ","فَجَعَلْنَٰهَا نَكَٰلًۭا لِّمَا بَيْنَ يَدَيْهَا وَمَا خَلْفَهَا وَمَوْعِظَةًۭ لِّلْمُتَّقِينَ","وَإِذْ قَالَ مُوسَىٰ لِقَوْمِهِۦٓ إِنَّ ٱللَّهَ يَأْمُرُكُمْ أَن تَذْبَحُوا۟ بَقَرَةًۭ ۖ قَالُوٓا۟ أَتَتَّخِذُنَا هُزُوًۭا ۖ قَالَ أَعُوذُ بِٱللَّهِ أَنْ أَكُونَ مِنَ ٱلْجَٰهِلِينَ","قَالُوا۟ ٱدْعُ لَنَا رَبَّكَ يُبَيِّن لَّنَا مَا هِىَ ۚ قَالَ إِنَّهُۥ يَقُولُ إِنَّهَا بَقَرَةٌۭ لَّا فَارِضٌۭ وَلَا بِكْرٌ عَوَانٌۢ بَيْنَ ذَٰلِكَ ۖ فَٱفْعَلُوا۟ مَا تُؤْمَرُونَ","قَالُوا۟ ٱدْعُ لَنَا رَبَّكَ يُبَيِّن لَّنَا مَا لَوْنُهَا ۚ قَالَ إِنَّهُۥ يَقُولُ إِنَّهَا بَقَرَةٌۭ صَفْرَآءُ فَاقِعٌۭ لَّوْنُهَا تَسُرُّ ٱلنَّٰظِرِينَ","قَالُوا۟ ٱدْعُ لَنَا رَبَّكَ يُبَيِّن لَّنَا مَا هِىَ إِنَّ ٱلْبَقَرَ تَشَٰبَهَ عَلَيْنَا وَإِنَّآ إِن شَآءَ ٱللَّهُ لَمُهْتَدُونَ","قَالَ إِنَّهُۥ يَقُولُ إِنَّهَا بَقَرَةٌۭ لَّا ذَلُولٌۭ تُثِيرُ ٱلْأَرْضَ وَلَا تَسْقِى ٱلْحَرْثَ مُسَلَّمَةٌۭ لَّا شِيَةَ فِيهَا ۚ قَالُوا۟ ٱلْـَٰٔنَ جِئْتَ بِٱلْحَقِّ ۚ فَذَبَحُوهَا وَمَا كَادُوا۟ يَفْعَلُونَ","وَإِذْ قَتَلْتُمْ نَفْسًۭا فَٱدَّٰرَْٰٔتُمْ فِيهَا ۖ وَٱللَّهُ مُخْرِجٌۭ مَّا كُنتُمْ تَكْتُمُونَ","فَقُلْنَا ٱضْرِبُوهُ بِبَعْضِهَا ۚ كَذَٰلِكَ يُحْىِ ٱللَّهُ ٱلْمَوْتَىٰ وَيُرِيكُمْ ءَايَٰتِهِۦ لَعَلَّكُمْ تَعْقِلُونَ","ثُمَّ قَسَتْ قُلُوبُكُم مِّنۢ بَعْدِ ذَٰلِكَ فَهِىَ كَٱلْحِجَارَةِ أَوْ أَشَدُّ قَسْوَةًۭ ۚ وَإِنَّ مِنَ ٱلْحِجَارَةِ لَمَا يَتَفَجَّرُ مِنْهُ ٱلْأَنْهَٰرُ ۚ وَإِنَّ مِنْهَا لَمَا يَشَّقَّقُ فَيَخْرُجُ مِنْهُ ٱلْمَآءُ ۚ وَإِنَّ مِنْهَا لَمَا يَهْبِطُ مِنْ خَشْيَةِ ٱللَّهِ ۗ وَمَا ٱللَّهُ بِغَٰفِلٍ عَمَّا تَعْمَلُونَ","۞ أَفَتَطْمَعُونَ أَن يُؤْمِنُوا۟ لَكُمْ وَقَدْ كَانَ فَرِيقٌۭ مِّنْهُمْ يَسْمَعُونَ كَلَٰمَ ٱللَّهِ ثُمَّ يُحَرِّفُونَهُۥ مِنۢ بَعْدِ مَا عَقَلُوهُ وَهُمْ يَعْلَمُونَ","وَإِذَا لَقُوا۟ ٱلَّذِينَ ءَامَنُوا۟ قَالُوٓا۟ ءَامَنَّا وَإِذَا خَلَا بَعْضُهُمْ إِلَىٰ بَعْضٍۢ قَالُوٓا۟ أَتُحَدِّثُونَهُم بِمَا فَتَحَ ٱللَّهُ عَلَيْكُمْ لِيُحَآجُّوكُم بِهِۦ عِندَ رَبِّكُمْ ۚ أَفَلَا تَعْقِلُونَ","أَوَلَا يَعْلَمُونَ أَنَّ ٱللَّهَ يَعْلَمُ مَا يُسِرُّونَ وَمَا يُعْلِنُونَ","وَمِنْهُمْ أُمِّيُّونَ لَا يَعْلَمُونَ ٱلْكِتَٰبَ إِلَّآ أَمَانِىَّ وَإِنْ هُمْ إِلَّا يَظُنُّونَ","فَوَيْلٌۭ لِّلَّذِينَ يَكْتُبُونَ ٱلْكِتَٰبَ بِأَيْدِيهِمْ ثُمَّ يَقُولُونَ هَٰذَا مِنْ عِندِ ٱللَّهِ لِيَشْتَرُوا۟ بِهِۦ ثَمَنًۭا قَلِيلًۭا ۖ فَوَيْلٌۭ لَّهُم مِّمَّا كَتَبَتْ أَيْدِيهِمْ وَوَيْلٌۭ لَّهُم مِّمَّا يَكْسِبُونَ","وَقَالُوا۟ لَن تَمَسَّنَا ٱلنَّارُ إِلَّآ أَيَّامًۭا مَّعْدُودَةًۭ ۚ قُلْ أَتَّخَذْتُمْ عِندَ ٱللَّهِ عَهْدًۭا فَلَن يُخْلِفَ ٱللَّهُ عَهْدَهُۥٓ ۖ أَمْ تَقُولُونَ عَلَى ٱللَّهِ مَا لَا تَعْلَمُونَ","بَلَىٰ مَن كَسَبَ سَيِّئَةًۭ وَأَحَٰطَتْ بِهِۦ خَطِيٓـَٔتُهُۥ فَأُو۟لَٰٓئِكَ أَصْحَٰبُ ٱلنَّارِ ۖ هُمْ فِيهَا خَٰلِدُونَ","وَٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ أُو۟لَٰٓئِكَ أَصْحَٰبُ ٱلْجَنَّةِ ۖ هُمْ فِيهَا خَٰلِدُونَ","وَإِذْ أَخَذْنَا مِيثَٰقَ بَنِىٓ إِسْرَٰٓءِيلَ لَا تَعْبُدُونَ إِلَّا ٱللَّهَ وَبِٱلْوَٰلِدَيْنِ إِحْسَانًۭا وَذِى ٱلْقُرْبَىٰ وَٱلْيَتَٰمَىٰ وَٱلْمَسَٰكِينِ وَقُولُوا۟ لِلنَّاسِ حُسْنًۭا وَأَقِيمُوا۟ ٱلصَّلَوٰةَ وَءَاتُوا۟ ٱلزَّكَوٰةَ ثُمَّ تَوَلَّيْتُمْ إِلَّا قَلِيلًۭا مِّنكُمْ وَأَنتُم مُّعْرِضُونَ","وَإِذْ أَخَذْنَا مِيثَٰقَكُمْ لَا تَسْفِكُونَ دِمَآءَكُمْ وَلَا تُخْرِجُونَ أَنفُسَكُم مِّن دِيَٰرِكُمْ ثُمَّ أَقْرَرْتُمْ وَأَنتُمْ تَشْهَدُونَ","ثُمَّ أَنتُمْ هَٰٓؤُلَآءِ تَقْتُلُونَ أَنفُسَكُمْ وَتُخْرِجُونَ فَرِيقًۭا مِّنكُم مِّن دِيَٰرِهِمْ تَظَٰهَرُونَ عَلَيْهِم بِٱلْإِثْمِ وَٱلْعُدْوَٰنِ وَإِن يَأْتُوكُمْ أُسَٰرَىٰ تُفَٰدُوهُمْ وَهُوَ مُحَرَّمٌ عَلَيْكُمْ إِخْرَاجُهُمْ ۚ أَفَتُؤْمِنُونَ بِبَعْضِ ٱلْكِتَٰبِ وَتَكْفُرُونَ بِبَعْضٍۢ ۚ فَمَا جَزَآءُ مَن يَفْعَلُ ذَٰلِكَ مِنكُمْ إِلَّا خِزْىٌۭ فِى ٱلْحَيَوٰةِ ٱلدُّنْيَا ۖ وَيَوْمَ ٱلْقِيَٰمَةِ يُرَدُّونَ إِلَىٰٓ أَشَدِّ ٱلْعَذَابِ ۗ وَمَا ٱللَّهُ بِغَٰفِلٍ عَمَّا تَعْمَلُونَ","أُو۟لَٰٓئِكَ ٱلَّذِينَ ٱشْتَرَوُا۟ ٱلْحَيَوٰةَ ٱلدُّنْيَا بِٱلْءَاخِرَةِ ۖ فَلَا يُخَفَّفُ عَنْهُمُ ٱلْعَذَابُ وَلَا هُمْ يُنصَرُونَ","وَلَقَدْ ءَاتَيْنَا مُوسَى ٱلْكِتَٰبَ وَقَفَّيْنَا مِنۢ بَعْدِهِۦ بِٱلرُّسُلِ ۖ وَءَاتَيْنَا عِيسَى ٱبْنَ مَرْيَمَ ٱلْبَيِّنَٰتِ وَأَيَّدْنَٰهُ بِرُوحِ ٱلْقُدُسِ ۗ أَفَكُلَّمَا جَآءَكُمْ رَسُولٌۢ بِمَا لَا تَهْوَىٰٓ أَنفُسُكُمُ ٱسْتَكْبَرْتُمْ فَفَرِيقًۭا كَذَّبْتُمْ وَفَرِيقًۭا تَقْتُلُونَ","وَقَالُوا۟ قُلُوبُنَا غُلْفٌۢ ۚ بَل لَّعَنَهُمُ ٱللَّهُ بِكُفْرِهِمْ فَقَلِيلًۭا مَّا يُؤْمِنُونَ","وَلَمَّا جَآءَهُمْ كِتَٰبٌۭ مِّنْ عِندِ ٱللَّهِ مُصَدِّقٌۭ لِّمَا مَعَهُمْ وَكَانُوا۟ مِن قَبْلُ يَسْتَفْتِحُونَ عَلَى ٱلَّذِينَ كَفَرُوا۟ فَلَمَّا جَآءَهُم مَّا عَرَفُوا۟ كَفَرُوا۟ بِهِۦ ۚ فَلَعْنَةُ ٱللَّهِ عَلَى ٱلْكَٰفِرِينَ","بِئْسَمَا ٱشْتَرَوْا۟ بِهِۦٓ أَنفُسَهُمْ أَن يَكْفُرُوا۟ بِمَآ أَنزَلَ ٱللَّهُ بَغْيًا أَن يُنَزِّلَ ٱللَّهُ مِن فَضْلِهِۦ عَلَىٰ مَن يَشَآءُ مِنْ عِبَادِهِۦ ۖ فَبَآءُو بِغَضَبٍ عَلَىٰ غَضَبٍۢ ۚ وَلِلْكَٰفِرِينَ عَذَابٌۭ مُّهِينٌۭ","وَإِذَا قِيلَ لَهُمْ ءَامِنُوا۟ بِمَآ أَنزَلَ ٱللَّهُ قَالُوا۟ نُؤْمِنُ بِمَآ أُنزِلَ عَلَيْنَا وَيَكْفُرُونَ بِمَا وَرَآءَهُۥ وَهُوَ ٱلْحَقُّ مُصَدِّقًۭا لِّمَا مَعَهُمْ ۗ قُلْ فَلِمَ تَقْتُلُونَ أَنۢبِيَآءَ ٱللَّهِ مِن قَبْلُ إِن كُنتُم مُّؤْمِنِينَ","۞ وَلَقَدْ جَآءَكُم مُّوسَىٰ بِٱلْبَيِّنَٰتِ ثُمَّ ٱتَّخَذْتُمُ ٱلْعِجْلَ مِنۢ بَعْدِهِۦ وَأَنتُمْ ظَٰلِمُونَ","وَإِذْ أَخَذْنَا مِيثَٰقَكُمْ وَرَفَعْنَا فَوْقَكُمُ ٱلطُّورَ خُذُوا۟ مَآ ءَاتَيْنَٰكُم بِقُوَّةٍۢ وَٱسْمَعُوا۟ ۖ قَالُوا۟ سَمِعْنَا وَعَصَيْنَا وَأُشْرِبُوا۟ فِى قُلُوبِهِمُ ٱلْعِجْلَ بِكُفْرِهِمْ ۚ قُلْ بِئْسَمَا يَأْمُرُكُم بِهِۦٓ إِيمَٰنُكُمْ إِن كُنتُم مُّؤْمِنِينَ","قُلْ إِن كَانَتْ لَكُمُ ٱلدَّارُ ٱلْءَاخِرَةُ عِندَ ٱللَّهِ خَالِصَةًۭ مِّن دُونِ ٱلنَّاسِ فَتَمَنَّوُا۟ ٱلْمَوْتَ إِن كُنتُمْ صَٰدِقِينَ","وَلَن يَتَمَنَّوْهُ أَبَدًۢا بِمَا قَدَّمَتْ أَيْدِيهِمْ ۗ وَٱللَّهُ عَلِيمٌۢ بِٱلظَّٰلِمِينَ","وَلَتَجِدَنَّهُمْ أَحْرَصَ ٱلنَّاسِ عَلَىٰ حَيَوٰةٍۢ وَمِنَ ٱلَّذِينَ أَشْرَكُوا۟ ۚ يَوَدُّ أَحَدُهُمْ لَوْ يُعَمَّرُ أَلْفَ سَنَةٍۢ وَمَا هُوَ بِمُزَحْزِحِهِۦ مِنَ ٱلْعَذَابِ أَن يُعَمَّرَ ۗ وَٱللَّهُ بَصِيرٌۢ بِمَا يَعْمَلُونَ","قُلْ مَن كَانَ عَدُوًّۭا لِّجِبْرِيلَ فَإِنَّهُۥ نَزَّلَهُۥ عَلَىٰ قَلْبِكَ بِإِذْنِ ٱللَّهِ مُصَدِّقًۭا لِّمَا بَيْنَ يَدَيْهِ وَهُدًۭى وَبُشْرَىٰ لِلْمُؤْمِنِينَ","مَن كَانَ عَدُوًّۭا لِّلَّهِ وَمَلَٰٓئِكَتِهِۦ وَرُسُلِهِۦ وَجِبْرِيلَ وَمِيكَىٰلَ فَإِنَّ ٱللَّهَ عَدُوٌّۭ لِّلْكَٰفِرِينَ","وَلَقَدْ أَنزَلْنَآ إِلَيْكَ ءَايَٰتٍۭ بَيِّنَٰتٍۢ ۖ وَمَا يَكْفُرُ بِهَآ إِلَّا ٱلْفَٰسِقُونَ","أَوَكُلَّمَا عَٰهَدُوا۟ عَهْدًۭا نَّبَذَهُۥ فَرِيقٌۭ مِّنْهُم ۚ بَلْ أَكْثَرُهُمْ لَا يُؤْمِنُونَ","وَلَمَّا جَآءَهُمْ رَسُولٌۭ مِّنْ عِندِ ٱللَّهِ مُصَدِّقٌۭ لِّمَا مَعَهُمْ نَبَذَ فَرِيقٌۭ مِّنَ ٱلَّذِينَ أُوتُوا۟ ٱلْكِتَٰبَ كِتَٰبَ ٱللَّهِ وَرَآءَ ظُهُورِهِمْ كَأَنَّهُمْ لَا يَعْلَمُونَ","وَٱتَّبَعُوا۟ مَا تَتْلُوا۟ ٱلشَّيَٰطِينُ عَلَىٰ مُلْكِ سُلَيْمَٰنَ ۖ وَمَا كَفَرَ سُلَيْمَٰنُ وَلَٰكِنَّ ٱلشَّيَٰطِينَ كَفَرُوا۟ يُعَلِّمُونَ ٱلنَّاسَ ٱلسِّحْرَ وَمَآ أُنزِلَ عَلَى ٱلْمَلَكَيْنِ بِبَابِلَ هَٰرُوتَ وَمَٰرُوتَ ۚ وَمَا يُعَلِّمَانِ مِنْ أَحَدٍ حَتَّىٰ يَقُولَآ إِنَّمَا نَحْنُ فِتْنَةٌۭ فَلَا تَكْفُرْ ۖ فَيَتَعَلَّمُونَ مِنْهُمَا مَا يُفَرِّقُونَ بِهِۦ بَيْنَ ٱلْمَرْءِ وَزَوْجِهِۦ ۚ وَمَا هُم بِضَآرِّينَ بِهِۦ مِنْ أَحَدٍ إِلَّا بِإِذْنِ ٱللَّهِ ۚ وَيَتَعَلَّمُونَ مَا يَضُرُّهُمْ وَلَا يَنفَعُهُمْ ۚ وَلَقَدْ عَلِمُوا۟ لَمَنِ ٱشْتَرَىٰهُ مَا لَهُۥ فِى ٱلْءَاخِرَةِ مِنْ خَلَٰقٍۢ ۚ وَلَبِئْسَ مَا شَرَوْا۟ بِهِۦٓ أَنفُسَهُمْ ۚ لَوْ كَانُوا۟ يَعْلَمُونَ","وَلَوْ أَنَّهُمْ ءَامَنُوا۟ وَٱتَّقَوْا۟ لَمَثُوبَةٌۭ مِّنْ عِندِ ٱللَّهِ خَيْرٌۭ ۖ لَّوْ كَانُوا۟ يَعْلَمُونَ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ لَا تَقُولُوا۟ رَٰعِنَا وَقُولُوا۟ ٱنظُرْنَا وَٱسْمَعُوا۟ ۗ وَلِلْكَٰفِرِينَ عَذَابٌ أَلِيمٌۭ","مَّا يَوَدُّ ٱلَّذِينَ كَفَرُوا۟ مِنْ أَهْلِ ٱلْكِتَٰبِ وَلَا ٱلْمُشْرِكِينَ أَن يُنَزَّلَ عَلَيْكُم مِّنْ خَيْرٍۢ مِّن رَّبِّكُمْ ۗ وَٱللَّهُ يَخْتَصُّ بِرَحْمَتِهِۦ مَن يَشَآءُ ۚ وَٱللَّهُ ذُو ٱلْفَضْلِ ٱلْعَظِيمِ","۞ مَا نَنسَخْ مِنْ ءَايَةٍ أَوْ نُنسِهَا نَأْتِ بِخَيْرٍۢ مِّنْهَآ أَوْ مِثْلِهَآ ۗ أَلَمْ تَعْلَمْ أَنَّ ٱللَّهَ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرٌ","أَلَمْ تَعْلَمْ أَنَّ ٱللَّهَ لَهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۗ وَمَا لَكُم مِّن دُونِ ٱللَّهِ مِن وَلِىٍّۢ وَلَا نَصِيرٍ","أَمْ تُرِيدُونَ أَن تَسْـَٔلُوا۟ رَسُولَكُمْ كَمَا سُئِلَ مُوسَىٰ مِن قَبْلُ ۗ وَمَن يَتَبَدَّلِ ٱلْكُفْرَ بِٱلْإِيمَٰنِ فَقَدْ ضَلَّ سَوَآءَ ٱلسَّبِيلِ","وَدَّ كَثِيرٌۭ مِّنْ أَهْلِ ٱلْكِتَٰبِ لَوْ يَرُدُّونَكُم مِّنۢ بَعْدِ إِيمَٰنِكُمْ كُفَّارًا حَسَدًۭا مِّنْ عِندِ أَنفُسِهِم مِّنۢ بَعْدِ مَا تَبَيَّنَ لَهُمُ ٱلْحَقُّ ۖ فَٱعْفُوا۟ وَٱصْفَحُوا۟ حَتَّىٰ يَأْتِىَ ٱللَّهُ بِأَمْرِهِۦٓ ۗ إِنَّ ٱللَّهَ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرٌۭ","وَأَقِيمُوا۟ ٱلصَّلَوٰةَ وَءَاتُوا۟ ٱلزَّكَوٰةَ ۚ وَمَا تُقَدِّمُوا۟ لِأَنفُسِكُم مِّنْ خَيْرٍۢ تَجِدُوهُ عِندَ ٱللَّهِ ۗ إِنَّ ٱللَّهَ بِمَا تَعْمَلُونَ بَصِيرٌۭ","وَقَالُوا۟ لَن يَدْخُلَ ٱلْجَنَّةَ إِلَّا مَن كَانَ هُودًا أَوْ نَصَٰرَىٰ ۗ تِلْكَ أَمَانِيُّهُمْ ۗ قُلْ هَاتُوا۟ بُرْهَٰنَكُمْ إِن كُنتُمْ صَٰدِقِينَ","بَلَىٰ مَنْ أَسْلَمَ وَجْهَهُۥ لِلَّهِ وَهُوَ مُحْسِنٌۭ فَلَهُۥٓ أَجْرُهُۥ عِندَ رَبِّهِۦ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ","وَقَالَتِ ٱلْيَهُودُ لَيْسَتِ ٱلنَّصَٰرَىٰ عَلَىٰ شَىْءٍۢ وَقَالَتِ ٱلنَّصَٰرَىٰ لَيْسَتِ ٱلْيَهُودُ عَلَىٰ شَىْءٍۢ وَهُمْ يَتْلُونَ ٱلْكِتَٰبَ ۗ كَذَٰلِكَ قَالَ ٱلَّذِينَ لَا يَعْلَمُونَ مِثْلَ قَوْلِهِمْ ۚ فَٱللَّهُ يَحْكُمُ بَيْنَهُمْ يَوْمَ ٱلْقِيَٰمَةِ فِيمَا كَانُوا۟ فِيهِ يَخْتَلِفُونَ","وَمَنْ أَظْلَمُ مِمَّن مَّنَعَ مَسَٰجِدَ ٱللَّهِ أَن يُذْكَرَ فِيهَا ٱسْمُهُۥ وَسَعَىٰ فِى خَرَابِهَآ ۚ أُو۟لَٰٓئِكَ مَا كَانَ لَهُمْ أَن يَدْخُلُوهَآ إِلَّا خَآئِفِينَ ۚ لَهُمْ فِى ٱلدُّنْيَا خِزْىٌۭ وَلَهُمْ فِى ٱلْءَاخِرَةِ عَذَابٌ عَظِيمٌۭ","وَلِلَّهِ ٱلْمَشْرِقُ وَٱلْمَغْرِبُ ۚ فَأَيْنَمَا تُوَلُّوا۟ فَثَمَّ وَجْهُ ٱللَّهِ ۚ إِنَّ ٱللَّهَ وَٰسِعٌ عَلِيمٌۭ","وَقَالُوا۟ ٱتَّخَذَ ٱللَّهُ وَلَدًۭا ۗ سُبْحَٰنَهُۥ ۖ بَل لَّهُۥ مَا فِى ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۖ كُلٌّۭ لَّهُۥ قَٰنِتُونَ","بَدِيعُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۖ وَإِذَا قَضَىٰٓ أَمْرًۭا فَإِنَّمَا يَقُولُ لَهُۥ كُن فَيَكُونُ","وَقَالَ ٱلَّذِينَ لَا يَعْلَمُونَ لَوْلَا يُكَلِّمُنَا ٱللَّهُ أَوْ تَأْتِينَآ ءَايَةٌۭ ۗ كَذَٰلِكَ قَالَ ٱلَّذِينَ مِن قَبْلِهِم مِّثْلَ قَوْلِهِمْ ۘ تَشَٰبَهَتْ قُلُوبُهُمْ ۗ قَدْ بَيَّنَّا ٱلْءَايَٰتِ لِقَوْمٍۢ يُوقِنُونَ","إِنَّآ أَرْسَلْنَٰكَ بِٱلْحَقِّ بَشِيرًۭا وَنَذِيرًۭا ۖ وَلَا تُسْـَٔلُ عَنْ أَصْحَٰبِ ٱلْجَحِيمِ","وَلَن تَرْضَىٰ عَنكَ ٱلْيَهُودُ وَلَا ٱلنَّصَٰرَىٰ حَتَّىٰ تَتَّبِعَ مِلَّتَهُمْ ۗ قُلْ إِنَّ هُدَى ٱللَّهِ هُوَ ٱلْهُدَىٰ ۗ وَلَئِنِ ٱتَّبَعْتَ أَهْوَآءَهُم بَعْدَ ٱلَّذِى جَآءَكَ مِنَ ٱلْعِلْمِ ۙ مَا لَكَ مِنَ ٱللَّهِ مِن وَلِىٍّۢ وَلَا نَصِيرٍ","ٱلَّذِينَ ءَاتَيْنَٰهُمُ ٱلْكِتَٰبَ يَتْلُونَهُۥ حَقَّ تِلَاوَتِهِۦٓ أُو۟لَٰٓئِكَ يُؤْمِنُونَ بِهِۦ ۗ وَمَن يَكْفُرْ بِهِۦ فَأُو۟لَٰٓئِكَ هُمُ ٱلْخَٰسِرُونَ","يَٰبَنِىٓ إِسْرَٰٓءِيلَ ٱذْكُرُوا۟ نِعْمَتِىَ ٱلَّتِىٓ أَنْعَمْتُ عَلَيْكُمْ وَأَنِّى فَضَّلْتُكُمْ عَلَى ٱلْعَٰلَمِينَ","وَٱتَّقُوا۟ يَوْمًۭا لَّا تَجْزِى نَفْسٌ عَن نَّفْسٍۢ شَيْـًۭٔا وَلَا يُقْبَلُ مِنْهَا عَدْلٌۭ وَلَا تَنفَعُهَا شَفَٰعَةٌۭ وَلَا هُمْ يُنصَرُونَ","۞ وَإِذِ ٱبْتَلَىٰٓ إِبْرَٰهِۦمَ رَبُّهُۥ بِكَلِمَٰتٍۢ فَأَتَمَّهُنَّ ۖ قَالَ إِنِّى جَاعِلُكَ لِلنَّاسِ إِمَامًۭا ۖ قَالَ وَمِن ذُرِّيَّتِى ۖ قَالَ لَا يَنَالُ عَهْدِى ٱلظَّٰلِمِينَ","وَإِذْ جَعَلْنَا ٱلْبَيْتَ مَثَابَةًۭ لِّلنَّاسِ وَأَمْنًۭا وَٱتَّخِذُوا۟ مِن مَّقَامِ إِبْرَٰهِۦمَ مُصَلًّۭى ۖ وَعَهِدْنَآ إِلَىٰٓ إِبْرَٰهِۦمَ وَإِسْمَٰعِيلَ أَن طَهِّرَا بَيْتِىَ لِلطَّآئِفِينَ وَٱلْعَٰكِفِينَ وَٱلرُّكَّعِ ٱلسُّجُودِ","وَإِذْ قَالَ إِبْرَٰهِۦمُ رَبِّ ٱجْعَلْ هَٰذَا بَلَدًا ءَامِنًۭا وَٱرْزُقْ أَهْلَهُۥ مِنَ ٱلثَّمَرَٰتِ مَنْ ءَامَنَ مِنْهُم بِٱللَّهِ وَٱلْيَوْمِ ٱلْءَاخِرِ ۖ قَالَ وَمَن كَفَرَ فَأُمَتِّعُهُۥ قَلِيلًۭا ثُمَّ أَضْطَرُّهُۥٓ إِلَىٰ عَذَابِ ٱلنَّارِ ۖ وَبِئْسَ ٱلْمَصِيرُ","وَإِذْ يَرْفَعُ إِبْرَٰهِۦمُ ٱلْقَوَاعِدَ مِنَ ٱلْبَيْتِ وَإِسْمَٰعِيلُ رَبَّنَا تَقَبَّلْ مِنَّآ ۖ إِنَّكَ أَنتَ ٱلسَّمِيعُ ٱلْعَلِيمُ","رَبَّنَا وَٱجْعَلْنَا مُسْلِمَيْنِ لَكَ وَمِن ذُرِّيَّتِنَآ أُمَّةًۭ مُّسْلِمَةًۭ لَّكَ وَأَرِنَا مَنَاسِكَنَا وَتُبْ عَلَيْنَآ ۖ إِنَّكَ أَنتَ ٱلتَّوَّابُ ٱلرَّحِيمُ","رَبَّنَا وَٱبْعَثْ فِيهِمْ رَسُولًۭا مِّنْهُمْ يَتْلُوا۟ عَلَيْهِمْ ءَايَٰتِكَ وَيُعَلِّمُهُمُ ٱلْكِتَٰبَ وَٱلْحِكْمَةَ وَيُزَكِّيهِمْ ۚ إِنَّكَ أَنتَ ٱلْعَزِيزُ ٱلْحَكِيمُ","وَمَن يَرْغَبُ عَن مِّلَّةِ إِبْرَٰهِۦمَ إِلَّا مَن سَفِهَ نَفْسَهُۥ ۚ وَلَقَدِ ٱصْطَفَيْنَٰهُ فِى ٱلدُّنْيَا ۖ وَإِنَّهُۥ فِى ٱلْءَاخِرَةِ لَمِنَ ٱلصَّٰلِحِينَ","إِذْ قَالَ لَهُۥ رَبُّهُۥٓ أَسْلِمْ ۖ قَالَ أَسْلَمْتُ لِرَبِّ ٱلْعَٰلَمِينَ","وَوَصَّىٰ بِهَآ إِبْرَٰهِۦمُ بَنِيهِ وَيَعْقُوبُ يَٰبَنِىَّ إِنَّ ٱللَّهَ ٱصْطَفَىٰ لَكُمُ ٱلدِّينَ فَلَا تَمُوتُنَّ إِلَّا وَأَنتُم مُّسْلِمُونَ","أَمْ كُنتُمْ شُهَدَآءَ إِذْ حَضَرَ يَعْقُوبَ ٱلْمَوْتُ إِذْ قَالَ لِبَنِيهِ مَا تَعْبُدُونَ مِنۢ بَعْدِى قَالُوا۟ نَعْبُدُ إِلَٰهَكَ وَإِلَٰهَ ءَابَآئِكَ إِبْرَٰهِۦمَ وَإِسْمَٰعِيلَ وَإِسْحَٰقَ إِلَٰهًۭا وَٰحِدًۭا وَنَحْنُ لَهُۥ مُسْلِمُونَ","تِلْكَ أُمَّةٌۭ قَدْ خَلَتْ ۖ لَهَا مَا كَسَبَتْ وَلَكُم مَّا كَسَبْتُمْ ۖ وَلَا تُسْـَٔلُونَ عَمَّا كَانُوا۟ يَعْمَلُونَ","وَقَالُوا۟ كُونُوا۟ هُودًا أَوْ نَصَٰرَىٰ تَهْتَدُوا۟ ۗ قُلْ بَلْ مِلَّةَ إِبْرَٰهِۦمَ حَنِيفًۭا ۖ وَمَا كَانَ مِنَ ٱلْمُشْرِكِينَ","قُولُوٓا۟ ءَامَنَّا بِٱللَّهِ وَمَآ أُنزِلَ إِلَيْنَا وَمَآ أُنزِلَ إِلَىٰٓ إِبْرَٰهِۦمَ وَإِسْمَٰعِيلَ وَإِسْحَٰقَ وَيَعْقُوبَ وَٱلْأَسْبَاطِ وَمَآ أُوتِىَ مُوسَىٰ وَعِيسَىٰ وَمَآ أُوتِىَ ٱلنَّبِيُّونَ مِن رَّبِّهِمْ لَا نُفَرِّقُ بَيْنَ أَحَدٍۢ مِّنْهُمْ وَنَحْنُ لَهُۥ مُسْلِمُونَ","فَإِنْ ءَامَنُوا۟ بِمِثْلِ مَآ ءَامَنتُم بِهِۦ فَقَدِ ٱهْتَدَوا۟ ۖ وَّإِن تَوَلَّوْا۟ فَإِنَّمَا هُمْ فِى شِقَاقٍۢ ۖ فَسَيَكْفِيكَهُمُ ٱللَّهُ ۚ وَهُوَ ٱلسَّمِيعُ ٱلْعَلِيمُ","صِبْغَةَ ٱللَّهِ ۖ وَمَنْ أَحْسَنُ مِنَ ٱللَّهِ صِبْغَةًۭ ۖ وَنَحْنُ لَهُۥ عَٰبِدُونَ","قُلْ أَتُحَآجُّونَنَا فِى ٱللَّهِ وَهُوَ رَبُّنَا وَرَبُّكُمْ وَلَنَآ أَعْمَٰلُنَا وَلَكُمْ أَعْمَٰلُكُمْ وَنَحْنُ لَهُۥ مُخْلِصُونَ","أَمْ تَقُولُونَ إِنَّ إِبْرَٰهِۦمَ وَإِسْمَٰعِيلَ وَإِسْحَٰقَ وَيَعْقُوبَ وَٱلْأَسْبَاطَ كَانُوا۟ هُودًا أَوْ نَصَٰرَىٰ ۗ قُلْ ءَأَنتُمْ أَعْلَمُ أَمِ ٱللَّهُ ۗ وَمَنْ أَظْلَمُ مِمَّن كَتَمَ شَهَٰدَةً عِندَهُۥ مِنَ ٱللَّهِ ۗ وَمَا ٱللَّهُ بِغَٰفِلٍ عَمَّا تَعْمَلُونَ","تِلْكَ أُمَّةٌۭ قَدْ خَلَتْ ۖ لَهَا مَا كَسَبَتْ وَلَكُم مَّا كَسَبْتُمْ ۖ وَلَا تُسْـَٔلُونَ عَمَّا كَانُوا۟ يَعْمَلُونَ","۞ سَيَقُولُ ٱلسُّفَهَآءُ مِنَ ٱلنَّاسِ مَا وَلَّىٰهُمْ عَن قِبْلَتِهِمُ ٱلَّتِى كَانُوا۟ عَلَيْهَا ۚ قُل لِّلَّهِ ٱلْمَشْرِقُ وَٱلْمَغْرِبُ ۚ يَهْدِى مَن يَشَآءُ إِلَىٰ صِرَٰطٍۢ مُّسْتَقِيمٍۢ","وَكَذَٰلِكَ جَعَلْنَٰكُمْ أُمَّةًۭ وَسَطًۭا لِّتَكُونُوا۟ شُهَدَآءَ عَلَى ٱلنَّاسِ وَيَكُونَ ٱلرَّسُولُ عَلَيْكُمْ شَهِيدًۭا ۗ وَمَا جَعَلْنَا ٱلْقِبْلَةَ ٱلَّتِى كُنتَ عَلَيْهَآ إِلَّا لِنَعْلَمَ مَن يَتَّبِعُ ٱلرَّسُولَ مِمَّن يَنقَلِبُ عَلَىٰ عَقِبَيْهِ ۚ وَإِن كَانَتْ لَكَبِيرَةً إِلَّا عَلَى ٱلَّذِينَ هَدَى ٱللَّهُ ۗ وَمَا كَانَ ٱللَّهُ لِيُضِيعَ إِيمَٰنَكُمْ ۚ إِنَّ ٱللَّهَ بِٱلنَّاسِ لَرَءُوفٌۭ رَّحِيمٌۭ","قَدْ نَرَىٰ تَقَلُّبَ وَجْهِكَ فِى ٱلسَّمَآءِ ۖ فَلَنُوَلِّيَنَّكَ قِبْلَةًۭ تَرْضَىٰهَا ۚ فَوَلِّ وَجْهَكَ شَطْرَ ٱلْمَسْجِدِ ٱلْحَرَامِ ۚ وَحَيْثُ مَا كُنتُمْ فَوَلُّوا۟ وُجُوهَكُمْ شَطْرَهُۥ ۗ وَإِنَّ ٱلَّذِينَ أُوتُوا۟ ٱلْكِتَٰبَ لَيَعْلَمُونَ أَنَّهُ ٱلْحَقُّ مِن رَّبِّهِمْ ۗ وَمَا ٱللَّهُ بِغَٰفِلٍ عَمَّا يَعْمَلُونَ","وَلَئِنْ أَتَيْتَ ٱلَّذِينَ أُوتُوا۟ ٱلْكِتَٰبَ بِكُلِّ ءَايَةٍۢ مَّا تَبِعُوا۟ قِبْلَتَكَ ۚ وَمَآ أَنتَ بِتَابِعٍۢ قِبْلَتَهُمْ ۚ وَمَا بَعْضُهُم بِتَابِعٍۢ قِبْلَةَ بَعْضٍۢ ۚ وَلَئِنِ ٱتَّبَعْتَ أَهْوَآءَهُم مِّنۢ بَعْدِ مَا جَآءَكَ مِنَ ٱلْعِلْمِ ۙ إِنَّكَ إِذًۭا لَّمِنَ ٱلظَّٰلِمِينَ","ٱلَّذِينَ ءَاتَيْنَٰهُمُ ٱلْكِتَٰبَ يَعْرِفُونَهُۥ كَمَا يَعْرِفُونَ أَبْنَآءَهُمْ ۖ وَإِنَّ فَرِيقًۭا مِّنْهُمْ لَيَكْتُمُونَ ٱلْحَقَّ وَهُمْ يَعْلَمُونَ","ٱلْحَقُّ مِن رَّبِّكَ ۖ فَلَا تَكُونَنَّ مِنَ ٱلْمُمْتَرِينَ","وَلِكُلٍّۢ وِجْهَةٌ هُوَ مُوَلِّيهَا ۖ فَٱسْتَبِقُوا۟ ٱلْخَيْرَٰتِ ۚ أَيْنَ مَا تَكُونُوا۟ يَأْتِ بِكُمُ ٱللَّهُ جَمِيعًا ۚ إِنَّ ٱللَّهَ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرٌۭ","وَمِنْ حَيْثُ خَرَجْتَ فَوَلِّ وَجْهَكَ شَطْرَ ٱلْمَسْجِدِ ٱلْحَرَامِ ۖ وَإِنَّهُۥ لَلْحَقُّ مِن رَّبِّكَ ۗ وَمَا ٱللَّهُ بِغَٰفِلٍ عَمَّا تَعْمَلُونَ","وَمِنْ حَيْثُ خَرَجْتَ فَوَلِّ وَجْهَكَ شَطْرَ ٱلْمَسْجِدِ ٱلْحَرَامِ ۚ وَحَيْثُ مَا كُنتُمْ فَوَلُّوا۟ وُجُوهَكُمْ شَطْرَهُۥ لِئَلَّا يَكُونَ لِلنَّاسِ عَلَيْكُمْ حُجَّةٌ إِلَّا ٱلَّذِينَ ظَلَمُوا۟ مِنْهُمْ فَلَا تَخْشَوْهُمْ وَٱخْشَوْنِى وَلِأُتِمَّ نِعْمَتِى عَلَيْكُمْ وَلَعَلَّكُمْ تَهْتَدُونَ","كَمَآ أَرْسَلْنَا فِيكُمْ رَسُولًۭا مِّنكُمْ يَتْلُوا۟ عَلَيْكُمْ ءَايَٰتِنَا وَيُزَكِّيكُمْ وَيُعَلِّمُكُمُ ٱلْكِتَٰبَ وَٱلْحِكْمَةَ وَيُعَلِّمُكُم مَّا لَمْ تَكُونُوا۟ تَعْلَمُونَ","فَٱذْكُرُونِىٓ أَذْكُرْكُمْ وَٱشْكُرُوا۟ لِى وَلَا تَكْفُرُونِ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱسْتَعِينُوا۟ بِٱلصَّبْرِ وَٱلصَّلَوٰةِ ۚ إِنَّ ٱللَّهَ مَعَ ٱلصَّٰبِرِينَ","وَلَا تَقُولُوا۟ لِمَن يُقْتَلُ فِى سَبِيلِ ٱللَّهِ أَمْوَٰتٌۢ ۚ بَلْ أَحْيَآءٌۭ وَلَٰكِن لَّا تَشْعُرُونَ","وَلَنَبْلُوَنَّكُم بِشَىْءٍۢ مِّنَ ٱلْخَوْفِ وَٱلْجُوعِ وَنَقْصٍۢ مِّنَ ٱلْأَمْوَٰلِ وَٱلْأَنفُسِ وَٱلثَّمَرَٰتِ ۗ وَبَشِّرِ ٱلصَّٰبِرِينَ","ٱلَّذِينَ إِذَآ أَصَٰبَتْهُم مُّصِيبَةٌۭ قَالُوٓا۟ إِنَّا لِلَّهِ وَإِنَّآ إِلَيْهِ رَٰجِعُونَ","أُو۟لَٰٓئِكَ عَلَيْهِمْ صَلَوَٰتٌۭ مِّن رَّبِّهِمْ وَرَحْمَةٌۭ ۖ وَأُو۟لَٰٓئِكَ هُمُ ٱلْمُهْتَدُونَ","۞ إِنَّ ٱلصَّفَا وَٱلْمَرْوَةَ مِن شَعَآئِرِ ٱللَّهِ ۖ فَمَنْ حَجَّ ٱلْبَيْتَ أَوِ ٱعْتَمَرَ فَلَا جُنَاحَ عَلَيْهِ أَن يَطَّوَّفَ بِهِمَا ۚ وَمَن تَطَوَّعَ خَيْرًۭا فَإِنَّ ٱللَّهَ شَاكِرٌ عَلِيمٌ","إِنَّ ٱلَّذِينَ يَكْتُمُونَ مَآ أَنزَلْنَا مِنَ ٱلْبَيِّنَٰتِ وَٱلْهُدَىٰ مِنۢ بَعْدِ مَا بَيَّنَّٰهُ لِلنَّاسِ فِى ٱلْكِتَٰبِ ۙ أُو۟لَٰٓئِكَ يَلْعَنُهُمُ ٱللَّهُ وَيَلْعَنُهُمُ ٱللَّٰعِنُونَ","إِلَّا ٱلَّذِينَ تَابُوا۟ وَأَصْلَحُوا۟ وَبَيَّنُوا۟ فَأُو۟لَٰٓئِكَ أَتُوبُ عَلَيْهِمْ ۚ وَأَنَا ٱلتَّوَّابُ ٱلرَّحِيمُ","إِنَّ ٱلَّذِينَ كَفَرُوا۟ وَمَاتُوا۟ وَهُمْ كُفَّارٌ أُو۟لَٰٓئِكَ عَلَيْهِمْ لَعْنَةُ ٱللَّهِ وَٱلْمَلَٰٓئِكَةِ وَٱلنَّاسِ أَجْمَعِينَ","خَٰلِدِينَ فِيهَا ۖ لَا يُخَفَّفُ عَنْهُمُ ٱلْعَذَابُ وَلَا هُمْ يُنظَرُونَ","وَإِلَٰهُكُمْ إِلَٰهٌۭ وَٰحِدٌۭ ۖ لَّآ إِلَٰهَ إِلَّا هُوَ ٱلرَّحْمَٰنُ ٱلرَّحِيمُ","إِنَّ فِى خَلْقِ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَٱخْتِلَٰفِ ٱلَّيْلِ وَٱلنَّهَارِ وَٱلْفُلْكِ ٱلَّتِى تَجْرِى فِى ٱلْبَحْرِ بِمَا يَنفَعُ ٱلنَّاسَ وَمَآ أَنزَلَ ٱللَّهُ مِنَ ٱلسَّمَآءِ مِن مَّآءٍۢ فَأَحْيَا بِهِ ٱلْأَرْضَ بَعْدَ مَوْتِهَا وَبَثَّ فِيهَا مِن كُلِّ دَآبَّةٍۢ وَتَصْرِيفِ ٱلرِّيَٰحِ وَٱلسَّحَابِ ٱلْمُسَخَّرِ بَيْنَ ٱلسَّمَآءِ وَٱلْأَرْضِ لَءَايَٰتٍۢ لِّقَوْمٍۢ يَعْقِلُونَ","وَمِنَ ٱلنَّاسِ مَن يَتَّخِذُ مِن دُونِ ٱللَّهِ أَندَادًۭا يُحِبُّونَهُمْ كَحُبِّ ٱللَّهِ ۖ وَٱلَّذِينَ ءَامَنُوٓا۟ أَشَدُّ حُبًّۭا لِّلَّهِ ۗ وَلَوْ يَرَى ٱلَّذِينَ ظَلَمُوٓا۟ إِذْ يَرَوْنَ ٱلْعَذَابَ أَنَّ ٱلْقُوَّةَ لِلَّهِ جَمِيعًۭا وَأَنَّ ٱللَّهَ شَدِيدُ ٱلْعَذَابِ","إِذْ تَبَرَّأَ ٱلَّذِينَ ٱتُّبِعُوا۟ مِنَ ٱلَّذِينَ ٱتَّبَعُوا۟ وَرَأَوُا۟ ٱلْعَذَابَ وَتَقَطَّعَتْ بِهِمُ ٱلْأَسْبَابُ","وَقَالَ ٱلَّذِينَ ٱتَّبَعُوا۟ لَوْ أَنَّ لَنَا كَرَّةًۭ فَنَتَبَرَّأَ مِنْهُمْ كَمَا تَبَرَّءُوا۟ مِنَّا ۗ كَذَٰلِكَ يُرِيهِمُ ٱللَّهُ أَعْمَٰلَهُمْ حَسَرَٰتٍ عَلَيْهِمْ ۖ وَمَا هُم بِخَٰرِجِينَ مِنَ ٱلنَّارِ","يَٰٓأَيُّهَا ٱلنَّاسُ كُلُوا۟ مِمَّا فِى ٱلْأَرْضِ حَلَٰلًۭا طَيِّبًۭا وَلَا تَتَّبِعُوا۟ خُطُوَٰتِ ٱلشَّيْطَٰنِ ۚ إِنَّهُۥ لَكُمْ عَدُوٌّۭ مُّبِينٌ","إِنَّمَا يَأْمُرُكُم بِٱلسُّوٓءِ وَٱلْفَحْشَآءِ وَأَن تَقُولُوا۟ عَلَى ٱللَّهِ مَا لَا تَعْلَمُونَ","وَإِذَا قِيلَ لَهُمُ ٱتَّبِعُوا۟ مَآ أَنزَلَ ٱللَّهُ قَالُوا۟ بَلْ نَتَّبِعُ مَآ أَلْفَيْنَا عَلَيْهِ ءَابَآءَنَآ ۗ أَوَلَوْ كَانَ ءَابَآؤُهُمْ لَا يَعْقِلُونَ شَيْـًۭٔا وَلَا يَهْتَدُونَ","وَمَثَلُ ٱلَّذِينَ كَفَرُوا۟ كَمَثَلِ ٱلَّذِى يَنْعِقُ بِمَا لَا يَسْمَعُ إِلَّا دُعَآءًۭ وَنِدَآءًۭ ۚ صُمٌّۢ بُكْمٌ عُمْىٌۭ فَهُمْ لَا يَعْقِلُونَ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ كُلُوا۟ مِن طَيِّبَٰتِ مَا رَزَقْنَٰكُمْ وَٱشْكُرُوا۟ لِلَّهِ إِن كُنتُمْ إِيَّاهُ تَعْبُدُونَ","إِنَّمَا حَرَّمَ عَلَيْكُمُ ٱلْمَيْتَةَ وَٱلدَّمَ وَلَحْمَ ٱلْخِنزِيرِ وَمَآ أُهِلَّ بِهِۦ لِغَيْرِ ٱللَّهِ ۖ فَمَنِ ٱضْطُرَّ غَيْرَ بَاغٍۢ وَلَا عَادٍۢ فَلَآ إِثْمَ عَلَيْهِ ۚ إِنَّ ٱللَّهَ غَفُورٌۭ رَّحِيمٌ","إِنَّ ٱلَّذِينَ يَكْتُمُونَ مَآ أَنزَلَ ٱللَّهُ مِنَ ٱلْكِتَٰبِ وَيَشْتَرُونَ بِهِۦ ثَمَنًۭا قَلِيلًا ۙ أُو۟لَٰٓئِكَ مَا يَأْكُلُونَ فِى بُطُونِهِمْ إِلَّا ٱلنَّارَ وَلَا يُكَلِّمُهُمُ ٱللَّهُ يَوْمَ ٱلْقِيَٰمَةِ وَلَا يُزَكِّيهِمْ وَلَهُمْ عَذَابٌ أَلِيمٌ","أُو۟لَٰٓئِكَ ٱلَّذِينَ ٱشْتَرَوُا۟ ٱلضَّلَٰلَةَ بِٱلْهُدَىٰ وَٱلْعَذَابَ بِٱلْمَغْفِرَةِ ۚ فَمَآ أَصْبَرَهُمْ عَلَى ٱلنَّارِ","ذَٰلِكَ بِأَنَّ ٱللَّهَ نَزَّلَ ٱلْكِتَٰبَ بِٱلْحَقِّ ۗ وَإِنَّ ٱلَّذِينَ ٱخْتَلَفُوا۟ فِى ٱلْكِتَٰبِ لَفِى شِقَاقٍۭ بَعِيدٍۢ","۞ لَّيْسَ ٱلْبِرَّ أَن تُوَلُّوا۟ وُجُوهَكُمْ قِبَلَ ٱلْمَشْرِقِ وَٱلْمَغْرِبِ وَلَٰكِنَّ ٱلْبِرَّ مَنْ ءَامَنَ بِٱللَّهِ وَٱلْيَوْمِ ٱلْءَاخِرِ وَٱلْمَلَٰٓئِكَةِ وَٱلْكِتَٰبِ وَٱلنَّبِيِّۦنَ وَءَاتَى ٱلْمَالَ عَلَىٰ حُبِّهِۦ ذَوِى ٱلْقُرْبَىٰ وَٱلْيَتَٰمَىٰ وَٱلْمَسَٰكِينَ وَٱبْنَ ٱلسَّبِيلِ وَٱلسَّآئِلِينَ وَفِى ٱلرِّقَابِ وَأَقَامَ ٱلصَّلَوٰةَ وَءَاتَى ٱلزَّكَوٰةَ وَٱلْمُوفُونَ بِعَهْدِهِمْ إِذَا عَٰهَدُوا۟ ۖ وَٱلصَّٰبِرِينَ فِى ٱلْبَأْسَآءِ وَٱلضَّرَّآءِ وَحِينَ ٱلْبَأْسِ ۗ أُو۟لَٰٓئِكَ ٱلَّذِينَ صَدَقُوا۟ ۖ وَأُو۟لَٰٓئِكَ هُمُ ٱلْمُتَّقُونَ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ كُتِبَ عَلَيْكُمُ ٱلْقِصَاصُ فِى ٱلْقَتْلَى ۖ ٱلْحُرُّ بِٱلْحُرِّ وَٱلْعَبْدُ بِٱلْعَبْدِ وَٱلْأُنثَىٰ بِٱلْأُنثَىٰ ۚ فَمَنْ عُفِىَ لَهُۥ مِنْ أَخِيهِ شَىْءٌۭ فَٱتِّبَاعٌۢ بِٱلْمَعْرُوفِ وَأَدَآءٌ إِلَيْهِ بِإِحْسَٰنٍۢ ۗ ذَٰلِكَ تَخْفِيفٌۭ مِّن رَّبِّكُمْ وَرَحْمَةٌۭ ۗ فَمَنِ ٱعْتَدَىٰ بَعْدَ ذَٰلِكَ فَلَهُۥ عَذَابٌ أَلِيمٌۭ","وَلَكُمْ فِى ٱلْقِصَاصِ حَيَوٰةٌۭ يَٰٓأُو۟لِى ٱلْأَلْبَٰبِ لَعَلَّكُمْ تَتَّقُونَ","كُتِبَ عَلَيْكُمْ إِذَا حَضَرَ أَحَدَكُمُ ٱلْمَوْتُ إِن تَرَكَ خَيْرًا ٱلْوَصِيَّةُ لِلْوَٰلِدَيْنِ وَٱلْأَقْرَبِينَ بِٱلْمَعْرُوفِ ۖ حَقًّا عَلَى ٱلْمُتَّقِينَ","فَمَنۢ بَدَّلَهُۥ بَعْدَمَا سَمِعَهُۥ فَإِنَّمَآ إِثْمُهُۥ عَلَى ٱلَّذِينَ يُبَدِّلُونَهُۥٓ ۚ إِنَّ ٱللَّهَ سَمِيعٌ عَلِيمٌۭ","فَمَنْ خَافَ مِن مُّوصٍۢ جَنَفًا أَوْ إِثْمًۭا فَأَصْلَحَ بَيْنَهُمْ فَلَآ إِثْمَ عَلَيْهِ ۚ إِنَّ ٱللَّهَ غَفُورٌۭ رَّحِيمٌۭ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ كُتِبَ عَلَيْكُمُ ٱلصِّيَامُ كَمَا كُتِبَ عَلَى ٱلَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ","أَيَّامًۭا مَّعْدُودَٰتٍۢ ۚ فَمَن كَانَ مِنكُم مَّرِيضًا أَوْ عَلَىٰ سَفَرٍۢ فَعِدَّةٌۭ مِّنْ أَيَّامٍ أُخَرَ ۚ وَعَلَى ٱلَّذِينَ يُطِيقُونَهُۥ فِدْيَةٌۭ طَعَامُ مِسْكِينٍۢ ۖ فَمَن تَطَوَّعَ خَيْرًۭا فَهُوَ خَيْرٌۭ لَّهُۥ ۚ وَأَن تَصُومُوا۟ خَيْرٌۭ لَّكُمْ ۖ إِن كُنتُمْ تَعْلَمُونَ","شَهْرُ رَمَضَانَ ٱلَّذِىٓ أُنزِلَ فِيهِ ٱلْقُرْءَانُ هُدًۭى لِّلنَّاسِ وَبَيِّنَٰتٍۢ مِّنَ ٱلْهُدَىٰ وَٱلْفُرْقَانِ ۚ فَمَن شَهِدَ مِنكُمُ ٱلشَّهْرَ فَلْيَصُمْهُ ۖ وَمَن كَانَ مَرِيضًا أَوْ عَلَىٰ سَفَرٍۢ فَعِدَّةٌۭ مِّنْ أَيَّامٍ أُخَرَ ۗ يُرِيدُ ٱللَّهُ بِكُمُ ٱلْيُسْرَ وَلَا يُرِيدُ بِكُمُ ٱلْعُسْرَ وَلِتُكْمِلُوا۟ ٱلْعِدَّةَ وَلِتُكَبِّرُوا۟ ٱللَّهَ عَلَىٰ مَا هَدَىٰكُمْ وَلَعَلَّكُمْ تَشْكُرُونَ","وَإِذَا سَأَلَكَ عِبَادِى عَنِّى فَإِنِّى قَرِيبٌ ۖ أُجِيبُ دَعْوَةَ ٱلدَّاعِ إِذَا دَعَانِ ۖ فَلْيَسْتَجِيبُوا۟ لِى وَلْيُؤْمِنُوا۟ بِى لَعَلَّهُمْ يَرْشُدُونَ","أُحِلَّ لَكُمْ لَيْلَةَ ٱلصِّيَامِ ٱلرَّفَثُ إِلَىٰ نِسَآئِكُمْ ۚ هُنَّ لِبَاسٌۭ لَّكُمْ وَأَنتُمْ لِبَاسٌۭ لَّهُنَّ ۗ عَلِمَ ٱللَّهُ أَنَّكُمْ كُنتُمْ تَخْتَانُونَ أَنفُسَكُمْ فَتَابَ عَلَيْكُمْ وَعَفَا عَنكُمْ ۖ فَٱلْـَٰٔنَ بَٰشِرُوهُنَّ وَٱبْتَغُوا۟ مَا كَتَبَ ٱللَّهُ لَكُمْ ۚ وَكُلُوا۟ وَٱشْرَبُوا۟ حَتَّىٰ يَتَبَيَّنَ لَكُمُ ٱلْخَيْطُ ٱلْأَبْيَضُ مِنَ ٱلْخَيْطِ ٱلْأَسْوَدِ مِنَ ٱلْفَجْرِ ۖ ثُمَّ أَتِمُّوا۟ ٱلصِّيَامَ إِلَى ٱلَّيْلِ ۚ وَلَا تُبَٰشِرُوهُنَّ وَأَنتُمْ عَٰكِفُونَ فِى ٱلْمَسَٰجِدِ ۗ تِلْكَ حُدُودُ ٱللَّهِ فَلَا تَقْرَبُوهَا ۗ كَذَٰلِكَ يُبَيِّنُ ٱللَّهُ ءَايَٰتِهِۦ لِلنَّاسِ لَعَلَّهُمْ يَتَّقُونَ","وَلَا تَأْكُلُوٓا۟ أَمْوَٰلَكُم بَيْنَكُم بِٱلْبَٰطِلِ وَتُدْلُوا۟ بِهَآ إِلَى ٱلْحُكَّامِ لِتَأْكُلُوا۟ فَرِيقًۭا مِّنْ أَمْوَٰلِ ٱلنَّاسِ بِٱلْإِثْمِ وَأَنتُمْ تَعْلَمُونَ","۞ يَسْـَٔلُونَكَ عَنِ ٱلْأَهِلَّةِ ۖ قُلْ هِىَ مَوَٰقِيتُ لِلنَّاسِ وَٱلْحَجِّ ۗ وَلَيْسَ ٱلْبِرُّ بِأَن تَأْتُوا۟ ٱلْبُيُوتَ مِن ظُهُورِهَا وَلَٰكِنَّ ٱلْبِرَّ مَنِ ٱتَّقَىٰ ۗ وَأْتُوا۟ ٱلْبُيُوتَ مِنْ أَبْوَٰبِهَا ۚ وَٱتَّقُوا۟ ٱللَّهَ لَعَلَّكُمْ تُفْلِحُونَ","وَقَٰتِلُوا۟ فِى سَبِيلِ ٱللَّهِ ٱلَّذِينَ يُقَٰتِلُونَكُمْ وَلَا تَعْتَدُوٓا۟ ۚ إِنَّ ٱللَّهَ لَا يُحِبُّ ٱلْمُعْتَدِينَ","وَٱقْتُلُوهُمْ حَيْثُ ثَقِفْتُمُوهُمْ وَأَخْرِجُوهُم مِّنْ حَيْثُ أَخْرَجُوكُمْ ۚ وَٱلْفِتْنَةُ أَشَدُّ مِنَ ٱلْقَتْلِ ۚ وَلَا تُقَٰتِلُوهُمْ عِندَ ٱلْمَسْجِدِ ٱلْحَرَامِ حَتَّىٰ يُقَٰتِلُوكُمْ فِيهِ ۖ فَإِن قَٰتَلُوكُمْ فَٱقْتُلُوهُمْ ۗ كَذَٰلِكَ جَزَآءُ ٱلْكَٰفِرِينَ","فَإِنِ ٱنتَهَوْا۟ فَإِنَّ ٱللَّهَ غَفُورٌۭ رَّحِيمٌۭ","وَقَٰتِلُوهُمْ حَتَّىٰ لَا تَكُونَ فِتْنَةٌۭ وَيَكُونَ ٱلدِّينُ لِلَّهِ ۖ فَإِنِ ٱنتَهَوْا۟ فَلَا عُدْوَٰنَ إِلَّا عَلَى ٱلظَّٰلِمِينَ","ٱلشَّهْرُ ٱلْحَرَامُ بِٱلشَّهْرِ ٱلْحَرَامِ وَٱلْحُرُمَٰتُ قِصَاصٌۭ ۚ فَمَنِ ٱعْتَدَىٰ عَلَيْكُمْ فَٱعْتَدُوا۟ عَلَيْهِ بِمِثْلِ مَا ٱعْتَدَىٰ عَلَيْكُمْ ۚ وَٱتَّقُوا۟ ٱللَّهَ وَٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ مَعَ ٱلْمُتَّقِينَ","وَأَنفِقُوا۟ فِى سَبِيلِ ٱللَّهِ وَلَا تُلْقُوا۟ بِأَيْدِيكُمْ إِلَى ٱلتَّهْلُكَةِ ۛ وَأَحْسِنُوٓا۟ ۛ إِنَّ ٱللَّهَ يُحِبُّ ٱلْمُحْسِنِينَ","وَأَتِمُّوا۟ ٱلْحَجَّ وَٱلْعُمْرَةَ لِلَّهِ ۚ فَإِنْ أُحْصِرْتُمْ فَمَا ٱسْتَيْسَرَ مِنَ ٱلْهَدْىِ ۖ وَلَا تَحْلِقُوا۟ رُءُوسَكُمْ حَتَّىٰ يَبْلُغَ ٱلْهَدْىُ مَحِلَّهُۥ ۚ فَمَن كَانَ مِنكُم مَّرِيضًا أَوْ بِهِۦٓ أَذًۭى مِّن رَّأْسِهِۦ فَفِدْيَةٌۭ مِّن صِيَامٍ أَوْ صَدَقَةٍ أَوْ نُسُكٍۢ ۚ فَإِذَآ أَمِنتُمْ فَمَن تَمَتَّعَ بِٱلْعُمْرَةِ إِلَى ٱلْحَجِّ فَمَا ٱسْتَيْسَرَ مِنَ ٱلْهَدْىِ ۚ فَمَن لَّمْ يَجِدْ فَصِيَامُ ثَلَٰثَةِ أَيَّامٍۢ فِى ٱلْحَجِّ وَسَبْعَةٍ إِذَا رَجَعْتُمْ ۗ تِلْكَ عَشَرَةٌۭ كَامِلَةٌۭ ۗ ذَٰلِكَ لِمَن لَّمْ يَكُنْ أَهْلُهُۥ حَاضِرِى ٱلْمَسْجِدِ ٱلْحَرَامِ ۚ وَٱتَّقُوا۟ ٱللَّهَ وَٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ شَدِيدُ ٱلْعِقَابِ","ٱلْحَجُّ أَشْهُرٌۭ مَّعْلُومَٰتٌۭ ۚ فَمَن فَرَضَ فِيهِنَّ ٱلْحَجَّ فَلَا رَفَثَ وَلَا فُسُوقَ وَلَا جِدَالَ فِى ٱلْحَجِّ ۗ وَمَا تَفْعَلُوا۟ مِنْ خَيْرٍۢ يَعْلَمْهُ ٱللَّهُ ۗ وَتَزَوَّدُوا۟ فَإِنَّ خَيْرَ ٱلزَّادِ ٱلتَّقْوَىٰ ۚ وَٱتَّقُونِ يَٰٓأُو۟لِى ٱلْأَلْبَٰبِ","لَيْسَ عَلَيْكُمْ جُنَاحٌ أَن تَبْتَغُوا۟ فَضْلًۭا مِّن رَّبِّكُمْ ۚ فَإِذَآ أَفَضْتُم مِّنْ عَرَفَٰتٍۢ فَٱذْكُرُوا۟ ٱللَّهَ عِندَ ٱلْمَشْعَرِ ٱلْحَرَامِ ۖ وَٱذْكُرُوهُ كَمَا هَدَىٰكُمْ وَإِن كُنتُم مِّن قَبْلِهِۦ لَمِنَ ٱلضَّآلِّينَ","ثُمَّ أَفِيضُوا۟ مِنْ حَيْثُ أَفَاضَ ٱلنَّاسُ وَٱسْتَغْفِرُوا۟ ٱللَّهَ ۚ إِنَّ ٱللَّهَ غَفُورٌۭ رَّحِيمٌۭ","فَإِذَا قَضَيْتُم مَّنَٰسِكَكُمْ فَٱذْكُرُوا۟ ٱللَّهَ كَذِكْرِكُمْ ءَابَآءَكُمْ أَوْ أَشَدَّ ذِكْرًۭا ۗ فَمِنَ ٱلنَّاسِ مَن يَقُولُ رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا وَمَا لَهُۥ فِى ٱلْءَاخِرَةِ مِنْ خَلَٰقٍۢ","وَمِنْهُم مَّن يَقُولُ رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةًۭ وَفِى ٱلْءَاخِرَةِ حَسَنَةًۭ وَقِنَا عَذَابَ ٱلنَّارِ","أُو۟لَٰٓئِكَ لَهُمْ نَصِيبٌۭ مِّمَّا كَسَبُوا۟ ۚ وَٱللَّهُ سَرِيعُ ٱلْحِسَابِ","۞ وَٱذْكُرُوا۟ ٱللَّهَ فِىٓ أَيَّامٍۢ مَّعْدُودَٰتٍۢ ۚ فَمَن تَعَجَّلَ فِى يَوْمَيْنِ فَلَآ إِثْمَ عَلَيْهِ وَمَن تَأَخَّرَ فَلَآ إِثْمَ عَلَيْهِ ۚ لِمَنِ ٱتَّقَىٰ ۗ وَٱتَّقُوا۟ ٱللَّهَ وَٱعْلَمُوٓا۟ أَنَّكُمْ إِلَيْهِ تُحْشَرُونَ","وَمِنَ ٱلنَّاسِ مَن يُعْجِبُكَ قَوْلُهُۥ فِى ٱلْحَيَوٰةِ ٱلدُّنْيَا وَيُشْهِدُ ٱللَّهَ عَلَىٰ مَا فِى قَلْبِهِۦ وَهُوَ أَلَدُّ ٱلْخِصَامِ","وَإِذَا تَوَلَّىٰ سَعَىٰ فِى ٱلْأَرْضِ لِيُفْسِدَ فِيهَا وَيُهْلِكَ ٱلْحَرْثَ وَٱلنَّسْلَ ۗ وَٱللَّهُ لَا يُحِبُّ ٱلْفَسَادَ","وَإِذَا قِيلَ لَهُ ٱتَّقِ ٱللَّهَ أَخَذَتْهُ ٱلْعِزَّةُ بِٱلْإِثْمِ ۚ فَحَسْبُهُۥ جَهَنَّمُ ۚ وَلَبِئْسَ ٱلْمِهَادُ","وَمِنَ ٱلنَّاسِ مَن يَشْرِى نَفْسَهُ ٱبْتِغَآءَ مَرْضَاتِ ٱللَّهِ ۗ وَٱللَّهُ رَءُوفٌۢ بِٱلْعِبَادِ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱدْخُلُوا۟ فِى ٱلسِّلْمِ كَآفَّةًۭ وَلَا تَتَّبِعُوا۟ خُطُوَٰتِ ٱلشَّيْطَٰنِ ۚ إِنَّهُۥ لَكُمْ عَدُوٌّۭ مُّبِينٌۭ","فَإِن زَلَلْتُم مِّنۢ بَعْدِ مَا جَآءَتْكُمُ ٱلْبَيِّنَٰتُ فَٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ عَزِيزٌ حَكِيمٌ","هَلْ يَنظُرُونَ إِلَّآ أَن يَأْتِيَهُمُ ٱللَّهُ فِى ظُلَلٍۢ مِّنَ ٱلْغَمَامِ وَٱلْمَلَٰٓئِكَةُ وَقُضِىَ ٱلْأَمْرُ ۚ وَإِلَى ٱللَّهِ تُرْجَعُ ٱلْأُمُورُ","سَلْ بَنِىٓ إِسْرَٰٓءِيلَ كَمْ ءَاتَيْنَٰهُم مِّنْ ءَايَةٍۭ بَيِّنَةٍۢ ۗ وَمَن يُبَدِّلْ نِعْمَةَ ٱللَّهِ مِنۢ بَعْدِ مَا جَآءَتْهُ فَإِنَّ ٱللَّهَ شَدِيدُ ٱلْعِقَابِ","زُيِّنَ لِلَّذِينَ كَفَرُوا۟ ٱلْحَيَوٰةُ ٱلدُّنْيَا وَيَسْخَرُونَ مِنَ ٱلَّذِينَ ءَامَنُوا۟ ۘ وَٱلَّذِينَ ٱتَّقَوْا۟ فَوْقَهُمْ يَوْمَ ٱلْقِيَٰمَةِ ۗ وَٱللَّهُ يَرْزُقُ مَن يَشَآءُ بِغَيْرِ حِسَابٍۢ","كَانَ ٱلنَّاسُ أُمَّةًۭ وَٰحِدَةًۭ فَبَعَثَ ٱللَّهُ ٱلنَّبِيِّۦنَ مُبَشِّرِينَ وَمُنذِرِينَ وَأَنزَلَ مَعَهُمُ ٱلْكِتَٰبَ بِٱلْحَقِّ لِيَحْكُمَ بَيْنَ ٱلنَّاسِ فِيمَا ٱخْتَلَفُوا۟ فِيهِ ۚ وَمَا ٱخْتَلَفَ فِيهِ إِلَّا ٱلَّذِينَ أُوتُوهُ مِنۢ بَعْدِ مَا جَآءَتْهُمُ ٱلْبَيِّنَٰتُ بَغْيًۢا بَيْنَهُمْ ۖ فَهَدَى ٱللَّهُ ٱلَّذِينَ ءَامَنُوا۟ لِمَا ٱخْتَلَفُوا۟ فِيهِ مِنَ ٱلْحَقِّ بِإِذْنِهِۦ ۗ وَٱللَّهُ يَهْدِى مَن يَشَآءُ إِلَىٰ صِرَٰطٍۢ مُّسْتَقِيمٍ","أَمْ حَسِبْتُمْ أَن تَدْخُلُوا۟ ٱلْجَنَّةَ وَلَمَّا يَأْتِكُم مَّثَلُ ٱلَّذِينَ خَلَوْا۟ مِن قَبْلِكُم ۖ مَّسَّتْهُمُ ٱلْبَأْسَآءُ وَٱلضَّرَّآءُ وَزُلْزِلُوا۟ حَتَّىٰ يَقُولَ ٱلرَّسُولُ وَٱلَّذِينَ ءَامَنُوا۟ مَعَهُۥ مَتَىٰ نَصْرُ ٱللَّهِ ۗ أَلَآ إِنَّ نَصْرَ ٱللَّهِ قَرِيبٌۭ","يَسْـَٔلُونَكَ مَاذَا يُنفِقُونَ ۖ قُلْ مَآ أَنفَقْتُم مِّنْ خَيْرٍۢ فَلِلْوَٰلِدَيْنِ وَٱلْأَقْرَبِينَ وَٱلْيَتَٰمَىٰ وَٱلْمَسَٰكِينِ وَٱبْنِ ٱلسَّبِيلِ ۗ وَمَا تَفْعَلُوا۟ مِنْ خَيْرٍۢ فَإِنَّ ٱللَّهَ بِهِۦ عَلِيمٌۭ","كُتِبَ عَلَيْكُمُ ٱلْقِتَالُ وَهُوَ كُرْهٌۭ لَّكُمْ ۖ وَعَسَىٰٓ أَن تَكْرَهُوا۟ شَيْـًۭٔا وَهُوَ خَيْرٌۭ لَّكُمْ ۖ وَعَسَىٰٓ أَن تُحِبُّوا۟ شَيْـًۭٔا وَهُوَ شَرٌّۭ لَّكُمْ ۗ وَٱللَّهُ يَعْلَمُ وَأَنتُمْ لَا تَعْلَمُونَ","يَسْـَٔلُونَكَ عَنِ ٱلشَّهْرِ ٱلْحَرَامِ قِتَالٍۢ فِيهِ ۖ قُلْ قِتَالٌۭ فِيهِ كَبِيرٌۭ ۖ وَصَدٌّ عَن سَبِيلِ ٱللَّهِ وَكُفْرٌۢ بِهِۦ وَٱلْمَسْجِدِ ٱلْحَرَامِ وَإِخْرَاجُ أَهْلِهِۦ مِنْهُ أَكْبَرُ عِندَ ٱللَّهِ ۚ وَٱلْفِتْنَةُ أَكْبَرُ مِنَ ٱلْقَتْلِ ۗ وَلَا يَزَالُونَ يُقَٰتِلُونَكُمْ حَتَّىٰ يَرُدُّوكُمْ عَن دِينِكُمْ إِنِ ٱسْتَطَٰعُوا۟ ۚ وَمَن يَرْتَدِدْ مِنكُمْ عَن دِينِهِۦ فَيَمُتْ وَهُوَ كَافِرٌۭ فَأُو۟لَٰٓئِكَ حَبِطَتْ أَعْمَٰلُهُمْ فِى ٱلدُّنْيَا وَٱلْءَاخِرَةِ ۖ وَأُو۟لَٰٓئِكَ أَصْحَٰبُ ٱلنَّارِ ۖ هُمْ فِيهَا خَٰلِدُونَ","إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَٱلَّذِينَ هَاجَرُوا۟ وَجَٰهَدُوا۟ فِى سَبِيلِ ٱللَّهِ أُو۟لَٰٓئِكَ يَرْجُونَ رَحْمَتَ ٱللَّهِ ۚ وَٱللَّهُ غَفُورٌۭ رَّحِيمٌۭ","۞ يَسْـَٔلُونَكَ عَنِ ٱلْخَمْرِ وَٱلْمَيْسِرِ ۖ قُلْ فِيهِمَآ إِثْمٌۭ كَبِيرٌۭ وَمَنَٰفِعُ لِلنَّاسِ وَإِثْمُهُمَآ أَكْبَرُ مِن نَّفْعِهِمَا ۗ وَيَسْـَٔلُونَكَ مَاذَا يُنفِقُونَ قُلِ ٱلْعَفْوَ ۗ كَذَٰلِكَ يُبَيِّنُ ٱللَّهُ لَكُمُ ٱلْءَايَٰتِ لَعَلَّكُمْ تَتَفَكَّرُونَ","فِى ٱلدُّنْيَا وَٱلْءَاخِرَةِ ۗ وَيَسْـَٔلُونَكَ عَنِ ٱلْيَتَٰمَىٰ ۖ قُلْ إِصْلَاحٌۭ لَّهُمْ خَيْرٌۭ ۖ وَإِن تُخَالِطُوهُمْ فَإِخْوَٰنُكُمْ ۚ وَٱللَّهُ يَعْلَمُ ٱلْمُفْسِدَ مِنَ ٱلْمُصْلِحِ ۚ وَلَوْ شَآءَ ٱللَّهُ لَأَعْنَتَكُمْ ۚ إِنَّ ٱللَّهَ عَزِيزٌ حَكِيمٌۭ","وَلَا تَنكِحُوا۟ ٱلْمُشْرِكَٰتِ حَتَّىٰ يُؤْمِنَّ ۚ وَلَأَمَةٌۭ مُّؤْمِنَةٌ خَيْرٌۭ مِّن مُّشْرِكَةٍۢ وَلَوْ أَعْجَبَتْكُمْ ۗ وَلَا تُنكِحُوا۟ ٱلْمُشْرِكِينَ حَتَّىٰ يُؤْمِنُوا۟ ۚ وَلَعَبْدٌۭ مُّؤْمِنٌ خَيْرٌۭ مِّن مُّشْرِكٍۢ وَلَوْ أَعْجَبَكُمْ ۗ أُو۟لَٰٓئِكَ يَدْعُونَ إِلَى ٱلنَّارِ ۖ وَٱللَّهُ يَدْعُوٓا۟ إِلَى ٱلْجَنَّةِ وَٱلْمَغْفِرَةِ بِإِذْنِهِۦ ۖ وَيُبَيِّنُ ءَايَٰتِهِۦ لِلنَّاسِ لَعَلَّهُمْ يَتَذَكَّرُونَ","وَيَسْـَٔلُونَكَ عَنِ ٱلْمَحِيضِ ۖ قُلْ هُوَ أَذًۭى فَٱعْتَزِلُوا۟ ٱلنِّسَآءَ فِى ٱلْمَحِيضِ ۖ وَلَا تَقْرَبُوهُنَّ حَتَّىٰ يَطْهُرْنَ ۖ فَإِذَا تَطَهَّرْنَ فَأْتُوهُنَّ مِنْ حَيْثُ أَمَرَكُمُ ٱللَّهُ ۚ إِنَّ ٱللَّهَ يُحِبُّ ٱلتَّوَّٰبِينَ وَيُحِبُّ ٱلْمُتَطَهِّرِينَ","نِسَآؤُكُمْ حَرْثٌۭ لَّكُمْ فَأْتُوا۟ حَرْثَكُمْ أَنَّىٰ شِئْتُمْ ۖ وَقَدِّمُوا۟ لِأَنفُسِكُمْ ۚ وَٱتَّقُوا۟ ٱللَّهَ وَٱعْلَمُوٓا۟ أَنَّكُم مُّلَٰقُوهُ ۗ وَبَشِّرِ ٱلْمُؤْمِنِينَ","وَلَا تَجْعَلُوا۟ ٱللَّهَ عُرْضَةًۭ لِّأَيْمَٰنِكُمْ أَن تَبَرُّوا۟ وَتَتَّقُوا۟ وَتُصْلِحُوا۟ بَيْنَ ٱلنَّاسِ ۗ وَٱللَّهُ سَمِيعٌ عَلِيمٌۭ","لَّا يُؤَاخِذُكُمُ ٱللَّهُ بِٱللَّغْوِ فِىٓ أَيْمَٰنِكُمْ وَلَٰكِن يُؤَاخِذُكُم بِمَا كَسَبَتْ قُلُوبُكُمْ ۗ وَٱللَّهُ غَفُورٌ حَلِيمٌۭ","لِّلَّذِينَ يُؤْلُونَ مِن نِّسَآئِهِمْ تَرَبُّصُ أَرْبَعَةِ أَشْهُرٍۢ ۖ فَإِن فَآءُو فَإِنَّ ٱللَّهَ غَفُورٌۭ رَّحِيمٌۭ","وَإِنْ عَزَمُوا۟ ٱلطَّلَٰقَ فَإِنَّ ٱللَّهَ سَمِيعٌ عَلِيمٌۭ","وَٱلْمُطَلَّقَٰتُ يَتَرَبَّصْنَ بِأَنفُسِهِنَّ ثَلَٰثَةَ قُرُوٓءٍۢ ۚ وَلَا يَحِلُّ لَهُنَّ أَن يَكْتُمْنَ مَا خَلَقَ ٱللَّهُ فِىٓ أَرْحَامِهِنَّ إِن كُنَّ يُؤْمِنَّ بِٱللَّهِ وَٱلْيَوْمِ ٱلْءَاخِرِ ۚ وَبُعُولَتُهُنَّ أَحَقُّ بِرَدِّهِنَّ فِى ذَٰلِكَ إِنْ أَرَادُوٓا۟ إِصْلَٰحًۭا ۚ وَلَهُنَّ مِثْلُ ٱلَّذِى عَلَيْهِنَّ بِٱلْمَعْرُوفِ ۚ وَلِلرِّجَالِ عَلَيْهِنَّ دَرَجَةٌۭ ۗ وَٱللَّهُ عَزِيزٌ حَكِيمٌ","ٱلطَّلَٰقُ مَرَّتَانِ ۖ فَإِمْسَاكٌۢ بِمَعْرُوفٍ أَوْ تَسْرِيحٌۢ بِإِحْسَٰنٍۢ ۗ وَلَا يَحِلُّ لَكُمْ أَن تَأْخُذُوا۟ مِمَّآ ءَاتَيْتُمُوهُنَّ شَيْـًٔا إِلَّآ أَن يَخَافَآ أَلَّا يُقِيمَا حُدُودَ ٱللَّهِ ۖ فَإِنْ خِفْتُمْ أَلَّا يُقِيمَا حُدُودَ ٱللَّهِ فَلَا جُنَاحَ عَلَيْهِمَا فِيمَا ٱفْتَدَتْ بِهِۦ ۗ تِلْكَ حُدُودُ ٱللَّهِ فَلَا تَعْتَدُوهَا ۚ وَمَن يَتَعَدَّ حُدُودَ ٱللَّهِ فَأُو۟لَٰٓئِكَ هُمُ ٱلظَّٰلِمُونَ","فَإِن طَلَّقَهَا فَلَا تَحِلُّ لَهُۥ مِنۢ بَعْدُ حَتَّىٰ تَنكِحَ زَوْجًا غَيْرَهُۥ ۗ فَإِن طَلَّقَهَا فَلَا جُنَاحَ عَلَيْهِمَآ أَن يَتَرَاجَعَآ إِن ظَنَّآ أَن يُقِيمَا حُدُودَ ٱللَّهِ ۗ وَتِلْكَ حُدُودُ ٱللَّهِ يُبَيِّنُهَا لِقَوْمٍۢ يَعْلَمُونَ","وَإِذَا طَلَّقْتُمُ ٱلنِّسَآءَ فَبَلَغْنَ أَجَلَهُنَّ فَأَمْسِكُوهُنَّ بِمَعْرُوفٍ أَوْ سَرِّحُوهُنَّ بِمَعْرُوفٍۢ ۚ وَلَا تُمْسِكُوهُنَّ ضِرَارًۭا لِّتَعْتَدُوا۟ ۚ وَمَن يَفْعَلْ ذَٰلِكَ فَقَدْ ظَلَمَ نَفْسَهُۥ ۚ وَلَا تَتَّخِذُوٓا۟ ءَايَٰتِ ٱللَّهِ هُزُوًۭا ۚ وَٱذْكُرُوا۟ نِعْمَتَ ٱللَّهِ عَلَيْكُمْ وَمَآ أَنزَلَ عَلَيْكُم مِّنَ ٱلْكِتَٰبِ وَٱلْحِكْمَةِ يَعِظُكُم بِهِۦ ۚ وَٱتَّقُوا۟ ٱللَّهَ وَٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ بِكُلِّ شَىْءٍ عَلِيمٌۭ","وَإِذَا طَلَّقْتُمُ ٱلنِّسَآءَ فَبَلَغْنَ أَجَلَهُنَّ فَلَا تَعْضُلُوهُنَّ أَن يَنكِحْنَ أَزْوَٰجَهُنَّ إِذَا تَرَٰضَوْا۟ بَيْنَهُم بِٱلْمَعْرُوفِ ۗ ذَٰلِكَ يُوعَظُ بِهِۦ مَن كَانَ مِنكُمْ يُؤْمِنُ بِٱللَّهِ وَٱلْيَوْمِ ٱلْءَاخِرِ ۗ ذَٰلِكُمْ أَزْكَىٰ لَكُمْ وَأَطْهَرُ ۗ وَٱللَّهُ يَعْلَمُ وَأَنتُمْ لَا تَعْلَمُونَ","۞ وَٱلْوَٰلِدَٰتُ يُرْضِعْنَ أَوْلَٰدَهُنَّ حَوْلَيْنِ كَامِلَيْنِ ۖ لِمَنْ أَرَادَ أَن يُتِمَّ ٱلرَّضَاعَةَ ۚ وَعَلَى ٱلْمَوْلُودِ لَهُۥ رِزْقُهُنَّ وَكِسْوَتُهُنَّ بِٱلْمَعْرُوفِ ۚ لَا تُكَلَّفُ نَفْسٌ إِلَّا وُسْعَهَا ۚ لَا تُضَآرَّ وَٰلِدَةٌۢ بِوَلَدِهَا وَلَا مَوْلُودٌۭ لَّهُۥ بِوَلَدِهِۦ ۚ وَعَلَى ٱلْوَارِثِ مِثْلُ ذَٰلِكَ ۗ فَإِنْ أَرَادَا فِصَالًا عَن تَرَاضٍۢ مِّنْهُمَا وَتَشَاوُرٍۢ فَلَا جُنَاحَ عَلَيْهِمَا ۗ وَإِنْ أَرَدتُّمْ أَن تَسْتَرْضِعُوٓا۟ أَوْلَٰدَكُمْ فَلَا جُنَاحَ عَلَيْكُمْ إِذَا سَلَّمْتُم مَّآ ءَاتَيْتُم بِٱلْمَعْرُوفِ ۗ وَٱتَّقُوا۟ ٱللَّهَ وَٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ بِمَا تَعْمَلُونَ بَصِيرٌۭ","وَٱلَّذِينَ يُتَوَفَّوْنَ مِنكُمْ وَيَذَرُونَ أَزْوَٰجًۭا يَتَرَبَّصْنَ بِأَنفُسِهِنَّ أَرْبَعَةَ أَشْهُرٍۢ وَعَشْرًۭا ۖ فَإِذَا بَلَغْنَ أَجَلَهُنَّ فَلَا جُنَاحَ عَلَيْكُمْ فِيمَا فَعَلْنَ فِىٓ أَنفُسِهِنَّ بِٱلْمَعْرُوفِ ۗ وَٱللَّهُ بِمَا تَعْمَلُونَ خَبِيرٌۭ","وَلَا جُنَاحَ عَلَيْكُمْ فِيمَا عَرَّضْتُم بِهِۦ مِنْ خِطْبَةِ ٱلنِّسَآءِ أَوْ أَكْنَنتُمْ فِىٓ أَنفُسِكُمْ ۚ عَلِمَ ٱللَّهُ أَنَّكُمْ سَتَذْكُرُونَهُنَّ وَلَٰكِن لَّا تُوَاعِدُوهُنَّ سِرًّا إِلَّآ أَن تَقُولُوا۟ قَوْلًۭا مَّعْرُوفًۭا ۚ وَلَا تَعْزِمُوا۟ عُقْدَةَ ٱلنِّكَاحِ حَتَّىٰ يَبْلُغَ ٱلْكِتَٰبُ أَجَلَهُۥ ۚ وَٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ يَعْلَمُ مَا فِىٓ أَنفُسِكُمْ فَٱحْذَرُوهُ ۚ وَٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ غَفُورٌ حَلِيمٌۭ","لَّا جُنَاحَ عَلَيْكُمْ إِن طَلَّقْتُمُ ٱلنِّسَآءَ مَا لَمْ تَمَسُّوهُنَّ أَوْ تَفْرِضُوا۟ لَهُنَّ فَرِيضَةًۭ ۚ وَمَتِّعُوهُنَّ عَلَى ٱلْمُوسِعِ قَدَرُهُۥ وَعَلَى ٱلْمُقْتِرِ قَدَرُهُۥ مَتَٰعًۢا بِٱلْمَعْرُوفِ ۖ حَقًّا عَلَى ٱلْمُحْسِنِينَ","وَإِن طَلَّقْتُمُوهُنَّ مِن قَبْلِ أَن تَمَسُّوهُنَّ وَقَدْ فَرَضْتُمْ لَهُنَّ فَرِيضَةًۭ فَنِصْفُ مَا فَرَضْتُمْ إِلَّآ أَن يَعْفُونَ أَوْ يَعْفُوَا۟ ٱلَّذِى بِيَدِهِۦ عُقْدَةُ ٱلنِّكَاحِ ۚ وَأَن تَعْفُوٓا۟ أَقْرَبُ لِلتَّقْوَىٰ ۚ وَلَا تَنسَوُا۟ ٱلْفَضْلَ بَيْنَكُمْ ۚ إِنَّ ٱللَّهَ بِمَا تَعْمَلُونَ بَصِيرٌ","حَٰفِظُوا۟ عَلَى ٱلصَّلَوَٰتِ وَٱلصَّلَوٰةِ ٱلْوُسْطَىٰ وَقُومُوا۟ لِلَّهِ قَٰنِتِينَ","فَإِنْ خِفْتُمْ فَرِجَالًا أَوْ رُكْبَانًۭا ۖ فَإِذَآ أَمِنتُمْ فَٱذْكُرُوا۟ ٱللَّهَ كَمَا عَلَّمَكُم مَّا لَمْ تَكُونُوا۟ تَعْلَمُونَ","وَٱلَّذِينَ يُتَوَفَّوْنَ مِنكُمْ وَيَذَرُونَ أَزْوَٰجًۭا وَصِيَّةًۭ لِّأَزْوَٰجِهِم مَّتَٰعًا إِلَى ٱلْحَوْلِ غَيْرَ إِخْرَاجٍۢ ۚ فَإِنْ خَرَجْنَ فَلَا جُنَاحَ عَلَيْكُمْ فِى مَا فَعَلْنَ فِىٓ أَنفُسِهِنَّ مِن مَّعْرُوفٍۢ ۗ وَٱللَّهُ عَزِيزٌ حَكِيمٌۭ","وَلِلْمُطَلَّقَٰتِ مَتَٰعٌۢ بِٱلْمَعْرُوفِ ۖ حَقًّا عَلَى ٱلْمُتَّقِينَ","كَذَٰلِكَ يُبَيِّنُ ٱللَّهُ لَكُمْ ءَايَٰتِهِۦ لَعَلَّكُمْ تَعْقِلُونَ","۞ أَلَمْ تَرَ إِلَى ٱلَّذِينَ خَرَجُوا۟ مِن دِيَٰرِهِمْ وَهُمْ أُلُوفٌ حَذَرَ ٱلْمَوْتِ فَقَالَ لَهُمُ ٱللَّهُ مُوتُوا۟ ثُمَّ أَحْيَٰهُمْ ۚ إِنَّ ٱللَّهَ لَذُو فَضْلٍ عَلَى ٱلنَّاسِ وَلَٰكِنَّ أَكْثَرَ ٱلنَّاسِ لَا يَشْكُرُونَ","وَقَٰتِلُوا۟ فِى سَبِيلِ ٱللَّهِ وَٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ سَمِيعٌ عَلِيمٌۭ","مَّن ذَا ٱلَّذِى يُقْرِضُ ٱللَّهَ قَرْضًا حَسَنًۭا فَيُضَٰعِفَهُۥ لَهُۥٓ أَضْعَافًۭا كَثِيرَةًۭ ۚ وَٱللَّهُ يَقْبِضُ وَيَبْصُۜطُ وَإِلَيْهِ تُرْجَعُونَ","أَلَمْ تَرَ إِلَى ٱلْمَلَإِ مِنۢ بَنِىٓ إِسْرَٰٓءِيلَ مِنۢ بَعْدِ مُوسَىٰٓ إِذْ قَالُوا۟ لِنَبِىٍّۢ لَّهُمُ ٱبْعَثْ لَنَا مَلِكًۭا نُّقَٰتِلْ فِى سَبِيلِ ٱللَّهِ ۖ قَالَ هَلْ عَسَيْتُمْ إِن كُتِبَ عَلَيْكُمُ ٱلْقِتَالُ أَلَّا تُقَٰتِلُوا۟ ۖ قَالُوا۟ وَمَا لَنَآ أَلَّا نُقَٰتِلَ فِى سَبِيلِ ٱللَّهِ وَقَدْ أُخْرِجْنَا مِن دِيَٰرِنَا وَأَبْنَآئِنَا ۖ فَلَمَّا كُتِبَ عَلَيْهِمُ ٱلْقِتَالُ تَوَلَّوْا۟ إِلَّا قَلِيلًۭا مِّنْهُمْ ۗ وَٱللَّهُ عَلِيمٌۢ بِٱلظَّٰلِمِينَ","وَقَالَ لَهُمْ نَبِيُّهُمْ إِنَّ ٱللَّهَ قَدْ بَعَثَ لَكُمْ طَالُوتَ مَلِكًۭا ۚ قَالُوٓا۟ أَنَّىٰ يَكُونُ لَهُ ٱلْمُلْكُ عَلَيْنَا وَنَحْنُ أَحَقُّ بِٱلْمُلْكِ مِنْهُ وَلَمْ يُؤْتَ سَعَةًۭ مِّنَ ٱلْمَالِ ۚ قَالَ إِنَّ ٱللَّهَ ٱصْطَفَىٰهُ عَلَيْكُمْ وَزَادَهُۥ بَسْطَةًۭ فِى ٱلْعِلْمِ وَٱلْجِسْمِ ۖ وَٱللَّهُ يُؤْتِى مُلْكَهُۥ مَن يَشَآءُ ۚ وَٱللَّهُ وَٰسِعٌ عَلِيمٌۭ","وَقَالَ لَهُمْ نَبِيُّهُمْ إِنَّ ءَايَةَ مُلْكِهِۦٓ أَن يَأْتِيَكُمُ ٱلتَّابُوتُ فِيهِ سَكِينَةٌۭ مِّن رَّبِّكُمْ وَبَقِيَّةٌۭ مِّمَّا تَرَكَ ءَالُ مُوسَىٰ وَءَالُ هَٰرُونَ تَحْمِلُهُ ٱلْمَلَٰٓئِكَةُ ۚ إِنَّ فِى ذَٰلِكَ لَءَايَةًۭ لَّكُمْ إِن كُنتُم مُّؤْمِنِينَ","فَلَمَّا فَصَلَ طَالُوتُ بِٱلْجُنُودِ قَالَ إِنَّ ٱللَّهَ مُبْتَلِيكُم بِنَهَرٍۢ فَمَن شَرِبَ مِنْهُ فَلَيْسَ مِنِّى وَمَن لَّمْ يَطْعَمْهُ فَإِنَّهُۥ مِنِّىٓ إِلَّا مَنِ ٱغْتَرَفَ غُرْفَةًۢ بِيَدِهِۦ ۚ فَشَرِبُوا۟ مِنْهُ إِلَّا قَلِيلًۭا مِّنْهُمْ ۚ فَلَمَّا جَاوَزَهُۥ هُوَ وَٱلَّذِينَ ءَامَنُوا۟ مَعَهُۥ قَالُوا۟ لَا طَاقَةَ لَنَا ٱلْيَوْمَ بِجَالُوتَ وَجُنُودِهِۦ ۚ قَالَ ٱلَّذِينَ يَظُنُّونَ أَنَّهُم مُّلَٰقُوا۟ ٱللَّهِ كَم مِّن فِئَةٍۢ قَلِيلَةٍ غَلَبَتْ فِئَةًۭ كَثِيرَةًۢ بِإِذْنِ ٱللَّهِ ۗ وَٱللَّهُ مَعَ ٱلصَّٰبِرِينَ","وَلَمَّا بَرَزُوا۟ لِجَالُوتَ وَجُنُودِهِۦ قَالُوا۟ رَبَّنَآ أَفْرِغْ عَلَيْنَا صَبْرًۭا وَثَبِّتْ أَقْدَامَنَا وَٱنصُرْنَا عَلَى ٱلْقَوْمِ ٱلْكَٰفِرِينَ","فَهَزَمُوهُم بِإِذْنِ ٱللَّهِ وَقَتَلَ دَاوُۥدُ جَالُوتَ وَءَاتَىٰهُ ٱللَّهُ ٱلْمُلْكَ وَٱلْحِكْمَةَ وَعَلَّمَهُۥ مِمَّا يَشَآءُ ۗ وَلَوْلَا دَفْعُ ٱللَّهِ ٱلنَّاسَ بَعْضَهُم بِبَعْضٍۢ لَّفَسَدَتِ ٱلْأَرْضُ وَلَٰكِنَّ ٱللَّهَ ذُو فَضْلٍ عَلَى ٱلْعَٰلَمِينَ","تِلْكَ ءَايَٰتُ ٱللَّهِ نَتْلُوهَا عَلَيْكَ بِٱلْحَقِّ ۚ وَإِنَّكَ لَمِنَ ٱلْمُرْسَلِينَ","۞ تِلْكَ ٱلرُّسُلُ فَضَّلْنَا بَعْضَهُمْ عَلَىٰ بَعْضٍۢ ۘ مِّنْهُم مَّن كَلَّمَ ٱللَّهُ ۖ وَرَفَعَ بَعْضَهُمْ دَرَجَٰتٍۢ ۚ وَءَاتَيْنَا عِيسَى ٱبْنَ مَرْيَمَ ٱلْبَيِّنَٰتِ وَأَيَّدْنَٰهُ بِرُوحِ ٱلْقُدُسِ ۗ وَلَوْ شَآءَ ٱللَّهُ مَا ٱقْتَتَلَ ٱلَّذِينَ مِنۢ بَعْدِهِم مِّنۢ بَعْدِ مَا جَآءَتْهُمُ ٱلْبَيِّنَٰتُ وَلَٰكِنِ ٱخْتَلَفُوا۟ فَمِنْهُم مَّنْ ءَامَنَ وَمِنْهُم مَّن كَفَرَ ۚ وَلَوْ شَآءَ ٱللَّهُ مَا ٱقْتَتَلُوا۟ وَلَٰكِنَّ ٱللَّهَ يَفْعَلُ مَا يُرِيدُ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ أَنفِقُوا۟ مِمَّا رَزَقْنَٰكُم مِّن قَبْلِ أَن يَأْتِىَ يَوْمٌۭ لَّا بَيْعٌۭ فِيهِ وَلَا خُلَّةٌۭ وَلَا شَفَٰعَةٌۭ ۗ وَٱلْكَٰفِرُونَ هُمُ ٱلظَّٰلِمُونَ","ٱللَّهُ لَآ إِلَٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ ۚ لَا تَأْخُذُهُۥ سِنَةٌۭ وَلَا نَوْمٌۭ ۚ لَّهُۥ مَا فِى ٱلسَّمَٰوَٰتِ وَمَا فِى ٱلْأَرْضِ ۗ مَن ذَا ٱلَّذِى يَشْفَعُ عِندَهُۥٓ إِلَّا بِإِذْنِهِۦ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَىْءٍۢ مِّنْ عِلْمِهِۦٓ إِلَّا بِمَا شَآءَ ۚ وَسِعَ كُرْسِيُّهُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ ۖ وَلَا يَـُٔودُهُۥ حِفْظُهُمَا ۚ وَهُوَ ٱلْعَلِىُّ ٱلْعَظِيمُ","لَآ إِكْرَاهَ فِى ٱلدِّينِ ۖ قَد تَّبَيَّنَ ٱلرُّشْدُ مِنَ ٱلْغَىِّ ۚ فَمَن يَكْفُرْ بِٱلطَّٰغُوتِ وَيُؤْمِنۢ بِٱللَّهِ فَقَدِ ٱسْتَمْسَكَ بِٱلْعُرْوَةِ ٱلْوُثْقَىٰ لَا ٱنفِصَامَ لَهَا ۗ وَٱللَّهُ سَمِيعٌ عَلِيمٌ","ٱللَّهُ وَلِىُّ ٱلَّذِينَ ءَامَنُوا۟ يُخْرِجُهُم مِّنَ ٱلظُّلُمَٰتِ إِلَى ٱلنُّورِ ۖ وَٱلَّذِينَ كَفَرُوٓا۟ أَوْلِيَآؤُهُمُ ٱلطَّٰغُوتُ يُخْرِجُونَهُم مِّنَ ٱلنُّورِ إِلَى ٱلظُّلُمَٰتِ ۗ أُو۟لَٰٓئِكَ أَصْحَٰبُ ٱلنَّارِ ۖ هُمْ فِيهَا خَٰلِدُونَ","أَلَمْ تَرَ إِلَى ٱلَّذِى حَآجَّ إِبْرَٰهِۦمَ فِى رَبِّهِۦٓ أَنْ ءَاتَىٰهُ ٱللَّهُ ٱلْمُلْكَ إِذْ قَالَ إِبْرَٰهِۦمُ رَبِّىَ ٱلَّذِى يُحْىِۦ وَيُمِيتُ قَالَ أَنَا۠ أُحْىِۦ وَأُمِيتُ ۖ قَالَ إِبْرَٰهِۦمُ فَإِنَّ ٱللَّهَ يَأْتِى بِٱلشَّمْسِ مِنَ ٱلْمَشْرِقِ فَأْتِ بِهَا مِنَ ٱلْمَغْرِبِ فَبُهِتَ ٱلَّذِى كَفَرَ ۗ وَٱللَّهُ لَا يَهْدِى ٱلْقَوْمَ ٱلظَّٰلِمِينَ","أَوْ كَٱلَّذِى مَرَّ عَلَىٰ قَرْيَةٍۢ وَهِىَ خَاوِيَةٌ عَلَىٰ عُرُوشِهَا قَالَ أَنَّىٰ يُحْىِۦ هَٰذِهِ ٱللَّهُ بَعْدَ مَوْتِهَا ۖ فَأَمَاتَهُ ٱللَّهُ مِا۟ئَةَ عَامٍۢ ثُمَّ بَعَثَهُۥ ۖ قَالَ كَمْ لَبِثْتَ ۖ قَالَ لَبِثْتُ يَوْمًا أَوْ بَعْضَ يَوْمٍۢ ۖ قَالَ بَل لَّبِثْتَ مِا۟ئَةَ عَامٍۢ فَٱنظُرْ إِلَىٰ طَعَامِكَ وَشَرَابِكَ لَمْ يَتَسَنَّهْ ۖ وَٱنظُرْ إِلَىٰ حِمَارِكَ وَلِنَجْعَلَكَ ءَايَةًۭ لِّلنَّاسِ ۖ وَٱنظُرْ إِلَى ٱلْعِظَامِ كَيْفَ نُنشِزُهَا ثُمَّ نَكْسُوهَا لَحْمًۭا ۚ فَلَمَّا تَبَيَّنَ لَهُۥ قَالَ أَعْلَمُ أَنَّ ٱللَّهَ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرٌۭ","وَإِذْ قَالَ إِبْرَٰهِۦمُ رَبِّ أَرِنِى كَيْفَ تُحْىِ ٱلْمَوْتَىٰ ۖ قَالَ أَوَلَمْ تُؤْمِن ۖ قَالَ بَلَىٰ وَلَٰكِن لِّيَطْمَئِنَّ قَلْبِى ۖ قَالَ فَخُذْ أَرْبَعَةًۭ مِّنَ ٱلطَّيْرِ فَصُرْهُنَّ إِلَيْكَ ثُمَّ ٱجْعَلْ عَلَىٰ كُلِّ جَبَلٍۢ مِّنْهُنَّ جُزْءًۭا ثُمَّ ٱدْعُهُنَّ يَأْتِينَكَ سَعْيًۭا ۚ وَٱعْلَمْ أَنَّ ٱللَّهَ عَزِيزٌ حَكِيمٌۭ","مَّثَلُ ٱلَّذِينَ يُنفِقُونَ أَمْوَٰلَهُمْ فِى سَبِيلِ ٱللَّهِ كَمَثَلِ حَبَّةٍ أَنۢبَتَتْ سَبْعَ سَنَابِلَ فِى كُلِّ سُنۢبُلَةٍۢ مِّا۟ئَةُ حَبَّةٍۢ ۗ وَٱللَّهُ يُضَٰعِفُ لِمَن يَشَآءُ ۗ وَٱللَّهُ وَٰسِعٌ عَلِيمٌ","ٱلَّذِينَ يُنفِقُونَ أَمْوَٰلَهُمْ فِى سَبِيلِ ٱللَّهِ ثُمَّ لَا يُتْبِعُونَ مَآ أَنفَقُوا۟ مَنًّۭا وَلَآ أَذًۭى ۙ لَّهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ","۞ قَوْلٌۭ مَّعْرُوفٌۭ وَمَغْفِرَةٌ خَيْرٌۭ مِّن صَدَقَةٍۢ يَتْبَعُهَآ أَذًۭى ۗ وَٱللَّهُ غَنِىٌّ حَلِيمٌۭ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ لَا تُبْطِلُوا۟ صَدَقَٰتِكُم بِٱلْمَنِّ وَٱلْأَذَىٰ كَٱلَّذِى يُنفِقُ مَالَهُۥ رِئَآءَ ٱلنَّاسِ وَلَا يُؤْمِنُ بِٱللَّهِ وَٱلْيَوْمِ ٱلْءَاخِرِ ۖ فَمَثَلُهُۥ كَمَثَلِ صَفْوَانٍ عَلَيْهِ تُرَابٌۭ فَأَصَابَهُۥ وَابِلٌۭ فَتَرَكَهُۥ صَلْدًۭا ۖ لَّا يَقْدِرُونَ عَلَىٰ شَىْءٍۢ مِّمَّا كَسَبُوا۟ ۗ وَٱللَّهُ لَا يَهْدِى ٱلْقَوْمَ ٱلْكَٰفِرِينَ","وَمَثَلُ ٱلَّذِينَ يُنفِقُونَ أَمْوَٰلَهُمُ ٱبْتِغَآءَ مَرْضَاتِ ٱللَّهِ وَتَثْبِيتًۭا مِّنْ أَنفُسِهِمْ كَمَثَلِ جَنَّةٍۭ بِرَبْوَةٍ أَصَابَهَا وَابِلٌۭ فَـَٔاتَتْ أُكُلَهَا ضِعْفَيْنِ فَإِن لَّمْ يُصِبْهَا وَابِلٌۭ فَطَلٌّۭ ۗ وَٱللَّهُ بِمَا تَعْمَلُونَ بَصِيرٌ","أَيَوَدُّ أَحَدُكُمْ أَن تَكُونَ لَهُۥ جَنَّةٌۭ مِّن نَّخِيلٍۢ وَأَعْنَابٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ لَهُۥ فِيهَا مِن كُلِّ ٱلثَّمَرَٰتِ وَأَصَابَهُ ٱلْكِبَرُ وَلَهُۥ ذُرِّيَّةٌۭ ضُعَفَآءُ فَأَصَابَهَآ إِعْصَارٌۭ فِيهِ نَارٌۭ فَٱحْتَرَقَتْ ۗ كَذَٰلِكَ يُبَيِّنُ ٱللَّهُ لَكُمُ ٱلْءَايَٰتِ لَعَلَّكُمْ تَتَفَكَّرُونَ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ أَنفِقُوا۟ مِن طَيِّبَٰتِ مَا كَسَبْتُمْ وَمِمَّآ أَخْرَجْنَا لَكُم مِّنَ ٱلْأَرْضِ ۖ وَلَا تَيَمَّمُوا۟ ٱلْخَبِيثَ مِنْهُ تُنفِقُونَ وَلَسْتُم بِـَٔاخِذِيهِ إِلَّآ أَن تُغْمِضُوا۟ فِيهِ ۚ وَٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ غَنِىٌّ حَمِيدٌ","ٱلشَّيْطَٰنُ يَعِدُكُمُ ٱلْفَقْرَ وَيَأْمُرُكُم بِٱلْفَحْشَآءِ ۖ وَٱللَّهُ يَعِدُكُم مَّغْفِرَةًۭ مِّنْهُ وَفَضْلًۭا ۗ وَٱللَّهُ وَٰسِعٌ عَلِيمٌۭ","يُؤْتِى ٱلْحِكْمَةَ مَن يَشَآءُ ۚ وَمَن يُؤْتَ ٱلْحِكْمَةَ فَقَدْ أُوتِىَ خَيْرًۭا كَثِيرًۭا ۗ وَمَا يَذَّكَّرُ إِلَّآ أُو۟لُوا۟ ٱلْأَلْبَٰبِ","وَمَآ أَنفَقْتُم مِّن نَّفَقَةٍ أَوْ نَذَرْتُم مِّن نَّذْرٍۢ فَإِنَّ ٱللَّهَ يَعْلَمُهُۥ ۗ وَمَا لِلظَّٰلِمِينَ مِنْ أَنصَارٍ","إِن تُبْدُوا۟ ٱلصَّدَقَٰتِ فَنِعِمَّا هِىَ ۖ وَإِن تُخْفُوهَا وَتُؤْتُوهَا ٱلْفُقَرَآءَ فَهُوَ خَيْرٌۭ لَّكُمْ ۚ وَيُكَفِّرُ عَنكُم مِّن سَيِّـَٔاتِكُمْ ۗ وَٱللَّهُ بِمَا تَعْمَلُونَ خَبِيرٌۭ","۞ لَّيْسَ عَلَيْكَ هُدَىٰهُمْ وَلَٰكِنَّ ٱللَّهَ يَهْدِى مَن يَشَآءُ ۗ وَمَا تُنفِقُوا۟ مِنْ خَيْرٍۢ فَلِأَنفُسِكُمْ ۚ وَمَا تُنفِقُونَ إِلَّا ٱبْتِغَآءَ وَجْهِ ٱللَّهِ ۚ وَمَا تُنفِقُوا۟ مِنْ خَيْرٍۢ يُوَفَّ إِلَيْكُمْ وَأَنتُمْ لَا تُظْلَمُونَ","لِلْفُقَرَآءِ ٱلَّذِينَ أُحْصِرُوا۟ فِى سَبِيلِ ٱللَّهِ لَا يَسْتَطِيعُونَ ضَرْبًۭا فِى ٱلْأَرْضِ يَحْسَبُهُمُ ٱلْجَاهِلُ أَغْنِيَآءَ مِنَ ٱلتَّعَفُّفِ تَعْرِفُهُم بِسِيمَٰهُمْ لَا يَسْـَٔلُونَ ٱلنَّاسَ إِلْحَافًۭا ۗ وَمَا تُنفِقُوا۟ مِنْ خَيْرٍۢ فَإِنَّ ٱللَّهَ بِهِۦ عَلِيمٌ","ٱلَّذِينَ يُنفِقُونَ أَمْوَٰلَهُم بِٱلَّيْلِ وَٱلنَّهَارِ سِرًّۭا وَعَلَانِيَةًۭ فَلَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ","ٱلَّذِينَ يَأْكُلُونَ ٱلرِّبَوٰا۟ لَا يَقُومُونَ إِلَّا كَمَا يَقُومُ ٱلَّذِى يَتَخَبَّطُهُ ٱلشَّيْطَٰنُ مِنَ ٱلْمَسِّ ۚ ذَٰلِكَ بِأَنَّهُمْ قَالُوٓا۟ إِنَّمَا ٱلْبَيْعُ مِثْلُ ٱلرِّبَوٰا۟ ۗ وَأَحَلَّ ٱللَّهُ ٱلْبَيْعَ وَحَرَّمَ ٱلرِّبَوٰا۟ ۚ فَمَن جَآءَهُۥ مَوْعِظَةٌۭ مِّن رَّبِّهِۦ فَٱنتَهَىٰ فَلَهُۥ مَا سَلَفَ وَأَمْرُهُۥٓ إِلَى ٱللَّهِ ۖ وَمَنْ عَادَ فَأُو۟لَٰٓئِكَ أَصْحَٰبُ ٱلنَّارِ ۖ هُمْ فِيهَا خَٰلِدُونَ","يَمْحَقُ ٱللَّهُ ٱلرِّبَوٰا۟ وَيُرْبِى ٱلصَّدَقَٰتِ ۗ وَٱللَّهُ لَا يُحِبُّ كُلَّ كَفَّارٍ أَثِيمٍ","إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ وَأَقَامُوا۟ ٱلصَّلَوٰةَ وَءَاتَوُا۟ ٱلزَّكَوٰةَ لَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱتَّقُوا۟ ٱللَّهَ وَذَرُوا۟ مَا بَقِىَ مِنَ ٱلرِّبَوٰٓا۟ إِن كُنتُم مُّؤْمِنِينَ","فَإِن لَّمْ تَفْعَلُوا۟ فَأْذَنُوا۟ بِحَرْبٍۢ مِّنَ ٱللَّهِ وَرَسُولِهِۦ ۖ وَإِن تُبْتُمْ فَلَكُمْ رُءُوسُ أَمْوَٰلِكُمْ لَا تَظْلِمُونَ وَلَا تُظْلَمُونَ","وَإِن كَانَ ذُو عُسْرَةٍۢ فَنَظِرَةٌ إِلَىٰ مَيْسَرَةٍۢ ۚ وَأَن تَصَدَّقُوا۟ خَيْرٌۭ لَّكُمْ ۖ إِن كُنتُمْ تَعْلَمُونَ","وَٱتَّقُوا۟ يَوْمًۭا تُرْجَعُونَ فِيهِ إِلَى ٱللَّهِ ۖ ثُمَّ تُوَفَّىٰ كُلُّ نَفْسٍۢ مَّا كَسَبَتْ وَهُمْ لَا يُظْلَمُونَ","يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ إِذَا تَدَايَنتُم بِدَيْنٍ إِلَىٰٓ أَجَلٍۢ مُّسَمًّۭى فَٱكْتُبُوهُ ۚ وَلْيَكْتُب بَّيْنَكُمْ كَاتِبٌۢ بِٱلْعَدْلِ ۚ وَلَا يَأْبَ كَاتِبٌ أَن يَكْتُبَ كَمَا عَلَّمَهُ ٱللَّهُ ۚ فَلْيَكْتُبْ وَلْيُمْلِلِ ٱلَّذِى عَلَيْهِ ٱلْحَقُّ وَلْيَتَّقِ ٱللَّهَ رَبَّهُۥ وَلَا يَبْخَسْ مِنْهُ شَيْـًۭٔا ۚ فَإِن كَانَ ٱلَّذِى عَلَيْهِ ٱلْحَقُّ سَفِيهًا أَوْ ضَعِيفًا أَوْ لَا يَسْتَطِيعُ أَن يُمِلَّ هُوَ فَلْيُمْلِلْ وَلِيُّهُۥ بِٱلْعَدْلِ ۚ وَٱسْتَشْهِدُوا۟ شَهِيدَيْنِ مِن رِّجَالِكُمْ ۖ فَإِن لَّمْ يَكُونَا رَجُلَيْنِ فَرَجُلٌۭ وَٱمْرَأَتَانِ مِمَّن تَرْضَوْنَ مِنَ ٱلشُّهَدَآءِ أَن تَضِلَّ إِحْدَىٰهُمَا فَتُذَكِّرَ إِحْدَىٰهُمَا ٱلْأُخْرَىٰ ۚ وَلَا يَأْبَ ٱلشُّهَدَآءُ إِذَا مَا دُعُوا۟ ۚ وَلَا تَسْـَٔمُوٓا۟ أَن تَكْتُبُوهُ صَغِيرًا أَوْ كَبِيرًا إِلَىٰٓ أَجَلِهِۦ ۚ ذَٰلِكُمْ أَقْسَطُ عِندَ ٱللَّهِ وَأَقْوَمُ لِلشَّهَٰدَةِ وَأَدْنَىٰٓ أَلَّا تَرْتَابُوٓا۟ ۖ إِلَّآ أَن تَكُونَ تِجَٰرَةً حَاضِرَةًۭ تُدِيرُونَهَا بَيْنَكُمْ فَلَيْسَ عَلَيْكُمْ جُنَاحٌ أَلَّا تَكْتُبُوهَا ۗ وَأَشْهِدُوٓا۟ إِذَا تَبَايَعْتُمْ ۚ وَلَا يُضَآرَّ كَاتِبٌۭ وَلَا شَهِيدٌۭ ۚ وَإِن تَفْعَلُوا۟ فَإِنَّهُۥ فُسُوقٌۢ بِكُمْ ۗ وَٱتَّقُوا۟ ٱللَّهَ ۖ وَيُعَلِّمُكُمُ ٱللَّهُ ۗ وَٱللَّهُ بِكُلِّ شَىْءٍ عَلِيمٌۭ","۞ وَإِن كُنتُمْ عَلَىٰ سَفَرٍۢ وَلَمْ تَجِدُوا۟ كَاتِبًۭا فَرِهَٰنٌۭ مَّقْبُوضَةٌۭ ۖ فَإِنْ أَمِنَ بَعْضُكُم بَعْضًۭا فَلْيُؤَدِّ ٱلَّذِى ٱؤْتُمِنَ أَمَٰنَتَهُۥ وَلْيَتَّقِ ٱللَّهَ رَبَّهُۥ ۗ وَلَا تَكْتُمُوا۟ ٱلشَّهَٰدَةَ ۚ وَمَن يَكْتُمْهَا فَإِنَّهُۥٓ ءَاثِمٌۭ قَلْبُهُۥ ۗ وَٱللَّهُ بِمَا تَعْمَلُونَ عَلِيمٌۭ","لِّلَّهِ مَا فِى ٱلسَّمَٰوَٰتِ وَمَا فِى ٱلْأَرْضِ ۗ وَإِن تُبْدُوا۟ مَا فِىٓ أَنفُسِكُمْ أَوْ تُخْفُوهُ يُحَاسِبْكُم بِهِ ٱللَّهُ ۖ فَيَغْفِرُ لِمَن يَشَآءُ وَيُعَذِّبُ مَن يَشَآءُ ۗ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرٌ","ءَامَنَ ٱلرَّسُولُ بِمَآ أُنزِلَ إِلَيْهِ مِن رَّبِّهِۦ وَٱلْمُؤْمِنُونَ ۚ كُلٌّ ءَامَنَ بِٱللَّهِ وَمَلَٰٓئِكَتِهِۦ وَكُتُبِهِۦ وَرُسُلِهِۦ لَا نُفَرِّقُ بَيْنَ أَحَدٍۢ مِّن رُّسُلِهِۦ ۚ وَقَالُوا۟ سَمِعْنَا وَأَطَعْنَا ۖ غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ ٱلْمَصِيرُ","لَا يُكَلِّفُ ٱللَّهُ نَفْسًا إِلَّا وُسْعَهَا ۚ لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا ٱكْتَسَبَتْ ۗ رَبَّنَا لَا تُؤَاخِذْنَآ إِن نَّسِينَآ أَوْ أَخْطَأْنَا ۚ رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَآ إِصْرًۭا كَمَا حَمَلْتَهُۥ عَلَى ٱلَّذِينَ مِن قَبْلِنَا ۚ رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِۦ ۖ وَٱعْفُ عَنَّا وَٱغْفِرْ لَنَا وَٱرْحَمْنَآ ۚ أَنتَ مَوْلَىٰنَا فَٱنصُرْنَا عَلَى ٱلْقَوْمِ ٱلْكَٰفِرِينَ"],
@@ -454,58 +576,200 @@ const QURAN_AYAHS = [
 ["قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ","مِن شَرِّ مَا خَلَقَ","وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ","وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ","وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ"],
 ["قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ","مَلِكِ ٱلنَّاسِ","إِلَٰهِ ٱلنَّاسِ","مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ","ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ","مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ"],
 ];
+const QURAN_PAGES = [
+[1,1,1,1,1,1,1],
+[2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,9,9,9,9,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,12,12,12,12,12,12,12,13,13,13,13,13,14,14,14,14,14,15,15,15,15,15,15,15,15,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18,18,18,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,22,22,22,22,23,23,23,23,23,23,23,23,24,24,24,24,24,24,24,24,24,24,25,25,25,25,25,25,26,26,26,26,26,26,26,27,27,27,27,27,28,28,28,28,28,29,29,29,29,30,30,30,30,30,30,31,31,31,31,31,31,32,32,32,32,32,32,32,32,33,33,33,33,33,34,34,34,34,35,35,35,35,35,36,36,36,36,36,36,37,37,37,38,38,38,38,39,39,39,39,39,39,39,39,40,40,40,41,41,41,41,42,42,42,42,43,43,43,44,44,44,44,44,45,45,45,45,45,46,46,46,46,46,47,47,47,47,47,47,47,48,49,49,49,49],
+[50,50,50,50,50,50,50,50,50,51,51,51,51,51,51,52,52,52,52,52,52,52,53,53,53,53,53,53,53,54,54,54,54,54,54,54,54,55,55,55,55,55,55,55,55,56,56,56,56,56,56,56,57,57,57,57,57,57,57,57,57,58,58,58,58,58,58,58,58,58,59,59,59,59,59,59,59,60,60,60,60,60,60,61,61,61,61,61,61,61,61,62,62,62,62,62,62,62,62,62,63,63,63,63,63,63,63,63,64,64,64,64,64,64,64,65,65,65,65,65,65,66,66,66,66,66,66,66,66,66,66,66,67,67,67,67,67,67,67,67,68,68,68,68,68,68,68,68,69,69,69,69,69,70,70,70,70,71,71,71,71,71,71,71,71,72,72,72,72,72,72,72,72,73,73,73,73,73,73,73,74,74,74,74,74,74,75,75,75,75,75,75,75,75,76,76,76,76,76,76],
+[77,77,77,77,77,77,78,78,78,78,78,79,79,79,80,80,80,80,80,81,81,81,81,82,82,82,83,83,83,83,83,83,83,84,84,84,84,85,85,85,85,85,85,85,86,86,86,86,86,86,86,87,87,87,87,87,87,87,87,88,88,88,88,88,88,89,89,89,89,89,89,89,89,89,90,90,90,90,90,91,91,91,91,91,91,91,92,92,92,92,92,93,93,93,94,94,94,94,94,94,94,95,95,95,95,96,96,96,96,96,96,96,96,97,97,97,97,97,97,97,97,98,98,98,98,98,98,99,99,99,99,99,99,99,100,100,100,100,100,100,101,101,101,101,101,101,101,102,102,102,102,102,102,102,103,103,103,103,103,103,103,103,104,104,104,104,104,104,104,104,105,105,105,105,105,106],
+[106,106,107,107,107,108,108,108,108,109,109,109,109,110,110,110,110,111,111,111,111,111,111,112,112,112,112,112,112,112,112,113,113,113,113,113,114,114,114,114,114,115,115,115,115,116,116,116,116,116,117,117,117,117,117,117,117,118,118,118,118,118,118,118,119,119,119,119,119,119,120,120,120,120,120,120,121,121,121,121,121,121,122,122,122,122,122,122,122,123,123,123,123,123,123,124,124,124,124,124,124,124,124,125,125,125,125,125,126,126,126,126,126,127,127,127,127,127,127,127],
+[128,128,128,128,128,128,128,128,129,129,129,129,129,129,129,129,129,129,130,130,130,130,130,130,130,130,130,131,131,131,131,131,131,131,131,132,132,132,132,132,132,132,132,132,133,133,133,133,133,133,133,133,134,134,134,134,134,134,134,135,135,135,135,135,135,135,135,135,136,136,136,136,136,137,137,137,137,137,137,137,137,138,138,138,138,138,138,138,138,138,139,139,139,139,140,140,140,140,140,140,140,141,141,141,141,141,141,141,141,141,142,142,142,142,142,142,142,142,143,143,143,143,143,143,144,144,144,144,144,144,144,145,145,145,145,145,145,146,146,146,146,146,147,147,147,147,148,148,148,148,148,149,149,149,149,149,149,150,150,150,150,150,150,150,150],
+[151,151,151,151,151,151,151,151,151,151,151,152,152,152,152,152,152,152,152,152,152,152,153,153,153,153,153,153,153,153,154,154,154,154,154,154,154,155,155,155,155,155,155,156,156,156,156,156,156,156,156,157,157,157,157,157,157,158,158,158,158,158,158,158,158,158,158,159,159,159,159,159,159,160,160,160,160,160,160,160,160,161,161,161,161,161,161,162,162,162,162,162,162,162,162,163,163,163,163,163,163,163,163,163,164,164,164,164,164,164,164,164,164,164,164,164,164,164,164,164,165,165,165,165,165,165,165,165,165,165,166,166,166,166,166,166,166,167,167,167,167,167,167,168,168,168,168,168,168,169,169,169,169,169,169,170,170,170,170,171,171,171,171,172,172,172,172,172,172,172,173,173,173,173,173,173,173,173,174,174,174,174,174,174,174,174,174,175,175,175,175,175,175,175,175,176,176,176,176,176,176,176,176,176,176,176],
+[177,177,177,177,177,177,177,177,178,178,178,178,178,178,178,178,179,179,179,179,179,179,179,179,179,180,180,180,180,180,180,180,180,181,181,181,181,181,181,181,182,182,182,182,182,183,183,183,183,183,183,183,184,184,184,184,184,184,184,184,184,185,185,185,185,185,185,185,185,186,186,186,186,186,186],
+[187,187,187,187,187,187,188,188,188,188,188,188,188,189,189,189,189,189,189,189,190,190,190,190,190,190,191,191,191,191,191,192,192,192,192,192,193,193,193,193,194,194,194,194,194,194,194,195,195,195,195,195,195,195,196,196,196,196,196,196,196,197,197,197,197,197,197,197,198,198,198,198,199,199,199,199,199,199,199,200,200,200,200,200,200,200,201,201,201,201,201,201,201,202,202,202,202,202,202,203,203,203,203,203,203,203,204,204,204,204,204,205,205,205,205,205,205,206,206,206,206,206,207,207,207,207,207,207,207],
+[208,208,208,208,208,208,209,209,209,209,209,209,209,209,210,210,210,210,210,210,211,211,211,211,211,212,212,212,212,212,212,212,212,213,213,213,213,213,213,213,213,213,214,214,214,214,214,214,214,214,214,214,214,215,215,215,215,215,215,215,215,216,216,216,216,216,216,216,216,216,217,217,217,217,217,217,217,217,218,218,218,218,218,218,218,218,218,218,219,219,219,219,219,219,219,219,219,220,220,220,220,220,220,220,220,220,221,221,221],
+[221,221,221,221,221,222,222,222,222,222,222,222,223,223,223,223,223,223,223,224,224,224,224,224,224,224,224,224,225,225,225,225,225,225,225,225,225,226,226,226,226,226,226,226,226,227,227,227,227,227,227,227,227,228,228,228,228,228,228,228,228,228,229,229,229,229,229,229,229,229,229,230,230,230,230,230,230,230,230,230,230,231,231,231,231,231,231,231,232,232,232,232,232,232,232,232,232,233,233,233,233,233,233,233,233,233,233,233,234,234,234,234,234,234,234,234,234,235,235,235,235,235,235],
+[235,235,235,235,236,236,236,236,236,236,236,236,236,236,237,237,237,237,237,237,237,237,238,238,238,238,238,238,238,238,239,239,239,239,239,239,239,240,240,240,240,240,240,241,241,241,241,241,241,241,241,241,242,242,242,242,242,242,242,242,242,242,242,243,243,243,243,243,243,244,244,244,244,244,244,244,244,244,245,245,245,245,245,245,245,245,246,246,246,246,246,246,246,246,246,247,247,247,247,247,247,247,247,248,248,248,248,248,248,248,248],
+[249,249,249,249,249,250,250,250,250,250,250,250,250,251,251,251,251,251,252,252,252,252,252,252,252,252,252,252,253,253,253,253,253,253,254,254,254,254,254,254,254,254,255],
+[255,255,255,255,255,256,256,256,256,256,257,257,257,257,257,257,257,257,258,258,258,258,258,258,259,259,259,259,259,259,259,259,259,260,260,260,260,260,260,260,260,260,261,261,261,261,261,261,261,261,261,261],
+[262,262,262,262,262,262,262,262,262,262,262,262,262,262,262,263,263,263,263,263,263,263,263,263,263,263,263,263,263,263,263,264,264,264,264,264,264,264,264,264,264,264,264,264,264,264,264,264,264,264,264,265,265,265,265,265,265,265,265,265,265,265,265,265,265,265,265,265,265,265,266,266,266,266,266,266,266,266,266,266,266,266,266,266,266,266,266,266,266,266,267,267,267,267,267,267,267,267,267],
+[267,267,267,267,267,267,268,268,268,268,268,268,268,268,269,269,269,269,269,269,269,269,269,269,269,269,270,270,270,270,270,270,270,270,271,271,271,271,271,271,271,271,272,272,272,272,272,272,272,272,272,272,272,272,273,273,273,273,273,273,273,273,273,273,274,274,274,274,274,274,274,274,275,275,275,275,275,275,275,276,276,276,276,276,276,276,276,277,277,277,277,277,277,278,278,278,278,278,278,278,278,278,279,279,279,279,279,279,279,279,280,280,280,280,280,280,280,280,281,281,281,281,281,281,281,281,281,281],
+[282,282,282,282,282,282,282,283,283,283,283,283,283,283,283,283,283,284,284,284,284,284,284,284,284,284,284,285,285,285,285,285,285,285,285,285,285,285,286,286,286,286,286,286,286,286,286,286,286,287,287,287,287,287,287,287,287,287,288,288,288,288,288,288,288,288,289,289,289,289,289,289,289,289,289,290,290,290,290,290,290,290,290,290,290,290,291,291,291,291,291,291,291,291,291,291,292,292,292,292,292,292,292,292,293,293,293,293,293,293,293],
+[293,293,293,293,294,294,294,294,294,294,294,294,294,294,294,295,295,295,295,295,296,296,296,296,296,296,296,297,297,297,297,297,297,297,298,298,298,298,298,298,298,298,298,298,298,299,299,299,299,299,299,299,299,300,300,300,300,300,300,300,300,301,301,301,301,301,301,301,301,301,301,301,301,301,302,302,302,302,302,302,302,302,302,303,303,303,303,303,303,303,303,303,303,303,303,303,303,304,304,304,304,304,304,304,304,304,304,304,304,304],
+[305,305,305,305,305,305,305,305,305,305,305,306,306,306,306,306,306,306,306,306,306,306,306,306,306,307,307,307,307,307,307,307,307,307,307,307,307,307,308,308,308,308,308,308,308,308,308,308,308,308,308,309,309,309,309,309,309,309,309,309,309,309,309,309,310,310,310,310,310,310,310,310,310,310,310,310,311,311,311,311,311,311,311,311,311,311,311,311,311,311,311,311,311,311,311,312,312,312],
+[312,312,312,312,312,312,312,312,312,312,312,312,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,313,314,314,314,314,314,314,314,314,314,314,314,314,314,314,315,315,315,315,315,315,315,315,315,315,315,315,315,316,316,316,316,316,316,316,316,316,316,316,316,317,317,317,317,317,317,317,317,317,317,317,318,318,318,318,318,318,318,318,318,318,318,319,319,319,319,319,319,319,319,319,319,319,319,319,319,319,320,320,320,320,320,320,320,320,320,320,320,320,321,321,321,321,321,321,321,321,321,321],
+[322,322,322,322,322,322,322,322,322,322,323,323,323,323,323,323,323,323,323,323,323,323,323,323,324,324,324,324,324,324,324,324,324,324,324,325,325,325,325,325,325,325,325,325,326,326,326,326,326,326,326,326,326,326,326,326,326,327,327,327,327,327,327,327,327,327,327,327,327,327,327,327,328,328,328,328,328,328,328,328,328,329,329,329,329,329,329,329,329,329,330,330,330,330,330,330,330,330,330,330,330,331,331,331,331,331,331,331,331,331,331,331],
+[332,332,332,332,332,333,333,333,333,333,333,333,333,333,333,334,334,334,334,334,334,334,334,335,335,335,335,335,335,335,336,336,336,336,336,336,336,336,337,337,337,337,337,337,337,337,338,338,338,338,338,338,338,338,338,339,339,339,339,339,339,339,339,339,340,340,340,340,340,340,340,340,341,341,341,341,341,341],
+[342,342,342,342,342,342,342,342,342,342,342,342,342,342,342,342,342,343,343,343,343,343,343,343,343,343,343,344,344,344,344,344,344,344,344,344,344,344,344,344,344,344,345,345,345,345,345,345,345,345,345,345,345,345,345,345,345,345,345,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,347,347,347,347,347,347,347,347,347,347,347,347,347,347,347,348,348,348,348,348,348,348,348,348,348,348,348,348,348,348,349,349,349,349,349,349,349,349,349,349,349,349,349,349],
+[350,350,350,350,350,350,350,350,350,350,351,351,351,351,351,351,351,351,351,351,352,352,352,352,352,352,352,353,353,353,353,354,354,354,354,354,355,355,355,355,355,355,355,356,356,356,356,356,356,356,356,356,356,357,357,357,357,357,358,358,358,359,359,359],
+[359,359,360,360,360,360,360,360,360,360,360,361,361,361,361,361,361,361,361,361,362,362,362,362,362,362,362,362,362,362,362,362,363,363,363,363,363,363,363,363,363,363,363,364,364,364,364,364,364,364,364,364,364,364,364,365,365,365,365,365,365,365,365,365,365,365,365,366,366,366,366,366,366,366,366,366,366],
+[367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,368,368,368,368,368,368,368,368,368,368,368,368,368,368,368,368,368,368,368,368,369,369,369,369,369,369,369,369,369,369,369,369,369,369,369,369,369,369,369,369,369,370,370,370,370,370,370,370,370,370,370,370,370,370,370,370,370,370,370,370,370,370,370,370,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,371,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,372,373,373,373,373,373,373,373,373,373,373,373,373,373,373,373,373,373,373,373,373,373,373,373,374,374,374,374,374,374,374,374,374,374,374,374,374,374,374,374,374,374,374,374,374,374,374,374,375,375,375,375,375,375,375,375,375,375,375,375,375,375,375,375,375,375,375,375,375,375,375,376,376,376,376,376,376,376,376,376,376,376,376,376,376,376,376,376,376,376,376,376],
+[377,377,377,377,377,377,377,377,377,377,377,377,377,378,378,378,378,378,378,378,378,378,379,379,379,379,379,379,379,379,379,379,379,379,379,380,380,380,380,380,380,380,380,380,381,381,381,381,381,381,381,381,381,381,381,382,382,382,382,382,382,382,382,383,383,383,383,383,383,383,383,383,383,383,383,383,384,384,384,384,384,384,384,384,384,384,384,384,385,385,385,385,385],
+[385,385,385,385,385,386,386,386,386,386,386,386,386,387,387,387,387,387,387,387,387,388,388,388,388,388,388,388,389,389,389,389,389,389,389,390,390,390,390,390,390,390,390,391,391,391,391,391,391,391,392,392,392,392,392,392,392,392,392,393,393,393,393,393,393,393,393,393,393,393,394,394,394,394,394,394,394,395,395,395,395,395,395,395,396,396,396,396],
+[396,396,396,396,396,396,397,397,397,397,397,397,397,397,398,398,398,398,398,398,398,398,398,399,399,399,399,399,399,399,400,400,400,400,400,400,400,400,401,401,401,401,401,401,401,402,402,402,402,402,402,402,403,403,403,403,403,403,403,403,403,403,403,404,404,404,404,404,404],
+[404,404,404,404,404,405,405,405,405,405,405,405,405,405,405,406,406,406,406,406,406,406,406,406,407,407,407,407,407,407,407,407,408,408,408,408,408,408,408,408,408,409,409,409,409,409,409,409,409,409,410,410,410,410,410,410,410,410,410,410],
+[411,411,411,411,411,411,411,411,411,411,411,412,412,412,412,412,412,412,412,413,413,413,413,413,413,413,413,413,414,414,414,414,414,414],
+[415,415,415,415,415,415,415,415,415,415,415,416,416,416,416,416,416,416,416,416,417,417,417,417,417,417,417,417,417,417],
+[418,418,418,418,418,418,419,419,419,419,419,419,419,419,419,420,420,420,420,420,420,420,421,421,421,421,421,421,421,421,422,422,422,422,422,423,423,423,423,423,423,423,423,424,424,424,424,424,424,424,425,425,425,425,426,426,426,426,426,426,426,426,427,427,427,427,427,427,427,427,427,427,427],
+[428,428,428,428,428,428,428,429,429,429,429,429,429,429,430,430,430,430,430,430,430,430,431,431,431,431,431,431,431,431,431,432,432,432,432,432,432,432,432,433,433,433,433,433,433,433,433,433,434,434,434,434,434,434],
+[434,434,434,435,435,435,435,435,435,435,435,436,436,436,436,436,436,436,437,437,437,437,437,437,437,437,437,437,437,437,438,438,438,438,438,438,438,438,439,439,439,439,439,439,440],
+[440,440,440,440,440,440,440,440,440,440,440,440,441,441,441,441,441,441,441,441,441,441,441,441,441,441,441,442,442,442,442,442,442,442,442,442,442,442,442,442,443,443,443,443,443,443,443,443,443,443,443,443,443,443,444,444,444,444,444,444,444,444,444,444,444,444,444,444,444,444,445,445,445,445,445,445,445,445,445,445,445,445,445],
+[446,446,446,446,446,446,446,446,446,446,446,446,446,446,446,446,446,446,446,446,446,446,446,446,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,447,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,448,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,450,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,451,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452,452],
+[453,453,453,453,453,453,453,453,453,453,453,453,453,453,453,453,454,454,454,454,454,454,454,454,454,454,455,455,455,455,455,455,455,455,455,455,455,455,455,455,455,455,456,456,456,456,456,456,456,456,456,456,456,456,456,456,456,456,456,456,456,457,457,457,457,457,457,457,457,457,457,457,457,457,457,457,457,457,457,457,457,457,457,458,458,458,458,458],
+[458,458,458,458,458,459,459,459,459,459,460,460,460,460,460,460,460,460,460,460,460,461,461,461,461,461,461,461,461,461,461,462,462,462,462,462,462,462,462,462,463,463,463,463,463,463,463,464,464,464,464,464,464,464,464,464,465,465,465,465,465,465,465,465,465,465,465,466,466,466,466,466,466,466,467],
+[467,467,467,467,467,467,467,468,468,468,468,468,468,468,468,468,469,469,469,469,469,469,469,469,469,470,470,470,470,470,470,470,470,471,471,471,471,471,471,471,472,472,472,472,472,472,472,472,472,473,473,473,473,473,473,473,473,473,474,474,474,474,474,474,474,474,475,475,475,475,475,475,475,475,475,475,475,476,476,476,476,476,476,476,476],
+[477,477,477,477,477,477,477,477,477,477,477,478,478,478,478,478,478,478,478,478,479,479,479,479,479,479,479,479,479,480,480,480,480,480,480,480,480,480,481,481,481,481,481,481,481,481,482,482,482,482,482,482,482,482],
+[483,483,483,483,483,483,483,483,483,483,484,484,484,484,484,485,485,485,485,485,485,485,486,486,486,486,486,486,486,486,486,487,487,487,487,487,487,487,487,487,487,487,487,487,488,488,488,488,488,488,488,489,489],
+[489,489,489,489,489,489,489,489,489,489,490,490,490,490,490,490,490,490,490,490,490,490,491,491,491,491,491,491,491,491,491,491,491,492,492,492,492,492,492,492,492,492,492,492,492,492,492,493,493,493,493,493,493,493,493,493,493,493,493,493,494,494,494,494,494,494,494,494,494,494,494,494,494,495,495,495,495,495,495,495,495,495,495,495,495,495,495,495,495],
+[496,496,496,496,496,496,496,496,496,496,496,496,496,496,496,496,496,496,497,497,497,497,497,497,497,497,497,497,497,497,497,497,497,497,497,497,497,497,497,498,498,498,498,498,498,498,498,498,498,498,498,498,498,498,498,498,498,498,498],
+[499,499,499,499,499,499,499,499,499,499,499,499,499,500,500,500,500,500,500,500,500,500,501,501,501,501,501,501,501,501,501,501,502,502,502,502,502],
+[502,502,502,502,502,503,503,503,503,503,503,503,503,503,504,504,504,504,504,504,505,505,505,505,505,505,505,505,506,506,506,506,506,506,506],
+[507,507,507,507,507,507,507,507,507,507,507,508,508,508,508,508,508,508,508,509,509,509,509,509,509,509,509,509,509,510,510,510,510,510,510,510,510,510],
+[511,511,511,511,511,511,511,511,511,512,512,512,512,512,512,513,513,513,513,513,513,513,513,514,514,514,514,514,515],
+[515,515,515,515,516,516,516,516,516,516,516,517,517,517,517,517,517,517],
+[518,518,518,518,518,518,518,518,518,518,518,518,518,518,518,519,519,519,519,519,519,519,519,519,519,519,519,519,519,519,519,519,519,519,519,520,520,520,520,520,520,520,520,520,520],
+[520,520,520,520,520,520,521,521,521,521,521,521,521,521,521,521,521,521,521,521,521,521,521,521,521,521,521,521,521,521,522,522,522,522,522,522,522,522,522,522,522,522,522,522,522,522,522,522,522,522,522,523,523,523,523,523,523,523,523,523],
+[523,523,523,523,523,523,523,523,523,523,523,523,523,523,524,524,524,524,524,524,524,524,524,524,524,524,524,524,524,524,524,525,525,525,525,525,525,525,525,525,525,525,525,525,525,525,525,525,525],
+[526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,526,527,527,527,527,527,527,527,527,527,527,527,527,527,527,527,527,527,527,528,528,528,528,528,528,528,528,528,528,528,528,528,528,528,528,528,528],
+[528,528,528,528,528,528,529,529,529,529,529,529,529,529,529,529,529,529,529,529,529,529,529,529,529,529,529,530,530,530,530,530,530,530,530,530,530,530,530,530,530,530,530,530,530,530,530,530,530,531,531,531,531,531,531],
+[531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,532,532,532,532,532,532,532,532,532,532,532,532,532,532,532,532,532,532,532,532,532,532,532,532,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,533,534,534,534,534,534,534,534,534,534,534,534],
+[534,534,534,534,534,534,534,534,534,534,534,534,534,534,534,534,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,535,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,536,537,537,537,537,537,537,537,537,537,537,537,537,537,537,537,537,537,537,537,537],
+[537,537,537,538,538,538,538,538,538,538,538,539,539,539,539,539,539,539,540,540,540,540,540,540,541,541,541,541,541],
+[542,542,542,542,542,542,543,543,543,543,543,544,544,544,544,544,544,544,544,544,544,545],
+[545,545,545,546,546,546,546,546,546,547,547,547,547,547,547,547,548,548,548,548,548,548,548,548],
+[549,549,549,549,549,550,550,550,550,550,550,551,551],
+[551,551,551,551,551,552,552,552,552,552,552,552,552,552],
+[553,553,553,553,553,553,553,553,554,554,554],
+[554,554,554,554,555,555,555,555,555,555,555],
+[556,556,556,556,556,556,556,556,556,557,557,557,557,557,557,557,557,557],
+[558,558,558,558,558,559,559,559,559,559,559,559],
+[560,560,560,560,560,560,560,561,561,561,561,561],
+[562,562,562,562,562,562,562,562,562,562,562,562,563,563,563,563,563,563,563,563,563,563,563,563,563,563,564,564,564,564],
+[564,564,564,564,564,564,564,564,564,564,564,564,564,564,564,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,566,566,566,566,566,566,566,566,566,566],
+[566,566,566,566,566,566,566,566,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,567,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568],
+[568,568,568,568,568,568,568,568,568,568,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,569,570,570,570,570,570],
+[570,570,570,570,570,570,570,570,570,570,571,571,571,571,571,571,571,571,571,571,571,571,571,571,571,571,571,571],
+[572,572,572,572,572,572,572,572,572,572,572,572,572,573,573,573,573,573,573,573,573,573,573,573,573,573,573,573],
+[574,574,574,574,574,574,574,574,574,574,574,574,574,574,574,574,574,574,574,575],
+[575,575,575,575,575,575,575,575,575,575,575,575,575,575,575,575,575,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,576,577,577,577,577,577,577,577,577,577],
+[577,577,577,577,577,577,577,577,577,577,577,577,577,577,577,577,577,577,577,578,578,578,578,578,578,578,578,578,578,578,578,578,578,578,578,578,578,578,578,578],
+[578,578,578,578,578,579,579,579,579,579,579,579,579,579,579,579,579,579,579,579,579,579,579,579,579,580,580,580,580,580,580],
+[580,580,580,580,580,580,580,580,580,580,580,580,580,580,580,580,580,580,580,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581,581],
+[582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,582,583,583,583,583,583,583,583,583,583,583],
+[583,583,583,583,583,583,583,583,583,583,583,583,583,583,583,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584,584],
+[585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585,585],
+[586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586,586],
+[587,587,587,587,587,587,587,587,587,587,587,587,587,587,587,587,587,587,587],
+[587,587,587,587,587,587,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,588,589,589],
+[589,589,589,589,589,589,589,589,589,589,589,589,589,589,589,589,589,589,589,589,589,589,589,589,589],
+[590,590,590,590,590,590,590,590,590,590,590,590,590,590,590,590,590,590,590,590,590,590],
+[591,591,591,591,591,591,591,591,591,591,591,591,591,591,591,591,591],
+[591,591,591,591,591,591,591,591,591,591,591,591,591,591,591,592,592,592,592],
+[592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592,592],
+[593,593,593,593,593,593,593,593,593,593,593,593,593,593,593,593,593,593,593,593,593,593,593,594,594,594,594,594,594,594],
+[594,594,594,594,594,594,594,594,594,594,594,594,594,594,594,594,594,594,594,594],
+[595,595,595,595,595,595,595,595,595,595,595,595,595,595,595],
+[595,595,595,595,595,595,595,595,595,595,595,595,595,595,596,596,596,596,596,596,596],
+[596,596,596,596,596,596,596,596,596,596,596],
+[596,596,596,596,596,596,596,596],
+[597,597,597,597,597,597,597,597],
+[597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597],
+[598,598,598,598,598],
+[598,598,598,598,598,598,598,599],
+[599,599,599,599,599,599,599,599],
+[599,599,599,599,599,599,599,599,599,600,600],
+[600,600,600,600,600,600,600,600,600,600,600],
+[600,600,600,600,600,600,600,600],
+[601,601,601],
+[601,601,601,601,601,601,601,601,601],
+[601,601,601,601,601],
+[602,602,602,602],
+[602,602,602,602,602,602,602],
+[602,602,602],
+[603,603,603,603,603,603],
+[603,603,603],
+[603,603,603,603,603],
+[604,604,604,604],
+[604,604,604,604,604],
+[604,604,604,604,604,604],
+];
+const SURAHS = [
+["الفاتحة",7,"مكية"],["البقرة",286,"مدنية"],["آل عمران",200,"مدنية"],["النساء",176,"مدنية"],["المائدة",120,"مدنية"],["الأنعام",165,"مكية"],["الأعراف",206,"مكية"],["الأنفال",75,"مدنية"],["التوبة",129,"مدنية"],["يونس",109,"مكية"],["هود",123,"مكية"],["يوسف",111,"مكية"],["الرعد",43,"مدنية"],["إبراهيم",52,"مكية"],["الحجر",99,"مكية"],["النحل",128,"مكية"],["الإسراء",111,"مكية"],["الكهف",110,"مكية"],["مريم",98,"مكية"],["طه",135,"مكية"],["الأنبياء",112,"مكية"],["الحج",78,"مدنية"],["المؤمنون",118,"مكية"],["النور",64,"مدنية"],["الفرقان",77,"مكية"],["الشعراء",227,"مكية"],["النمل",93,"مكية"],["القصص",88,"مكية"],["العنكبوت",69,"مكية"],["الروم",60,"مكية"],["لقمان",34,"مكية"],["السجدة",30,"مكية"],["الأحزاب",73,"مدنية"],["سبأ",54,"مكية"],["فاطر",45,"مكية"],["يس",83,"مكية"],["الصافات",182,"مكية"],["ص",88,"مكية"],["الزمر",75,"مكية"],["غافر",85,"مكية"],["فصلت",54,"مكية"],["الشورى",53,"مكية"],["الزخرف",89,"مكية"],["الدخان",59,"مكية"],["الجاثية",37,"مكية"],["الأحقاف",35,"مكية"],["محمد",38,"مدنية"],["الفتح",29,"مدنية"],["الحجرات",18,"مدنية"],["ق",45,"مكية"],["الذاريات",60,"مكية"],["الطور",49,"مكية"],["النجم",62,"مكية"],["القمر",55,"مكية"],["الرحمن",78,"مدنية"],["الواقعة",96,"مكية"],["الحديد",29,"مدنية"],["المجادلة",22,"مدنية"],["الحشر",24,"مدنية"],["الممتحنة",13,"مدنية"],["الصف",14,"مدنية"],["الجمعة",11,"مدنية"],["المنافقون",11,"مدنية"],["التغابن",18,"مدنية"],["الطلاق",12,"مدنية"],["التحريم",12,"مدنية"],["الملك",30,"مكية"],["القلم",52,"مكية"],["الحاقة",52,"مكية"],["المعارج",44,"مكية"],["نوح",28,"مكية"],["الجن",28,"مكية"],["المزمل",20,"مكية"],["المدثر",56,"مكية"],["القيامة",40,"مكية"],["الإنسان",31,"مدنية"],["المرسلات",50,"مكية"],["النبأ",40,"مكية"],["النازعات",46,"مكية"],["عبس",42,"مكية"],["التكوير",29,"مكية"],["الانفطار",19,"مكية"],["المطففين",36,"مكية"],["الانشقاق",25,"مكية"],["البروج",22,"مكية"],["الطارق",17,"مكية"],["الأعلى",19,"مكية"],["الغاشية",26,"مكية"],["الفجر",30,"مكية"],["البلد",20,"مكية"],["الشمس",15,"مكية"],["الليل",21,"مكية"],["الضحى",11,"مكية"],["الشرح",8,"مكية"],["التين",8,"مكية"],["العلق",19,"مكية"],["القدر",5,"مكية"],["البينة",8,"مدنية"],["الزلزلة",8,"مدنية"],["العاديات",11,"مكية"],["القارعة",11,"مكية"],["التكاثر",8,"مكية"],["العصر",3,"مكية"],["الهمزة",9,"مكية"],["الفيل",5,"مكية"],["قريش",4,"مكية"],["الماعون",7,"مكية"],["الكوثر",3,"مكية"],["الكافرون",6,"مكية"],["النصر",3,"مدنية"],["المسد",5,"مكية"],["الإخلاص",4,"مكية"],["الفلق",5,"مكية"],["الناس",6,"مكية"],
+];
+const JUZ_BOUNDS = [
+[1,1,2,141],[2,142,2,252],[2,253,3,92],[3,93,4,23],[4,24,4,147],[4,148,5,81],[5,82,6,110],[6,111,7,87],[7,88,8,40],[8,41,9,92],[9,93,11,5],[11,6,12,52],[12,53,14,52],[15,1,16,128],[17,1,18,74],[18,75,20,135],[21,1,22,78],[23,1,25,20],[25,21,27,55],[27,56,29,45],[29,46,33,30],[33,31,36,27],[36,28,39,31],[39,32,41,46],[41,47,45,37],[46,1,51,30],[51,31,57,29],[58,1,66,12],[67,1,77,50],[78,1,114,6],
+];
 
-  var SURAHS = [
-    ["الفاتحة",7],["البقرة",286],["آل عمران",200],["النساء",176],["المائدة",120],
-    ["الأنعام",165],["الأعراف",206],["الأنفال",75],["التوبة",129],["يونس",109],
-    ["هود",123],["يوسف",111],["الرعد",43],["إبراهيم",52],["الحجر",99],
-    ["النحل",128],["الإسراء",111],["الكهف",110],["مريم",98],["طه",135],
-    ["الأنبياء",112],["الحج",78],["المؤمنون",118],["النور",64],["الفرقان",77],
-    ["الشعراء",227],["النمل",93],["القصص",88],["العنكبوت",69],["الروم",60],
-    ["لقمان",34],["السجدة",30],["الأحزاب",73],["سبأ",54],["فاطر",45],
-    ["يس",83],["الصافات",182],["ص",88],["الزمر",75],["غافر",85],
-    ["فصلت",54],["الشورى",53],["الزخرف",89],["الدخان",59],["الجاثية",37],
-    ["الأحقاف",35],["محمد",38],["الفتح",29],["الحجرات",18],["ق",45],
-    ["الذاريات",60],["الطور",49],["النجم",62],["القمر",55],["الرحمن",78],
-    ["الواقعة",96],["الحديد",29],["المجادلة",22],["الحشر",24],["الممتحنة",13],
-    ["الصف",14],["الجمعة",11],["المنافقون",11],["التغابن",18],["الطلاق",12],
-    ["التحريم",12],["الملك",30],["القلم",52],["الحاقة",52],["المعارج",44],
-    ["نوح",28],["الجن",28],["المزمل",20],["المدثر",56],["القيامة",40],
-    ["الإنسان",31],["المرسلات",50],["النبأ",40],["النازعات",46],["عبس",42],
-    ["التكوير",29],["الانفطار",19],["المطففين",36],["الانشقاق",25],["البروج",22],
-    ["الطارق",17],["الأعلى",19],["الغاشية",26],["الفجر",30],["البلد",20],
-    ["الشمس",15],["الليل",21],["الضحى",11],["الشرح",8],["التين",8],
-    ["العلق",19],["القدر",5],["البينة",8],["الزلزلة",8],["العاديات",11],
-    ["القارعة",11],["التكاثر",8],["العصر",3],["الهمزة",9],["الفيل",5],
-    ["قريش",4],["الماعون",7],["الكوثر",3],["الكافرون",6],["النصر",3],
-    ["المسد",5],["الإخلاص",4],["الفلق",5],["الناس",6]
-  ];
+const MORNING_ADHKAR = [
+  {text:"أَعُوذُ بِاللَّهِ مِنَ الشَّيطَانِ الرَّجِيمِ ﴿اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ لَّهُ مَا فِي السَّمَوَاتِ وَمَا فِي الأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلاَ يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلاَّ بِمَا شَاء وَسِعَ كُرْسِيُّهُ السَّمَوَاتِ وَالْأَرْضَ وَلاَ يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾.",repeat:1},
+  {text:"بسم الله الرحمن الرحيم ﴿قُلْ هُوَ اللَّهُ أَحَدٌ* اللَّهُ الصَّمَدُ* لَمْ يَلِدْ وَلَمْ يُولَدْ* وَلَمْ يَكُن لَّهُ كُفُواً أَحَدٌ﴾.  بسم الله الرحمن الرحيم ﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ* مِن شَرِّ مَا خَلَقَ* وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ* وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ* وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾.  بسم الله الرحمن الرحيم ﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ* مَلِكِ النَّاسِ* إِلَهِ النَّاسِ* مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ* الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ* مِنَ الْجِنَّةِ وَ النَّاسِ﴾ (ثلاثَ مرَّاتٍ).",repeat:3},
+  {text:"((أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيرَ مَا بَعْدَهُ ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي  هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ)). [ وإذا أمسى قال: أمسينا وأمسى الملك للَّه] [وإذا أمسى قال: رب أسألك خير ما في هذه الليلة، وخير ما بعدها، وأعوذ بك من شر ما في هذه الليلة، وشر ما بعدها.]",repeat:1},
+  {text:"((اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا ، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ)). [وإذا أمسى قال: اللَّهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير.]",repeat:1},
+  {text:"((اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لاَ يَغْفِرُ الذُّنوبَ إِلاَّ أَنْتَ)).",repeat:1},
+  {text:"((اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلاَئِكَتِكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَكَ، وَأَنَّ مُحَمَّداً عَبْدُكَ وَرَسُولُكَ)) (أربعَ مَرَّاتٍ).[ وإذا أمسى قال: اللَّهم إني أمسيت...]",repeat:4},
+  {text:"((اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لاَ شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ)). [وإذا أمسى قال: اللَّهم ما أمسى بي...]",repeat:1},
+  {text:"((اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لاَ إِلَهَ إِلاَّ أَنْتَ. اللَّهُمَّ  إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ، وَالفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ القَبْرِ، لاَ إِلَهَ إِلاَّ أَنْتَ)) (ثلاثَ مرَّاتٍ).",repeat:3},
+  {text:"((حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيهِ تَوَكَّلتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ)) (سَبْعَ مَرّاتٍ).",repeat:1},
+  {text:"((اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ: فِي دِينِي وَدُنْيَايَ وَأَهْلِي، وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَينِ يَدَيَّ، وَمِنْ خَلْفِي، وَعَنْ يَمِينِي، وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي)).",repeat:1},
+  {text:"((اللَّهُمَّ عَالِمَ الغَيْبِ وَالشَّهَادَةِ فَاطِرَ السَّمَوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطانِ وَشَرَكِهِ، وَأَنْ أَقْتَرِفَ عَلَى  نَفْسِي سُوءاً، أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ)).",repeat:1},
+  {text:"((بِسْمِ اللَّهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلاَ فِي السّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ)) (ثلاثَ مرَّاتٍ).",repeat:3},
+  {text:"((رَضِيتُ بِاللَّهِ رَبَّاً، وَبِالْإِسْلاَمِ دِيناً، وَبِمُحَمَّدٍ صلى الله عليه وسلم نَبِيّاً)) (ثلاثَ مرَّاتٍ).",repeat:3},
+  {text:"((يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغيثُ أَصْلِحْ لِي شَأْنِيَ كُلَّهُ وَلاَ تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ)).",repeat:1},
+  {text:"((أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُـمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ:فَتْحَهُ، وَنَصْرَهُ، وَنورَهُ، وَبَرَكَتَهُ، وَهُدَاهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهِ وَشَرِّ مَا بَعْدَهُ)). [وإذا أمسى قال: أمسينا وأمسى الملك للَّه ربّ العالمين اللَّهم إني أسألك خير هذه الليلة: فتحها، ونصرها، ونورها، وبركتها، وهداها، وأعوذ بك من شر ما فيها، وشر ما بعدها.]",repeat:1},
+  {text:"((أَصْبَحْنا عَلَى فِطْرَةِ الْإِسْلاَمِ، وَعَلَى كَلِمَةِ الْإِخْلاَصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ صلى الله عليه وسلم، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ، حَنِيفاً مُسْلِماً وَمَا كَانَ مِنَ الْمُشرِكِينَ)). [وإذا أمسى قال: أمسينا على فطرة الإسلام...]",repeat:1},
+  {text:"((سُبْحَانَ اللَّهِ وَبِحَمْدِهِ)) (مائة مرَّةٍ).",repeat:100},
+  {text:"((لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ)) (عشرَ مرَّات) ، أَوْ (مرَّةً واحدةً عندَ الكَسَلِ).",repeat:10},
+  {text:"((لاَ إِلَهَ إِلاَّ اللَّهُ، وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ)) (مائةَ مرَّةٍ إذا أصبحَ).",repeat:100},
+  {text:"((سُبْحَانَ اللَّهِ وَبِحَمْدِهِ: عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ)) (ثلاثَ مرَّاتٍ إذا أصبحَ).",repeat:3},
+  {text:"((اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْماً نَافِعاً، وَرِزْقاً طَيِّباً، وَعَمَلاً مُتَقَبَّلاً)) (إذا أصبحَ).",repeat:1},
+  {text:"((أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ)) (مِائَةَ مَرَّةٍ فِي الْيَوْمِ).",repeat:100},
+  {text:"((اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبَيِّنَا مُحَمَّدٍ)) (عشرَ مرَّاتٍ).",repeat:10},
+];
+const EVENING_ADHKAR = [
+  {text:"أَعُوذُ بِاللَّهِ مِنَ الشَّيطَانِ الرَّجِيمِ ﴿اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ لَّهُ مَا فِي السَّمَوَاتِ وَمَا فِي الأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلاَ يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلاَّ بِمَا شَاء وَسِعَ كُرْسِيُّهُ السَّمَوَاتِ وَالْأَرْضَ وَلاَ يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾.",repeat:1},
+  {text:"بسم الله الرحمن الرحيم ﴿قُلْ هُوَ اللَّهُ أَحَدٌ* اللَّهُ الصَّمَدُ* لَمْ يَلِدْ وَلَمْ يُولَدْ* وَلَمْ يَكُن لَّهُ كُفُواً أَحَدٌ﴾.  بسم الله الرحمن الرحيم ﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ* مِن شَرِّ مَا خَلَقَ* وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ* وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ* وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾.  بسم الله الرحمن الرحيم ﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ* مَلِكِ النَّاسِ* إِلَهِ النَّاسِ* مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ* الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ* مِنَ الْجِنَّةِ وَ النَّاسِ﴾ (ثلاثَ مرَّاتٍ).",repeat:3},
+  {text:"((أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيرَ مَا بَعْدَهُ ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي  هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ)). [ وإذا أمسى قال: أمسينا وأمسى الملك للَّه] [وإذا أمسى قال: رب أسألك خير ما في هذه الليلة، وخير ما بعدها، وأعوذ بك من شر ما في هذه الليلة، وشر ما بعدها.]",repeat:1,note:"[وإذا أمسى قال: أمسينا وأمسى الملك للَّه] [وإذا أمسى قال: رب أسألك خير ما في هذه الليلة، وخير ما بعدها، وأعوذ بك من شر ما في هذه الليلة، وشر ما بعدها.]"},
+  {text:"((اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا ، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ)). [وإذا أمسى قال: اللَّهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير.]",repeat:1,note:"[وإذا أمسى قال: اللَّهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير.]"},
+  {text:"((اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لاَ يَغْفِرُ الذُّنوبَ إِلاَّ أَنْتَ)).",repeat:1},
+  {text:"((اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلاَئِكَتِكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَكَ، وَأَنَّ مُحَمَّداً عَبْدُكَ وَرَسُولُكَ)) (أربعَ مَرَّاتٍ).[ وإذا أمسى قال: اللَّهم إني أمسيت...]",repeat:4,note:"[وإذا أمسى قال: اللَّهم إني أمسيت...]"},
+  {text:"((اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لاَ شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ)). [وإذا أمسى قال: اللَّهم ما أمسى بي...]",repeat:1,note:"[وإذا أمسى قال: اللَّهم ما أمسى بي...]"},
+  {text:"((اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لاَ إِلَهَ إِلاَّ أَنْتَ. اللَّهُمَّ  إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ، وَالفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ القَبْرِ، لاَ إِلَهَ إِلاَّ أَنْتَ)) (ثلاثَ مرَّاتٍ).",repeat:3},
+  {text:"((حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيهِ تَوَكَّلتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ)) (سَبْعَ مَرّاتٍ).",repeat:1},
+  {text:"((اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ: فِي دِينِي وَدُنْيَايَ وَأَهْلِي، وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَينِ يَدَيَّ، وَمِنْ خَلْفِي، وَعَنْ يَمِينِي، وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي)).",repeat:1},
+  {text:"((اللَّهُمَّ عَالِمَ الغَيْبِ وَالشَّهَادَةِ فَاطِرَ السَّمَوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطانِ وَشَرَكِهِ، وَأَنْ أَقْتَرِفَ عَلَى  نَفْسِي سُوءاً، أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ)).",repeat:1},
+  {text:"((بِسْمِ اللَّهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلاَ فِي السّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ)) (ثلاثَ مرَّاتٍ).",repeat:3},
+  {text:"((رَضِيتُ بِاللَّهِ رَبَّاً، وَبِالْإِسْلاَمِ دِيناً، وَبِمُحَمَّدٍ صلى الله عليه وسلم نَبِيّاً)) (ثلاثَ مرَّاتٍ).",repeat:3},
+  {text:"((يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغيثُ أَصْلِحْ لِي شَأْنِيَ كُلَّهُ وَلاَ تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ)).",repeat:1},
+  {text:"((أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُـمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ:فَتْحَهُ، وَنَصْرَهُ، وَنورَهُ، وَبَرَكَتَهُ، وَهُدَاهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهِ وَشَرِّ مَا بَعْدَهُ)). [وإذا أمسى قال: أمسينا وأمسى الملك للَّه ربّ العالمين اللَّهم إني أسألك خير هذه الليلة: فتحها، ونصرها، ونورها، وبركتها، وهداها، وأعوذ بك من شر ما فيها، وشر ما بعدها.]",repeat:1,note:"[وإذا أمسى قال: أمسينا وأمسى الملك للَّه ربّ العالمين اللَّهم إني أسألك خير هذه الليلة: فتحها، ونصرها، ونورها، وبركتها، وهداها، وأعوذ بك من شر ما فيها، وشر ما بعدها.]"},
+  {text:"((أَصْبَحْنا عَلَى فِطْرَةِ الْإِسْلاَمِ، وَعَلَى كَلِمَةِ الْإِخْلاَصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ صلى الله عليه وسلم، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ، حَنِيفاً مُسْلِماً وَمَا كَانَ مِنَ الْمُشرِكِينَ)). [وإذا أمسى قال: أمسينا على فطرة الإسلام...]",repeat:1,note:"[وإذا أمسى قال: أمسينا على فطرة الإسلام...]"},
+  {text:"((سُبْحَانَ اللَّهِ وَبِحَمْدِهِ)) (مائة مرَّةٍ).",repeat:100},
+  {text:"((لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ)) (عشرَ مرَّات) ، أَوْ (مرَّةً واحدةً عندَ الكَسَلِ).",repeat:10},
+  {text:"((أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ)) (مِائَةَ مَرَّةٍ فِي الْيَوْمِ).",repeat:100},
+  {text:"((أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ)) (ثلاثَ مرَّاتٍ إذا أمسى).",repeat:3},
+  {text:"((اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبَيِّنَا مُحَمَّدٍ)) (عشرَ مرَّاتٍ).",repeat:10},
+];
 
-  // حدود الأجزاء الثلاثين وفق ترتيب المصحف العثماني: [سورة البداية, آية البداية, سورة النهاية, آية النهاية]
-  var JUZ_BOUNDS = [
-    [1,1,2,141],[2,142,2,252],[2,253,3,92],[3,93,4,23],[4,24,4,147],
-    [4,148,5,81],[5,82,6,110],[6,111,7,87],[7,88,8,40],[8,41,9,92],
-    [9,93,11,5],[11,6,12,52],[12,53,14,52],[15,1,16,128],[17,1,18,74],
-    [18,75,20,135],[21,1,22,78],[23,1,25,20],[25,21,27,55],[27,56,29,45],
-    [29,46,33,30],[33,31,36,27],[36,28,39,31],[39,32,41,46],[41,47,45,37],
-    [46,1,51,30],[51,31,57,29],[58,1,66,12],[67,1,77,50],[78,1,114,6]
-  ];
-
-  var JUZ_ORDINALS = [
-    "الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع","الثامن","التاسع","العاشر",
-    "الحادي عشر","الثاني عشر","الثالث عشر","الرابع عشر","الخامس عشر","السادس عشر","السابع عشر","الثامن عشر","التاسع عشر","العشرون",
-    "الحادي والعشرون","الثاني والعشرون","الثالث والعشرون","الرابع والعشرون","الخامس والعشرون",
-    "السادس والعشرون","السابع والعشرون","الثامن والعشرون","التاسع والعشرون","الثلاثون"
-  ];
-
+  // ============================================================
+  // Helpers
+  // ============================================================
   var ARABIC_DIGITS = "٠١٢٣٤٥٦٧٨٩";
-  function toArabicIndic(n){
-    return String(n).replace(/[0-9]/g, function(d){ return ARABIC_DIGITS[d]; });
-  }
-
+  function toArabicIndic(n){ return String(n).replace(/[0-9]/g, function(d){ return ARABIC_DIGITS[d]; }); }
+  function pad2(n){ return n < 10 ? "0"+n : ""+n; }
+  function todayStr(){ var d = new Date(); return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()); }
   function ayahCount(surahNo){ return SURAHS[surahNo-1][1]; }
   function surahName(surahNo){ return SURAHS[surahNo-1][0]; }
+  function surahRev(surahNo){ return SURAHS[surahNo-1][2]; }
+  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
 
+  function loadJSON(key, fallback){
+    try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch(e){ return fallback; }
+  }
+  function saveJSON(key, val){
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){}
+  }
+
+  // ============================================================
+  // Derived Quran structures
+  // ============================================================
   var JUZ = JUZ_BOUNDS.map(function(b, idx){
     var startSurah=b[0], startAyah=b[1], endSurah=b[2], endAyah=b[3];
     var segments = [];
@@ -514,214 +778,819 @@ const QURAN_AYAHS = [
       var to = (s === endSurah) ? endAyah : ayahCount(s);
       segments.push({ surah:s, from:from, to:to, full: from===1 && to===ayahCount(s) });
     }
-    return { index: idx+1, ordinal: JUZ_ORDINALS[idx], segments: segments };
+    return { index: idx+1, segments: segments };
   });
 
-  var STORAGE_KEY = "wirdi-hifz-progress-v1";
-  var progress = {};
-  try { progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ progress = {}; }
+  var JUZ_ORDINALS = [
+    "الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع","الثامن","التاسع","العاشر",
+    "الحادي عشر","الثاني عشر","الثالث عشر","الرابع عشر","الخامس عشر","السادس عشر","السابع عشر","الثامن عشر","التاسع عشر","العشرون",
+    "الحادي والعشرون","الثاني والعشرون","الثالث والعشرون","الرابع والعشرون","الخامس والعشرون",
+    "السادس والعشرون","السابع والعشرون","الثامن والعشرون","التاسع والعشرون","الثلاثون"
+  ];
 
-  function saveProgress(){
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch(e){}
+  // ============================================================
+  // State: surah memorization status
+  // status: 0 = not started, 1 = in progress, 2 = completed
+  // ============================================================
+  var STORE_SURAH = "wirdi2-surah-state";
+  var surahState = loadJSON(STORE_SURAH, {});
+  function getSurahState(no){
+    return surahState[no] || { status:0, startedAt:null, completedAt:null };
   }
-  function segKey(juzIndex, surahNo){ return "j" + juzIndex + "_s" + surahNo; }
-  function isChecked(juzIndex, surahNo){ return !!progress[segKey(juzIndex, surahNo)]; }
-  function setChecked(juzIndex, surahNo, val){
-    var k = segKey(juzIndex, surahNo);
-    if (val) progress[k] = true; else delete progress[k];
-    saveProgress();
+  function setSurahStatus(no, status){
+    var st = getSurahState(no);
+    var now = Date.now();
+    if (status >= 1 && !st.startedAt) st.startedAt = now;
+    if (status === 2 && !st.completedAt) st.completedAt = now;
+    if (status < 2) st.completedAt = null;
+    if (status === 0) st.startedAt = null;
+    st.status = status;
+    surahState[no] = st;
+    saveJSON(STORE_SURAH, surahState);
+    markActivityToday();
+  }
+  function countSurahsByStatus(status){
+    var c = 0;
+    for (var i=1;i<=114;i++){ if (getSurahState(i).status === status) c++; }
+    return c;
   }
 
-  function juzStats(juzIndex){
+  // ============================================================
+  // Derived juz progress (independent counter, per user's explicit design requirement)
+  // ============================================================
+  function juzProgress(juzIndex){
     var j = JUZ[juzIndex-1];
-    var done = j.segments.filter(function(seg){ return isChecked(juzIndex, seg.surah); }).length;
-    return { done: done, total: j.segments.length };
-  }
-  function totalStats(){
-    var done = 0, total = 0;
-    JUZ.forEach(function(j){
-      var st = juzStats(j.index);
-      done += st.done; total += st.total;
-    });
-    return { done: done, total: total };
-  }
-
-  var CIRCUMFERENCE = 2 * Math.PI * 27;
-
-  function renderRing(){
-    var st = totalStats();
-    var pct = st.total ? Math.round((st.done/st.total)*100) : 0;
-    var fill = document.getElementById("ringFill");
-    fill.style.strokeDasharray = CIRCUMFERENCE.toFixed(2);
-    fill.style.strokeDashoffset = (CIRCUMFERENCE * (1 - pct/100)).toFixed(2);
-    fill.classList.toggle("complete", pct === 100);
-    document.getElementById("ringLabel").textContent = pct + "%";
-    document.getElementById("statText").textContent = st.done + " من " + st.total + " سورة محفوظة";
-    document.getElementById("modalTotal").textContent = st.done + " من " + st.total + " سورة محفوظة";
-    document.getElementById("modalPercent").textContent = pct + "%";
-  }
-
-  function renderHome(){
-    var grid = document.getElementById("juzGrid");
-    grid.innerHTML = "";
-    JUZ.forEach(function(j){
-      var st = juzStats(j.index);
-      var pct = st.total ? Math.round((st.done/st.total)*100) : 0;
-      var card = document.createElement("button");
-      card.className = "juz-card";
-      card.setAttribute("data-juz", j.index);
-      card.innerHTML =
-        (pct === 100 ? '<span class="done-badge">✓</span>' : "") +
-        '<span class="num">' + toArabicIndic(j.index) + '</span>' +
-        '<span class="name">الجزء ' + j.ordinal + '</span>' +
-        '<span class="bar"><span class="fill' + (pct===100?' complete':'') + '" style="width:' + pct + '%"></span></span>' +
-        '<span class="frac">' + st.done + ' / ' + st.total + '</span>';
-      card.addEventListener("click", function(){ openJuz(j.index); });
-      grid.appendChild(card);
-    });
-  }
-
-  function renderStatsModal(){
-    var list = document.getElementById("statsList");
-    list.innerHTML = "";
-    JUZ.forEach(function(j){
-      var st = juzStats(j.index);
-      var li = document.createElement("li");
-      li.innerHTML =
-        '<span class="srow-name">الجزء ' + j.ordinal + '</span>' +
-        '<span class="srow-frac">' + st.done + ' / ' + st.total + '</span>';
-      list.appendChild(li);
-    });
-  }
-
-  function openJuz(juzIndex){
-    var j = JUZ[juzIndex-1];
-    document.getElementById("homeView").hidden = true;
-    document.getElementById("juzView").hidden = false;
-    document.getElementById("juzViewNum").textContent = toArabicIndic(juzIndex);
-    document.getElementById("juzViewTitle").textContent = "الجزء " + j.ordinal;
-
-    var firstSeg = j.segments[0], lastSeg = j.segments[j.segments.length-1];
-    var rangeText = firstSeg.surah === lastSeg.surah
-      ? "سورة " + surahName(firstSeg.surah)
-      : "من سورة " + surahName(firstSeg.surah) + " إلى سورة " + surahName(lastSeg.surah);
-    document.getElementById("juzViewRange").textContent = rangeText;
-
-    renderJuzList(juzIndex);
-    window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
-  }
-
-  function renderJuzList(juzIndex){
-    var j = JUZ[juzIndex-1];
-    var st = juzStats(juzIndex);
-    var pct = st.total ? Math.round((st.done/st.total)*100) : 0;
-    var bar = document.getElementById("juzViewBar");
-    bar.style.width = pct + "%";
-    bar.classList.toggle("complete", pct === 100);
-
-    var ul = document.getElementById("surahList");
-    ul.innerHTML = "";
+    var earned = 0;
     j.segments.forEach(function(seg){
-      var checked = isChecked(juzIndex, seg.surah);
-      var li = document.createElement("li");
-      li.className = "surah-row" + (checked ? " checked" : "");
-      var rangeLabel = seg.full ? "السورة كاملة (" + seg.from + "–" + seg.to + ")" : "من الآية " + seg.from + " إلى الآية " + seg.to;
-      li.innerHTML =
-        '<button class="check' + (checked ? " checked" : "") + '" aria-pressed="' + checked + '" aria-label="تمييز كمحفوظ">' +
-          '<svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-        '</button>' +
-        '<span class="surah-info">' +
-          '<span class="sname">' + surahName(seg.surah) + '</span>' +
-          '<span class="srange">' + rangeLabel + '</span>' +
-        '</span>' +
-        '<span class="surah-actions">' +
-          '<button class="action-btn read">' +
-            '<svg viewBox="0 0 24 24"><path d="M4 5h7v15H4z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M20 5h-7v15h7z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>' +
-            '<span>قراءة</span>' +
-          '</button>' +
-        '</span>';
-      var btn = li.querySelector(".check");
+      var st = getSurahState(seg.surah).status;
+      if (st === 2) earned += 1;
+      else if (st === 1) earned += 0.5;
+    });
+    var pct = Math.round((earned / j.segments.length) * 100);
+    var allDone = j.segments.every(function(seg){ return getSurahState(seg.surah).status === 2; });
+    return { pct: pct, completed: allDone };
+  }
+  function countJuzCompleted(){
+    var c = 0;
+    for (var i=1;i<=30;i++){ if (juzProgress(i).completed) c++; }
+    return c;
+  }
+
+  // ============================================================
+  // Wird (daily portion) system
+  // ============================================================
+  var STORE_WIRD_SETTINGS = "wirdi2-wird-settings";
+  var STORE_WIRD_PROGRESS = "wirdi2-wird-progress";
+  var wirdSettings = loadJSON(STORE_WIRD_SETTINGS, { type:"ayahs", amount:10 });
+  var wirdProgress = loadJSON(STORE_WIRD_PROGRESS, { pointerSurah:1, pointerAyah:1, date:null, target:0, readToday:0 });
+
+  function pageOf(surahNo, ayahNo){ return QURAN_PAGES[surahNo-1][ayahNo-1]; }
+
+  function computeTargetAyahs(){
+    var type = wirdSettings.type, amount = wirdSettings.amount;
+    var ps = wirdProgress.pointerSurah, pa = wirdProgress.pointerAyah;
+    if (type === "ayahs" || type === "custom") return Math.max(1, amount);
+    if (type === "surahs"){
+      var total = 0, s = ps;
+      for (var k=0; k<amount && s<=114; k++, s++){ total += ayahCount(s); }
+      return Math.max(1, total);
+    }
+    if (type === "juz"){
+      var curPage = pageOf(ps, pa);
+      var juzIdx = 0;
+      for (var i=0;i<30;i++){
+        var seg0 = JUZ[i].segments[0];
+        if (seg0.surah < ps || (seg0.surah === ps)) juzIdx = i;
+      }
+      // find juz containing pointer precisely
+      for (var i2=0;i2<30;i2++){
+        var segs = JUZ[i2].segments;
+        var first = segs[0], last = segs[segs.length-1];
+        var afterFirst = (ps > first.surah) || (ps === first.surah && pa >= first.from);
+        var beforeLast = (ps < last.surah) || (ps === last.surah && pa <= last.to);
+        if (afterFirst && beforeLast){ juzIdx = i2; break; }
+      }
+      var juzAyahTotal = 0;
+      JUZ[juzIdx].segments.forEach(function(seg){ juzAyahTotal += (seg.to - seg.from + 1); });
+      return Math.max(1, Math.round(juzAyahTotal * amount));
+    }
+    if (type === "pages"){
+      var startPage = pageOf(ps, pa);
+      var endPage = startPage + amount - 1;
+      var count = 0, s2 = ps, a2 = pa;
+      while (s2 <= 114){
+        if (pageOf(s2,a2) > endPage) break;
+        count++;
+        a2++;
+        if (a2 > ayahCount(s2)){ s2++; a2 = 1; }
+      }
+      return Math.max(1, count);
+    }
+    return Math.max(1, amount);
+  }
+
+  function ensureWirdToday(){
+    var t = todayStr();
+    if (wirdProgress.date !== t){
+      wirdProgress.date = t;
+      wirdProgress.readToday = 0;
+      wirdProgress.target = computeTargetAyahs();
+      saveJSON(STORE_WIRD_PROGRESS, wirdProgress);
+    }
+  }
+  function advancePointer(byAyahs){
+    var s = wirdProgress.pointerSurah, a = wirdProgress.pointerAyah;
+    for (var i=0;i<byAyahs;i++){
+      a++;
+      if (a > ayahCount(s)){ s++; a = 1; if (s > 114){ s = 114; a = ayahCount(114); break; } }
+    }
+    wirdProgress.pointerSurah = s;
+    wirdProgress.pointerAyah = a;
+  }
+  function wirdAddAyahs(n){
+    ensureWirdToday();
+    var remaining = wirdProgress.target - wirdProgress.readToday;
+    var add = Math.min(n, Math.max(0,remaining));
+    if (add <= 0) return;
+    wirdProgress.readToday += add;
+    advancePointer(add);
+    saveJSON(STORE_WIRD_PROGRESS, wirdProgress);
+    if (wirdProgress.readToday >= wirdProgress.target) markActivityToday();
+  }
+  function wirdCompleteToday(){
+    ensureWirdToday();
+    var remaining = wirdProgress.target - wirdProgress.readToday;
+    if (remaining > 0) wirdAddAyahs(remaining);
+  }
+  function wirdLabel(){
+    var type = wirdSettings.type, amount = wirdSettings.amount;
+    if (type === "ayahs") return amount + " آية";
+    if (type === "custom") return "مخصص: " + amount + " آية";
+    if (type === "surahs") return amount + " سورة";
+    if (type === "pages") return amount + " صفحة";
+    if (type === "juz"){
+      if (amount === 0.5) return "نصف جزء";
+      if (amount === 1) return "جزء واحد";
+      return amount + " جزء";
+    }
+    return "-";
+  }
+
+  // ============================================================
+  // Adhkar progress (daily reset)
+  // ============================================================
+  var STORE_ADHKAR = "wirdi2-adhkar-progress";
+  var adhkarProgress = loadJSON(STORE_ADHKAR, { date:null, morning:[], evening:[] });
+  function ensureAdhkarToday(){
+    var t = todayStr();
+    if (adhkarProgress.date !== t){
+      adhkarProgress.date = t;
+      adhkarProgress.morning = MORNING_ADHKAR.map(function(){ return 0; });
+      adhkarProgress.evening = EVENING_ADHKAR.map(function(){ return 0; });
+      saveJSON(STORE_ADHKAR, adhkarProgress);
+    }
+    if (!adhkarProgress.morning || adhkarProgress.morning.length !== MORNING_ADHKAR.length) adhkarProgress.morning = MORNING_ADHKAR.map(function(){ return 0; });
+    if (!adhkarProgress.evening || adhkarProgress.evening.length !== EVENING_ADHKAR.length) adhkarProgress.evening = EVENING_ADHKAR.map(function(){ return 0; });
+  }
+  function adhkarIncrement(which, idx){
+    ensureAdhkarToday();
+    var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
+    var arr = which === "morning" ? adhkarProgress.morning : adhkarProgress.evening;
+    if (arr[idx] < list[idx].repeat){
+      arr[idx]++;
+      saveJSON(STORE_ADHKAR, adhkarProgress);
+      if (adhkarAllDone(which)) markActivityToday();
+    }
+  }
+  function adhkarAllDone(which){
+    var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
+    var arr = which === "morning" ? adhkarProgress.morning : adhkarProgress.evening;
+    return list.every(function(item, i){ return arr[i] >= item.repeat; });
+  }
+  function adhkarDoneCount(which){
+    var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
+    var arr = which === "morning" ? adhkarProgress.morning : adhkarProgress.evening;
+    var c = 0;
+    list.forEach(function(item,i){ if (arr[i] >= item.repeat) c++; });
+    return c;
+  }
+
+  // ============================================================
+  // Activity log / streak
+  // ============================================================
+  var STORE_LOG = "wirdi2-activity-log";
+  var activityLog = loadJSON(STORE_LOG, {});
+  function markActivityToday(){
+    var t = todayStr();
+    if (!activityLog[t]){ activityLog[t] = true; saveJSON(STORE_LOG, activityLog); }
+  }
+  function currentStreak(){
+    var streak = 0;
+    var d = new Date();
+    while (true){
+      var key = d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());
+      if (activityLog[key]){ streak++; d.setDate(d.getDate()-1); } else { break; }
+    }
+    return streak;
+  }
+  function totalActivityDays(){ return Object.keys(activityLog).length; }
+
+  // ============================================================
+  // Settings
+  // ============================================================
+  var STORE_SETTINGS = "wirdi2-settings";
+  var appSettings = loadJSON(STORE_SETTINGS, {
+    morningTime: "07:00", eveningTime: "18:00", wirdTime: "20:00",
+    darkMode: "system", fontScale: 1, notificationsEnabled: false,
+    notifLastFired: {}
+  });
+  function saveSettings(){ saveJSON(STORE_SETTINGS, appSettings); }
+  function applyTheme(){
+    var root = document.documentElement;
+    if (appSettings.darkMode === "light") root.setAttribute("data-theme","light");
+    else if (appSettings.darkMode === "dark") root.setAttribute("data-theme","dark");
+    else root.removeAttribute("data-theme");
+    root.style.setProperty("--font-scale", appSettings.fontScale);
+  }
+
+  // ============================================================
+  // Export / Import
+  // ============================================================
+  function exportData(){
+    var payload = {
+      surahState: surahState, wirdSettings: wirdSettings, wirdProgress: wirdProgress,
+      adhkarProgress: adhkarProgress, activityLog: activityLog, appSettings: appSettings,
+      exportedAt: new Date().toISOString(), version: 2
+    };
+    var blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = "wirdi-backup-" + todayStr() + ".json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+  }
+  function importData(file){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try {
+        var data = JSON.parse(e.target.result);
+        if (data.surahState) { surahState = data.surahState; saveJSON(STORE_SURAH, surahState); }
+        if (data.wirdSettings) { wirdSettings = data.wirdSettings; saveJSON(STORE_WIRD_SETTINGS, wirdSettings); }
+        if (data.wirdProgress) { wirdProgress = data.wirdProgress; saveJSON(STORE_WIRD_PROGRESS, wirdProgress); }
+        if (data.adhkarProgress) { adhkarProgress = data.adhkarProgress; saveJSON(STORE_ADHKAR, adhkarProgress); }
+        if (data.activityLog) { activityLog = data.activityLog; saveJSON(STORE_LOG, activityLog); }
+        if (data.appSettings) { appSettings = data.appSettings; saveSettings(); }
+        showToast("تم استيراد البيانات بنجاح");
+        applyTheme();
+        renderAll();
+      } catch(err){ showToast("ملف غير صالح"); }
+    };
+    reader.readAsText(file);
+  }
+
+  // ============================================================
+  // Toast
+  // ============================================================
+  var toastTimer = null;
+  function showToast(msg){
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 2200);
+  }
+
+  // ============================================================
+  // Navigation
+  // ============================================================
+  var VIEW_IDS = ["home","surahs","reader","juzlist","juzdetail","morning","evening","progress","settings"];
+  var currentView = "home";
+  var readerReturnView = "home";
+  var currentSurahFilter = "all";
+
+  function showView(name){
+    name = String(name).toLowerCase();
+    VIEW_IDS.forEach(function(v){
+      var el = document.getElementById("view-"+v);
+      if (el) el.hidden = (v !== name);
+    });
+    currentView = name;
+    window.scrollTo(0,0);
+  }
+
+  function handleNav(name){
+    if (name === "continueReading"){
+      ensureWirdToday();
+      openReader(wirdProgress.pointerSurah, wirdProgress.pointerAyah, ayahCount(wirdProgress.pointerSurah), "home");
+    } else if (name === "surahs"){ showView("surahs"); renderSurahsList(); }
+    else if (name === "juzList"){ showView("juzlist"); renderJuzList(); }
+    else if (name === "morningAdhkar"){ showView("morning"); renderMorning(); }
+    else if (name === "eveningAdhkar"){ showView("evening"); renderEvening(); }
+    else if (name === "progress"){ showView("progress"); renderProgress(); }
+    else if (name === "settings"){ showView("settings"); renderSettings(); }
+  }
+
+  // ============================================================
+  // Home / Dashboard
+  // ============================================================
+  function renderHome(){
+    var hour = new Date().getHours();
+    document.getElementById("greetingLine").textContent = hour < 12 ? "صباح الخير 🌅" : (hour < 18 ? "مساء الخير 🌤️" : "مساء الخير 🌙");
+
+    var doneS = countSurahsByStatus(2);
+    var pctS = Math.round((doneS/114)*100);
+    document.getElementById("surahStatCard").innerHTML =
+      '<div class="stat-top"><span class="stat-headline">حفظت <b>' + doneS + '</b> سورة</span><span class="stat-pct">' + pctS + '%</span></div>' +
+      '<div class="bar"><div class="fill' + (pctS===100?' complete':'') + '" style="width:' + pctS + '%"></div></div>' +
+      '<div class="stat-sub"><span>من أصل 114 سورة</span><span>الباقي: ' + (114-doneS) + '</span></div>';
+
+    var doneJ = countJuzCompleted();
+    var pctJ = Math.round((doneJ/30)*100);
+    document.getElementById("juzStatCard").innerHTML =
+      '<div class="stat-top"><span class="stat-headline">حفظت <b>' + doneJ + '</b> جزء</span><span class="stat-pct">' + pctJ + '%</span></div>' +
+      '<div class="bar"><div class="fill' + (pctJ===100?' complete':'') + '" style="width:' + pctJ + '%"></div></div>' +
+      '<div class="stat-sub"><span>من أصل 30 جزء</span><span>الباقي: ' + (30-doneJ) + '</span></div>';
+
+    renderWirdCard();
+  }
+
+  function renderWirdCard(){
+    ensureWirdToday();
+    var pct = Math.min(100, Math.round((wirdProgress.readToday / wirdProgress.target) * 100));
+    var remaining = Math.max(0, wirdProgress.target - wirdProgress.readToday);
+    var doneToday = wirdProgress.readToday >= wirdProgress.target;
+    document.getElementById("wirdCard").innerHTML =
+      '<div class="wird-top"><span class="wird-title">وردك اليوم</span><button class="icon-btn" id="editWirdBtn" style="width:32px;height:32px;" aria-label="تعديل الورد"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></div>' +
+      '<div class="wird-target">' + wirdLabel() + '</div>' +
+      '<div class="bar" style="margin-top:10px;"><div class="fill' + (doneToday?' complete':'') + '" style="width:' + pct + '%"></div></div>' +
+      '<div class="stat-sub"><span>' + (doneToday ? "أتممت وردك اليوم، بارك الله فيك ✓" : ("تبقى " + remaining + " آية لإكمال ورد اليوم")) + '</span><span>' + pct + '%</span></div>' +
+      '<div class="wird-actions">' +
+        '<button class="btn ghost" id="wirdAddOneBtn" ' + (doneToday?'disabled':'') + '>+ آية واحدة</button>' +
+        '<button class="btn primary" id="wirdCompleteBtn" ' + (doneToday?'disabled':'') + '>✓ أكملت وردي اليوم</button>' +
+      '</div>';
+    document.getElementById("editWirdBtn").addEventListener("click", openWirdModal);
+    var addBtn = document.getElementById("wirdAddOneBtn");
+    if (addBtn) addBtn.addEventListener("click", function(){ wirdAddAyahs(1); renderWirdCard(); });
+    var compBtn = document.getElementById("wirdCompleteBtn");
+    if (compBtn) compBtn.addEventListener("click", function(){ wirdCompleteToday(); renderWirdCard(); showToast("أتممت وردك اليوم ✓"); });
+  }
+
+  // ============================================================
+  // Wird settings modal
+  // ============================================================
+  var WIRD_TYPES = [
+    {key:"ayahs", label:"عدد آيات يوميًا", unit:"آية", def:10},
+    {key:"pages", label:"عدد صفحات يوميًا", unit:"صفحة", def:2},
+    {key:"surahs", label:"عدد سور يوميًا", unit:"سورة", def:1},
+    {key:"juz", label:"جزء يوميًا (أو كسر منه)", unit:"جزء (مثال: 0.5)", def:1},
+    {key:"custom", label:"تخصيص عدد آيات يدويًا", unit:"آية", def:5}
+  ];
+  function openWirdModal(){
+    var box = document.getElementById("wirdTypeOptions");
+    box.innerHTML = WIRD_TYPES.map(function(t){
+      var checked = wirdSettings.type === t.key ? "checked" : "";
+      return '<label class="radio-row"><input type="radio" name="wirdType" value="' + t.key + '" ' + checked + '><span>' + t.label + '</span></label>';
+    }).join("");
+    var amountRow = document.getElementById("wirdAmountRow");
+    var amountInput = document.getElementById("wirdAmountInput");
+    var amountUnit = document.getElementById("wirdAmountUnit");
+    function syncAmount(){
+      var sel = box.querySelector('input[name="wirdType"]:checked');
+      var t = WIRD_TYPES.filter(function(x){ return x.key === sel.value; })[0];
+      amountRow.hidden = false;
+      amountInput.step = t.key === "juz" ? "0.5" : "1";
+      amountInput.value = wirdSettings.type === t.key ? wirdSettings.amount : t.def;
+      amountUnit.textContent = t.unit;
+    }
+    box.querySelectorAll('input[name="wirdType"]').forEach(function(r){ r.addEventListener("change", syncAmount); });
+    syncAmount();
+    document.getElementById("wirdModal").hidden = false;
+  }
+  document.getElementById("closeWirdModal").addEventListener("click", function(){ document.getElementById("wirdModal").hidden = true; });
+  document.getElementById("saveWirdBtn").addEventListener("click", function(){
+    var sel = document.querySelector('input[name="wirdType"]:checked');
+    var amount = parseFloat(document.getElementById("wirdAmountInput").value) || 1;
+    wirdSettings = { type: sel.value, amount: amount };
+    saveJSON(STORE_WIRD_SETTINGS, wirdSettings);
+    wirdProgress.target = Math.max(computeTargetAyahs(), wirdProgress.readToday);
+    saveJSON(STORE_WIRD_PROGRESS, wirdProgress);
+    document.getElementById("wirdModal").hidden = true;
+    renderWirdCard();
+    if (currentView === "settings") renderSettings();
+    showToast("تم حفظ الورد اليومي");
+  });
+  document.getElementById("editWirdFromSettings").addEventListener("click", openWirdModal);
+
+  // ============================================================
+  // Surahs list
+  // ============================================================
+  function statusSymbol(status){
+    if (status === 2) return { icon:"✓", cls:"done" };
+    if (status === 1) return { icon:"◐", cls:"progress" };
+    return { icon:"○", cls:"none" };
+  }
+  function renderSurahsList(){
+    var container = document.getElementById("surahsListContainer");
+    var html = "";
+    for (var i=1;i<=114;i++){
+      var st = getSurahState(i).status;
+      if (currentSurahFilter === "done" && st !== 2) continue;
+      if (currentSurahFilter === "progress" && st !== 1) continue;
+      if (currentSurahFilter === "none" && st !== 0) continue;
+      var sym = statusSymbol(st);
+      var rev = surahRev(i);
+      html += '<button class="surah-card" data-surah="' + i + '">' +
+        '<span class="badge-num">' + toArabicIndic(i) + '</span>' +
+        '<span class="s-info"><span class="s-name">' + surahName(i) + '</span>' +
+        '<span class="s-meta"><span>' + ayahCount(i) + ' آية</span><span class="rev-badge ' + (rev==="مكية"?"meccan":"medinan") + '">' + rev + '</span></span></span>' +
+        '<span class="status-dot ' + sym.cls + '">' + sym.icon + '</span>' +
+      '</button>';
+    }
+    if (!html) html = '<div class="empty-state">لا توجد سور في هذا التصنيف</div>';
+    container.innerHTML = html;
+    container.querySelectorAll("[data-surah]").forEach(function(btn){
       btn.addEventListener("click", function(){
-        var newVal = !isChecked(juzIndex, seg.surah);
-        setChecked(juzIndex, seg.surah, newVal);
-        renderJuzList(juzIndex);
-        renderHome();
-        renderRing();
-        renderStatsModal();
+        var no = parseInt(btn.getAttribute("data-surah"),10);
+        openReader(no, 1, ayahCount(no), "surahs");
       });
-      li.querySelector(".read").addEventListener("click", function(){
-        openRead(seg.surah, seg.from, seg.to);
+    });
+  }
+  document.getElementById("surahFilterRow").addEventListener("click", function(e){
+    var chip = e.target.closest("[data-filter]");
+    if (!chip) return;
+    document.querySelectorAll("#surahFilterRow .filter-chip").forEach(function(c){ c.classList.remove("active"); });
+    chip.classList.add("active");
+    currentSurahFilter = chip.getAttribute("data-filter");
+    renderSurahsList();
+  });
+
+  // ============================================================
+  // Surah reader
+  // ============================================================
+  function openReader(surahNo, from, to, returnView){
+    readerReturnView = returnView || "surahs";
+    showView("reader");
+    document.getElementById("readerTitle").textContent = "سورة " + surahName(surahNo);
+    var rev = surahRev(surahNo);
+    document.getElementById("readerMeta").innerHTML =
+      '<span class="rev-badge ' + (rev==="مكية"?"meccan":"medinan") + '">' + rev + '</span>' +
+      '<span class="muted" style="font-size:0.78rem;">' + ((from===1 && to===ayahCount(surahNo)) ? "السورة كاملة" : ("من الآية " + from + " إلى " + to)) + '</span>';
+    document.getElementById("readerListenLink").href = "https://quran.com/" + surahNo + "/" + from + "-" + to;
+
+    var html = "";
+    if (surahNo !== 1 && surahNo !== 9 && from === 1){ html += '<p class="bismillah">' + BISMILLAH + '</p>'; }
+    var flow = "";
+    var ayahs = QURAN_AYAHS[surahNo-1];
+    for (var a = from; a <= to; a++){
+      flow += ayahs[a-1] + ' <span class="ayah-num">' + toArabicIndic(a) + '</span> ';
+    }
+    html += '<p class="ayah-flow">' + flow + '</p>';
+    document.getElementById("readerBody").innerHTML = html;
+
+    renderReaderStatusActions(surahNo);
+  }
+  function renderReaderStatusActions(surahNo){
+    var st = getSurahState(surahNo).status;
+    var box = document.getElementById("readerStatusActions");
+    box.innerHTML =
+      '<button class="btn ' + (st===0?"primary":"ghost") + '" data-set-status="0">○ لم أبدأ</button>' +
+      '<button class="btn ' + (st===1?"primary":"ghost") + '" data-set-status="1">◐ قيد الحفظ</button>' +
+      '<button class="btn ' + (st===2?"primary":"ghost") + '" data-set-status="2">✓ حفظت السورة</button>';
+    box.querySelectorAll("[data-set-status]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        setSurahStatus(surahNo, parseInt(btn.getAttribute("data-set-status"),10));
+        renderReaderStatusActions(surahNo);
+        showToast("تم تحديث حالة الحفظ");
       });
-      ul.appendChild(li);
+    });
+  }
+  document.getElementById("readerBackBtn").addEventListener("click", function(){ showView(readerReturnView); });
+
+  // ============================================================
+  // Juz list & detail
+  // ============================================================
+  function renderJuzList(){
+    var container = document.getElementById("juzListContainer");
+    var html = "";
+    for (var i=1;i<=30;i++){
+      var prog = juzProgress(i);
+      var segs = JUZ[i-1].segments;
+      var first = segs[0], last = segs[segs.length-1];
+      var rangeText = first.surah === last.surah ? surahName(first.surah) : (surahName(first.surah) + " – " + surahName(last.surah));
+      html += '<button class="juz-card" data-juz="' + i + '">' +
+        '<span class="badge-num">' + toArabicIndic(i) + '</span>' +
+        '<span class="j-info"><span class="j-title">الجزء ' + JUZ_ORDINALS[i-1] + '</span><span class="muted" style="font-size:0.75rem;">' + rangeText + '</span>' +
+        '<div class="bar" style="margin-top:6px;"><div class="fill' + (prog.completed?' complete':'') + '" style="width:' + prog.pct + '%"></div></div></span>' +
+        '<span class="j-pct">' + prog.pct + '%</span>' +
+      '</button>';
+    }
+    container.innerHTML = html;
+    container.querySelectorAll("[data-juz]").forEach(function(btn){
+      btn.addEventListener("click", function(){ openJuzDetail(parseInt(btn.getAttribute("data-juz"),10)); });
+    });
+  }
+  function openJuzDetail(idx){
+    showView("juzdetail");
+    var j = JUZ[idx-1];
+    document.getElementById("juzDetailNum").textContent = toArabicIndic(idx);
+    document.getElementById("juzDetailTitle").textContent = "الجزء " + JUZ_ORDINALS[idx-1];
+    var first = j.segments[0], last = j.segments[j.segments.length-1];
+    document.getElementById("juzDetailRange").textContent = first.surah === last.surah
+      ? "سورة " + surahName(first.surah)
+      : "من سورة " + surahName(first.surah) + " إلى سورة " + surahName(last.surah);
+    var prog = juzProgress(idx);
+    var bar = document.getElementById("juzDetailBar");
+    bar.style.width = prog.pct + "%";
+    bar.classList.toggle("complete", prog.completed);
+
+    var html = "";
+    j.segments.forEach(function(seg){
+      var st = getSurahState(seg.surah).status;
+      var sym = statusSymbol(st);
+      var rangeLabel = seg.full ? "السورة كاملة" : ("من الآية " + seg.from + " إلى " + seg.to);
+      html += '<div class="segment-row">' +
+        '<span class="status-dot ' + sym.cls + '">' + sym.icon + '</span>' +
+        '<span class="s-info"><span class="sname">' + surahName(seg.surah) + '</span><span class="srange">' + rangeLabel + '</span></span>' +
+        '<button class="btn ghost" data-read-seg="' + seg.surah + "," + seg.from + "," + seg.to + '">قراءة</button>' +
+      '</div>';
+    });
+    document.getElementById("juzDetailSegments").innerHTML = html;
+    document.getElementById("juzDetailSegments").querySelectorAll("[data-read-seg]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var parts = btn.getAttribute("data-read-seg").split(",").map(Number);
+        openReader(parts[0], parts[1], parts[2], "juzdetail");
+      });
     });
   }
 
-  function openRead(surahNo, from, to){
-    document.getElementById("juzView").hidden = true;
-    document.getElementById("readView").hidden = false;
-    document.getElementById("readTitle").textContent = "سورة " + surahName(surahNo);
-    document.getElementById("readRange").textContent =
-      (from === 1 && to === ayahCount(surahNo)) ? "السورة كاملة" : "من الآية " + from + " إلى الآية " + to;
-    document.getElementById("readListenLink").href = "https://quran.com/" + surahNo + "/" + from + "-" + to;
-
-    var body = document.getElementById("readBody");
+  // ============================================================
+  // Adhkar views
+  // ============================================================
+  function renderAdhkarList(which){
+    ensureAdhkarToday();
+    var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
+    var arr = which === "morning" ? adhkarProgress.morning : adhkarProgress.evening;
+    var container = document.getElementById(which === "morning" ? "morningList" : "eveningList");
     var html = "";
-    var hasQuranText = typeof QURAN_AYAHS !== "undefined";
-    if (hasQuranText){
-      if (surahNo !== 1 && surahNo !== 9 && from === 1){
-        html += '<p class="bismillah">' + BISMILLAH + '</p>';
-      }
-      var flow = "";
-      var ayahs = QURAN_AYAHS[surahNo-1];
-      for (var a = from; a <= to; a++){
-        flow += ayahs[a-1] + ' <span class="ayah-num">' + toArabicIndic(a) + '</span> ';
-      }
-      html += '<p class="ayah-flow">' + flow + '</p>';
+    list.forEach(function(item, idx){
+      var count = arr[idx];
+      var done = count >= item.repeat;
+      html += '<div class="dhikr-card' + (done?" done":"") + '">' +
+        '<div class="dhikr-text">' + item.text + '</div>' +
+        (item.note ? '<div class="dhikr-note">' + item.note + '</div>' : '') +
+        '<div class="dhikr-controls"><span class="counter-label">' + count + ' / ' + item.repeat + '</span>' +
+        '<button class="counter-btn" data-inc="' + idx + '" ' + (done?'disabled':'') + '>' + (done ? "✓" : "+") + '</button></div>' +
+      '</div>';
+    });
+    container.innerHTML = html;
+    container.querySelectorAll("[data-inc]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        adhkarIncrement(which, parseInt(btn.getAttribute("data-inc"),10));
+        renderAdhkarList(which);
+        renderAdhkarSummary(which);
+      });
+    });
+  }
+  function renderAdhkarSummary(which){
+    var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
+    var done = adhkarDoneCount(which);
+    document.getElementById(which === "morning" ? "morningSummaryText" : "eveningSummaryText").textContent = done + " / " + list.length;
+    var pct = Math.round((done/list.length)*100);
+    var bar = document.getElementById(which === "morning" ? "morningBar" : "eveningBar");
+    bar.style.width = pct + "%";
+    bar.classList.toggle("complete", pct===100);
+  }
+  function renderMorning(){ renderAdhkarList("morning"); renderAdhkarSummary("morning"); }
+  function renderEvening(){ renderAdhkarList("evening"); renderAdhkarSummary("evening"); }
+
+  // ============================================================
+  // Progress view
+  // ============================================================
+  var ARABIC_WEEKDAYS = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+  function renderProgress(){
+    var doneS = countSurahsByStatus(2), pctS = Math.round((doneS/114)*100);
+    document.getElementById("progressSurahCard").innerHTML =
+      '<div class="stat-top"><span class="stat-headline">حفظت <b>' + doneS + '</b> سورة</span><span class="stat-pct">' + pctS + '%</span></div>' +
+      '<div class="bar"><div class="fill' + (pctS===100?' complete':'') + '" style="width:' + pctS + '%"></div></div>' +
+      '<div class="stat-sub"><span>من أصل 114 سورة</span><span>الباقي: ' + (114-doneS) + '</span></div>';
+    var doneJ = countJuzCompleted(), pctJ = Math.round((doneJ/30)*100);
+    document.getElementById("progressJuzCard").innerHTML =
+      '<div class="stat-top"><span class="stat-headline">حفظت <b>' + doneJ + '</b> جزء</span><span class="stat-pct">' + pctJ + '%</span></div>' +
+      '<div class="bar"><div class="fill' + (pctJ===100?' complete':'') + '" style="width:' + pctJ + '%"></div></div>' +
+      '<div class="stat-sub"><span>من أصل 30 جزء</span><span>الباقي: ' + (30-doneJ) + '</span></div>';
+
+    var streak = currentStreak();
+    document.getElementById("streakBanner").textContent = streak > 0
+      ? ("🔥 " + streak + " يوم متتالي من الالتزام — إجمالي " + totalActivityDays() + " يوم")
+      : ("ابدأ اليوم لتبني سلسلة التزامك — إجمالي " + totalActivityDays() + " يوم سابق");
+
+    var strip = "";
+    for (var i=6;i>=0;i--){
+      var d = new Date(); d.setDate(d.getDate()-i);
+      var key = d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());
+      var done = !!activityLog[key];
+      strip += '<div class="day-pill' + (done?" done":"") + '"><span class="d-icon">' + (done?"✓":"○") + '</span><span class="d-label">' + ARABIC_WEEKDAYS[d.getDay()] + '</span></div>';
+    }
+    document.getElementById("weekStrip").innerHTML = strip;
+
+    var logHtml = "";
+    for (var s=1;s<=114;s++){
+      var st = getSurahState(s);
+      if (st.status === 0) continue;
+      var statusText = st.status===2 ? "محفوظة" : "قيد الحفظ";
+      var dateText = st.status===2 && st.completedAt ? new Date(st.completedAt).toLocaleDateString("ar-EG") : (st.startedAt ? new Date(st.startedAt).toLocaleDateString("ar-EG") : "");
+      logHtml += '<div class="log-row"><span>' + surahName(s) + '</span><span class="muted">' + statusText + (dateText ? " · " + dateText : "") + '</span></div>';
+    }
+    document.getElementById("memLogList").innerHTML = logHtml || '<div class="empty-state">لم تبدأ حفظ أي سورة بعد</div>';
+  }
+
+  // ============================================================
+  // Settings view
+  // ============================================================
+  function renderSettings(){
+    var notifSupported = ("Notification" in window);
+    var notice = document.getElementById("notificationNotice");
+    if (!notifSupported){
+      notice.textContent = "متصفحك الحالي لا يدعم إشعارات الويب، لذلك لن تعمل التنبيهات على هذا الجهاز.";
+      document.getElementById("notifToggle").disabled = true;
     } else {
-      html = '<p class="muted">نص السورة غير متاح حاليًا. اضغط «استماع» لقراءتها والاستماع إليها على Quran.com.</p>';
+      notice.textContent = "تعمل التنبيهات فقط أثناء تشغيل التطبيق (مفتوحًا أو في الخلفية على المتصفحات الداعمة). لا يمكن ضمان وصولها إذا كان التطبيق مغلقًا تمامًا بدون خادم إشعارات (Push Server)، وهو خارج نطاق هذا التطبيق الثابت.";
+      document.getElementById("notifToggle").disabled = false;
     }
-    body.innerHTML = html;
-    window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+    document.getElementById("notifToggle").checked = !!appSettings.notificationsEnabled && Notification.permission === "granted";
+    document.getElementById("morningTimeInput").value = appSettings.morningTime;
+    document.getElementById("eveningTimeInput").value = appSettings.eveningTime;
+    document.getElementById("wirdTimeInput").value = appSettings.wirdTime;
+    document.getElementById("darkModeSelect").value = appSettings.darkMode;
+    document.getElementById("fontSizeSelect").value = String(appSettings.fontScale);
+    document.getElementById("wirdCurrentLabel").textContent = wirdLabel();
   }
 
-  document.getElementById("readBackBtn").addEventListener("click", function(){
-    document.getElementById("readView").hidden = true;
-    document.getElementById("juzView").hidden = false;
+  document.getElementById("notifToggle").addEventListener("change", function(e){
+    if (e.target.checked){
+      if (!("Notification" in window)){ e.target.checked = false; return; }
+      Notification.requestPermission().then(function(perm){
+        appSettings.notificationsEnabled = (perm === "granted");
+        saveSettings();
+        if (perm !== "granted"){ showToast("لم يتم منح إذن الإشعارات من المتصفح"); }
+        renderSettings();
+      });
+    } else {
+      appSettings.notificationsEnabled = false;
+      saveSettings();
+    }
   });
-
-  document.getElementById("backBtn").addEventListener("click", function(){
-    document.getElementById("juzView").hidden = true;
-    document.getElementById("homeView").hidden = false;
+  ["morningTimeInput","eveningTimeInput","wirdTimeInput"].forEach(function(id){
+    document.getElementById(id).addEventListener("change", function(e){
+      var map = { morningTimeInput:"morningTime", eveningTimeInput:"eveningTime", wirdTimeInput:"wirdTime" };
+      appSettings[map[id]] = e.target.value;
+      saveSettings();
+      showToast("تم حفظ الوقت");
+    });
   });
-
-  document.getElementById("statsBtn").addEventListener("click", function(){
-    renderStatsModal();
-    document.getElementById("statsModal").hidden = false;
+  document.getElementById("darkModeSelect").addEventListener("change", function(e){
+    appSettings.darkMode = e.target.value; saveSettings(); applyTheme();
   });
-  document.getElementById("closeStats").addEventListener("click", function(){
-    document.getElementById("statsModal").hidden = true;
+  document.getElementById("fontSizeSelect").addEventListener("change", function(e){
+    appSettings.fontScale = parseFloat(e.target.value); saveSettings(); applyTheme();
   });
-  document.getElementById("statsModal").addEventListener("click", function(e){
-    if (e.target.id === "statsModal") document.getElementById("statsModal").hidden = true;
+  document.getElementById("exportBtn").addEventListener("click", exportData);
+  document.getElementById("importBtn").addEventListener("click", function(){ document.getElementById("importFile").click(); });
+  document.getElementById("importFile").addEventListener("change", function(e){
+    if (e.target.files && e.target.files[0]) importData(e.target.files[0]);
   });
-  document.getElementById("resetBtn").addEventListener("click", function(){
-    if (window.confirm("هل تريد بالتأكيد إعادة تعيين كل ما تم تسجيله من حفظ؟ لا يمكن التراجع عن هذا الإجراء.")){
-      progress = {};
-      saveProgress();
-      renderHome(); renderRing(); renderStatsModal();
-      document.getElementById("statsModal").hidden = true;
+  document.getElementById("resetAllBtn").addEventListener("click", function(){
+    if (window.confirm("هل تريد بالتأكيد إعادة ضبط كل التقدم؟ سيتم حذف حالة حفظ السور، الورد، الأذكار، وسجل الالتزام. لا يمكن التراجع.")){
+      surahState = {}; saveJSON(STORE_SURAH, surahState);
+      wirdProgress = { pointerSurah:1, pointerAyah:1, date:null, target:0, readToday:0 }; saveJSON(STORE_WIRD_PROGRESS, wirdProgress);
+      adhkarProgress = { date:null, morning:[], evening:[] }; saveJSON(STORE_ADHKAR, adhkarProgress);
+      activityLog = {}; saveJSON(STORE_LOG, activityLog);
+      showToast("تم إعادة ضبط كل التقدم");
+      showView("home"); renderHome();
     }
   });
 
-  var isStandalone = window.matchMedia && window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
-  var tipDismissed = false;
-  try { tipDismissed = localStorage.getItem("wirdi-install-tip-dismissed") === "1"; } catch(e){}
-  if (!isStandalone && !tipDismissed){
-    document.getElementById("installTip").hidden = false;
+  // ============================================================
+  // Generic nav wiring
+  // ============================================================
+  document.querySelectorAll("[data-nav]").forEach(function(btn){
+    btn.addEventListener("click", function(){ handleNav(btn.getAttribute("data-nav")); });
+  });
+  document.querySelectorAll("[data-back]").forEach(function(btn){
+    var target = btn.getAttribute("data-back");
+    if (target === "dynamic") return;
+    btn.addEventListener("click", function(){ showView(target); if(target==="juzlist") renderJuzList(); if(target==="surahs") renderSurahsList(); if(target==="home") renderHome(); });
+  });
+
+  // ============================================================
+  // Search
+  // ============================================================
+  document.getElementById("openSearchBtn").addEventListener("click", function(){
+    document.getElementById("searchModal").hidden = false;
+    document.getElementById("searchInput").value = "";
+    document.getElementById("searchResults").innerHTML = "";
+    document.getElementById("searchInput").focus();
+  });
+  document.getElementById("closeSearch").addEventListener("click", function(){ document.getElementById("searchModal").hidden = true; });
+  document.getElementById("searchInput").addEventListener("input", function(e){
+    var q = e.target.value.trim();
+    var results = document.getElementById("searchResults");
+    if (!q){ results.innerHTML = ""; return; }
+    var html = "";
+    var qNum = parseInt(q,10);
+
+    // juz number match
+    if (!isNaN(qNum) && qNum >= 1 && qNum <= 30 && /^\d+$/.test(q)){
+      html += '<button class="search-result" data-goto-juz="' + qNum + '">جزء رقم <b>' + qNum + '</b> — الجزء ' + JUZ_ORDINALS[qNum-1] + '</button>';
+    }
+    // surah name / number match
+    for (var i=1;i<=114;i++){
+      var nameMatch = surahName(i).indexOf(q) !== -1;
+      var numMatch = (!isNaN(qNum) && qNum === i);
+      if (nameMatch || numMatch){
+        html += '<button class="search-result" data-goto-surah="' + i + '">سورة <b>' + surahName(i) + '</b> (' + i + ') — ' + ayahCount(i) + ' آية</button>';
+      }
+    }
+    // ayah text search (only for queries of reasonable length)
+    if (q.length >= 3 && html.split('data-goto-surah').length < 8){
+      var found = 0;
+      for (var s=1; s<=114 && found < 15; s++){
+        var arr = QURAN_AYAHS[s-1];
+        for (var a=0; a<arr.length && found < 15; a++){
+          if (arr[a].indexOf(q) !== -1){
+            var snippet = arr[a].length > 90 ? arr[a].slice(0,90) + "…" : arr[a];
+            html += '<button class="search-result" data-goto-surah="' + s + '">' + snippet + '<br><span class="muted">— ' + surahName(s) + ' آية ' + (a+1) + '</span></button>';
+            found++;
+          }
+        }
+      }
+    }
+    results.innerHTML = html || '<div class="empty-state">لا توجد نتائج</div>';
+    results.querySelectorAll("[data-goto-surah]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var no = parseInt(btn.getAttribute("data-goto-surah"),10);
+        document.getElementById("searchModal").hidden = true;
+        openReader(no, 1, ayahCount(no), "surahs");
+      });
+    });
+    results.querySelectorAll("[data-goto-juz]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var idx = parseInt(btn.getAttribute("data-goto-juz"),10);
+        document.getElementById("searchModal").hidden = true;
+        openJuzDetail(idx);
+      });
+    });
+  });
+
+  document.getElementById("openSettingsBtn").addEventListener("click", function(){ showView("settings"); renderSettings(); });
+
+  // ============================================================
+  // Notifications (foreground scheduling — see honest notice in Settings)
+  // ============================================================
+  function checkNotifications(){
+    if (!appSettings.notificationsEnabled || !("Notification" in window) || Notification.permission !== "granted") return;
+    var now = new Date();
+    var hm = pad2(now.getHours()) + ":" + pad2(now.getMinutes());
+    var t = todayStr();
+    var configs = [
+      ["morningTime", "🌅 أذكار الصباح", "حان وقت أذكار الصباح"],
+      ["eveningTime", "🌙 أذكار المساء", "حان وقت أذكار المساء"],
+      ["wirdTime", "📖 وردك اليومي", "حان وقت ورد القرآن"]
+    ];
+    configs.forEach(function(cfg){
+      if (appSettings[cfg[0]] === hm){
+        var fireKey = cfg[0] + ":" + t;
+        if (appSettings.notifLastFired[fireKey]) return;
+        appSettings.notifLastFired[fireKey] = true;
+        saveSettings();
+        try { new Notification(cfg[1], { body: cfg[2], icon: "icon-192.png" }); } catch(e){}
+      }
+    });
   }
+  setInterval(checkNotifications, 30000);
+
+  // ============================================================
+  // Install prompt (PWA)
+  // ============================================================
+  var deferredInstallPrompt = null;
+  window.addEventListener("beforeinstallprompt", function(e){
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    var tip = document.getElementById("installTip");
+    var installBtn = document.getElementById("installNowBtn");
+    document.getElementById("installTipText").textContent = "ثبّت وردي كتطبيق مستقل على هاتفك بضغطة واحدة.";
+    installBtn.hidden = false;
+    var dismissed = false;
+    try { dismissed = localStorage.getItem("wirdi2-install-dismissed") === "1"; } catch(err){}
+    if (!dismissed) tip.hidden = false;
+  });
+  window.addEventListener("appinstalled", function(){
+    document.getElementById("installTip").hidden = true;
+    try { localStorage.setItem("wirdi2-install-dismissed", "1"); } catch(e){}
+  });
   document.getElementById("dismissInstallTip").addEventListener("click", function(){
     document.getElementById("installTip").hidden = true;
-    try { localStorage.setItem("wirdi-install-tip-dismissed", "1"); } catch(e){}
+    try { localStorage.setItem("wirdi2-install-dismissed", "1"); } catch(e){}
   });
   document.getElementById("installNowBtn").addEventListener("click", function(){
     if (!deferredInstallPrompt) return;
@@ -729,8 +1598,24 @@ const QURAN_AYAHS = [
     deferredInstallPrompt.userChoice.then(function(){ deferredInstallPrompt = null; });
   });
 
+  // ============================================================
+  // Service worker
+  // ============================================================
+  if ("serviceWorker" in navigator){
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("sw.js").catch(function(){});
+    });
+  }
+
+  // ============================================================
+  // Init
+  // ============================================================
+  ensureWirdToday();
+  ensureAdhkarToday();
+  applyTheme();
+  showView("home");
   renderHome();
-  renderRing();
+
 })();
 </script>
 </body>
