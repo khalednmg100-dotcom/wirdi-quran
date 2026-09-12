@@ -59,7 +59,7 @@
   :focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
   @media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
 
-  .app{max-width:720px; margin:0 auto; padding:16px 16px 90px; min-height:100vh;}
+  .app{max-width:720px; margin:0 auto; padding:16px 16px 96px; min-height:100vh;}
 
   /* ---------- header ---------- */
   .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid var(--paper-3);}
@@ -221,7 +221,7 @@
   .amount-input{display:flex; align-items:center; gap:8px; margin-top:12px;}
   .amount-input input{width:80px; padding:8px; border-radius:8px; border:1px solid var(--paper-3); font-family:inherit; font-size:1rem; text-align:center; background:var(--paper); color:var(--ink);}
 
-  .toast{position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--teal-deep); color:#fff; padding:10px 18px; border-radius:99px; font-size:0.85rem; font-weight:700; box-shadow:0 4px 14px var(--shadow); z-index:20; opacity:0; transition:opacity .25s;}
+  .toast{position:fixed; bottom:84px; left:50%; transform:translateX(-50%); background:var(--teal-deep); color:#fff; padding:10px 18px; border-radius:99px; font-size:0.85rem; font-weight:700; box-shadow:0 4px 14px var(--shadow); z-index:20; opacity:0; transition:opacity .25s;}
   .toast.show{opacity:1;}
 
   .install-tip{display:flex; align-items:center; gap:10px; background:var(--gold-tint); border:1px solid var(--paper-3); border-radius:12px; padding:10px 14px; margin-bottom:14px; font-size:0.8rem; flex-wrap:wrap;}
@@ -230,6 +230,85 @@
   .install-tip #dismissInstallTip{background:none; border:none; color:var(--ink-soft); font-size:1rem; flex:none;}
 
   .empty-state{text-align:center; padding:30px 10px; color:var(--ink-soft); font-size:0.88rem;}
+
+  /* ---------- view header (title only, no back button here) ---------- */
+  .view-header{display:flex; align-items:center; margin-bottom:14px;}
+
+  /* ---------- bottom bar (back navigation lives here, not at top) ---------- */
+  .bottom-bar{
+    position:fixed; left:0; right:0; bottom:0; z-index:15;
+    background:var(--paper-2); border-top:1px solid var(--paper-3);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    display:flex; justify-content:center;
+    box-shadow:0 -2px 10px var(--shadow);
+  }
+  .bottom-bar[hidden]{display:none;}
+  .bottom-back-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px; width:100%; max-width:720px;
+    background:var(--paper); border:1px solid var(--paper-3); border-radius:12px; padding:12px 20px;
+    font-weight:800; color:var(--teal-deep); font-size:0.95rem;
+  }
+  .bottom-back-btn svg{width:18px; height:18px; transform:scaleX(-1);}
+
+  /* ---------- clickable status dot (cycles memorization status inline) ---------- */
+  .status-dot.clickable{cursor:pointer;}
+
+  /* ---------- mushaf page reader ---------- */
+  .mushaf-toolbar{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; flex-wrap:wrap;}
+  .mushaf-toolbar .mt-info{display:flex; flex-direction:column; gap:2px;}
+  .mushaf-toolbar .mt-surah{font-family:"Amiri",serif; font-weight:700; font-size:1.15rem; color:var(--teal-deep);}
+  .mushaf-toolbar .mt-meta{font-size:0.72rem; color:var(--ink-soft); display:flex; gap:8px; flex-wrap:wrap;}
+  .mushaf-toolbar .mt-actions{display:flex; gap:6px; flex-wrap:wrap;}
+  .mushaf-icon-btn{background:var(--paper-2); border:1px solid var(--paper-3); border-radius:9px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:0.95rem; color:var(--teal-deep);}
+  .mushaf-icon-btn svg{width:17px; height:17px;}
+
+  .goto-page-row{display:flex; gap:8px; align-items:center; margin-bottom:10px;}
+  .goto-page-row input{width:90px; padding:8px 10px; border-radius:8px; border:1px solid var(--paper-3); font-family:inherit; font-size:0.95rem; text-align:center; background:var(--paper); color:var(--ink);}
+
+  .mushaf-viewport{position:relative; overflow:hidden; touch-action:pan-y;}
+  .mushaf-page{
+    background:#FBF6E9; color:#2A2015; border:1px solid #DED0A6; border-radius:14px;
+    padding:20px 18px 16px; box-shadow:0 2px 10px var(--shadow);
+    font-family:"Amiri",serif; font-size:calc(1.35rem * var(--mushaf-zoom, 1)); line-height:2.5; text-align:justify;
+    transition:transform .28s ease, opacity .28s ease;
+  }
+  .mushaf-page.turn-next{transform:translateX(40px); opacity:0;}
+  .mushaf-page.turn-prev{transform:translateX(-40px); opacity:0;}
+  .mushaf-page .bismillah{color:#0E6E5F;}
+  .mushaf-page .ayah-num{border-color:#A9822A; color:#A9822A;}
+  .mushaf-page .surah-title-break{
+    display:block; text-align:center; font-weight:700; font-size:1.05rem; color:#094B41;
+    background:#EDE4CB; border:1px solid #DED0A6; border-radius:10px; margin:14px 0; padding:8px;
+  }
+  .mushaf-footer{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px;}
+  .mushaf-nav-btn{background:var(--paper-2); border:1px solid var(--paper-3); border-radius:10px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; flex:none;}
+  .mushaf-nav-btn svg{width:20px; height:20px; color:var(--teal-deep);}
+  .mushaf-nav-btn:disabled{opacity:0.35;}
+  .mushaf-page-pill{background:var(--teal-tint); color:var(--teal-deep); border-radius:99px; padding:8px 18px; font-weight:800; font-variant-numeric:tabular-nums;}
+
+  /* ---------- single-dhikr adhkar view ---------- */
+  .adhkar-progress-row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px;}
+  .adhkar-progress-row .ap-count{font-weight:800; color:var(--teal-deep); font-variant-numeric:tabular-nums; font-size:0.85rem;}
+  .adhkar-reset-btn{background:none; border:none; color:var(--ink-soft); font-size:0.78rem; text-decoration:underline; flex:none;}
+  .dhikr-single-card{background:var(--paper-2); border:1px solid var(--paper-3); border-radius:16px; padding:20px 18px; margin:14px 0; min-height:180px; display:flex; flex-direction:column; justify-content:center;}
+  .dhikr-single-card.done{border-color:var(--gold); background:var(--gold-tint);}
+  .dhikr-single-subtitle{font-family:"Amiri",serif; font-weight:700; font-size:1.1rem; color:var(--teal-deep); text-align:center; margin-bottom:10px;}
+  .dhikr-single-text{font-family:"Amiri",serif; font-size:calc(1.45rem * var(--font-scale)); line-height:2.3; text-align:center;}
+  .dhikr-single-ref{font-size:0.78rem; color:var(--ink-soft); text-align:center; margin-top:12px;}
+  .dhikr-single-nav{display:flex; align-items:center; justify-content:center; gap:16px; margin:18px 0;}
+  .dhikr-nav-arrow{background:var(--paper-2); border:1px solid var(--paper-3); border-radius:50%; width:48px; height:48px; display:flex; align-items:center; justify-content:center; flex:none;}
+  .dhikr-nav-arrow svg{width:20px; height:20px; color:var(--teal-deep);}
+  .dhikr-nav-arrow:disabled{opacity:0.3;}
+  .dhikr-big-counter{
+    width:110px; height:110px; border-radius:50%; background:var(--teal); color:#fff; border:none;
+    font-size:1.6rem; font-weight:800; flex:none; font-variant-numeric:tabular-nums;
+    box-shadow:0 4px 14px var(--shadow); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+  }
+  .dhikr-big-counter .dbc-sub{font-size:0.65rem; font-weight:600; opacity:0.85;}
+  .dhikr-big-counter.done{background:var(--gold);}
+  .dhikr-position{text-align:center; font-size:0.8rem; color:var(--ink-soft); margin-bottom:4px;}
+
+  .about-line{font-size:0.82rem; color:var(--ink-soft); line-height:1.9; text-align:center; padding:6px 4px;}
 </style>
 </head>
 <body>
@@ -301,10 +380,7 @@
 
   <!-- ================= SURAHS LIST ================= -->
   <main id="view-surahs" class="view" hidden>
-    <div class="back-row">
-      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
-      <span class="view-title">السور (114)</span>
-    </div>
+    <div class="view-header"><span class="view-title">السور (114)</span></div>
     <div class="filter-row" id="surahFilterRow">
       <button class="filter-chip active" data-filter="all">الكل</button>
       <button class="filter-chip" data-filter="done">محفوظة</button>
@@ -314,36 +390,45 @@
     <div class="card-list" id="surahsListContainer"></div>
   </main>
 
-  <!-- ================= SURAH READER ================= -->
-  <main id="view-reader" class="view" hidden>
-    <div class="back-row">
-      <button class="back-btn" data-back="dynamic" id="readerBackBtn"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
-    </div>
-    <div class="read-header">
-      <div>
-        <h2 id="readerTitle"></h2>
-        <div class="read-meta" id="readerMeta"></div>
+  <!-- ================= MUSHAF PAGE READER ================= -->
+  <main id="view-mushaf" class="view" hidden>
+    <div class="mushaf-toolbar">
+      <div class="mt-info">
+        <span class="mt-surah" id="mushafSurahLine"></span>
+        <span class="mt-meta" id="mushafMetaLine"></span>
       </div>
-      <a class="btn ghost" id="readerListenLink" href="#" target="_blank" rel="noopener">🎧 استماع</a>
+      <div class="mt-actions">
+        <a class="mushaf-icon-btn" id="mushafListenLink" href="#" target="_blank" rel="noopener" aria-label="استماع">🎧</a>
+        <button class="mushaf-icon-btn" id="mushafZoomOutBtn" aria-label="تصغير">−</button>
+        <button class="mushaf-icon-btn" id="mushafZoomInBtn" aria-label="تكبير">+</button>
+        <button class="mushaf-icon-btn" id="mushafGotoToggleBtn" aria-label="الذهاب لصفحة">#</button>
+        <button class="mushaf-icon-btn" id="mushafSurahsBtn" aria-label="قائمة السور">📚</button>
+        <button class="mushaf-icon-btn" id="mushafJuzBtn" aria-label="قائمة الأجزاء">🕌</button>
+      </div>
     </div>
-    <div id="readerBody"></div>
-    <div class="status-actions" id="readerStatusActions"></div>
+    <div class="goto-page-row" id="gotoPageRow" hidden>
+      <input type="number" min="1" max="604" id="gotoPageInput" placeholder="١ - ٦٠٤">
+      <button class="btn primary" id="gotoPageBtn">اذهب</button>
+      <span class="muted" style="font-size:0.75rem;">604 صفحة</span>
+    </div>
+    <div class="mushaf-viewport" id="mushafViewport">
+      <div class="mushaf-page" id="mushafPageContent"></div>
+    </div>
+    <div class="mushaf-footer">
+      <button class="mushaf-nav-btn" id="mushafPrevBtn" aria-label="الصفحة السابقة"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <span class="mushaf-page-pill" id="mushafPagePill"></span>
+      <button class="mushaf-nav-btn" id="mushafNextBtn" aria-label="الصفحة التالية" style="transform:scaleX(-1);"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
   </main>
 
   <!-- ================= JUZ LIST ================= -->
   <main id="view-juzlist" class="view" hidden>
-    <div class="back-row">
-      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
-      <span class="view-title">أجزاء القرآن (30)</span>
-    </div>
+    <div class="view-header"><span class="view-title">أجزاء القرآن (30)</span></div>
     <div class="card-list" id="juzListContainer"></div>
   </main>
 
   <!-- ================= JUZ DETAIL ================= -->
   <main id="view-juzdetail" class="view" hidden>
-    <div class="back-row">
-      <button class="back-btn" data-back="juzList"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
-    </div>
     <div class="juz-header">
       <div class="juz-num" id="juzDetailNum"></div>
       <div>
@@ -355,34 +440,43 @@
     <div id="juzDetailSegments"></div>
   </main>
 
-  <!-- ================= MORNING ADHKAR ================= -->
+  <!-- ================= MORNING ADHKAR (single-item navigator) ================= -->
   <main id="view-morning" class="view" hidden>
-    <div class="back-row">
-      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
-      <span class="view-title">🌅 أذكار الصباح</span>
+    <div class="view-header"><span class="view-title">🌅 أذكار الصباح</span></div>
+    <div class="adhkar-progress-row">
+      <button class="adhkar-reset-btn" id="morningResetBtn">↺ إعادة الأذكار</button>
+      <span class="ap-count" id="morningSummaryText">0 / 0</span>
     </div>
-    <div class="adhkar-summary"><span>التقدم</span><b id="morningSummaryText">0 / 0</b></div>
-    <div class="bar" style="margin-bottom:16px;"><div class="fill" id="morningBar"></div></div>
-    <div id="morningList"></div>
+    <div class="bar"><div class="fill" id="morningBar"></div></div>
+    <div class="dhikr-position" id="morningPosition"></div>
+    <div class="dhikr-single-card" id="morningCard"></div>
+    <div class="dhikr-single-nav">
+      <button class="dhikr-nav-arrow" id="morningPrevBtn" aria-label="الذكر السابق"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="dhikr-big-counter" id="morningCounterBtn"></button>
+      <button class="dhikr-nav-arrow" id="morningNextBtn" aria-label="الذكر التالي"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
   </main>
 
-  <!-- ================= EVENING ADHKAR ================= -->
+  <!-- ================= EVENING ADHKAR (single-item navigator) ================= -->
   <main id="view-evening" class="view" hidden>
-    <div class="back-row">
-      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
-      <span class="view-title">🌙 أذكار المساء</span>
+    <div class="view-header"><span class="view-title">🌙 أذكار المساء</span></div>
+    <div class="adhkar-progress-row">
+      <button class="adhkar-reset-btn" id="eveningResetBtn">↺ إعادة الأذكار</button>
+      <span class="ap-count" id="eveningSummaryText">0 / 0</span>
     </div>
-    <div class="adhkar-summary"><span>التقدم</span><b id="eveningSummaryText">0 / 0</b></div>
-    <div class="bar" style="margin-bottom:16px;"><div class="fill" id="eveningBar"></div></div>
-    <div id="eveningList"></div>
+    <div class="bar"><div class="fill" id="eveningBar"></div></div>
+    <div class="dhikr-position" id="eveningPosition"></div>
+    <div class="dhikr-single-card" id="eveningCard"></div>
+    <div class="dhikr-single-nav">
+      <button class="dhikr-nav-arrow" id="eveningPrevBtn" aria-label="الذكر السابق"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="dhikr-big-counter" id="eveningCounterBtn"></button>
+      <button class="dhikr-nav-arrow" id="eveningNextBtn" aria-label="الذكر التالي"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
   </main>
 
   <!-- ================= PROGRESS ================= -->
   <main id="view-progress" class="view" hidden>
-    <div class="back-row">
-      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
-      <span class="view-title">📊 تقدمي</span>
-    </div>
+    <div class="view-header"><span class="view-title">📊 تقدمي</span></div>
     <div class="stat-card" id="progressSurahCard"></div>
     <div class="stat-card" id="progressJuzCard"></div>
     <div class="streak-banner" id="streakBanner"></div>
@@ -394,10 +488,7 @@
 
   <!-- ================= SETTINGS ================= -->
   <main id="view-settings" class="view" hidden>
-    <div class="back-row">
-      <button class="back-btn" data-back="home"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>رجوع</span></button>
-      <span class="view-title">⚙️ الإعدادات</span>
-    </div>
+    <div class="view-header"><span class="view-title">⚙️ الإعدادات</span></div>
 
     <div class="notice-box" id="notificationNotice"></div>
 
@@ -451,9 +542,22 @@
       </div>
       <div class="settings-row"><label style="color:var(--danger);">إعادة ضبط كل التقدم</label><button class="btn danger" id="resetAllBtn">إعادة ضبط</button></div>
     </div>
+
+    <div class="settings-section">
+      <h3>عن وردي</h3>
+      <p class="about-line">وردي صدقة جارية لوالدة صاحب التطبيق، نسأل الله أن يتقبلها وأن ينفع بها كل من يستخدمها 🤍</p>
+    </div>
   </main>
 
 </div>
+
+<div class="bottom-bar" id="bottomBar" hidden>
+  <button class="bottom-back-btn" id="bottomBackBtn">
+    <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>رجوع</span>
+  </button>
+</div>
+
 <div class="toast" id="toast"></div>
 <script>
 (function(){
@@ -699,53 +803,677 @@ const JUZ_BOUNDS = [
 [1,1,2,141],[2,142,2,252],[2,253,3,92],[3,93,4,23],[4,24,4,147],[4,148,5,81],[5,82,6,110],[6,111,7,87],[7,88,8,40],[8,41,9,92],[9,93,11,5],[11,6,12,52],[12,53,14,52],[15,1,16,128],[17,1,18,74],[18,75,20,135],[21,1,22,78],[23,1,25,20],[25,21,27,55],[27,56,29,45],[29,46,33,30],[33,31,36,27],[36,28,39,31],[39,32,41,46],[41,47,45,37],[46,1,51,30],[51,31,57,29],[58,1,66,12],[67,1,77,50],[78,1,114,6],
 ];
 
+const MUSHAF_PAGES = [
+{p:1,j:1,je:1,hq:1,r:[[1,1,7]]},
+{p:2,j:1,je:1,hq:1,r:[[2,1,5]]},
+{p:3,j:1,je:1,hq:1,r:[[2,6,16]]},
+{p:4,j:1,je:1,hq:1,r:[[2,17,24]]},
+{p:5,j:1,je:1,hq:1,r:[[2,25,29]]},
+{p:6,j:1,je:1,hq:2,r:[[2,30,37]]},
+{p:7,j:1,je:1,hq:2,r:[[2,38,48]]},
+{p:8,j:1,je:1,hq:3,r:[[2,49,57]]},
+{p:9,j:1,je:1,hq:3,r:[[2,58,61]]},
+{p:10,j:1,je:1,hq:4,r:[[2,62,69]]},
+{p:11,j:1,je:1,hq:4,r:[[2,70,76]]},
+{p:12,j:1,je:1,hq:5,r:[[2,77,83]]},
+{p:13,j:1,je:1,hq:5,r:[[2,84,88]]},
+{p:14,j:1,je:1,hq:5,r:[[2,89,93]]},
+{p:15,j:1,je:1,hq:6,r:[[2,94,101]]},
+{p:16,j:1,je:1,hq:6,r:[[2,102,105]]},
+{p:17,j:1,je:1,hq:7,r:[[2,106,112]]},
+{p:18,j:1,je:1,hq:7,r:[[2,113,119]]},
+{p:19,j:1,je:1,hq:7,r:[[2,120,126]]},
+{p:20,j:1,je:1,hq:8,r:[[2,127,134]]},
+{p:21,j:1,je:1,hq:8,r:[[2,135,141]]},
+{p:22,j:2,je:2,hq:9,r:[[2,142,145]]},
+{p:23,j:2,je:2,hq:9,r:[[2,146,153]]},
+{p:24,j:2,je:2,hq:9,r:[[2,154,163]]},
+{p:25,j:2,je:2,hq:10,r:[[2,164,169]]},
+{p:26,j:2,je:2,hq:10,r:[[2,170,176]]},
+{p:27,j:2,je:2,hq:11,r:[[2,177,181]]},
+{p:28,j:2,je:2,hq:11,r:[[2,182,186]]},
+{p:29,j:2,je:2,hq:11,r:[[2,187,190]]},
+{p:30,j:2,je:2,hq:12,r:[[2,191,196]]},
+{p:31,j:2,je:2,hq:12,r:[[2,197,202]]},
+{p:32,j:2,je:2,hq:13,r:[[2,203,210]]},
+{p:33,j:2,je:2,hq:13,r:[[2,211,215]]},
+{p:34,j:2,je:2,hq:13,r:[[2,216,219]]},
+{p:35,j:2,je:2,hq:14,r:[[2,220,224]]},
+{p:36,j:2,je:2,hq:14,r:[[2,225,230]]},
+{p:37,j:2,je:2,hq:14,r:[[2,231,233]]},
+{p:38,j:2,je:2,hq:15,r:[[2,234,237]]},
+{p:39,j:2,je:2,hq:15,r:[[2,238,245]]},
+{p:40,j:2,je:2,hq:16,r:[[2,246,248]]},
+{p:41,j:2,je:2,hq:16,r:[[2,249,252]]},
+{p:42,j:3,je:3,hq:17,r:[[2,253,256]]},
+{p:43,j:3,je:3,hq:17,r:[[2,257,259]]},
+{p:44,j:3,je:3,hq:17,r:[[2,260,264]]},
+{p:45,j:3,je:3,hq:18,r:[[2,265,269]]},
+{p:46,j:3,je:3,hq:18,r:[[2,270,274]]},
+{p:47,j:3,je:3,hq:19,r:[[2,275,281]]},
+{p:48,j:3,je:3,hq:19,r:[[2,282,282]]},
+{p:49,j:3,je:3,hq:20,r:[[2,283,286]]},
+{p:50,j:3,je:3,hq:20,r:[[3,1,9]]},
+{p:51,j:3,je:3,hq:20,r:[[3,10,15]]},
+{p:52,j:3,je:3,hq:21,r:[[3,16,22]]},
+{p:53,j:3,je:3,hq:21,r:[[3,23,29]]},
+{p:54,j:3,je:3,hq:21,r:[[3,30,37]]},
+{p:55,j:3,je:3,hq:22,r:[[3,38,45]]},
+{p:56,j:3,je:3,hq:22,r:[[3,46,52]]},
+{p:57,j:3,je:3,hq:23,r:[[3,53,61]]},
+{p:58,j:3,je:3,hq:23,r:[[3,62,70]]},
+{p:59,j:3,je:3,hq:23,r:[[3,71,77]]},
+{p:60,j:3,je:3,hq:24,r:[[3,78,83]]},
+{p:61,j:3,je:3,hq:24,r:[[3,84,91]]},
+{p:62,j:3,je:4,hq:24,r:[[3,92,100]]},
+{p:63,j:4,je:4,hq:25,r:[[3,101,108]]},
+{p:64,j:4,je:4,hq:25,r:[[3,109,115]]},
+{p:65,j:4,je:4,hq:26,r:[[3,116,121]]},
+{p:66,j:4,je:4,hq:26,r:[[3,122,132]]},
+{p:67,j:4,je:4,hq:27,r:[[3,133,140]]},
+{p:68,j:4,je:4,hq:27,r:[[3,141,148]]},
+{p:69,j:4,je:4,hq:27,r:[[3,149,153]]},
+{p:70,j:4,je:4,hq:28,r:[[3,154,157]]},
+{p:71,j:4,je:4,hq:28,r:[[3,158,165]]},
+{p:72,j:4,je:4,hq:28,r:[[3,166,173]]},
+{p:73,j:4,je:4,hq:29,r:[[3,174,180]]},
+{p:74,j:4,je:4,hq:29,r:[[3,181,186]]},
+{p:75,j:4,je:4,hq:30,r:[[3,187,194]]},
+{p:76,j:4,je:4,hq:30,r:[[3,195,200]]},
+{p:77,j:4,je:4,hq:31,r:[[4,1,6]]},
+{p:78,j:4,je:4,hq:31,r:[[4,7,11]]},
+{p:79,j:4,je:4,hq:32,r:[[4,12,14]]},
+{p:80,j:4,je:4,hq:32,r:[[4,15,19]]},
+{p:81,j:4,je:4,hq:32,r:[[4,20,23]]},
+{p:82,j:5,je:5,hq:33,r:[[4,24,26]]},
+{p:83,j:5,je:5,hq:33,r:[[4,27,33]]},
+{p:84,j:5,je:5,hq:33,r:[[4,34,37]]},
+{p:85,j:5,je:5,hq:34,r:[[4,38,44]]},
+{p:86,j:5,je:5,hq:34,r:[[4,45,51]]},
+{p:87,j:5,je:5,hq:34,r:[[4,52,59]]},
+{p:88,j:5,je:5,hq:35,r:[[4,60,65]]},
+{p:89,j:5,je:5,hq:35,r:[[4,66,74]]},
+{p:90,j:5,je:5,hq:36,r:[[4,75,79]]},
+{p:91,j:5,je:5,hq:36,r:[[4,80,86]]},
+{p:92,j:5,je:5,hq:36,r:[[4,87,91]]},
+{p:93,j:5,je:5,hq:37,r:[[4,92,94]]},
+{p:94,j:5,je:5,hq:37,r:[[4,95,101]]},
+{p:95,j:5,je:5,hq:38,r:[[4,102,105]]},
+{p:96,j:5,je:5,hq:38,r:[[4,106,113]]},
+{p:97,j:5,je:5,hq:39,r:[[4,114,121]]},
+{p:98,j:5,je:5,hq:39,r:[[4,122,127]]},
+{p:99,j:5,je:5,hq:39,r:[[4,128,134]]},
+{p:100,j:5,je:5,hq:40,r:[[4,135,140]]},
+{p:101,j:5,je:5,hq:40,r:[[4,141,147]]},
+{p:102,j:6,je:6,hq:41,r:[[4,148,154]]},
+{p:103,j:6,je:6,hq:41,r:[[4,155,162]]},
+{p:104,j:6,je:6,hq:42,r:[[4,163,170]]},
+{p:105,j:6,je:6,hq:42,r:[[4,171,175]]},
+{p:106,j:6,je:6,hq:42,r:[[4,176,176],[5,1,2]]},
+{p:107,j:6,je:6,hq:43,r:[[5,3,5]]},
+{p:108,j:6,je:6,hq:43,r:[[5,6,9]]},
+{p:109,j:6,je:6,hq:43,r:[[5,10,13]]},
+{p:110,j:6,je:6,hq:44,r:[[5,14,17]]},
+{p:111,j:6,je:6,hq:44,r:[[5,18,23]]},
+{p:112,j:6,je:6,hq:44,r:[[5,24,31]]},
+{p:113,j:6,je:6,hq:45,r:[[5,32,36]]},
+{p:114,j:6,je:6,hq:45,r:[[5,37,41]]},
+{p:115,j:6,je:6,hq:46,r:[[5,42,45]]},
+{p:116,j:6,je:6,hq:46,r:[[5,46,50]]},
+{p:117,j:6,je:6,hq:47,r:[[5,51,57]]},
+{p:118,j:6,je:6,hq:47,r:[[5,58,64]]},
+{p:119,j:6,je:6,hq:47,r:[[5,65,70]]},
+{p:120,j:6,je:6,hq:48,r:[[5,71,76]]},
+{p:121,j:6,je:7,hq:48,r:[[5,77,82]]},
+{p:122,j:7,je:7,hq:49,r:[[5,83,89]]},
+{p:123,j:7,je:7,hq:49,r:[[5,90,95]]},
+{p:124,j:7,je:7,hq:49,r:[[5,96,103]]},
+{p:125,j:7,je:7,hq:50,r:[[5,104,108]]},
+{p:126,j:7,je:7,hq:51,r:[[5,109,113]]},
+{p:127,j:7,je:7,hq:51,r:[[5,114,120]]},
+{p:128,j:7,je:7,hq:51,r:[[6,1,8]]},
+{p:129,j:7,je:7,hq:51,r:[[6,9,18]]},
+{p:130,j:7,je:7,hq:52,r:[[6,19,27]]},
+{p:131,j:7,je:7,hq:52,r:[[6,28,35]]},
+{p:132,j:7,je:7,hq:53,r:[[6,36,44]]},
+{p:133,j:7,je:7,hq:53,r:[[6,45,52]]},
+{p:134,j:7,je:7,hq:53,r:[[6,53,59]]},
+{p:135,j:7,je:7,hq:54,r:[[6,60,68]]},
+{p:136,j:7,je:7,hq:54,r:[[6,69,73]]},
+{p:137,j:7,je:7,hq:55,r:[[6,74,81]]},
+{p:138,j:7,je:7,hq:55,r:[[6,82,90]]},
+{p:139,j:7,je:7,hq:55,r:[[6,91,94]]},
+{p:140,j:7,je:7,hq:56,r:[[6,95,101]]},
+{p:141,j:7,je:7,hq:56,r:[[6,102,110]]},
+{p:142,j:8,je:8,hq:57,r:[[6,111,118]]},
+{p:143,j:8,je:8,hq:57,r:[[6,119,124]]},
+{p:144,j:8,je:8,hq:57,r:[[6,125,131]]},
+{p:145,j:8,je:8,hq:58,r:[[6,132,137]]},
+{p:146,j:8,je:8,hq:58,r:[[6,138,142]]},
+{p:147,j:8,je:8,hq:59,r:[[6,143,146]]},
+{p:148,j:8,je:8,hq:59,r:[[6,147,151]]},
+{p:149,j:8,je:8,hq:60,r:[[6,152,157]]},
+{p:150,j:8,je:8,hq:60,r:[[6,158,165]]},
+{p:151,j:8,je:8,hq:61,r:[[7,1,11]]},
+{p:152,j:8,je:8,hq:61,r:[[7,12,22]]},
+{p:153,j:8,je:8,hq:61,r:[[7,23,30]]},
+{p:154,j:8,je:8,hq:62,r:[[7,31,37]]},
+{p:155,j:8,je:8,hq:62,r:[[7,38,43]]},
+{p:156,j:8,je:8,hq:62,r:[[7,44,51]]},
+{p:157,j:8,je:8,hq:63,r:[[7,52,57]]},
+{p:158,j:8,je:8,hq:63,r:[[7,58,67]]},
+{p:159,j:8,je:8,hq:64,r:[[7,68,73]]},
+{p:160,j:8,je:8,hq:64,r:[[7,74,81]]},
+{p:161,j:8,je:8,hq:64,r:[[7,82,87]]},
+{p:162,j:9,je:9,hq:65,r:[[7,88,95]]},
+{p:163,j:9,je:9,hq:65,r:[[7,96,104]]},
+{p:164,j:9,je:9,hq:65,r:[[7,105,120]]},
+{p:165,j:9,je:9,hq:66,r:[[7,121,130]]},
+{p:166,j:9,je:9,hq:66,r:[[7,131,137]]},
+{p:167,j:9,je:9,hq:66,r:[[7,138,143]]},
+{p:168,j:9,je:9,hq:67,r:[[7,144,149]]},
+{p:169,j:9,je:9,hq:67,r:[[7,150,155]]},
+{p:170,j:9,je:9,hq:68,r:[[7,156,159]]},
+{p:171,j:9,je:9,hq:68,r:[[7,160,163]]},
+{p:172,j:9,je:9,hq:68,r:[[7,164,170]]},
+{p:173,j:9,je:9,hq:69,r:[[7,171,178]]},
+{p:174,j:9,je:9,hq:69,r:[[7,179,187]]},
+{p:175,j:9,je:9,hq:69,r:[[7,188,195]]},
+{p:176,j:9,je:9,hq:70,r:[[7,196,206]]},
+{p:177,j:9,je:9,hq:71,r:[[8,1,8]]},
+{p:178,j:9,je:9,hq:71,r:[[8,9,16]]},
+{p:179,j:9,je:9,hq:71,r:[[8,17,25]]},
+{p:180,j:9,je:9,hq:72,r:[[8,26,33]]},
+{p:181,j:9,je:9,hq:72,r:[[8,34,40]]},
+{p:182,j:10,je:10,hq:73,r:[[8,41,45]]},
+{p:183,j:10,je:10,hq:73,r:[[8,46,52]]},
+{p:184,j:10,je:10,hq:73,r:[[8,53,61]]},
+{p:185,j:10,je:10,hq:74,r:[[8,62,69]]},
+{p:186,j:10,je:10,hq:74,r:[[8,70,75]]},
+{p:187,j:10,je:10,hq:75,r:[[9,1,6]]},
+{p:188,j:10,je:10,hq:75,r:[[9,7,13]]},
+{p:189,j:10,je:10,hq:75,r:[[9,14,20]]},
+{p:190,j:10,je:10,hq:76,r:[[9,21,26]]},
+{p:191,j:10,je:10,hq:76,r:[[9,27,31]]},
+{p:192,j:10,je:10,hq:76,r:[[9,32,36]]},
+{p:193,j:10,je:10,hq:77,r:[[9,37,40]]},
+{p:194,j:10,je:10,hq:77,r:[[9,41,47]]},
+{p:195,j:10,je:10,hq:78,r:[[9,48,54]]},
+{p:196,j:10,je:10,hq:78,r:[[9,55,61]]},
+{p:197,j:10,je:10,hq:79,r:[[9,62,68]]},
+{p:198,j:10,je:10,hq:79,r:[[9,69,72]]},
+{p:199,j:10,je:10,hq:79,r:[[9,73,79]]},
+{p:200,j:10,je:10,hq:80,r:[[9,80,86]]},
+{p:201,j:10,je:11,hq:80,r:[[9,87,93]]},
+{p:202,j:11,je:11,hq:81,r:[[9,94,99]]},
+{p:203,j:11,je:11,hq:81,r:[[9,100,106]]},
+{p:204,j:11,je:11,hq:81,r:[[9,107,111]]},
+{p:205,j:11,je:11,hq:82,r:[[9,112,117]]},
+{p:206,j:11,je:11,hq:82,r:[[9,118,122]]},
+{p:207,j:11,je:11,hq:83,r:[[9,123,129]]},
+{p:208,j:11,je:11,hq:83,r:[[10,1,6]]},
+{p:209,j:11,je:11,hq:83,r:[[10,7,14]]},
+{p:210,j:11,je:11,hq:84,r:[[10,15,20]]},
+{p:211,j:11,je:11,hq:84,r:[[10,21,25]]},
+{p:212,j:11,je:11,hq:85,r:[[10,26,33]]},
+{p:213,j:11,je:11,hq:85,r:[[10,34,42]]},
+{p:214,j:11,je:11,hq:85,r:[[10,43,53]]},
+{p:215,j:11,je:11,hq:86,r:[[10,54,61]]},
+{p:216,j:11,je:11,hq:86,r:[[10,62,70]]},
+{p:217,j:11,je:11,hq:87,r:[[10,71,78]]},
+{p:218,j:11,je:11,hq:87,r:[[10,79,88]]},
+{p:219,j:11,je:11,hq:87,r:[[10,89,97]]},
+{p:220,j:11,je:11,hq:88,r:[[10,98,106]]},
+{p:221,j:11,je:11,hq:88,r:[[10,107,109],[11,1,5]]},
+{p:222,j:12,je:12,hq:89,r:[[11,6,12]]},
+{p:223,j:12,je:12,hq:89,r:[[11,13,19]]},
+{p:224,j:12,je:12,hq:89,r:[[11,20,28]]},
+{p:225,j:12,je:12,hq:90,r:[[11,29,37]]},
+{p:226,j:12,je:12,hq:90,r:[[11,38,45]]},
+{p:227,j:12,je:12,hq:91,r:[[11,46,53]]},
+{p:228,j:12,je:12,hq:91,r:[[11,54,62]]},
+{p:229,j:12,je:12,hq:92,r:[[11,63,71]]},
+{p:230,j:12,je:12,hq:92,r:[[11,72,81]]},
+{p:231,j:12,je:12,hq:92,r:[[11,82,88]]},
+{p:232,j:12,je:12,hq:93,r:[[11,89,97]]},
+{p:233,j:12,je:12,hq:93,r:[[11,98,108]]},
+{p:234,j:12,je:12,hq:94,r:[[11,109,117]]},
+{p:235,j:12,je:12,hq:94,r:[[11,118,123],[12,1,4]]},
+{p:236,j:12,je:12,hq:94,r:[[12,5,14]]},
+{p:237,j:12,je:12,hq:95,r:[[12,15,22]]},
+{p:238,j:12,je:12,hq:95,r:[[12,23,30]]},
+{p:239,j:12,je:12,hq:96,r:[[12,31,37]]},
+{p:240,j:12,je:12,hq:96,r:[[12,38,43]]},
+{p:241,j:12,je:12,hq:96,r:[[12,44,52]]},
+{p:242,j:13,je:13,hq:97,r:[[12,53,63]]},
+{p:243,j:13,je:13,hq:97,r:[[12,64,69]]},
+{p:244,j:13,je:13,hq:97,r:[[12,70,78]]},
+{p:245,j:13,je:13,hq:98,r:[[12,79,86]]},
+{p:246,j:13,je:13,hq:98,r:[[12,87,95]]},
+{p:247,j:13,je:13,hq:98,r:[[12,96,103]]},
+{p:248,j:13,je:13,hq:99,r:[[12,104,111]]},
+{p:249,j:13,je:13,hq:99,r:[[13,1,5]]},
+{p:250,j:13,je:13,hq:100,r:[[13,6,13]]},
+{p:251,j:13,je:13,hq:100,r:[[13,14,18]]},
+{p:252,j:13,je:13,hq:101,r:[[13,19,28]]},
+{p:253,j:13,je:13,hq:101,r:[[13,29,34]]},
+{p:254,j:13,je:13,hq:102,r:[[13,35,42]]},
+{p:255,j:13,je:13,hq:102,r:[[13,43,43],[14,1,5]]},
+{p:256,j:13,je:13,hq:102,r:[[14,6,10]]},
+{p:257,j:13,je:13,hq:103,r:[[14,11,18]]},
+{p:258,j:13,je:13,hq:103,r:[[14,19,24]]},
+{p:259,j:13,je:13,hq:103,r:[[14,25,33]]},
+{p:260,j:13,je:13,hq:104,r:[[14,34,42]]},
+{p:261,j:13,je:13,hq:104,r:[[14,43,52]]},
+{p:262,j:14,je:14,hq:105,r:[[15,1,15]]},
+{p:263,j:14,je:14,hq:105,r:[[15,16,31]]},
+{p:264,j:14,je:14,hq:105,r:[[15,32,51]]},
+{p:265,j:14,je:14,hq:106,r:[[15,52,70]]},
+{p:266,j:14,je:14,hq:106,r:[[15,71,90]]},
+{p:267,j:14,je:14,hq:106,r:[[15,91,99],[16,1,6]]},
+{p:268,j:14,je:14,hq:107,r:[[16,7,14]]},
+{p:269,j:14,je:14,hq:107,r:[[16,15,26]]},
+{p:270,j:14,je:14,hq:107,r:[[16,27,34]]},
+{p:271,j:14,je:14,hq:108,r:[[16,35,42]]},
+{p:272,j:14,je:14,hq:108,r:[[16,43,54]]},
+{p:273,j:14,je:14,hq:109,r:[[16,55,64]]},
+{p:274,j:14,je:14,hq:109,r:[[16,65,72]]},
+{p:275,j:14,je:14,hq:109,r:[[16,73,79]]},
+{p:276,j:14,je:14,hq:110,r:[[16,80,87]]},
+{p:277,j:14,je:14,hq:110,r:[[16,88,93]]},
+{p:278,j:14,je:14,hq:111,r:[[16,94,102]]},
+{p:279,j:14,je:14,hq:111,r:[[16,103,110]]},
+{p:280,j:14,je:14,hq:112,r:[[16,111,118]]},
+{p:281,j:14,je:14,hq:112,r:[[16,119,128]]},
+{p:282,j:15,je:15,hq:113,r:[[17,1,7]]},
+{p:283,j:15,je:15,hq:113,r:[[17,8,17]]},
+{p:284,j:15,je:15,hq:113,r:[[17,18,27]]},
+{p:285,j:15,je:15,hq:114,r:[[17,28,38]]},
+{p:286,j:15,je:15,hq:114,r:[[17,39,49]]},
+{p:287,j:15,je:15,hq:115,r:[[17,50,58]]},
+{p:288,j:15,je:15,hq:115,r:[[17,59,66]]},
+{p:289,j:15,je:15,hq:115,r:[[17,67,75]]},
+{p:290,j:15,je:15,hq:116,r:[[17,76,86]]},
+{p:291,j:15,je:15,hq:116,r:[[17,87,96]]},
+{p:292,j:15,je:15,hq:116,r:[[17,97,104]]},
+{p:293,j:15,je:15,hq:117,r:[[17,105,111],[18,1,4]]},
+{p:294,j:15,je:15,hq:117,r:[[18,5,15]]},
+{p:295,j:15,je:15,hq:117,r:[[18,16,20]]},
+{p:296,j:15,je:15,hq:118,r:[[18,21,27]]},
+{p:297,j:15,je:15,hq:118,r:[[18,28,34]]},
+{p:298,j:15,je:15,hq:119,r:[[18,35,45]]},
+{p:299,j:15,je:15,hq:119,r:[[18,46,53]]},
+{p:300,j:15,je:15,hq:120,r:[[18,54,61]]},
+{p:301,j:15,je:15,hq:120,r:[[18,62,74]]},
+{p:302,j:16,je:16,hq:121,r:[[18,75,83]]},
+{p:303,j:16,je:16,hq:121,r:[[18,84,97]]},
+{p:304,j:16,je:16,hq:121,r:[[18,98,110]]},
+{p:305,j:16,je:16,hq:122,r:[[19,1,11]]},
+{p:306,j:16,je:16,hq:122,r:[[19,12,25]]},
+{p:307,j:16,je:16,hq:123,r:[[19,26,38]]},
+{p:308,j:16,je:16,hq:123,r:[[19,39,51]]},
+{p:309,j:16,je:16,hq:123,r:[[19,52,64]]},
+{p:310,j:16,je:16,hq:124,r:[[19,65,76]]},
+{p:311,j:16,je:16,hq:124,r:[[19,77,95]]},
+{p:312,j:16,je:16,hq:124,r:[[19,96,98],[20,1,12]]},
+{p:313,j:16,je:16,hq:125,r:[[20,13,37]]},
+{p:314,j:16,je:16,hq:125,r:[[20,38,51]]},
+{p:315,j:16,je:16,hq:125,r:[[20,52,64]]},
+{p:316,j:16,je:16,hq:126,r:[[20,65,76]]},
+{p:317,j:16,je:16,hq:126,r:[[20,77,87]]},
+{p:318,j:16,je:16,hq:127,r:[[20,88,98]]},
+{p:319,j:16,je:16,hq:127,r:[[20,99,113]]},
+{p:320,j:16,je:16,hq:128,r:[[20,114,125]]},
+{p:321,j:16,je:16,hq:128,r:[[20,126,135]]},
+{p:322,j:17,je:17,hq:129,r:[[21,1,10]]},
+{p:323,j:17,je:17,hq:129,r:[[21,11,24]]},
+{p:324,j:17,je:17,hq:129,r:[[21,25,35]]},
+{p:325,j:17,je:17,hq:130,r:[[21,36,44]]},
+{p:326,j:17,je:17,hq:130,r:[[21,45,57]]},
+{p:327,j:17,je:17,hq:131,r:[[21,58,72]]},
+{p:328,j:17,je:17,hq:131,r:[[21,73,81]]},
+{p:329,j:17,je:17,hq:131,r:[[21,82,90]]},
+{p:330,j:17,je:17,hq:132,r:[[21,91,101]]},
+{p:331,j:17,je:17,hq:132,r:[[21,102,112]]},
+{p:332,j:17,je:17,hq:133,r:[[22,1,5]]},
+{p:333,j:17,je:17,hq:133,r:[[22,6,15]]},
+{p:334,j:17,je:17,hq:133,r:[[22,16,23]]},
+{p:335,j:17,je:17,hq:134,r:[[22,24,30]]},
+{p:336,j:17,je:17,hq:134,r:[[22,31,38]]},
+{p:337,j:17,je:17,hq:135,r:[[22,39,46]]},
+{p:338,j:17,je:17,hq:135,r:[[22,47,55]]},
+{p:339,j:17,je:17,hq:135,r:[[22,56,64]]},
+{p:340,j:17,je:17,hq:136,r:[[22,65,72]]},
+{p:341,j:17,je:17,hq:136,r:[[22,73,78]]},
+{p:342,j:18,je:18,hq:137,r:[[23,1,17]]},
+{p:343,j:18,je:18,hq:137,r:[[23,18,27]]},
+{p:344,j:18,je:18,hq:137,r:[[23,28,42]]},
+{p:345,j:18,je:18,hq:138,r:[[23,43,59]]},
+{p:346,j:18,je:18,hq:138,r:[[23,60,74]]},
+{p:347,j:18,je:18,hq:139,r:[[23,75,89]]},
+{p:348,j:18,je:18,hq:139,r:[[23,90,104]]},
+{p:349,j:18,je:18,hq:139,r:[[23,105,118]]},
+{p:350,j:18,je:18,hq:140,r:[[24,1,10]]},
+{p:351,j:18,je:18,hq:140,r:[[24,11,20]]},
+{p:352,j:18,je:18,hq:141,r:[[24,21,27]]},
+{p:353,j:18,je:18,hq:141,r:[[24,28,31]]},
+{p:354,j:18,je:18,hq:141,r:[[24,32,36]]},
+{p:355,j:18,je:18,hq:142,r:[[24,37,43]]},
+{p:356,j:18,je:18,hq:142,r:[[24,44,53]]},
+{p:357,j:18,je:18,hq:143,r:[[24,54,58]]},
+{p:358,j:18,je:18,hq:143,r:[[24,59,61]]},
+{p:359,j:18,je:18,hq:143,r:[[24,62,64],[25,1,2]]},
+{p:360,j:18,je:18,hq:144,r:[[25,3,11]]},
+{p:361,j:18,je:18,hq:144,r:[[25,12,20]]},
+{p:362,j:19,je:19,hq:145,r:[[25,21,32]]},
+{p:363,j:19,je:19,hq:145,r:[[25,33,43]]},
+{p:364,j:19,je:19,hq:145,r:[[25,44,55]]},
+{p:365,j:19,je:19,hq:146,r:[[25,56,67]]},
+{p:366,j:19,je:19,hq:146,r:[[25,68,77]]},
+{p:367,j:19,je:19,hq:147,r:[[26,1,19]]},
+{p:368,j:19,je:19,hq:147,r:[[26,20,39]]},
+{p:369,j:19,je:19,hq:147,r:[[26,40,60]]},
+{p:370,j:19,je:19,hq:148,r:[[26,61,83]]},
+{p:371,j:19,je:19,hq:148,r:[[26,84,111]]},
+{p:372,j:19,je:19,hq:149,r:[[26,112,136]]},
+{p:373,j:19,je:19,hq:149,r:[[26,137,159]]},
+{p:374,j:19,je:19,hq:149,r:[[26,160,183]]},
+{p:375,j:19,je:19,hq:150,r:[[26,184,206]]},
+{p:376,j:19,je:19,hq:150,r:[[26,207,227]]},
+{p:377,j:19,je:19,hq:151,r:[[27,1,13]]},
+{p:378,j:19,je:19,hq:151,r:[[27,14,22]]},
+{p:379,j:19,je:19,hq:151,r:[[27,23,35]]},
+{p:380,j:19,je:19,hq:152,r:[[27,36,44]]},
+{p:381,j:19,je:19,hq:152,r:[[27,45,55]]},
+{p:382,j:20,je:20,hq:153,r:[[27,56,63]]},
+{p:383,j:20,je:20,hq:153,r:[[27,64,76]]},
+{p:384,j:20,je:20,hq:153,r:[[27,77,88]]},
+{p:385,j:20,je:20,hq:154,r:[[27,89,93],[28,1,5]]},
+{p:386,j:20,je:20,hq:154,r:[[28,6,13]]},
+{p:387,j:20,je:20,hq:155,r:[[28,14,21]]},
+{p:388,j:20,je:20,hq:155,r:[[28,22,28]]},
+{p:389,j:20,je:20,hq:156,r:[[28,29,35]]},
+{p:390,j:20,je:20,hq:156,r:[[28,36,43]]},
+{p:391,j:20,je:20,hq:156,r:[[28,44,50]]},
+{p:392,j:20,je:20,hq:157,r:[[28,51,59]]},
+{p:393,j:20,je:20,hq:157,r:[[28,60,70]]},
+{p:394,j:20,je:20,hq:157,r:[[28,71,77]]},
+{p:395,j:20,je:20,hq:158,r:[[28,78,84]]},
+{p:396,j:20,je:20,hq:158,r:[[28,85,88],[29,1,6]]},
+{p:397,j:20,je:20,hq:159,r:[[29,7,14]]},
+{p:398,j:20,je:20,hq:159,r:[[29,15,23]]},
+{p:399,j:20,je:20,hq:159,r:[[29,24,30]]},
+{p:400,j:20,je:20,hq:160,r:[[29,31,38]]},
+{p:401,j:20,je:20,hq:160,r:[[29,39,45]]},
+{p:402,j:21,je:21,hq:161,r:[[29,46,52]]},
+{p:403,j:21,je:21,hq:161,r:[[29,53,63]]},
+{p:404,j:21,je:21,hq:161,r:[[29,64,69],[30,1,5]]},
+{p:405,j:21,je:21,hq:162,r:[[30,6,15]]},
+{p:406,j:21,je:21,hq:162,r:[[30,16,24]]},
+{p:407,j:21,je:21,hq:162,r:[[30,25,32]]},
+{p:408,j:21,je:21,hq:163,r:[[30,33,41]]},
+{p:409,j:21,je:21,hq:163,r:[[30,42,50]]},
+{p:410,j:21,je:21,hq:163,r:[[30,51,60]]},
+{p:411,j:21,je:21,hq:164,r:[[31,1,11]]},
+{p:412,j:21,je:21,hq:164,r:[[31,12,19]]},
+{p:413,j:21,je:21,hq:164,r:[[31,20,28]]},
+{p:414,j:21,je:21,hq:165,r:[[31,29,34]]},
+{p:415,j:21,je:21,hq:165,r:[[32,1,11]]},
+{p:416,j:21,je:21,hq:166,r:[[32,12,20]]},
+{p:417,j:21,je:21,hq:166,r:[[32,21,30]]},
+{p:418,j:21,je:21,hq:167,r:[[33,1,6]]},
+{p:419,j:21,je:21,hq:167,r:[[33,7,15]]},
+{p:420,j:21,je:21,hq:167,r:[[33,16,22]]},
+{p:421,j:21,je:21,hq:168,r:[[33,23,30]]},
+{p:422,j:22,je:22,hq:169,r:[[33,31,35]]},
+{p:423,j:22,je:22,hq:169,r:[[33,36,43]]},
+{p:424,j:22,je:22,hq:169,r:[[33,44,50]]},
+{p:425,j:22,je:22,hq:170,r:[[33,51,54]]},
+{p:426,j:22,je:22,hq:170,r:[[33,55,62]]},
+{p:427,j:22,je:22,hq:171,r:[[33,63,73]]},
+{p:428,j:22,je:22,hq:171,r:[[34,1,7]]},
+{p:429,j:22,je:22,hq:171,r:[[34,8,14]]},
+{p:430,j:22,je:22,hq:172,r:[[34,15,22]]},
+{p:431,j:22,je:22,hq:172,r:[[34,23,31]]},
+{p:432,j:22,je:22,hq:173,r:[[34,32,39]]},
+{p:433,j:22,je:22,hq:173,r:[[34,40,48]]},
+{p:434,j:22,je:22,hq:174,r:[[34,49,54],[35,1,3]]},
+{p:435,j:22,je:22,hq:174,r:[[35,4,11]]},
+{p:436,j:22,je:22,hq:174,r:[[35,12,18]]},
+{p:437,j:22,je:22,hq:175,r:[[35,19,30]]},
+{p:438,j:22,je:22,hq:175,r:[[35,31,38]]},
+{p:439,j:22,je:22,hq:175,r:[[35,39,44]]},
+{p:440,j:22,je:22,hq:176,r:[[35,45,45],[36,1,12]]},
+{p:441,j:22,je:22,hq:176,r:[[36,13,27]]},
+{p:442,j:23,je:23,hq:177,r:[[36,28,40]]},
+{p:443,j:23,je:23,hq:177,r:[[36,41,54]]},
+{p:444,j:23,je:23,hq:177,r:[[36,55,70]]},
+{p:445,j:23,je:23,hq:178,r:[[36,71,83]]},
+{p:446,j:23,je:23,hq:178,r:[[37,1,24]]},
+{p:447,j:23,je:23,hq:179,r:[[37,25,51]]},
+{p:448,j:23,je:23,hq:179,r:[[37,52,76]]},
+{p:449,j:23,je:23,hq:179,r:[[37,77,102]]},
+{p:450,j:23,je:23,hq:180,r:[[37,103,126]]},
+{p:451,j:23,je:23,hq:180,r:[[37,127,153]]},
+{p:452,j:23,je:23,hq:181,r:[[37,154,182]]},
+{p:453,j:23,je:23,hq:181,r:[[38,1,16]]},
+{p:454,j:23,je:23,hq:181,r:[[38,17,26]]},
+{p:455,j:23,je:23,hq:182,r:[[38,27,42]]},
+{p:456,j:23,je:23,hq:182,r:[[38,43,61]]},
+{p:457,j:23,je:23,hq:183,r:[[38,62,83]]},
+{p:458,j:23,je:23,hq:183,r:[[38,84,88],[39,1,5]]},
+{p:459,j:23,je:23,hq:183,r:[[39,6,10]]},
+{p:460,j:23,je:23,hq:184,r:[[39,11,21]]},
+{p:461,j:23,je:23,hq:184,r:[[39,22,31]]},
+{p:462,j:24,je:24,hq:185,r:[[39,32,40]]},
+{p:463,j:24,je:24,hq:185,r:[[39,41,47]]},
+{p:464,j:24,je:24,hq:185,r:[[39,48,56]]},
+{p:465,j:24,je:24,hq:186,r:[[39,57,67]]},
+{p:466,j:24,je:24,hq:186,r:[[39,68,74]]},
+{p:467,j:24,je:24,hq:186,r:[[39,75,75],[40,1,7]]},
+{p:468,j:24,je:24,hq:187,r:[[40,8,16]]},
+{p:469,j:24,je:24,hq:187,r:[[40,17,25]]},
+{p:470,j:24,je:24,hq:188,r:[[40,26,33]]},
+{p:471,j:24,je:24,hq:188,r:[[40,34,40]]},
+{p:472,j:24,je:24,hq:189,r:[[40,41,49]]},
+{p:473,j:24,je:24,hq:189,r:[[40,50,58]]},
+{p:474,j:24,je:24,hq:189,r:[[40,59,66]]},
+{p:475,j:24,je:24,hq:190,r:[[40,67,77]]},
+{p:476,j:24,je:24,hq:190,r:[[40,78,85]]},
+{p:477,j:24,je:24,hq:190,r:[[41,1,11]]},
+{p:478,j:24,je:24,hq:191,r:[[41,12,20]]},
+{p:479,j:24,je:24,hq:191,r:[[41,21,29]]},
+{p:480,j:24,je:24,hq:192,r:[[41,30,38]]},
+{p:481,j:24,je:24,hq:192,r:[[41,39,46]]},
+{p:482,j:25,je:25,hq:193,r:[[41,47,54]]},
+{p:483,j:25,je:25,hq:193,r:[[42,1,10]]},
+{p:484,j:25,je:25,hq:193,r:[[42,11,15]]},
+{p:485,j:25,je:25,hq:194,r:[[42,16,22]]},
+{p:486,j:25,je:25,hq:194,r:[[42,23,31]]},
+{p:487,j:25,je:25,hq:195,r:[[42,32,44]]},
+{p:488,j:25,je:25,hq:195,r:[[42,45,51]]},
+{p:489,j:25,je:25,hq:196,r:[[42,52,53],[43,1,10]]},
+{p:490,j:25,je:25,hq:196,r:[[43,11,22]]},
+{p:491,j:25,je:25,hq:196,r:[[43,23,33]]},
+{p:492,j:25,je:25,hq:197,r:[[43,34,47]]},
+{p:493,j:25,je:25,hq:197,r:[[43,48,60]]},
+{p:494,j:25,je:25,hq:198,r:[[43,61,73]]},
+{p:495,j:25,je:25,hq:198,r:[[43,74,89]]},
+{p:496,j:25,je:25,hq:198,r:[[44,1,18]]},
+{p:497,j:25,je:25,hq:199,r:[[44,19,39]]},
+{p:498,j:25,je:25,hq:199,r:[[44,40,59]]},
+{p:499,j:25,je:25,hq:199,r:[[45,1,13]]},
+{p:500,j:25,je:25,hq:200,r:[[45,14,22]]},
+{p:501,j:25,je:25,hq:200,r:[[45,23,32]]},
+{p:502,j:25,je:26,hq:200,r:[[45,33,37],[46,1,5]]},
+{p:503,j:26,je:26,hq:201,r:[[46,6,14]]},
+{p:504,j:26,je:26,hq:201,r:[[46,15,20]]},
+{p:505,j:26,je:26,hq:202,r:[[46,21,28]]},
+{p:506,j:26,je:26,hq:202,r:[[46,29,35]]},
+{p:507,j:26,je:26,hq:202,r:[[47,1,11]]},
+{p:508,j:26,je:26,hq:203,r:[[47,12,19]]},
+{p:509,j:26,je:26,hq:203,r:[[47,20,29]]},
+{p:510,j:26,je:26,hq:203,r:[[47,30,38]]},
+{p:511,j:26,je:26,hq:204,r:[[48,1,9]]},
+{p:512,j:26,je:26,hq:204,r:[[48,10,15]]},
+{p:513,j:26,je:26,hq:204,r:[[48,16,23]]},
+{p:514,j:26,je:26,hq:205,r:[[48,24,28]]},
+{p:515,j:26,je:26,hq:205,r:[[48,29,29],[49,1,4]]},
+{p:516,j:26,je:26,hq:206,r:[[49,5,11]]},
+{p:517,j:26,je:26,hq:206,r:[[49,12,18]]},
+{p:518,j:26,je:26,hq:207,r:[[50,1,15]]},
+{p:519,j:26,je:26,hq:207,r:[[50,16,35]]},
+{p:520,j:26,je:26,hq:208,r:[[50,36,45],[51,1,6]]},
+{p:521,j:26,je:26,hq:208,r:[[51,7,30]]},
+{p:522,j:27,je:27,hq:209,r:[[51,31,51]]},
+{p:523,j:27,je:27,hq:209,r:[[51,52,60],[52,1,14]]},
+{p:524,j:27,je:27,hq:209,r:[[52,15,31]]},
+{p:525,j:27,je:27,hq:210,r:[[52,32,49]]},
+{p:526,j:27,je:27,hq:210,r:[[53,1,26]]},
+{p:527,j:27,je:27,hq:211,r:[[53,27,44]]},
+{p:528,j:27,je:27,hq:211,r:[[53,45,62],[54,1,6]]},
+{p:529,j:27,je:27,hq:211,r:[[54,7,27]]},
+{p:530,j:27,je:27,hq:212,r:[[54,28,49]]},
+{p:531,j:27,je:27,hq:212,r:[[54,50,55],[55,1,16]]},
+{p:532,j:27,je:27,hq:213,r:[[55,17,40]]},
+{p:533,j:27,je:27,hq:213,r:[[55,41,67]]},
+{p:534,j:27,je:27,hq:213,r:[[55,68,78],[56,1,16]]},
+{p:535,j:27,je:27,hq:214,r:[[56,17,50]]},
+{p:536,j:27,je:27,hq:214,r:[[56,51,76]]},
+{p:537,j:27,je:27,hq:215,r:[[56,77,96],[57,1,3]]},
+{p:538,j:27,je:27,hq:215,r:[[57,4,11]]},
+{p:539,j:27,je:27,hq:215,r:[[57,12,18]]},
+{p:540,j:27,je:27,hq:216,r:[[57,19,24]]},
+{p:541,j:27,je:27,hq:216,r:[[57,25,29]]},
+{p:542,j:28,je:28,hq:217,r:[[58,1,6]]},
+{p:543,j:28,je:28,hq:217,r:[[58,7,11]]},
+{p:544,j:28,je:28,hq:217,r:[[58,12,21]]},
+{p:545,j:28,je:28,hq:218,r:[[58,22,22],[59,1,3]]},
+{p:546,j:28,je:28,hq:218,r:[[59,4,9]]},
+{p:547,j:28,je:28,hq:218,r:[[59,10,16]]},
+{p:548,j:28,je:28,hq:219,r:[[59,17,24]]},
+{p:549,j:28,je:28,hq:219,r:[[60,1,5]]},
+{p:550,j:28,je:28,hq:219,r:[[60,6,11]]},
+{p:551,j:28,je:28,hq:220,r:[[60,12,13],[61,1,5]]},
+{p:552,j:28,je:28,hq:220,r:[[61,6,14]]},
+{p:553,j:28,je:28,hq:221,r:[[62,1,8]]},
+{p:554,j:28,je:28,hq:221,r:[[62,9,11],[63,1,4]]},
+{p:555,j:28,je:28,hq:222,r:[[63,5,11]]},
+{p:556,j:28,je:28,hq:222,r:[[64,1,9]]},
+{p:557,j:28,je:28,hq:222,r:[[64,10,18]]},
+{p:558,j:28,je:28,hq:223,r:[[65,1,5]]},
+{p:559,j:28,je:28,hq:223,r:[[65,6,12]]},
+{p:560,j:28,je:28,hq:224,r:[[66,1,7]]},
+{p:561,j:28,je:28,hq:224,r:[[66,8,12]]},
+{p:562,j:29,je:29,hq:225,r:[[67,1,12]]},
+{p:563,j:29,je:29,hq:225,r:[[67,13,26]]},
+{p:564,j:29,je:29,hq:225,r:[[67,27,30],[68,1,15]]},
+{p:565,j:29,je:29,hq:226,r:[[68,16,42]]},
+{p:566,j:29,je:29,hq:226,r:[[68,43,52],[69,1,8]]},
+{p:567,j:29,je:29,hq:227,r:[[69,9,34]]},
+{p:568,j:29,je:29,hq:227,r:[[69,35,52],[70,1,10]]},
+{p:569,j:29,je:29,hq:227,r:[[70,11,39]]},
+{p:570,j:29,je:29,hq:228,r:[[70,40,44],[71,1,10]]},
+{p:571,j:29,je:29,hq:228,r:[[71,11,28]]},
+{p:572,j:29,je:29,hq:229,r:[[72,1,13]]},
+{p:573,j:29,je:29,hq:229,r:[[72,14,28]]},
+{p:574,j:29,je:29,hq:229,r:[[73,1,19]]},
+{p:575,j:29,je:29,hq:230,r:[[73,20,20],[74,1,17]]},
+{p:576,j:29,je:29,hq:230,r:[[74,18,47]]},
+{p:577,j:29,je:29,hq:230,r:[[74,48,56],[75,1,19]]},
+{p:578,j:29,je:29,hq:231,r:[[75,20,40],[76,1,5]]},
+{p:579,j:29,je:29,hq:231,r:[[76,6,25]]},
+{p:580,j:29,je:29,hq:232,r:[[76,26,31],[77,1,19]]},
+{p:581,j:29,je:29,hq:232,r:[[77,20,50]]},
+{p:582,j:30,je:30,hq:233,r:[[78,1,30]]},
+{p:583,j:30,je:30,hq:233,r:[[78,31,40],[79,1,15]]},
+{p:584,j:30,je:30,hq:233,r:[[79,16,46]]},
+{p:585,j:30,je:30,hq:234,r:[[80,1,42]]},
+{p:586,j:30,je:30,hq:234,r:[[81,1,29]]},
+{p:587,j:30,je:30,hq:235,r:[[82,1,19],[83,1,6]]},
+{p:588,j:30,je:30,hq:235,r:[[83,7,34]]},
+{p:589,j:30,je:30,hq:235,r:[[83,35,36],[84,1,25]]},
+{p:590,j:30,je:30,hq:236,r:[[85,1,22]]},
+{p:591,j:30,je:30,hq:236,r:[[86,1,17],[87,1,15]]},
+{p:592,j:30,je:30,hq:237,r:[[87,16,19],[88,1,26]]},
+{p:593,j:30,je:30,hq:237,r:[[89,1,23]]},
+{p:594,j:30,je:30,hq:237,r:[[89,24,30],[90,1,20]]},
+{p:595,j:30,je:30,hq:238,r:[[91,1,15],[92,1,14]]},
+{p:596,j:30,je:30,hq:238,r:[[92,15,21],[93,1,11],[94,1,8]]},
+{p:597,j:30,je:30,hq:239,r:[[95,1,8],[96,1,19]]},
+{p:598,j:30,je:30,hq:239,r:[[97,1,5],[98,1,7]]},
+{p:599,j:30,je:30,hq:239,r:[[98,8,8],[99,1,8],[100,1,9]]},
+{p:600,j:30,je:30,hq:240,r:[[100,10,11],[101,1,11],[102,1,8]]},
+{p:601,j:30,je:30,hq:240,r:[[103,1,3],[104,1,9],[105,1,5]]},
+{p:602,j:30,je:30,hq:240,r:[[106,1,4],[107,1,7],[108,1,3]]},
+{p:603,j:30,je:30,hq:240,r:[[109,1,6],[110,1,3],[111,1,5]]},
+{p:604,j:30,je:30,hq:240,r:[[112,1,4],[113,1,5],[114,1,6]]},
+];
+
 const MORNING_ADHKAR = [
-  {text:"أَعُوذُ بِاللَّهِ مِنَ الشَّيطَانِ الرَّجِيمِ ﴿اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ لَّهُ مَا فِي السَّمَوَاتِ وَمَا فِي الأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلاَ يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلاَّ بِمَا شَاء وَسِعَ كُرْسِيُّهُ السَّمَوَاتِ وَالْأَرْضَ وَلاَ يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾.",repeat:1},
-  {text:"بسم الله الرحمن الرحيم ﴿قُلْ هُوَ اللَّهُ أَحَدٌ* اللَّهُ الصَّمَدُ* لَمْ يَلِدْ وَلَمْ يُولَدْ* وَلَمْ يَكُن لَّهُ كُفُواً أَحَدٌ﴾.  بسم الله الرحمن الرحيم ﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ* مِن شَرِّ مَا خَلَقَ* وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ* وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ* وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾.  بسم الله الرحمن الرحيم ﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ* مَلِكِ النَّاسِ* إِلَهِ النَّاسِ* مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ* الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ* مِنَ الْجِنَّةِ وَ النَّاسِ﴾ (ثلاثَ مرَّاتٍ).",repeat:3},
-  {text:"((أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيرَ مَا بَعْدَهُ ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي  هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ)). [ وإذا أمسى قال: أمسينا وأمسى الملك للَّه] [وإذا أمسى قال: رب أسألك خير ما في هذه الليلة، وخير ما بعدها، وأعوذ بك من شر ما في هذه الليلة، وشر ما بعدها.]",repeat:1},
-  {text:"((اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا ، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ)). [وإذا أمسى قال: اللَّهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير.]",repeat:1},
-  {text:"((اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لاَ يَغْفِرُ الذُّنوبَ إِلاَّ أَنْتَ)).",repeat:1},
-  {text:"((اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلاَئِكَتِكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَكَ، وَأَنَّ مُحَمَّداً عَبْدُكَ وَرَسُولُكَ)) (أربعَ مَرَّاتٍ).[ وإذا أمسى قال: اللَّهم إني أمسيت...]",repeat:4},
-  {text:"((اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لاَ شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ)). [وإذا أمسى قال: اللَّهم ما أمسى بي...]",repeat:1},
-  {text:"((اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لاَ إِلَهَ إِلاَّ أَنْتَ. اللَّهُمَّ  إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ، وَالفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ القَبْرِ، لاَ إِلَهَ إِلاَّ أَنْتَ)) (ثلاثَ مرَّاتٍ).",repeat:3},
-  {text:"((حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيهِ تَوَكَّلتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ)) (سَبْعَ مَرّاتٍ).",repeat:1},
-  {text:"((اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ: فِي دِينِي وَدُنْيَايَ وَأَهْلِي، وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَينِ يَدَيَّ، وَمِنْ خَلْفِي، وَعَنْ يَمِينِي، وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي)).",repeat:1},
-  {text:"((اللَّهُمَّ عَالِمَ الغَيْبِ وَالشَّهَادَةِ فَاطِرَ السَّمَوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطانِ وَشَرَكِهِ، وَأَنْ أَقْتَرِفَ عَلَى  نَفْسِي سُوءاً، أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ)).",repeat:1},
-  {text:"((بِسْمِ اللَّهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلاَ فِي السّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ)) (ثلاثَ مرَّاتٍ).",repeat:3},
-  {text:"((رَضِيتُ بِاللَّهِ رَبَّاً، وَبِالْإِسْلاَمِ دِيناً، وَبِمُحَمَّدٍ صلى الله عليه وسلم نَبِيّاً)) (ثلاثَ مرَّاتٍ).",repeat:3},
-  {text:"((يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغيثُ أَصْلِحْ لِي شَأْنِيَ كُلَّهُ وَلاَ تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ)).",repeat:1},
-  {text:"((أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُـمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ:فَتْحَهُ، وَنَصْرَهُ، وَنورَهُ، وَبَرَكَتَهُ، وَهُدَاهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهِ وَشَرِّ مَا بَعْدَهُ)). [وإذا أمسى قال: أمسينا وأمسى الملك للَّه ربّ العالمين اللَّهم إني أسألك خير هذه الليلة: فتحها، ونصرها، ونورها، وبركتها، وهداها، وأعوذ بك من شر ما فيها، وشر ما بعدها.]",repeat:1},
-  {text:"((أَصْبَحْنا عَلَى فِطْرَةِ الْإِسْلاَمِ، وَعَلَى كَلِمَةِ الْإِخْلاَصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ صلى الله عليه وسلم، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ، حَنِيفاً مُسْلِماً وَمَا كَانَ مِنَ الْمُشرِكِينَ)). [وإذا أمسى قال: أمسينا على فطرة الإسلام...]",repeat:1},
-  {text:"((سُبْحَانَ اللَّهِ وَبِحَمْدِهِ)) (مائة مرَّةٍ).",repeat:100},
-  {text:"((لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ)) (عشرَ مرَّات) ، أَوْ (مرَّةً واحدةً عندَ الكَسَلِ).",repeat:10},
-  {text:"((لاَ إِلَهَ إِلاَّ اللَّهُ، وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ)) (مائةَ مرَّةٍ إذا أصبحَ).",repeat:100},
-  {text:"((سُبْحَانَ اللَّهِ وَبِحَمْدِهِ: عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ)) (ثلاثَ مرَّاتٍ إذا أصبحَ).",repeat:3},
-  {text:"((اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْماً نَافِعاً، وَرِزْقاً طَيِّباً، وَعَمَلاً مُتَقَبَّلاً)) (إذا أصبحَ).",repeat:1},
-  {text:"((أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ)) (مِائَةَ مَرَّةٍ فِي الْيَوْمِ).",repeat:100},
-  {text:"((اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبَيِّنَا مُحَمَّدٍ)) (عشرَ مرَّاتٍ).",repeat:10},
+  {subtitle:"أَعُوذُ بِاللهِ مِنْ الشَّيْطَانِ الرَّجِيمِ",text:"اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلاَ يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلاَّ بِمَا شَاء وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالأَرْضَ وَلاَ يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ.",reference:"آية الكرسى - البقرة 255",repeat:1},
+  {subtitle:"بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم",text:"قُلْ هُوَ ٱللَّهُ أَحَدٌ، ٱللَّهُ ٱلصَّمَدُ، لَمْ يَلِدْ وَلَمْ يُولَدْ، وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ.",reference:"",repeat:3},
+  {subtitle:"بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم",text:"قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ، مِن شَرِّ مَا خَلَقَ، وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ، وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ، وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ.",reference:"",repeat:3},
+  {subtitle:"بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم",text:"قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ، مَلِكِ ٱلنَّاسِ، إِلَٰهِ ٱلنَّاسِ، مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ، ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ، مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ.",reference:"",repeat:3},
+  {subtitle:"",text:"أَصْـبَحْنا وَأَصْـبَحَ المُـلْكُ لله وَالحَمدُ لله ، لا إلهَ إلاّ اللّهُ وَحدَهُ لا شَريكَ لهُ، لهُ المُـلكُ ولهُ الحَمْـد، وهُوَ على كلّ شَيءٍ قدير ، رَبِّ أسْـأَلُـكَ خَـيرَ ما في هـذا اليوم وَخَـيرَ ما بَعْـدَه ، وَأَعـوذُ بِكَ مِنْ شَـرِّ ما في هـذا اليوم وَشَرِّ ما بَعْـدَه، رَبِّ أَعـوذُبِكَ مِنَ الْكَسَـلِ وَسـوءِ الْكِـبَر ، رَبِّ أَعـوذُ بِكَ مِنْ عَـذابٍ في النّـارِ وَعَـذابٍ في القَـبْر.",reference:"",repeat:1},
+  {subtitle:"",text:"اللّهـمَّ أَنْتَ رَبِّـي لا إلهَ إلاّ أَنْتَ ، خَلَقْتَنـي وَأَنا عَبْـدُك ، وَأَنا عَلـى عَهْـدِكَ وَوَعْـدِكَ ما اسْتَـطَعْـت ، أَعـوذُبِكَ مِنْ شَـرِّ ما صَنَـعْت ، أَبـوءُ لَـكَ بِنِعْـمَتِـكَ عَلَـيَّ وَأَبـوءُ بِذَنْـبي فَاغْفـِرْ لي فَإِنَّـهُ لا يَغْـفِرُ الذُّنـوبَ إِلاّ أَنْتَ .",reference:"",repeat:1},
+  {subtitle:"",text:"رَضيـتُ بِاللهِ رَبَّـاً وَبِالإسْلامِ ديـناً وَبِمُحَـمَّدٍ صلى الله عليه وسلم نَبِيّـاً.",reference:"",repeat:3},
+  {subtitle:"",text:"اللّهُـمَّ إِنِّـي أَصْبَـحْتُ أُشْـهِدُك ، وَأُشْـهِدُ حَمَلَـةَ عَـرْشِـك ، وَمَلَائِكَتَكَ ، وَجَمـيعَ خَلْـقِك ، أَنَّـكَ أَنْـتَ اللهُ لا إلهَ إلاّ أَنْـتَ وَحْـدَكَ لا شَريكَ لَـك ، وَأَنَّ ُ مُحَمّـداً عَبْـدُكَ وَرَسـولُـك.",reference:"",repeat:4},
+  {subtitle:"",text:"اللّهُـمَّ ما أَصْبَـَحَ بي مِـنْ نِعْـمَةٍ أَو بِأَحَـدٍ مِـنْ خَلْـقِك ، فَمِـنْكَ وَحْـدَكَ لا شريكَ لَـك ، فَلَـكَ الْحَمْـدُ وَلَـكَ الشُّكْـر.",reference:"",repeat:1},
+  {subtitle:"",text:"حَسْبِـيَ اللّهُ لا إلهَ إلاّ هُوَ عَلَـيهِ تَوَكَّـلتُ وَهُوَ رَبُّ العَرْشِ العَظـيم.",reference:"",repeat:7},
+  {subtitle:"",text:"بِسـمِ اللهِ الذي لا يَضُـرُّ مَعَ اسمِـهِ شَيءٌ في الأرْضِ وَلا في السّمـاءِ وَهـوَ السّمـيعُ العَلـيم.",reference:"",repeat:3},
+  {subtitle:"",text:"اللّهُـمَّ بِكَ أَصْـبَحْنا وَبِكَ أَمْسَـينا ، وَبِكَ نَحْـيا وَبِكَ نَمُـوتُ وَإِلَـيْكَ النُّـشُور.",reference:"",repeat:1},
+  {subtitle:"",text:"أَصْبَـحْـنا عَلَى فِطْرَةِ الإسْلاَمِ، وَعَلَى كَلِمَةِ الإِخْلاَصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ، وَعَلَى مِلَّةِ أَبِينَا إبْرَاهِيمَ حَنِيفاً مُسْلِماً وَمَا كَانَ مِنَ المُشْرِكِينَ.",reference:"",repeat:1},
+  {subtitle:"",text:"سُبْحـانَ اللهِ وَبِحَمْـدِهِ عَدَدَ خَلْـقِه ، وَرِضـا نَفْسِـه ، وَزِنَـةَ عَـرْشِـه ، وَمِـدادَ كَلِمـاتِـه.",reference:"",repeat:3},
+  {subtitle:"",text:"اللّهُـمَّ عافِـني في بَدَنـي ، اللّهُـمَّ عافِـني في سَمْـعي ، اللّهُـمَّ عافِـني في بَصَـري ، لا إلهَ إلاّ أَنْـتَ.",reference:"",repeat:3},
+  {subtitle:"",text:"اللّهُـمَّ إِنّـي أَعـوذُ بِكَ مِنَ الْكُـفر ، وَالفَـقْر ، وَأَعـوذُ بِكَ مِنْ عَذابِ القَـبْر ، لا إلهَ إلاّ أَنْـتَ.",reference:"",repeat:3},
+  {subtitle:"",text:"اللّهُـمَّ إِنِّـي أسْـأَلُـكَ العَـفْوَ وَالعـافِـيةَ في الدُّنْـيا وَالآخِـرَة ، اللّهُـمَّ إِنِّـي أسْـأَلُـكَ العَـفْوَ وَالعـافِـيةَ في ديني وَدُنْـيايَ وَأهْـلي وَمالـي ، اللّهُـمَّ اسْتُـرْ عـوْراتي وَآمِـنْ رَوْعاتـي ، اللّهُـمَّ احْفَظْـني مِن بَـينِ يَدَيَّ وَمِن خَلْفـي وَعَن يَمـيني وَعَن شِمـالي ، وَمِن فَوْقـي ، وَأَعـوذُ بِعَظَمَـتِكَ أَن أُغْـتالَ مِن تَحْتـي.",reference:"",repeat:1},
+  {subtitle:"",text:"يَا حَيُّ يَا قيُّومُ بِرَحْمَتِكَ أسْتَغِيثُ أصْلِحْ لِي شَأنِي كُلَّهُ وَلاَ تَكِلْنِي إلَى نَفْسِي طَـرْفَةَ عَيْنٍ.",reference:"",repeat:3},
+  {subtitle:"",text:"أَصْبَـحْـنا وَأَصْبَـحْ المُـلكُ للهِ رَبِّ العـالَمـين ، اللّهُـمَّ إِنِّـي أسْـأَلُـكَ خَـيْرَ هـذا الـيَوْم ، فَـتْحَهُ ، وَنَصْـرَهُ ، وَنـورَهُ وَبَـرَكَتَـهُ ، وَهُـداهُ ، وَأَعـوذُ بِـكَ مِـنْ شَـرِّ ما فـيهِ وَشَـرِّ ما بَعْـدَه.",reference:"",repeat:1},
+  {subtitle:"",text:"اللّهُـمَّ عالِـمَ الغَـيْبِ وَالشّـهادَةِ فاطِـرَ السّماواتِ وَالأرْضِ رَبَّ كـلِّ شَـيءٍ وَمَليـكَه ، أَشْهَـدُ أَنْ لا إِلـهَ إِلاّ أَنْت ، أَعـوذُ بِكَ مِن شَـرِّ نَفْسـي وَمِن شَـرِّ الشَّيْـطانِ وَشِرْكِهِ ، وَأَنْ أَقْتَـرِفَ عَلـى نَفْسـي سوءاً أَوْ أَجُـرَّهُ إِلـى مُسْـلِم.",reference:"",repeat:1},
+  {subtitle:"",text:"أَعـوذُ بِكَلِمـاتِ اللّهِ التّـامّـاتِ مِنْ شَـرِّ ما خَلَـق.",reference:"",repeat:3},
+  {subtitle:"",text:"اللَّهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ على نَبِيِّنَا مُحمَّد.",reference:"",repeat:10},
+  {subtitle:"",text:"اللَّهُمَّ إِنَّا نَعُوذُ بِكَ مِنْ أَنْ نُشْرِكَ بِكَ شَيْئًا نَعْلَمُهُ ، وَنَسْتَغْفِرُكَ لِمَا لَا نَعْلَمُهُ.",reference:"",repeat:3},
+  {subtitle:"",text:"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ الْهَمِّ وَالْحَزَنِ، وَأَعُوذُ بِكَ مِنْ الْعَجْزِ وَالْكَسَلِ، وَأَعُوذُ بِكَ مِنْ الْجُبْنِ وَالْبُخْلِ، وَأَعُوذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ، وَقَهْرِ الرِّجَالِ.",reference:"",repeat:3},
+  {subtitle:"",text:"أسْتَغْفِرُ اللهَ العَظِيمَ الَّذِي لاَ إلَهَ إلاَّ هُوَ، الحَيُّ القَيُّومُ، وَأتُوبُ إلَيهِ.",reference:"",repeat:3},
+  {subtitle:"",text:"يَا رَبِّ , لَكَ الْحَمْدُ كَمَا يَنْبَغِي لِجَلَالِ وَجْهِكَ , وَلِعَظِيمِ سُلْطَانِكَ.",reference:"",repeat:3},
+  {subtitle:"",text:"اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا.",reference:"",repeat:1},
+  {subtitle:"",text:"اللَّهُمَّ أَنْتَ رَبِّي لا إِلَهَ إِلا أَنْتَ ، عَلَيْكَ تَوَكَّلْتُ ، وَأَنْتَ رَبُّ الْعَرْشِ الْعَظِيمِ , مَا شَاءَ اللَّهُ كَانَ ، وَمَا لَمْ يَشَأْ لَمْ يَكُنْ ، وَلا حَوْلَ وَلا قُوَّةَ إِلا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ , أَعْلَمُ أَنَّ اللَّهَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ ، وَأَنَّ اللَّهَ قَدْ أَحَاطَ بِكُلِّ شَيْءٍ عِلْمًا , اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي ، وَمِنْ شَرِّ كُلِّ دَابَّةٍ أَنْتَ آخِذٌ بِنَاصِيَتِهَا ، إِنَّ رَبِّي عَلَى صِرَاطٍ مُسْتَقِيمٍ.",reference:"",repeat:1},
+  {subtitle:"",text:"لَا إلَه إلّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءِ قَدِيرِ.",reference:"",repeat:100},
+  {subtitle:"",text:"سُبْحـانَ اللهِ وَبِحَمْـدِهِ.",reference:"",repeat:100},
+  {subtitle:"",text:"أسْتَغْفِرُ اللهَ وَأتُوبُ إلَيْهِ",reference:"",repeat:100},
 ];
 const EVENING_ADHKAR = [
-  {text:"أَعُوذُ بِاللَّهِ مِنَ الشَّيطَانِ الرَّجِيمِ ﴿اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ لَّهُ مَا فِي السَّمَوَاتِ وَمَا فِي الأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلاَ يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلاَّ بِمَا شَاء وَسِعَ كُرْسِيُّهُ السَّمَوَاتِ وَالْأَرْضَ وَلاَ يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾.",repeat:1},
-  {text:"بسم الله الرحمن الرحيم ﴿قُلْ هُوَ اللَّهُ أَحَدٌ* اللَّهُ الصَّمَدُ* لَمْ يَلِدْ وَلَمْ يُولَدْ* وَلَمْ يَكُن لَّهُ كُفُواً أَحَدٌ﴾.  بسم الله الرحمن الرحيم ﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ* مِن شَرِّ مَا خَلَقَ* وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ* وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ* وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾.  بسم الله الرحمن الرحيم ﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ* مَلِكِ النَّاسِ* إِلَهِ النَّاسِ* مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ* الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ* مِنَ الْجِنَّةِ وَ النَّاسِ﴾ (ثلاثَ مرَّاتٍ).",repeat:3},
-  {text:"((أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيرَ مَا بَعْدَهُ ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي  هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ)). [ وإذا أمسى قال: أمسينا وأمسى الملك للَّه] [وإذا أمسى قال: رب أسألك خير ما في هذه الليلة، وخير ما بعدها، وأعوذ بك من شر ما في هذه الليلة، وشر ما بعدها.]",repeat:1,note:"[وإذا أمسى قال: أمسينا وأمسى الملك للَّه] [وإذا أمسى قال: رب أسألك خير ما في هذه الليلة، وخير ما بعدها، وأعوذ بك من شر ما في هذه الليلة، وشر ما بعدها.]"},
-  {text:"((اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا ، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ)). [وإذا أمسى قال: اللَّهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير.]",repeat:1,note:"[وإذا أمسى قال: اللَّهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير.]"},
-  {text:"((اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لاَ يَغْفِرُ الذُّنوبَ إِلاَّ أَنْتَ)).",repeat:1},
-  {text:"((اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلاَئِكَتِكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَكَ، وَأَنَّ مُحَمَّداً عَبْدُكَ وَرَسُولُكَ)) (أربعَ مَرَّاتٍ).[ وإذا أمسى قال: اللَّهم إني أمسيت...]",repeat:4,note:"[وإذا أمسى قال: اللَّهم إني أمسيت...]"},
-  {text:"((اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لاَ شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ)). [وإذا أمسى قال: اللَّهم ما أمسى بي...]",repeat:1,note:"[وإذا أمسى قال: اللَّهم ما أمسى بي...]"},
-  {text:"((اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لاَ إِلَهَ إِلاَّ أَنْتَ. اللَّهُمَّ  إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ، وَالفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ القَبْرِ، لاَ إِلَهَ إِلاَّ أَنْتَ)) (ثلاثَ مرَّاتٍ).",repeat:3},
-  {text:"((حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيهِ تَوَكَّلتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ)) (سَبْعَ مَرّاتٍ).",repeat:1},
-  {text:"((اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ: فِي دِينِي وَدُنْيَايَ وَأَهْلِي، وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَينِ يَدَيَّ، وَمِنْ خَلْفِي، وَعَنْ يَمِينِي، وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي)).",repeat:1},
-  {text:"((اللَّهُمَّ عَالِمَ الغَيْبِ وَالشَّهَادَةِ فَاطِرَ السَّمَوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطانِ وَشَرَكِهِ، وَأَنْ أَقْتَرِفَ عَلَى  نَفْسِي سُوءاً، أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ)).",repeat:1},
-  {text:"((بِسْمِ اللَّهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلاَ فِي السّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ)) (ثلاثَ مرَّاتٍ).",repeat:3},
-  {text:"((رَضِيتُ بِاللَّهِ رَبَّاً، وَبِالْإِسْلاَمِ دِيناً، وَبِمُحَمَّدٍ صلى الله عليه وسلم نَبِيّاً)) (ثلاثَ مرَّاتٍ).",repeat:3},
-  {text:"((يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغيثُ أَصْلِحْ لِي شَأْنِيَ كُلَّهُ وَلاَ تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ)).",repeat:1},
-  {text:"((أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُـمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ:فَتْحَهُ، وَنَصْرَهُ، وَنورَهُ، وَبَرَكَتَهُ، وَهُدَاهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهِ وَشَرِّ مَا بَعْدَهُ)). [وإذا أمسى قال: أمسينا وأمسى الملك للَّه ربّ العالمين اللَّهم إني أسألك خير هذه الليلة: فتحها، ونصرها، ونورها، وبركتها، وهداها، وأعوذ بك من شر ما فيها، وشر ما بعدها.]",repeat:1,note:"[وإذا أمسى قال: أمسينا وأمسى الملك للَّه ربّ العالمين اللَّهم إني أسألك خير هذه الليلة: فتحها، ونصرها، ونورها، وبركتها، وهداها، وأعوذ بك من شر ما فيها، وشر ما بعدها.]"},
-  {text:"((أَصْبَحْنا عَلَى فِطْرَةِ الْإِسْلاَمِ، وَعَلَى كَلِمَةِ الْإِخْلاَصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ صلى الله عليه وسلم، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ، حَنِيفاً مُسْلِماً وَمَا كَانَ مِنَ الْمُشرِكِينَ)). [وإذا أمسى قال: أمسينا على فطرة الإسلام...]",repeat:1,note:"[وإذا أمسى قال: أمسينا على فطرة الإسلام...]"},
-  {text:"((سُبْحَانَ اللَّهِ وَبِحَمْدِهِ)) (مائة مرَّةٍ).",repeat:100},
-  {text:"((لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ)) (عشرَ مرَّات) ، أَوْ (مرَّةً واحدةً عندَ الكَسَلِ).",repeat:10},
-  {text:"((أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ)) (مِائَةَ مَرَّةٍ فِي الْيَوْمِ).",repeat:100},
-  {text:"((أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ)) (ثلاثَ مرَّاتٍ إذا أمسى).",repeat:3},
-  {text:"((اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبَيِّنَا مُحَمَّدٍ)) (عشرَ مرَّاتٍ).",repeat:10},
+  {subtitle:"أَعُوذُ بِاللهِ مِنْ الشَّيْطَانِ الرَّجِيمِ",text:"اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلاَ يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلاَّ بِمَا شَاء وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالأَرْضَ وَلاَ يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ.",reference:"آية الكرسى - البقرة 255",repeat:1},
+  {subtitle:"أَعُوذُ بِاللهِ مِنْ الشَّيْطَانِ الرَّجِيمِ",text:"آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ ۚ كُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِنْ رُسُلِهِ ۚ وَقَالُوا سَمِعْنَا وَأَطَعْنَا ۖ غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ. لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَّسِينَآ أَوْ أَخْطَأْنَا رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِنْ قَبْلِنَا رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا أَنْتَ مَوْلَانَا فَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ.",reference:"البقرة 285 - 286",repeat:1},
+  {subtitle:"بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم",text:"قُلْ هُوَ ٱللَّهُ أَحَدٌ، ٱللَّهُ ٱلصَّمَدُ، لَمْ يَلِدْ وَلَمْ يُولَدْ، وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ.",reference:"",repeat:3},
+  {subtitle:"بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم",text:"قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ، مِن شَرِّ مَا خَلَقَ، وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ، وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ، وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ.",reference:"",repeat:3},
+  {subtitle:"بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم",text:"قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ، مَلِكِ ٱلنَّاسِ، إِلَٰهِ ٱلنَّاسِ، مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ، ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ، مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ.",reference:"",repeat:3},
+  {subtitle:"",text:"أَمْسَيْـنا وَأَمْسـى المـلكُ لله وَالحَمدُ لله ، لا إلهَ إلاّ اللّهُ وَحدَهُ لا شَريكَ لهُ، لهُ المُـلكُ ولهُ الحَمْـد، وهُوَ على كلّ شَيءٍ قدير ، رَبِّ أسْـأَلُـكَ خَـيرَ ما في هـذهِ اللَّـيْلَةِ وَخَـيرَ ما بَعْـدَهـا ، وَأَعـوذُ بِكَ مِنْ شَـرِّ ما في هـذهِ اللَّـيْلةِ وَشَرِّ ما بَعْـدَهـا ، رَبِّ أَعـوذُبِكَ مِنَ الْكَسَـلِ وَسـوءِ الْكِـبَر ، رَبِّ أَعـوذُ بِكَ مِنْ عَـذابٍ في النّـارِ وَعَـذابٍ في القَـبْر.",reference:"",repeat:1},
+  {subtitle:"",text:"اللّهـمَّ أَنْتَ رَبِّـي لا إلهَ إلاّ أَنْتَ ، خَلَقْتَنـي وَأَنا عَبْـدُك ، وَأَنا عَلـى عَهْـدِكَ وَوَعْـدِكَ ما اسْتَـطَعْـت ، أَعـوذُبِكَ مِنْ شَـرِّ ما صَنَـعْت ، أَبـوءُ لَـكَ بِنِعْـمَتِـكَ عَلَـيَّ وَأَبـوءُ بِذَنْـبي فَاغْفـِرْ لي فَإِنَّـهُ لا يَغْـفِرُ الذُّنـوبَ إِلاّ أَنْتَ .",reference:"",repeat:1},
+  {subtitle:"",text:"رَضيـتُ بِاللهِ رَبَّـاً وَبِالإسْلامِ ديـناً وَبِمُحَـمَّدٍ صلى الله عليه وسلم نَبِيّـاً.",reference:"",repeat:3},
+  {subtitle:"",text:"اللّهُـمَّ إِنِّـي أَمسيتُ أُشْـهِدُك ، وَأُشْـهِدُ حَمَلَـةَ عَـرْشِـك ، وَمَلَائِكَتَكَ ، وَجَمـيعَ خَلْـقِك ، أَنَّـكَ أَنْـتَ اللهُ لا إلهَ إلاّ أَنْـتَ وَحْـدَكَ لا شَريكَ لَـك ، وَأَنَّ ُ مُحَمّـداً عَبْـدُكَ وَرَسـولُـك.",reference:"",repeat:4},
+  {subtitle:"",text:"اللّهُـمَّ ما أَمسى بي مِـنْ نِعْـمَةٍ أَو بِأَحَـدٍ مِـنْ خَلْـقِك ، فَمِـنْكَ وَحْـدَكَ لا شريكَ لَـك ، فَلَـكَ الْحَمْـدُ وَلَـكَ الشُّكْـر.",reference:"",repeat:1},
+  {subtitle:"",text:"حَسْبِـيَ اللّهُ لا إلهَ إلاّ هُوَ عَلَـيهِ تَوَكَّـلتُ وَهُوَ رَبُّ العَرْشِ العَظـيم.",reference:"",repeat:7},
+  {subtitle:"",text:"بِسـمِ اللهِ الذي لا يَضُـرُّ مَعَ اسمِـهِ شَيءٌ في الأرْضِ وَلا في السّمـاءِ وَهـوَ السّمـيعُ العَلـيم.",reference:"",repeat:3},
+  {subtitle:"",text:"اللّهُـمَّ بِكَ أَمْسَـينا وَبِكَ أَصْـبَحْنا، وَبِكَ نَحْـيا وَبِكَ نَمُـوتُ وَإِلَـيْكَ الْمَصِيرُ.",reference:"",repeat:1},
+  {subtitle:"",text:"أَمْسَيْنَا عَلَى فِطْرَةِ الإسْلاَمِ، وَعَلَى كَلِمَةِ الإِخْلاَصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ، وَعَلَى مِلَّةِ أَبِينَا إبْرَاهِيمَ حَنِيفاً مُسْلِماً وَمَا كَانَ مِنَ المُشْرِكِينَ.",reference:"",repeat:1},
+  {subtitle:"",text:"سُبْحـانَ اللهِ وَبِحَمْـدِهِ عَدَدَ خَلْـقِه ، وَرِضـا نَفْسِـه ، وَزِنَـةَ عَـرْشِـه ، وَمِـدادَ كَلِمـاتِـه.",reference:"",repeat:3},
+  {subtitle:"",text:"اللّهُـمَّ عافِـني في بَدَنـي ، اللّهُـمَّ عافِـني في سَمْـعي ، اللّهُـمَّ عافِـني في بَصَـري ، لا إلهَ إلاّ أَنْـتَ.",reference:"",repeat:3},
+  {subtitle:"",text:"اللّهُـمَّ إِنّـي أَعـوذُ بِكَ مِنَ الْكُـفر ، وَالفَـقْر ، وَأَعـوذُ بِكَ مِنْ عَذابِ القَـبْر ، لا إلهَ إلاّ أَنْـتَ.",reference:"",repeat:3},
+  {subtitle:"",text:"اللّهُـمَّ إِنِّـي أسْـأَلُـكَ العَـفْوَ وَالعـافِـيةَ في الدُّنْـيا وَالآخِـرَة ، اللّهُـمَّ إِنِّـي أسْـأَلُـكَ العَـفْوَ وَالعـافِـيةَ في ديني وَدُنْـيايَ وَأهْـلي وَمالـي ، اللّهُـمَّ اسْتُـرْ عـوْراتي وَآمِـنْ رَوْعاتـي ، اللّهُـمَّ احْفَظْـني مِن بَـينِ يَدَيَّ وَمِن خَلْفـي وَعَن يَمـيني وَعَن شِمـالي ، وَمِن فَوْقـي ، وَأَعـوذُ بِعَظَمَـتِكَ أَن أُغْـتالَ مِن تَحْتـي.",reference:"",repeat:1},
+  {subtitle:"",text:"يَا حَيُّ يَا قيُّومُ بِرَحْمَتِكَ أسْتَغِيثُ أصْلِحْ لِي شَأنِي كُلَّهُ وَلاَ تَكِلْنِي إلَى نَفْسِي طَـرْفَةَ عَيْنٍ.",reference:"",repeat:3},
+  {subtitle:"",text:"أَمْسَيْنا وَأَمْسَى الْمُلْكُ للهِ رَبِّ الْعَالَمَيْنِ، اللَّهُمَّ إِنَّي أسْأَلُكَ خَيْرَ هَذَه اللَّيْلَةِ فَتْحَهَا ونَصْرَهَا، ونُوْرَهَا وبَرَكَتهَا، وَهُدَاهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فيهِا وَشَرَّ مَا بَعْدَهَا.",reference:"",repeat:1},
+  {subtitle:"",text:"اللّهُـمَّ عالِـمَ الغَـيْبِ وَالشّـهادَةِ فاطِـرَ السّماواتِ وَالأرْضِ رَبَّ كـلِّ شَـيءٍ وَمَليـكَه ، أَشْهَـدُ أَنْ لا إِلـهَ إِلاّ أَنْت ، أَعـوذُ بِكَ مِن شَـرِّ نَفْسـي وَمِن شَـرِّ الشَّيْـطانِ وَشِرْكِهِ ، وَأَنْ أَقْتَـرِفَ عَلـى نَفْسـي سوءاً أَوْ أَجُـرَّهُ إِلـى مُسْـلِم.",reference:"",repeat:1},
+  {subtitle:"",text:"أَعـوذُ بِكَلِمـاتِ اللّهِ التّـامّـاتِ مِنْ شَـرِّ ما خَلَـق.",reference:"",repeat:3},
+  {subtitle:"",text:"اللَّهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ على نَبِيِّنَا مُحمَّد.",reference:"",repeat:10},
+  {subtitle:"",text:"اللَّهُمَّ إِنَّا نَعُوذُ بِكَ مِنْ أَنْ نُشْرِكَ بِكَ شَيْئًا نَعْلَمُهُ ، وَنَسْتَغْفِرُكَ لِمَا لَا نَعْلَمُهُ.",reference:"",repeat:3},
+  {subtitle:"",text:"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ الْهَمِّ وَالْحَزَنِ، وَأَعُوذُ بِكَ مِنْ الْعَجْزِ وَالْكَسَلِ، وَأَعُوذُ بِكَ مِنْ الْجُبْنِ وَالْبُخْلِ، وَأَعُوذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ، وَقَهْرِ الرِّجَالِ.",reference:"",repeat:3},
+  {subtitle:"",text:"أسْتَغْفِرُ اللهَ العَظِيمَ الَّذِي لاَ إلَهَ إلاَّ هُوَ، الحَيُّ القَيُّومُ، وَأتُوبُ إلَيهِ.",reference:"",repeat:3},
+  {subtitle:"",text:"يَا رَبِّ , لَكَ الْحَمْدُ كَمَا يَنْبَغِي لِجَلَالِ وَجْهِكَ , وَلِعَظِيمِ سُلْطَانِكَ.",reference:"",repeat:3},
+  {subtitle:"",text:"لَا إلَه إلّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءِ قَدِيرِ.",reference:"",repeat:100},
+  {subtitle:"",text:"اللَّهُمَّ أَنْتَ رَبِّي لا إِلَهَ إِلا أَنْتَ ، عَلَيْكَ تَوَكَّلْتُ ، وَأَنْتَ رَبُّ الْعَرْشِ الْعَظِيمِ , مَا شَاءَ اللَّهُ كَانَ ، وَمَا لَمْ يَشَأْ لَمْ يَكُنْ ، وَلا حَوْلَ وَلا قُوَّةَ إِلا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ , أَعْلَمُ أَنَّ اللَّهَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ ، وَأَنَّ اللَّهَ قَدْ أَحَاطَ بِكُلِّ شَيْءٍ عِلْمًا , اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي ، وَمِنْ شَرِّ كُلِّ دَابَّةٍ أَنْتَ آخِذٌ بِنَاصِيَتِهَا ، إِنَّ رَبِّي عَلَى صِرَاطٍ مُسْتَقِيمٍ.",reference:"",repeat:1},
+  {subtitle:"",text:"سُبْحـانَ اللهِ وَبِحَمْـدِهِ.",reference:"",repeat:100},
 ];
 
   // ============================================================
@@ -1042,7 +1770,8 @@ const EVENING_ADHKAR = [
         if (data.appSettings) { appSettings = data.appSettings; saveSettings(); }
         showToast("تم استيراد البيانات بنجاح");
         applyTheme();
-        renderAll();
+        showView("home");
+        renderHome();
       } catch(err){ showToast("ملف غير صالح"); }
     };
     reader.readAsText(file);
@@ -1060,16 +1789,15 @@ const EVENING_ADHKAR = [
     toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 2200);
   }
 
-  // Wraps a "X / Y" style fraction in Unicode isolate marks so the RTL
-  // paragraph context can't bidi-reorder the two numbers around the slash.
   function ltrFraction(a,b){ return "⁦" + a + " / " + b + "⁩"; }
 
   // ============================================================
   // Navigation
   // ============================================================
-  var VIEW_IDS = ["home","surahs","reader","juzlist","juzdetail","morning","evening","progress","settings"];
+  var VIEW_IDS = ["home","surahs","mushaf","juzlist","juzdetail","morning","evening","progress","settings"];
   var currentView = "home";
-  var readerReturnView = "home";
+  var mushafReturnView = "home";
+  var lastJuzIndex = 1;
   var currentSurahFilter = "all";
 
   function showView(name){
@@ -1079,13 +1807,25 @@ const EVENING_ADHKAR = [
       if (el) el.hidden = (v !== name);
     });
     currentView = name;
+    document.getElementById("bottomBar").hidden = (name === "home");
     window.scrollTo(0,0);
   }
+
+  function goBack(){
+    if (currentView === "mushaf"){
+      if (mushafReturnView === "juzdetail"){ showView("juzdetail"); openJuzDetail(lastJuzIndex); return; }
+      if (mushafReturnView === "surahs"){ showView("surahs"); renderSurahsList(); return; }
+      showView("home"); renderHome(); return;
+    }
+    if (currentView === "juzdetail"){ showView("juzlist"); renderJuzList(); return; }
+    showView("home"); renderHome();
+  }
+  document.getElementById("bottomBackBtn").addEventListener("click", goBack);
 
   function handleNav(name){
     if (name === "continueReading"){
       ensureWirdToday();
-      openReader(wirdProgress.pointerSurah, wirdProgress.pointerAyah, ayahCount(wirdProgress.pointerSurah), "home");
+      openMushaf(pageOf(wirdProgress.pointerSurah, wirdProgress.pointerAyah), "home");
     } else if (name === "surahs"){ showView("surahs"); renderSurahsList(); }
     else if (name === "juzList"){ showView("juzlist"); renderJuzList(); }
     else if (name === "morningAdhkar"){ showView("morning"); renderMorning(); }
@@ -1193,6 +1933,11 @@ const EVENING_ADHKAR = [
     if (status === 1) return { icon:"◐", cls:"progress" };
     return { icon:"○", cls:"none" };
   }
+  function cycleSurahStatus(no){
+    var cur = getSurahState(no).status;
+    setSurahStatus(no, (cur+1)%3);
+    showToast("تم تحديث حالة الحفظ");
+  }
   function renderSurahsList(){
     var container = document.getElementById("surahsListContainer");
     var html = "";
@@ -1207,15 +1952,20 @@ const EVENING_ADHKAR = [
         '<span class="badge-num">' + toArabicIndic(i) + '</span>' +
         '<span class="s-info"><span class="s-name">' + surahName(i) + '</span>' +
         '<span class="s-meta"><span>' + ayahCount(i) + ' آية</span><span class="rev-badge ' + (rev==="مكية"?"meccan":"medinan") + '">' + rev + '</span></span></span>' +
-        '<span class="status-dot ' + sym.cls + '">' + sym.icon + '</span>' +
+        '<span class="status-dot clickable ' + sym.cls + '" data-cycle="' + i + '" title="اضغط لتغيير حالة الحفظ">' + sym.icon + '</span>' +
       '</button>';
     }
     if (!html) html = '<div class="empty-state">لا توجد سور في هذا التصنيف</div>';
     container.innerHTML = html;
     container.querySelectorAll("[data-surah]").forEach(function(btn){
+      var no = parseInt(btn.getAttribute("data-surah"),10);
+      btn.querySelector("[data-cycle]").addEventListener("click", function(e){
+        e.stopPropagation();
+        cycleSurahStatus(no);
+        renderSurahsList();
+      });
       btn.addEventListener("click", function(){
-        var no = parseInt(btn.getAttribute("data-surah"),10);
-        openReader(no, 1, ayahCount(no), "surahs");
+        openMushaf(pageOf(no,1), "surahs");
       });
     });
   }
@@ -1229,46 +1979,113 @@ const EVENING_ADHKAR = [
   });
 
   // ============================================================
-  // Surah reader
+  // Mushaf page reader (real 604-page Madani mushaf layout)
   // ============================================================
-  function openReader(surahNo, from, to, returnView){
-    readerReturnView = returnView || "surahs";
-    showView("reader");
-    document.getElementById("readerTitle").textContent = "سورة " + surahName(surahNo);
-    var rev = surahRev(surahNo);
-    document.getElementById("readerMeta").innerHTML =
-      '<span class="rev-badge ' + (rev==="مكية"?"meccan":"medinan") + '">' + rev + '</span>' +
-      '<span class="muted" style="font-size:0.78rem;">' + ((from===1 && to===ayahCount(surahNo)) ? "السورة كاملة" : ("من الآية " + from + " إلى " + to)) + '</span>';
-    document.getElementById("readerListenLink").href = "https://quran.com/" + surahNo + "/" + from + "-" + to;
+  var STORE_MUSHAF_PAGE = "wirdi2-mushaf-page";
+  var STORE_MUSHAF_ZOOM = "wirdi2-mushaf-zoom";
+  var mushafPageNum = loadJSON(STORE_MUSHAF_PAGE, 1);
+  var mushafZoom = loadJSON(STORE_MUSHAF_ZOOM, 1);
+  document.documentElement.style.setProperty("--mushaf-zoom", mushafZoom);
 
+  function openMushaf(pageNum, returnView){
+    mushafReturnView = returnView || "home";
+    mushafPageNum = clamp(pageNum, 1, 604);
+    showView("mushaf");
+    renderMushafPage();
+  }
+
+  function renderMushafPage(){
+    var pg = MUSHAF_PAGES[mushafPageNum-1];
+    var surahNames = [];
     var html = "";
-    if (surahNo !== 1 && surahNo !== 9 && from === 1){ html += '<p class="bismillah">' + BISMILLAH + '</p>'; }
-    var flow = "";
-    var ayahs = QURAN_AYAHS[surahNo-1];
-    for (var a = from; a <= to; a++){
-      flow += ayahs[a-1] + ' <span class="ayah-num">' + toArabicIndic(a) + '</span> ';
-    }
-    html += '<p class="ayah-flow">' + flow + '</p>';
-    document.getElementById("readerBody").innerHTML = html;
-
-    renderReaderStatusActions(surahNo);
-  }
-  function renderReaderStatusActions(surahNo){
-    var st = getSurahState(surahNo).status;
-    var box = document.getElementById("readerStatusActions");
-    box.innerHTML =
-      '<button class="btn ' + (st===0?"primary":"ghost") + '" data-set-status="0">○ لم أبدأ</button>' +
-      '<button class="btn ' + (st===1?"primary":"ghost") + '" data-set-status="1">◐ قيد الحفظ</button>' +
-      '<button class="btn ' + (st===2?"primary":"ghost") + '" data-set-status="2">✓ حفظت السورة</button>';
-    box.querySelectorAll("[data-set-status]").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        setSurahStatus(surahNo, parseInt(btn.getAttribute("data-set-status"),10));
-        renderReaderStatusActions(surahNo);
-        showToast("تم تحديث حالة الحفظ");
-      });
+    pg.r.forEach(function(run){
+      var surahNo = run[0], from = run[1], to = run[2];
+      var nm = surahName(surahNo);
+      if (surahNames.indexOf(nm) === -1) surahNames.push(nm);
+      if (from === 1){
+        html += '<span class="surah-title-break">سورة ' + nm + '</span>';
+        if (surahNo !== 1 && surahNo !== 9){ html += '<div class="bismillah">' + BISMILLAH + '</div>'; }
+      }
+      var ayahs = QURAN_AYAHS[surahNo-1];
+      for (var a = from; a <= to; a++){
+        html += ayahs[a-1] + ' <span class="ayah-num">' + toArabicIndic(a) + '</span> ';
+      }
     });
+    document.getElementById("mushafPageContent").innerHTML = html;
+    document.getElementById("mushafSurahLine").textContent = surahNames.join(" • ");
+
+    var hqIdx = (pg.hq - 1) % 4;
+    var hizbNum = Math.ceil(pg.hq / 4);
+    var quarterLabels = ["", "¼", "½", "¾"];
+    var juzText = pg.j === pg.je ? ("الجزء " + toArabicIndic(pg.j)) : ("الجزء " + toArabicIndic(pg.j) + "-" + toArabicIndic(pg.je));
+    document.getElementById("mushafMetaLine").innerHTML =
+      '<span>' + juzText + '</span><span>الحزب ' + toArabicIndic(hizbNum) + (quarterLabels[hqIdx] ? (" " + quarterLabels[hqIdx]) : "") + '</span>';
+
+    document.getElementById("mushafPagePill").textContent = ltrFraction(toArabicIndic(pg.p), toArabicIndic(604));
+    document.getElementById("mushafPrevBtn").disabled = (pg.p <= 1);
+    document.getElementById("mushafNextBtn").disabled = (pg.p >= 604);
+
+    var firstRun = pg.r[0];
+    document.getElementById("mushafListenLink").href = "https://quran.com/" + firstRun[0] + "/" + firstRun[1] + "-" + firstRun[2];
+
+    saveJSON(STORE_MUSHAF_PAGE, mushafPageNum);
   }
-  document.getElementById("readerBackBtn").addEventListener("click", function(){ showView(readerReturnView); });
+
+  function mushafGoTo(newPage, dir){
+    newPage = clamp(newPage, 1, 604);
+    if (newPage === mushafPageNum) return;
+    var el = document.getElementById("mushafPageContent");
+    el.classList.add(dir > 0 ? "turn-next" : "turn-prev");
+    setTimeout(function(){
+      mushafPageNum = newPage;
+      renderMushafPage();
+      el.classList.remove("turn-next", "turn-prev");
+    }, 200);
+  }
+
+  document.getElementById("mushafPrevBtn").addEventListener("click", function(){ mushafGoTo(mushafPageNum-1, -1); });
+  document.getElementById("mushafNextBtn").addEventListener("click", function(){ mushafGoTo(mushafPageNum+1, 1); });
+
+  (function(){
+    var vp = document.getElementById("mushafViewport");
+    var startX = null, startY = null;
+    vp.addEventListener("pointerdown", function(e){ startX = e.clientX; startY = e.clientY; });
+    vp.addEventListener("pointerup", function(e){
+      if (startX === null) return;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)){
+        if (dx < 0) mushafGoTo(mushafPageNum+1, 1);
+        else mushafGoTo(mushafPageNum-1, -1);
+      }
+      startX = null; startY = null;
+    });
+    vp.addEventListener("pointercancel", function(){ startX = null; });
+  })();
+
+  document.getElementById("mushafZoomInBtn").addEventListener("click", function(){
+    mushafZoom = clamp(Math.round((mushafZoom + 0.1) * 10) / 10, 0.8, 1.6);
+    document.documentElement.style.setProperty("--mushaf-zoom", mushafZoom);
+    saveJSON(STORE_MUSHAF_ZOOM, mushafZoom);
+  });
+  document.getElementById("mushafZoomOutBtn").addEventListener("click", function(){
+    mushafZoom = clamp(Math.round((mushafZoom - 0.1) * 10) / 10, 0.8, 1.6);
+    document.documentElement.style.setProperty("--mushaf-zoom", mushafZoom);
+    saveJSON(STORE_MUSHAF_ZOOM, mushafZoom);
+  });
+  document.getElementById("mushafGotoToggleBtn").addEventListener("click", function(){
+    var row = document.getElementById("gotoPageRow");
+    row.hidden = !row.hidden;
+    if (!row.hidden) document.getElementById("gotoPageInput").focus();
+  });
+  document.getElementById("gotoPageBtn").addEventListener("click", function(){
+    var v = parseInt(document.getElementById("gotoPageInput").value, 10);
+    if (!v || v < 1 || v > 604){ showToast("رقم صفحة غير صحيح (1-604)"); return; }
+    mushafPageNum = v;
+    renderMushafPage();
+    document.getElementById("gotoPageRow").hidden = true;
+  });
+  document.getElementById("mushafSurahsBtn").addEventListener("click", function(){ showView("surahs"); renderSurahsList(); });
+  document.getElementById("mushafJuzBtn").addEventListener("click", function(){ showView("juzlist"); renderJuzList(); });
 
   // ============================================================
   // Juz list & detail
@@ -1294,6 +2111,7 @@ const EVENING_ADHKAR = [
     });
   }
   function openJuzDetail(idx){
+    lastJuzIndex = idx;
     showView("juzdetail");
     var j = JUZ[idx-1];
     document.getElementById("juzDetailNum").textContent = toArabicIndic(idx);
@@ -1313,49 +2131,73 @@ const EVENING_ADHKAR = [
       var sym = statusSymbol(st);
       var rangeLabel = seg.full ? "السورة كاملة" : ("من الآية " + seg.from + " إلى " + seg.to);
       html += '<div class="segment-row">' +
-        '<span class="status-dot ' + sym.cls + '">' + sym.icon + '</span>' +
+        '<span class="status-dot clickable ' + sym.cls + '" data-cycle-surah="' + seg.surah + '" title="اضغط لتغيير حالة الحفظ">' + sym.icon + '</span>' +
         '<span class="s-info"><span class="sname">' + surahName(seg.surah) + '</span><span class="srange">' + rangeLabel + '</span></span>' +
         '<button class="btn ghost" data-read-seg="' + seg.surah + "," + seg.from + "," + seg.to + '">قراءة</button>' +
       '</div>';
     });
-    document.getElementById("juzDetailSegments").innerHTML = html;
-    document.getElementById("juzDetailSegments").querySelectorAll("[data-read-seg]").forEach(function(btn){
+    var segBox = document.getElementById("juzDetailSegments");
+    segBox.innerHTML = html;
+    segBox.querySelectorAll("[data-cycle-surah]").forEach(function(dot){
+      dot.addEventListener("click", function(){
+        cycleSurahStatus(parseInt(dot.getAttribute("data-cycle-surah"),10));
+        openJuzDetail(idx);
+      });
+    });
+    segBox.querySelectorAll("[data-read-seg]").forEach(function(btn){
       btn.addEventListener("click", function(){
         var parts = btn.getAttribute("data-read-seg").split(",").map(Number);
-        openReader(parts[0], parts[1], parts[2], "juzdetail");
+        openMushaf(pageOf(parts[0], parts[1]), "juzdetail");
       });
     });
   }
 
   // ============================================================
-  // Adhkar views
+  // Adhkar views — one dhikr per screen, with its own counter
   // ============================================================
-  function renderAdhkarList(which){
+  var adhkarNav = { morning: 0, evening: 0 };
+
+  function firstIncompleteAdhkar(which){
     ensureAdhkarToday();
     var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
     var arr = which === "morning" ? adhkarProgress.morning : adhkarProgress.evening;
-    var container = document.getElementById(which === "morning" ? "morningList" : "eveningList");
-    var html = "";
-    list.forEach(function(item, idx){
-      var count = arr[idx];
-      var done = count >= item.repeat;
-      html += '<div class="dhikr-card' + (done?" done":"") + '">' +
-        '<div class="dhikr-text">' + item.text + '</div>' +
-        (item.note ? '<div class="dhikr-note">' + item.note + '</div>' : '') +
-        '<div class="dhikr-controls"><span class="counter-label">' + ltrFraction(count, item.repeat) + '</span>' +
-        '<button class="counter-btn" data-inc="' + idx + '" ' + (done?'disabled':'') + '>' + (done ? "✓" : "+") + '</button></div>' +
-      '</div>';
-    });
-    container.innerHTML = html;
-    container.querySelectorAll("[data-inc]").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        adhkarIncrement(which, parseInt(btn.getAttribute("data-inc"),10));
-        renderAdhkarList(which);
-        renderAdhkarSummary(which);
-      });
-    });
+    for (var i=0;i<list.length;i++){ if (arr[i] < list[i].repeat) return i; }
+    return 0;
   }
-  function renderAdhkarSummary(which){
+
+  function renderAdhkarSingle(which){
+    ensureAdhkarToday();
+    var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
+    var arr = which === "morning" ? adhkarProgress.morning : adhkarProgress.evening;
+    var idx = adhkarNav[which];
+    if (idx < 0) idx = 0;
+    if (idx > list.length-1) idx = list.length-1;
+    adhkarNav[which] = idx;
+
+    var item = list[idx];
+    var count = arr[idx];
+    var done = count >= item.repeat;
+
+    document.getElementById(which + "Position").textContent = "الذكر " + toArabicIndic(idx+1) + " من " + toArabicIndic(list.length);
+
+    var card = document.getElementById(which + "Card");
+    card.className = "dhikr-single-card" + (done ? " done" : "");
+    card.innerHTML =
+      (item.subtitle ? '<div class="dhikr-single-subtitle">' + item.subtitle + '</div>' : '') +
+      '<div class="dhikr-single-text">' + item.text + '</div>' +
+      (item.reference ? '<div class="dhikr-single-ref">— ' + item.reference + '</div>' : '');
+
+    var counterBtn = document.getElementById(which + "CounterBtn");
+    counterBtn.className = "dhikr-big-counter" + (done ? " done" : "");
+    counterBtn.innerHTML = (done ? "✓" : count) + '<span class="dbc-sub">' + ltrFraction(count, item.repeat) + '</span>';
+    counterBtn.disabled = done;
+
+    document.getElementById(which + "PrevBtn").disabled = (idx === 0);
+    document.getElementById(which + "NextBtn").disabled = (idx === list.length-1);
+
+    renderAdhkarSummaryBar(which);
+  }
+  function renderAdhkarSummaryBar(which){
     var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
     var done = adhkarDoneCount(which);
     document.getElementById(which === "morning" ? "morningSummaryText" : "eveningSummaryText").textContent = ltrFraction(done, list.length);
@@ -1364,8 +2206,36 @@ const EVENING_ADHKAR = [
     bar.style.width = pct + "%";
     bar.classList.toggle("complete", pct===100);
   }
-  function renderMorning(){ renderAdhkarList("morning"); renderAdhkarSummary("morning"); }
-  function renderEvening(){ renderAdhkarList("evening"); renderAdhkarSummary("evening"); }
+  function renderMorning(){ adhkarNav.morning = firstIncompleteAdhkar("morning"); renderAdhkarSingle("morning"); }
+  function renderEvening(){ adhkarNav.evening = firstIncompleteAdhkar("evening"); renderAdhkarSingle("evening"); }
+
+  ["morning","evening"].forEach(function(which){
+    document.getElementById(which + "CounterBtn").addEventListener("click", function(){
+      var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
+      var idx = adhkarNav[which];
+      adhkarIncrement(which, idx);
+      var arr = which === "morning" ? adhkarProgress.morning : adhkarProgress.evening;
+      var justCompleted = arr[idx] >= list[idx].repeat;
+      renderAdhkarSingle(which);
+      if (justCompleted && idx < list.length-1){
+        setTimeout(function(){ adhkarNav[which] = idx+1; renderAdhkarSingle(which); }, 450);
+      }
+    });
+    document.getElementById(which + "PrevBtn").addEventListener("click", function(){ adhkarNav[which]--; renderAdhkarSingle(which); });
+    document.getElementById(which + "NextBtn").addEventListener("click", function(){ adhkarNav[which]++; renderAdhkarSingle(which); });
+    document.getElementById(which + "ResetBtn").addEventListener("click", function(){
+      var label = which === "morning" ? "أذكار الصباح" : "أذكار المساء";
+      if (window.confirm("إعادة تعيين عداد " + label + " من البداية؟")){
+        var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
+        var zeros = list.map(function(){ return 0; });
+        if (which === "morning") adhkarProgress.morning = zeros; else adhkarProgress.evening = zeros;
+        saveJSON(STORE_ADHKAR, adhkarProgress);
+        adhkarNav[which] = 0;
+        renderAdhkarSingle(which);
+        showToast("تمت إعادة " + label);
+      }
+    });
+  });
 
   // ============================================================
   // Progress view
@@ -1480,11 +2350,6 @@ const EVENING_ADHKAR = [
   document.querySelectorAll("[data-nav]").forEach(function(btn){
     btn.addEventListener("click", function(){ handleNav(btn.getAttribute("data-nav")); });
   });
-  document.querySelectorAll("[data-back]").forEach(function(btn){
-    var target = btn.getAttribute("data-back");
-    if (target === "dynamic") return;
-    btn.addEventListener("click", function(){ showView(target); if(target==="juzlist") renderJuzList(); if(target==="surahs") renderSurahsList(); if(target==="home") renderHome(); });
-  });
 
   // ============================================================
   // Search
@@ -1503,11 +2368,9 @@ const EVENING_ADHKAR = [
     var html = "";
     var qNum = parseInt(q,10);
 
-    // juz number match
     if (!isNaN(qNum) && qNum >= 1 && qNum <= 30 && /^\d+$/.test(q)){
       html += '<button class="search-result" data-goto-juz="' + qNum + '">جزء رقم <b>' + qNum + '</b> — الجزء ' + JUZ_ORDINALS[qNum-1] + '</button>';
     }
-    // surah name / number match
     for (var i=1;i<=114;i++){
       var nameMatch = surahName(i).indexOf(q) !== -1;
       var numMatch = (!isNaN(qNum) && qNum === i);
@@ -1515,7 +2378,6 @@ const EVENING_ADHKAR = [
         html += '<button class="search-result" data-goto-surah="' + i + '">سورة <b>' + surahName(i) + '</b> (' + i + ') — ' + ayahCount(i) + ' آية</button>';
       }
     }
-    // ayah text search (only for queries of reasonable length)
     if (q.length >= 3 && html.split('data-goto-surah').length < 8){
       var found = 0;
       for (var s=1; s<=114 && found < 15; s++){
@@ -1523,7 +2385,7 @@ const EVENING_ADHKAR = [
         for (var a=0; a<arr.length && found < 15; a++){
           if (arr[a].indexOf(q) !== -1){
             var snippet = arr[a].length > 90 ? arr[a].slice(0,90) + "…" : arr[a];
-            html += '<button class="search-result" data-goto-surah="' + s + '">' + snippet + '<br><span class="muted">— ' + surahName(s) + ' آية ' + (a+1) + '</span></button>';
+            html += '<button class="search-result" data-goto-surah-ayah="' + s + "," + (a+1) + '">' + snippet + '<br><span class="muted">— ' + surahName(s) + ' آية ' + (a+1) + '</span></button>';
             found++;
           }
         }
@@ -1534,13 +2396,21 @@ const EVENING_ADHKAR = [
       btn.addEventListener("click", function(){
         var no = parseInt(btn.getAttribute("data-goto-surah"),10);
         document.getElementById("searchModal").hidden = true;
-        openReader(no, 1, ayahCount(no), "surahs");
+        openMushaf(pageOf(no,1), "surahs");
+      });
+    });
+    results.querySelectorAll("[data-goto-surah-ayah]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var parts = btn.getAttribute("data-goto-surah-ayah").split(",").map(Number);
+        document.getElementById("searchModal").hidden = true;
+        openMushaf(pageOf(parts[0], parts[1]), "surahs");
       });
     });
     results.querySelectorAll("[data-goto-juz]").forEach(function(btn){
       btn.addEventListener("click", function(){
         var idx = parseInt(btn.getAttribute("data-goto-juz"),10);
         document.getElementById("searchModal").hidden = true;
+        showView("juzdetail");
         openJuzDetail(idx);
       });
     });
