@@ -2511,7 +2511,7 @@ const EVENING_ADHKAR = [
       splash.classList.add("fade-out");
       setTimeout(function(){ splash.hidden = true; }, 500);
     }
-    var autoTimer = setTimeout(dismiss, 2300);
+    var autoTimer = setTimeout(dismiss, 5000);
     splash.addEventListener("click", function(){ clearTimeout(autoTimer); dismiss(); });
   })();
 
