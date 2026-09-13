@@ -1,4 +1,4 @@
-const CACHE_NAME = "wirdi-cache-v3";
+const CACHE_NAME = "wirdi-cache-v4";
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", function(event) {
@@ -31,8 +31,11 @@ self.addEventListener("fetch", function(event) {
   var isDocument = event.request.mode === "navigate" || event.request.destination === "document";
 
   if (isDocument) {
+    // "reload" forces bypassing the browser's own HTTP cache too, not just
+    // this service worker's cache — otherwise a fresh deploy can still be
+    // masked by ordinary HTTP caching for the page's normal max-age window.
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request, { cache: "reload" })
         .then(function(response) {
           var copy = response.clone();
           caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, copy); });
