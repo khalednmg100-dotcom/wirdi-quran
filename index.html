@@ -2158,6 +2158,13 @@ const EVENING_ADHKAR = [
   var mushafZoom = loadJSON(STORE_MUSHAF_ZOOM, 1);
 
   var mushafFocusSurah = null;
+  var mushafFontsReady = !(window.document && document.fonts);
+  if (!mushafFontsReady){
+    document.fonts.ready.then(function(){
+      mushafFontsReady = true;
+      if (currentView === "mushaf") fitMushafPage();
+    });
+  }
 
   function openMushaf(pageNum, returnView, focusSurahNo){
     mushafReturnView = returnView || "home";
