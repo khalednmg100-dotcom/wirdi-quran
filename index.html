@@ -280,12 +280,13 @@
   .goto-page-row{display:flex; gap:8px; align-items:center; margin-bottom:10px;}
   .goto-page-row input{width:90px; padding:8px 10px; border-radius:8px; border:1px solid var(--paper-3); font-family:inherit; font-size:0.95rem; text-align:center; background:var(--paper); color:var(--ink);}
 
-  .mushaf-viewport{position:relative; overflow-x:hidden; touch-action:pan-y;}
+  .mushaf-viewport{position:relative; overflow:hidden; touch-action:pan-y;}
   .mushaf-page{
-    background:#FBF6E9; color:#2A2015; border:1px solid #DED0A6; border-radius:14px;
+    background:#FBF6E9; color:#0F5C46; border:1px solid #DED0A6; border-radius:14px;
     padding:20px 18px 16px; box-shadow:0 2px 10px var(--shadow);
-    font-family:"Amiri",serif; font-size:calc(1.35rem * var(--mushaf-zoom, 1)); line-height:2.5; text-align:justify;
+    font-family:"Amiri",serif; line-height:2.15; text-align:justify;
     transition:transform .28s ease, opacity .28s ease;
+    height:100%; width:100%; box-sizing:border-box; overflow-y:auto; overflow-x:hidden;
   }
   .mushaf-page.turn-next{transform:translateX(-40px); opacity:0;}
   .mushaf-page.turn-prev{transform:translateX(40px); opacity:0;}
@@ -294,6 +295,9 @@
   .mushaf-page .surah-title-break{
     display:block; text-align:center; font-weight:700; font-size:1.05rem; color:#094B41;
     background:#EDE4CB; border:1px solid #DED0A6; border-radius:10px; margin:14px 0; padding:8px;
+  }
+  .mushaf-page .surah-run.focus-surah{
+    background:#F3EACB; border-radius:10px; box-shadow:0 0 0 2px #A9822A inset; padding:4px 6px; margin:0 -6px;
   }
   .mushaf-footer{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px;}
   .mushaf-nav-btn{background:var(--paper-2); border:1px solid var(--paper-3); border-radius:10px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; flex:none;}
@@ -408,6 +412,11 @@
       <div class="amount-input" id="wirdAmountRow" hidden>
         <input type="number" min="1" id="wirdAmountInput">
         <span class="muted" id="wirdAmountUnit"></span>
+      </div>
+      <div id="wirdSurahPickRow" hidden>
+        <input type="text" id="wirdSurahSearch" placeholder="ابحث باسم السورة..." style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--paper-3); font-family:inherit; font-size:0.9rem; background:var(--paper); color:var(--ink); margin-bottom:8px; box-sizing:border-box;">
+        <div id="wirdSurahPickList" style="max-height:240px; overflow-y:auto; display:flex; flex-direction:column; gap:4px;"></div>
+        <div class="muted" id="wirdSurahPickCount" style="margin-top:8px; font-size:0.82rem;"></div>
       </div>
       <button class="btn primary block" id="saveWirdBtn" style="margin-top:16px;">حفظ</button>
     </div>
@@ -1604,8 +1613,8 @@ const EVENING_ADHKAR = [
   // ============================================================
   var STORE_WIRD_SETTINGS = "wirdi2-wird-settings";
   var STORE_WIRD_PROGRESS = "wirdi2-wird-progress";
-  var wirdSettings = loadJSON(STORE_WIRD_SETTINGS, { type:"ayahs", amount:10 });
-  var wirdProgress = loadJSON(STORE_WIRD_PROGRESS, { pointerSurah:1, pointerAyah:1, date:null, target:0, readToday:0 });
+  var wirdSettings = loadJSON(STORE_WIRD_SETTINGS, { type:"ayahs", amount:10, surahs:[] });
+  var wirdProgress = loadJSON(STORE_WIRD_PROGRESS, { pointerSurah:1, pointerAyah:1, date:null, target:0, readToday:0, doneSurahsToday:[] });
 
   function pageOf(surahNo, ayahNo){ return QURAN_PAGES[surahNo-1][ayahNo-1]; }
 
@@ -1617,6 +1626,13 @@ const EVENING_ADHKAR = [
       var total = 0, s = ps;
       for (var k=0; k<amount && s<=114; k++, s++){ total += ayahCount(s); }
       return Math.max(1, total);
+    }
+    if (type === "surah_pick"){
+      var list = wirdSettings.surahs || [];
+      if (!list.length) return 1;
+      var totalP = 0;
+      list.forEach(function(sNo){ totalP += ayahCount(sNo); });
+      return Math.max(1, totalP);
     }
     if (type === "juz"){
       var curPage = pageOf(ps, pa);
@@ -1657,9 +1673,25 @@ const EVENING_ADHKAR = [
     if (wirdProgress.date !== t){
       wirdProgress.date = t;
       wirdProgress.readToday = 0;
+      wirdProgress.doneSurahsToday = [];
       wirdProgress.target = computeTargetAyahs();
       saveJSON(STORE_WIRD_PROGRESS, wirdProgress);
     }
+    if (!wirdProgress.doneSurahsToday) wirdProgress.doneSurahsToday = [];
+  }
+  function wirdToggleSurahDone(surahNo){
+    ensureWirdToday();
+    if (wirdSettings.type !== "surah_pick") return;
+    var idx = wirdProgress.doneSurahsToday.indexOf(surahNo);
+    if (idx === -1){
+      wirdProgress.doneSurahsToday.push(surahNo);
+      wirdProgress.readToday += ayahCount(surahNo);
+    } else {
+      wirdProgress.doneSurahsToday.splice(idx,1);
+      wirdProgress.readToday = Math.max(0, wirdProgress.readToday - ayahCount(surahNo));
+    }
+    saveJSON(STORE_WIRD_PROGRESS, wirdProgress);
+    if (wirdProgress.readToday >= wirdProgress.target) markActivityToday();
   }
   function advancePointer(byAyahs){
     var s = wirdProgress.pointerSurah, a = wirdProgress.pointerAyah;
@@ -1682,6 +1714,15 @@ const EVENING_ADHKAR = [
   }
   function wirdCompleteToday(){
     ensureWirdToday();
+    if (wirdSettings.type === "surah_pick"){
+      (wirdSettings.surahs || []).forEach(function(sNo){
+        if (wirdProgress.doneSurahsToday.indexOf(sNo) === -1) wirdProgress.doneSurahsToday.push(sNo);
+      });
+      wirdProgress.readToday = wirdProgress.target;
+      saveJSON(STORE_WIRD_PROGRESS, wirdProgress);
+      markActivityToday();
+      return;
+    }
     var remaining = wirdProgress.target - wirdProgress.readToday;
     if (remaining > 0) wirdAddAyahs(remaining);
   }
@@ -1695,6 +1736,11 @@ const EVENING_ADHKAR = [
       if (amount === 0.5) return "نصف جزء";
       if (amount === 1) return "جزء واحد";
       return amount + " جزء";
+    }
+    if (type === "surah_pick"){
+      var list = wirdSettings.surahs || [];
+      if (!list.length) return "لم تُحدَّد سورة بعد";
+      return list.map(function(no){ return surahName(no); }).join("، ");
     }
     return "-";
   }
@@ -1906,20 +1952,47 @@ const EVENING_ADHKAR = [
     var pct = Math.min(100, Math.round((wirdProgress.readToday / wirdProgress.target) * 100));
     var remaining = Math.max(0, wirdProgress.target - wirdProgress.readToday);
     var doneToday = wirdProgress.readToday >= wirdProgress.target;
+    var isPick = wirdSettings.type === "surah_pick";
+
+    var actionsHtml;
+    if (isPick){
+      var rows = (wirdSettings.surahs || []).map(function(no){
+        var checked = wirdProgress.doneSurahsToday.indexOf(no) !== -1;
+        return '<label class="radio-row" style="justify-content:flex-start; gap:10px; padding:8px 4px;">' +
+          '<input type="checkbox" data-wird-card-surah="' + no + '" ' + (checked?'checked':'') + '>' +
+          '<span' + (checked ? ' style="text-decoration:line-through; opacity:0.65;"' : '') + '>' + surahName(no) + '</span>' +
+        '</label>';
+      }).join("");
+      actionsHtml = '<div class="wird-surah-checklist" style="margin-top:8px;">' + rows + '</div>';
+    } else {
+      actionsHtml =
+        '<div class="wird-actions">' +
+          '<button class="btn ghost" id="wirdAddOneBtn" ' + (doneToday?'disabled':'') + '>+ آية واحدة</button>' +
+          '<button class="btn primary" id="wirdCompleteBtn" ' + (doneToday?'disabled':'') + '>✓ أكملت وردي اليوم</button>' +
+        '</div>';
+    }
+
     document.getElementById("wirdCard").innerHTML =
       '<div class="wird-top"><span class="wird-title">وردك اليوم</span><button class="icon-btn" id="editWirdBtn" style="width:32px;height:32px;" aria-label="تعديل الورد"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></div>' +
       '<div class="wird-target">' + wirdLabel() + '</div>' +
       '<div class="bar" style="margin-top:10px;"><div class="fill' + (doneToday?' complete':'') + '" style="width:' + pct + '%"></div></div>' +
-      '<div class="stat-sub"><span>' + (doneToday ? "أتممت وردك اليوم، بارك الله فيك ✓" : ("تبقى " + remaining + " آية لإكمال ورد اليوم")) + '</span><span>' + pct + '%</span></div>' +
-      '<div class="wird-actions">' +
-        '<button class="btn ghost" id="wirdAddOneBtn" ' + (doneToday?'disabled':'') + '>+ آية واحدة</button>' +
-        '<button class="btn primary" id="wirdCompleteBtn" ' + (doneToday?'disabled':'') + '>✓ أكملت وردي اليوم</button>' +
-      '</div>';
+      '<div class="stat-sub"><span>' + (doneToday ? "أتممت وردك اليوم، بارك الله فيك ✓" : (isPick ? "تبقى بعض السور لإكمال ورد اليوم" : ("تبقى " + remaining + " آية لإكمال ورد اليوم"))) + '</span><span>' + pct + '%</span></div>' +
+      actionsHtml;
     document.getElementById("editWirdBtn").addEventListener("click", openWirdModal);
-    var addBtn = document.getElementById("wirdAddOneBtn");
-    if (addBtn) addBtn.addEventListener("click", function(){ wirdAddAyahs(1); renderWirdCard(); });
-    var compBtn = document.getElementById("wirdCompleteBtn");
-    if (compBtn) compBtn.addEventListener("click", function(){ wirdCompleteToday(); renderWirdCard(); showToast("أتممت وردك اليوم ✓"); });
+
+    if (isPick){
+      document.querySelectorAll('[data-wird-card-surah]').forEach(function(cb){
+        cb.addEventListener("change", function(){
+          wirdToggleSurahDone(parseInt(cb.getAttribute("data-wird-card-surah"),10));
+          renderWirdCard();
+        });
+      });
+    } else {
+      var addBtn = document.getElementById("wirdAddOneBtn");
+      if (addBtn) addBtn.addEventListener("click", function(){ wirdAddAyahs(1); renderWirdCard(); });
+      var compBtn = document.getElementById("wirdCompleteBtn");
+      if (compBtn) compBtn.addEventListener("click", function(){ wirdCompleteToday(); renderWirdCard(); showToast("أتممت وردك اليوم ✓"); });
+    }
   }
 
   // ============================================================
@@ -1928,10 +2001,38 @@ const EVENING_ADHKAR = [
   var WIRD_TYPES = [
     {key:"ayahs", label:"عدد آيات يوميًا", unit:"آية", def:10},
     {key:"pages", label:"عدد صفحات يوميًا", unit:"صفحة", def:2},
-    {key:"surahs", label:"عدد سور يوميًا", unit:"سورة", def:1},
+    {key:"surahs", label:"عدد سور يوميًا (بالترتيب)", unit:"سورة", def:1},
+    {key:"surah_pick", label:"سورة أو أكثر أختارها بنفسي", unit:"", def:1},
     {key:"juz", label:"جزء يوميًا (أو كسر منه)", unit:"جزء (مثال: 0.5)", def:1},
     {key:"custom", label:"تخصيص عدد آيات يدويًا", unit:"آية", def:5}
   ];
+  var wirdModalPicked = [];
+  function renderWirdSurahPickList(filterText){
+    var listEl = document.getElementById("wirdSurahPickList");
+    var countEl = document.getElementById("wirdSurahPickCount");
+    var q = (filterText || "").trim();
+    var html = "";
+    for (var i=1;i<=114;i++){
+      var nm = surahName(i);
+      if (q && nm.indexOf(q) === -1) continue;
+      var checked = wirdModalPicked.indexOf(i) !== -1 ? "checked" : "";
+      html += '<label class="radio-row" style="justify-content:flex-start; gap:10px;">' +
+        '<input type="checkbox" data-wird-pick-surah="' + i + '" ' + checked + '>' +
+        '<span>' + nm + '</span><span class="muted" style="margin-inline-start:auto; font-size:0.78rem;">' + ayahCount(i) + ' آية</span>' +
+      '</label>';
+    }
+    listEl.innerHTML = html || '<div class="empty-state">لا توجد نتائج</div>';
+    listEl.querySelectorAll('[data-wird-pick-surah]').forEach(function(cb){
+      cb.addEventListener("change", function(){
+        var no = parseInt(cb.getAttribute("data-wird-pick-surah"),10);
+        var idx = wirdModalPicked.indexOf(no);
+        if (cb.checked && idx === -1) wirdModalPicked.push(no);
+        else if (!cb.checked && idx !== -1) wirdModalPicked.splice(idx,1);
+        countEl.textContent = wirdModalPicked.length ? ("تم اختيار " + wirdModalPicked.length + " سورة") : "لم تختر أي سورة بعد";
+      });
+    });
+    countEl.textContent = wirdModalPicked.length ? ("تم اختيار " + wirdModalPicked.length + " سورة") : "لم تختر أي سورة بعد";
+  }
   function openWirdModal(){
     var box = document.getElementById("wirdTypeOptions");
     box.innerHTML = WIRD_TYPES.map(function(t){
@@ -1941,25 +2042,52 @@ const EVENING_ADHKAR = [
     var amountRow = document.getElementById("wirdAmountRow");
     var amountInput = document.getElementById("wirdAmountInput");
     var amountUnit = document.getElementById("wirdAmountUnit");
+    var pickRow = document.getElementById("wirdSurahPickRow");
+    var searchInput = document.getElementById("wirdSurahSearch");
+    wirdModalPicked = (wirdSettings.type === "surah_pick" ? (wirdSettings.surahs || []) : []).slice();
+    searchInput.value = "";
     function syncAmount(){
       var sel = box.querySelector('input[name="wirdType"]:checked');
       var t = WIRD_TYPES.filter(function(x){ return x.key === sel.value; })[0];
+      if (t.key === "surah_pick"){
+        amountRow.hidden = true;
+        pickRow.hidden = false;
+        renderWirdSurahPickList(searchInput.value);
+        return;
+      }
+      pickRow.hidden = true;
       amountRow.hidden = false;
       amountInput.step = t.key === "juz" ? "0.5" : "1";
       amountInput.value = wirdSettings.type === t.key ? wirdSettings.amount : t.def;
       amountUnit.textContent = t.unit;
     }
     box.querySelectorAll('input[name="wirdType"]').forEach(function(r){ r.addEventListener("change", syncAmount); });
+    searchInput.oninput = function(){ renderWirdSurahPickList(searchInput.value); };
     syncAmount();
     document.getElementById("wirdModal").hidden = false;
   }
   document.getElementById("closeWirdModal").addEventListener("click", function(){ document.getElementById("wirdModal").hidden = true; });
   document.getElementById("saveWirdBtn").addEventListener("click", function(){
     var sel = document.querySelector('input[name="wirdType"]:checked');
-    var amount = parseFloat(document.getElementById("wirdAmountInput").value) || 1;
-    wirdSettings = { type: sel.value, amount: amount };
+    var typeChanged = wirdSettings.type !== sel.value;
+    var surahsChanged = false;
+    if (sel.value === "surah_pick"){
+      if (!wirdModalPicked.length){ showToast("اختر سورة واحدة على الأقل"); return; }
+      var newSurahs = wirdModalPicked.slice().sort(function(a,b){return a-b;});
+      surahsChanged = JSON.stringify(newSurahs) !== JSON.stringify(wirdSettings.surahs || []);
+      wirdSettings = { type: "surah_pick", amount: 1, surahs: newSurahs };
+    } else {
+      var amount = parseFloat(document.getElementById("wirdAmountInput").value) || 1;
+      wirdSettings = { type: sel.value, amount: amount, surahs: wirdSettings.surahs || [] };
+    }
     saveJSON(STORE_WIRD_SETTINGS, wirdSettings);
-    wirdProgress.target = Math.max(computeTargetAyahs(), wirdProgress.readToday);
+    if (typeChanged || surahsChanged){
+      wirdProgress.doneSurahsToday = [];
+      wirdProgress.readToday = 0;
+      wirdProgress.target = computeTargetAyahs();
+    } else {
+      wirdProgress.target = Math.max(computeTargetAyahs(), wirdProgress.readToday);
+    }
     saveJSON(STORE_WIRD_PROGRESS, wirdProgress);
     document.getElementById("wirdModal").hidden = true;
     renderWirdCard();
@@ -2008,7 +2136,7 @@ const EVENING_ADHKAR = [
         renderSurahsList();
       });
       btn.addEventListener("click", function(){
-        openMushaf(pageOf(no,1), "surahs");
+        openMushaf(pageOf(no,1), "surahs", no);
       });
     });
   }
@@ -2028,13 +2156,33 @@ const EVENING_ADHKAR = [
   var STORE_MUSHAF_ZOOM = "wirdi2-mushaf-zoom";
   var mushafPageNum = loadJSON(STORE_MUSHAF_PAGE, 1);
   var mushafZoom = loadJSON(STORE_MUSHAF_ZOOM, 1);
-  document.documentElement.style.setProperty("--mushaf-zoom", mushafZoom);
 
-  function openMushaf(pageNum, returnView){
+  var mushafFocusSurah = null;
+
+  function openMushaf(pageNum, returnView, focusSurahNo){
     mushafReturnView = returnView || "home";
     mushafPageNum = clamp(pageNum, 1, 604);
+    mushafFocusSurah = focusSurahNo || null;
     showView("mushaf");
     renderMushafPage();
+  }
+
+  function fitMushafPage(){
+    var content = document.getElementById("mushafPageContent");
+    var viewport = document.getElementById("mushafViewport");
+    var containerH = viewport.clientHeight;
+    if (!containerH) return;
+    var prevOverflow = content.style.overflow;
+    content.style.overflow = "hidden";
+    var lo = 13, hi = 34, best = lo;
+    for (var i=0;i<8;i++){
+      var mid = (lo+hi)/2;
+      content.style.fontSize = mid + "px";
+      if (content.scrollHeight <= containerH){ best = mid; lo = mid; } else { hi = mid; }
+    }
+    var finalSize = clamp(Math.round(best * (mushafZoom||1) * 10)/10, 11, 44);
+    content.style.fontSize = finalSize + "px";
+    content.style.overflow = prevOverflow || "";
   }
 
   function renderMushafPage(){
@@ -2045,6 +2193,8 @@ const EVENING_ADHKAR = [
       var surahNo = run[0], from = run[1], to = run[2];
       var nm = surahName(surahNo);
       if (surahNames.indexOf(nm) === -1) surahNames.push(nm);
+      var focusCls = (mushafFocusSurah && surahNo === mushafFocusSurah) ? " focus-surah" : "";
+      html += '<div class="surah-run' + focusCls + '" data-surah-run="' + surahNo + '">';
       if (from === 1){
         html += '<span class="surah-title-break">سورة ' + nm + '</span>';
         if (surahNo !== 1 && surahNo !== 9){ html += '<div class="bismillah">' + BISMILLAH + '</div>'; }
@@ -2053,6 +2203,7 @@ const EVENING_ADHKAR = [
       for (var a = from; a <= to; a++){
         html += ayahs[a-1] + ' <span class="ayah-num">' + toArabicIndic(a) + '</span> ';
       }
+      html += '</div>';
     });
     document.getElementById("mushafPageContent").innerHTML = html;
     document.getElementById("mushafSurahLine").textContent = surahNames.join(" • ");
@@ -2072,7 +2223,17 @@ const EVENING_ADHKAR = [
     document.getElementById("mushafListenLink").href = "https://quran.com/" + firstRun[0] + "/" + firstRun[1] + "-" + firstRun[2];
 
     saveJSON(STORE_MUSHAF_PAGE, mushafPageNum);
+
+    requestAnimationFrame(function(){
+      fitMushafPage();
+      if (mushafFocusSurah){
+        var block = document.querySelector('[data-surah-run="' + mushafFocusSurah + '"]');
+        if (block) block.scrollIntoView({ block: "start" });
+        mushafFocusSurah = null;
+      }
+    });
   }
+  window.addEventListener("resize", function(){ if (currentView === "mushaf") fitMushafPage(); });
 
   function mushafGoTo(newPage, dir){
     newPage = clamp(newPage, 1, 604);
@@ -2107,13 +2268,13 @@ const EVENING_ADHKAR = [
 
   document.getElementById("mushafZoomInBtn").addEventListener("click", function(){
     mushafZoom = clamp(Math.round((mushafZoom + 0.1) * 10) / 10, 0.8, 1.6);
-    document.documentElement.style.setProperty("--mushaf-zoom", mushafZoom);
     saveJSON(STORE_MUSHAF_ZOOM, mushafZoom);
+    fitMushafPage();
   });
   document.getElementById("mushafZoomOutBtn").addEventListener("click", function(){
     mushafZoom = clamp(Math.round((mushafZoom - 0.1) * 10) / 10, 0.8, 1.6);
-    document.documentElement.style.setProperty("--mushaf-zoom", mushafZoom);
     saveJSON(STORE_MUSHAF_ZOOM, mushafZoom);
+    fitMushafPage();
   });
   document.getElementById("mushafGotoToggleBtn").addEventListener("click", function(){
     var row = document.getElementById("gotoPageRow");
@@ -2439,7 +2600,7 @@ const EVENING_ADHKAR = [
       btn.addEventListener("click", function(){
         var no = parseInt(btn.getAttribute("data-goto-surah"),10);
         document.getElementById("searchModal").hidden = true;
-        openMushaf(pageOf(no,1), "surahs");
+        openMushaf(pageOf(no,1), "surahs", no);
       });
     });
     results.querySelectorAll("[data-goto-surah-ayah]").forEach(function(btn){
