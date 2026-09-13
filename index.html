@@ -2527,14 +2527,41 @@ const EVENING_ADHKAR = [
   // Estimated per-item start position (0..1) within the audio, weighted by
   // each dhikr's text length and repeat count. The recording has no real
   // timestamps, so this is a best-effort approximation, not exact timing.
-  function buildAdhkarTimeMap(which){
+  // Builds a list of {start, idx} segments in playback order. Most items get
+  // one segment. The "three quls" (الإخلاص، الفلق، الناس) are a special case:
+  // Al-Afasy recites them as a cycle — قل هو الله أحد، قل أعوذ برب الفلق،
+  // قل أعوذ برب الناس — then repeats that whole cycle two more times, rather
+  // than saying each surah three times in a row before moving to the next.
+  function stripDiacritics(s){ return s.replace(/[ً-ٰٟۖ-ۭ]/g, ""); }
+  function buildAdhkarSegments(which){
     var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
-    var weights = list.map(function(item){ return item.text.length * Math.min(item.repeat||1, 4); });
-    var total = weights.reduce(function(a,b){ return a+b; }, 0) || 1;
+    var segs = [];
+    var i = 0;
+    while (i < list.length){
+      var a = list[i], b = list[i+1], c = list[i+2];
+      var isThreeQuls = a && b && c &&
+        stripDiacritics(a.text).indexOf("الصمد") !== -1 &&
+        stripDiacritics(b.text).indexOf("الفلق") !== -1 &&
+        stripDiacritics(c.text).indexOf("الناس") !== -1 &&
+        (a.repeat||1) > 1;
+      if (isThreeQuls){
+        var reps = a.repeat || 3;
+        for (var r=0;r<reps;r++){
+          segs.push({ idx:i,   weight:a.text.length });
+          segs.push({ idx:i+1, weight:b.text.length });
+          segs.push({ idx:i+2, weight:c.text.length });
+        }
+        i += 3;
+      } else {
+        segs.push({ idx:i, weight: list[i].text.length * Math.min(list[i].repeat||1, 4) });
+        i += 1;
+      }
+    }
+    var total = segs.reduce(function(sum,s){ return sum + s.weight; }, 0) || 1;
     var cum = 0;
-    return weights.map(function(w){ var start = cum/total; cum += w; return start; });
+    return segs.map(function(s){ var start = cum/total; cum += s.weight; return { start:start, idx:s.idx }; });
   }
-  var adhkarTimeMaps = { morning: buildAdhkarTimeMap("morning"), evening: buildAdhkarTimeMap("evening") };
+  var adhkarTimeMaps = { morning: buildAdhkarSegments("morning"), evening: buildAdhkarSegments("evening") };
 
   ["morning","evening"].forEach(function(which){
     var audio = document.getElementById(which + "AudioEl");
@@ -2573,10 +2600,10 @@ const EVENING_ADHKAR = [
       if (!audio.duration) return;
       fill.style.width = ((audio.currentTime/audio.duration)*100) + "%";
       if (audio.paused) return;
-      var map = adhkarTimeMaps[which];
+      var segs = adhkarTimeMaps[which];
       var ratio = audio.currentTime / audio.duration;
-      var idx = 0;
-      for (var i=0;i<map.length;i++){ if (ratio >= map[i]) idx = i; else break; }
+      var idx = segs[0].idx;
+      for (var i=0;i<segs.length;i++){ if (ratio >= segs[i].start) idx = segs[i].idx; else break; }
       if (idx !== adhkarNav[which]){
         adhkarNav[which] = idx;
         renderAdhkarSingle(which);
