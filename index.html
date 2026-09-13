@@ -2496,8 +2496,16 @@ const EVENING_ADHKAR = [
         setTimeout(function(){ adhkarNav[which] = idx+1; renderAdhkarSingle(which); }, 450);
       }
     });
-    document.getElementById(which + "PrevBtn").addEventListener("click", function(){ adhkarNav[which]--; renderAdhkarSingle(which); });
-    document.getElementById(which + "NextBtn").addEventListener("click", function(){ adhkarNav[which]++; renderAdhkarSingle(which); });
+    document.getElementById(which + "PrevBtn").addEventListener("click", function(){
+      var audio = document.getElementById(which + "AudioEl");
+      if (audio && !audio.paused) audio.pause();
+      adhkarNav[which]--; renderAdhkarSingle(which);
+    });
+    document.getElementById(which + "NextBtn").addEventListener("click", function(){
+      var audio = document.getElementById(which + "AudioEl");
+      if (audio && !audio.paused) audio.pause();
+      adhkarNav[which]++; renderAdhkarSingle(which);
+    });
     document.getElementById(which + "ResetBtn").addEventListener("click", function(){
       var label = which === "morning" ? "أذكار الصباح" : "أذكار المساء";
       if (window.confirm("إعادة تعيين عداد " + label + " من البداية؟")){
@@ -2516,6 +2524,18 @@ const EVENING_ADHKAR = [
   // Adhkar audio (Mishary Al-Afasy recitation, cached by the service
   // worker after first play so it works offline afterwards)
   // ============================================================
+  // Estimated per-item start position (0..1) within the audio, weighted by
+  // each dhikr's text length and repeat count. The recording has no real
+  // timestamps, so this is a best-effort approximation, not exact timing.
+  function buildAdhkarTimeMap(which){
+    var list = which === "morning" ? MORNING_ADHKAR : EVENING_ADHKAR;
+    var weights = list.map(function(item){ return item.text.length * Math.min(item.repeat||1, 4); });
+    var total = weights.reduce(function(a,b){ return a+b; }, 0) || 1;
+    var cum = 0;
+    return weights.map(function(w){ var start = cum/total; cum += w; return start; });
+  }
+  var adhkarTimeMaps = { morning: buildAdhkarTimeMap("morning"), evening: buildAdhkarTimeMap("evening") };
+
   ["morning","evening"].forEach(function(which){
     var audio = document.getElementById(which + "AudioEl");
     var btn = document.getElementById(which + "AudioBtn");
@@ -2550,7 +2570,17 @@ const EVENING_ADHKAR = [
     audio.addEventListener("pause", function(){ btn.textContent = "▶"; });
     audio.addEventListener("ended", function(){ btn.textContent = "▶"; fill.style.width = "0%"; });
     audio.addEventListener("timeupdate", function(){
-      if (audio.duration) fill.style.width = ((audio.currentTime/audio.duration)*100) + "%";
+      if (!audio.duration) return;
+      fill.style.width = ((audio.currentTime/audio.duration)*100) + "%";
+      if (audio.paused) return;
+      var map = adhkarTimeMaps[which];
+      var ratio = audio.currentTime / audio.duration;
+      var idx = 0;
+      for (var i=0;i<map.length;i++){ if (ratio >= map[i]) idx = i; else break; }
+      if (idx !== adhkarNav[which]){
+        adhkarNav[which] = idx;
+        renderAdhkarSingle(which);
+      }
     });
     fill.addEventListener("click", function(e){
       if (!audio.duration) return;
