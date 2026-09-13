@@ -2224,14 +2224,12 @@ const EVENING_ADHKAR = [
 
     saveJSON(STORE_MUSHAF_PAGE, mushafPageNum);
 
-    requestAnimationFrame(function(){
-      fitMushafPage();
-      if (mushafFocusSurah){
-        var block = document.querySelector('[data-surah-run="' + mushafFocusSurah + '"]');
-        if (block) block.scrollIntoView({ block: "start" });
-        mushafFocusSurah = null;
-      }
-    });
+    fitMushafPage();
+    if (mushafFocusSurah){
+      var block = document.querySelector('[data-surah-run="' + mushafFocusSurah + '"]');
+      if (block) block.scrollIntoView({ block: "start" });
+      mushafFocusSurah = null;
+    }
   }
   window.addEventListener("resize", function(){ if (currentView === "mushaf") fitMushafPage(); });
 
