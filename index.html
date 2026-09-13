@@ -257,7 +257,8 @@
      move, only the content between them scrolls if it doesn't fit — so
      nav buttons stay in one stable spot instead of chasing scroll. ---------- */
   .view.fixed-screen{
-    position:fixed; top:0; left:0; right:0; bottom:var(--bottom-bar-h, 76px);
+    position:fixed; top:0; left:0; right:0;
+    height:calc(100vh - var(--bottom-bar-h, 76px));
     max-width:720px; margin:0 auto; padding:16px;
     display:flex; flex-direction:column; overflow:hidden;
     background:var(--paper); z-index:5;
