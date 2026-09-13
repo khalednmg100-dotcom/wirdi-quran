@@ -2185,6 +2185,12 @@ const EVENING_ADHKAR = [
     }
     var finalSize = clamp(Math.round(best * (mushafZoom||1) * 10)/10, 8, 44);
     content.style.fontSize = finalSize + "px";
+    var guard = 0;
+    while (content.scrollHeight > containerH && finalSize > 8 && guard < 60){
+      finalSize = Math.max(8, finalSize - 0.3);
+      content.style.fontSize = finalSize + "px";
+      guard++;
+    }
     content.style.overflow = prevOverflow || "";
   }
 
