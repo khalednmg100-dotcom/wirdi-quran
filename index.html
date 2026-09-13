@@ -293,8 +293,8 @@
   .mushaf-page .bismillah{color:#0E6E5F;}
   .mushaf-page .ayah-num{border-color:#A9822A; color:#A9822A;}
   .mushaf-page .surah-title-break{
-    display:block; text-align:center; font-weight:700; font-size:1.05rem; color:#094B41;
-    background:#EDE4CB; border:1px solid #DED0A6; border-radius:10px; margin:14px 0; padding:8px;
+    display:block; text-align:center; font-weight:700; font-size:1.05em; color:#094B41;
+    background:#EDE4CB; border:1px solid #DED0A6; border-radius:10px; margin:0.6em 0; padding:0.35em;
   }
   .mushaf-page .surah-run.focus-surah{
     background:#F3EACB; border-radius:10px; box-shadow:0 0 0 2px #A9822A inset; padding:4px 6px; margin:0 -6px;
@@ -2174,13 +2174,16 @@ const EVENING_ADHKAR = [
     if (!containerH) return;
     var prevOverflow = content.style.overflow;
     content.style.overflow = "hidden";
-    var lo = 13, hi = 34, best = lo;
-    for (var i=0;i<8;i++){
-      var mid = (lo+hi)/2;
-      content.style.fontSize = mid + "px";
-      if (content.scrollHeight <= containerH){ best = mid; lo = mid; } else { hi = mid; }
+    var lo = 8, hi = 34, best = lo;
+    content.style.fontSize = lo + "px";
+    if (content.scrollHeight <= containerH){
+      for (var i=0;i<10;i++){
+        var mid = (lo+hi)/2;
+        content.style.fontSize = mid + "px";
+        if (content.scrollHeight <= containerH){ best = mid; lo = mid; } else { hi = mid; }
+      }
     }
-    var finalSize = clamp(Math.round(best * (mushafZoom||1) * 10)/10, 11, 44);
+    var finalSize = clamp(Math.round(best * (mushafZoom||1) * 10)/10, 8, 44);
     content.style.fontSize = finalSize + "px";
     content.style.overflow = prevOverflow || "";
   }
