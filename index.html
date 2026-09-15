@@ -2315,8 +2315,11 @@ const EVENING_ADHKAR = [
       if (startX === null) return;
       var dx = e.clientX - startX, dy = e.clientY - startY;
       if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)){
-        if (dx < 0) mushafGoTo(mushafPageNum-1, -1);
-        else mushafGoTo(mushafPageNum+1, 1);
+        // animate in the same direction as the finger drag, independent of
+        // which page number that lands on (dragging left should always look
+        // like content sliding left, dragging right always sliding right)
+        if (dx < 0) mushafGoTo(mushafPageNum-1, 1);
+        else mushafGoTo(mushafPageNum+1, -1);
       }
       startX = null; startY = null;
     });
