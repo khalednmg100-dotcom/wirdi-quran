@@ -269,15 +269,24 @@
   .view.fixed-screen > .dhikr-single-card{flex:1 1 auto; min-height:0; overflow-y:auto;}
 
   /* ---------- mushaf page reader ---------- */
-  .mushaf-toolbar{display:flex; flex-direction:column; gap:3px; margin-bottom:5px;}
-  .mushaf-toolbar .mt-info{display:flex; flex-direction:column; gap:1px; min-width:0;}
-  .mushaf-toolbar .mt-surah{font-family:"Amiri",serif; font-weight:700; font-size:0.88rem; color:var(--teal-deep); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-  .mushaf-toolbar .mt-meta{font-size:0.58rem; color:var(--ink-soft); display:flex; gap:8px; flex-wrap:wrap;}
-  .mushaf-toolbar .mt-actions{display:flex; gap:5px; flex-wrap:nowrap; justify-content:flex-start; overflow-x:auto;}
-  .mushaf-icon-btn{background:var(--paper-2); border:1px solid var(--paper-3); border-radius:7px; width:30px; height:30px; box-sizing:border-box; display:flex; align-items:center; justify-content:center; font-size:0.82rem; line-height:1; color:var(--teal-deep); flex:none;}
-  .mushaf-icon-btn svg{width:14px; height:14px;}
+  .view.fixed-screen.mushaf-view{padding:8px 10px 6px;}
+  .mushaf-top-bar{display:flex; align-items:center; justify-content:center; margin-bottom:6px;}
+  .mushaf-info-btn{
+    display:flex; align-items:center; gap:8px; background:var(--paper-2); border:1px solid var(--paper-3);
+    border-radius:99px; padding:6px 16px; max-width:92%; color:var(--teal-deep);
+  }
+  .mushaf-info-btn .mib-surah{font-family:"Amiri",serif; font-weight:700; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .mushaf-info-btn .mib-meta{font-size:0.62rem; color:var(--ink-soft); font-weight:600; flex:none; display:flex; gap:6px;}
 
-  .goto-page-row{display:flex; gap:6px; align-items:center; margin-bottom:6px;}
+  .mushaf-tools-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0;}
+  .mushaf-tool-item{
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    background:var(--paper-2); border:1px solid var(--paper-3); border-radius:14px; padding:16px 8px;
+    font-size:0.78rem; font-weight:700; color:var(--ink); text-decoration:none;
+  }
+  .mushaf-tool-item span{font-size:1.4rem; color:var(--teal-deep);}
+
+  .goto-page-row{display:flex; gap:6px; align-items:center; margin-top:4px;}
   .goto-page-row input{width:76px; padding:5px 8px; border-radius:8px; border:1px solid var(--paper-3); font-family:inherit; font-size:0.9rem; text-align:center; background:var(--paper); color:var(--ink);}
 
   .mushaf-viewport{position:relative; overflow:hidden; touch-action:pan-y;}
@@ -443,25 +452,13 @@
   </main>
 
   <!-- ================= MUSHAF PAGE READER ================= -->
-  <main id="view-mushaf" class="view fixed-screen" hidden>
-    <div class="mushaf-toolbar">
-      <div class="mt-info">
-        <span class="mt-surah" id="mushafSurahLine"></span>
-        <span class="mt-meta" id="mushafMetaLine"></span>
-      </div>
-      <div class="mt-actions">
-        <a class="mushaf-icon-btn" id="mushafListenLink" href="#" target="_blank" rel="noopener" aria-label="استماع">🎧</a>
-        <button class="mushaf-icon-btn" id="mushafZoomOutBtn" aria-label="تصغير">−</button>
-        <button class="mushaf-icon-btn" id="mushafZoomInBtn" aria-label="تكبير">+</button>
-        <button class="mushaf-icon-btn" id="mushafGotoToggleBtn" aria-label="الذهاب لصفحة">#</button>
-        <button class="mushaf-icon-btn" id="mushafSurahsBtn" aria-label="قائمة السور">📚</button>
-        <button class="mushaf-icon-btn" id="mushafJuzBtn" aria-label="قائمة الأجزاء">🕌</button>
-      </div>
-    </div>
-    <div class="goto-page-row" id="gotoPageRow" hidden>
-      <input type="number" min="1" max="604" id="gotoPageInput" placeholder="١ - ٦٠٤">
-      <button class="btn primary" id="gotoPageBtn">اذهب</button>
-      <span class="muted" style="font-size:0.75rem;">604 صفحة</span>
+  <main id="view-mushaf" class="view fixed-screen mushaf-view" hidden>
+    <div class="mushaf-top-bar">
+      <button class="mushaf-info-btn" id="mushafToolsBtn" aria-label="أدوات المصحف">
+        <span class="mib-surah" id="mushafSurahLine"></span>
+        <span class="mib-meta" id="mushafMetaLine"></span>
+        <span aria-hidden="true">☰</span>
+      </button>
     </div>
     <div class="mushaf-viewport" id="mushafViewport">
       <div class="mushaf-page" id="mushafPageContent"></div>
@@ -472,6 +469,26 @@
       <button class="mushaf-nav-btn" id="mushafNextBtn" aria-label="الصفحة التالية" style="transform:scaleX(-1);"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
   </main>
+
+  <!-- ================= MUSHAF TOOLS BOTTOM SHEET ================= -->
+  <div class="modal-overlay" id="mushafToolsSheet" hidden>
+    <div class="modal">
+      <div class="modal-head"><h2>أدوات المصحف</h2><button id="closeMushafTools">✕</button></div>
+      <div class="mushaf-tools-grid">
+        <button class="mushaf-tool-item" id="toolSearchBtn"><span>🔍</span>بحث</button>
+        <button class="mushaf-tool-item" id="toolSurahsBtn"><span>📚</span>السور</button>
+        <button class="mushaf-tool-item" id="toolJuzBtn"><span>🕌</span>الأجزاء</button>
+        <a class="mushaf-tool-item" id="mushafListenLink" href="#" target="_blank" rel="noopener"><span>🎧</span>استماع</a>
+        <button class="mushaf-tool-item" id="toolZoomInBtn"><span>+</span>تكبير</button>
+        <button class="mushaf-tool-item" id="toolZoomOutBtn"><span>−</span>تصغير</button>
+      </div>
+      <div class="goto-page-row">
+        <input type="number" min="1" max="604" id="gotoPageInput" placeholder="١ - ٦٠٤">
+        <button class="btn primary" id="gotoPageBtn">اذهب</button>
+        <span class="muted" style="font-size:0.75rem;">604 صفحة</span>
+      </div>
+    </div>
+  </div>
 
   <!-- ================= JUZ LIST ================= -->
   <main id="view-juzlist" class="view" hidden>
@@ -2306,30 +2323,37 @@ const EVENING_ADHKAR = [
     vp.addEventListener("pointercancel", function(){ startX = null; });
   })();
 
-  document.getElementById("mushafZoomInBtn").addEventListener("click", function(){
+  function openMushafTools(){ document.getElementById("mushafToolsSheet").hidden = false; }
+  function closeMushafTools(){ document.getElementById("mushafToolsSheet").hidden = true; }
+  document.getElementById("mushafToolsBtn").addEventListener("click", openMushafTools);
+  document.getElementById("closeMushafTools").addEventListener("click", closeMushafTools);
+  document.getElementById("mushafToolsSheet").addEventListener("click", function(e){
+    if (e.target.id === "mushafToolsSheet") closeMushafTools();
+  });
+
+  document.getElementById("toolZoomInBtn").addEventListener("click", function(){
     mushafZoom = clamp(Math.round((mushafZoom + 0.1) * 10) / 10, 0.8, 1.6);
     saveJSON(STORE_MUSHAF_ZOOM, mushafZoom);
     fitMushafPage();
   });
-  document.getElementById("mushafZoomOutBtn").addEventListener("click", function(){
+  document.getElementById("toolZoomOutBtn").addEventListener("click", function(){
     mushafZoom = clamp(Math.round((mushafZoom - 0.1) * 10) / 10, 0.8, 1.6);
     saveJSON(STORE_MUSHAF_ZOOM, mushafZoom);
     fitMushafPage();
-  });
-  document.getElementById("mushafGotoToggleBtn").addEventListener("click", function(){
-    var row = document.getElementById("gotoPageRow");
-    row.hidden = !row.hidden;
-    if (!row.hidden) document.getElementById("gotoPageInput").focus();
   });
   document.getElementById("gotoPageBtn").addEventListener("click", function(){
     var v = parseInt(document.getElementById("gotoPageInput").value, 10);
     if (!v || v < 1 || v > 604){ showToast("رقم صفحة غير صحيح (1-604)"); return; }
     mushafPageNum = v;
     renderMushafPage();
-    document.getElementById("gotoPageRow").hidden = true;
+    closeMushafTools();
   });
-  document.getElementById("mushafSurahsBtn").addEventListener("click", function(){ showView("surahs"); renderSurahsList(); });
-  document.getElementById("mushafJuzBtn").addEventListener("click", function(){ showView("juzlist"); renderJuzList(); });
+  document.getElementById("toolSurahsBtn").addEventListener("click", function(){ closeMushafTools(); showView("surahs"); renderSurahsList(); });
+  document.getElementById("toolJuzBtn").addEventListener("click", function(){ closeMushafTools(); showView("juzlist"); renderJuzList(); });
+  document.getElementById("toolSearchBtn").addEventListener("click", function(){
+    closeMushafTools();
+    document.getElementById("openSearchBtn").click();
+  });
 
   // ============================================================
   // Juz list & detail
