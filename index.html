@@ -592,6 +592,20 @@
     </div>
 
     <div class="settings-section">
+      <h3>أذان الصلاة</h3>
+      <div class="settings-row">
+        <div><label>تفعيل الأذان في مواعيد الصلاة</label><span class="hint" id="adhanHint">لازم التطبيق يكون مفتوح وقت الأذان عشان يشتغل الصوت — التنبيهات لما التطبيق مقفول محدوديّة زي أي تطبيق ويب.</span></div>
+        <label class="switch"><input type="checkbox" id="adhanToggle"><span class="slider"></span></label>
+      </div>
+      <div class="settings-row" id="prayerTimesRow" hidden>
+        <div style="width:100%;">
+          <span class="hint">مواعيد اليوم (القاهرة)</span>
+          <div id="prayerTimesList" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; font-size:0.8rem; font-weight:700; color:var(--teal-deep);"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
       <h3>الورد اليومي</h3>
       <div class="settings-row">
         <div><label id="wirdCurrentLabel">-</label><span class="hint">الهدف اليومي الحالي</span></div>
@@ -1855,8 +1869,9 @@ const EVENING_ADHKAR = [
   var appSettings = loadJSON(STORE_SETTINGS, {
     morningTime: "07:00", eveningTime: "18:00", wirdTime: "20:00",
     darkMode: "system", fontScale: 1, notificationsEnabled: false,
-    notifLastFired: {}
+    notifLastFired: {}, adhanEnabled: false, adhanLastFired: {}
   });
+  if (!appSettings.adhanLastFired) appSettings.adhanLastFired = {};
   function saveSettings(){ saveJSON(STORE_SETTINGS, appSettings); }
   function applyTheme(){
     var root = document.documentElement;
@@ -2795,6 +2810,17 @@ const EVENING_ADHKAR = [
     document.getElementById("darkModeSelect").value = appSettings.darkMode;
     document.getElementById("fontSizeSelect").value = String(appSettings.fontScale);
     document.getElementById("wirdCurrentLabel").textContent = wirdLabel();
+    document.getElementById("adhanToggle").checked = !!appSettings.adhanEnabled;
+    renderPrayerTimesRow();
+  }
+
+  function renderPrayerTimesRow(){
+    var row = document.getElementById("prayerTimesRow");
+    var list = document.getElementById("prayerTimesList");
+    if (!appSettings.adhanEnabled || !prayerTimesToday){ row.hidden = true; return; }
+    row.hidden = false;
+    var order = [["Fajr","الفجر"],["Dhuhr","الظهر"],["Asr","العصر"],["Maghrib","المغرب"],["Isha","العشاء"]];
+    list.innerHTML = order.map(function(p){ return '<span>' + p[1] + ' ' + (prayerTimesToday[p[0]] || "--") + '</span>'; }).join("");
   }
 
   document.getElementById("notifToggle").addEventListener("change", function(e){
@@ -2811,6 +2837,66 @@ const EVENING_ADHKAR = [
       saveSettings();
     }
   });
+
+  // ============================================================
+  // Prayer times + Adhan (Cairo, Egyptian General Authority of Survey
+  // method — same reference used by most Egyptian prayer-time sites).
+  // Foreground-only, like the other notifications: a PWA with no push
+  // server cannot wake up and play sound while fully closed.
+  // ============================================================
+  var STORE_PRAYER_TIMES = "wirdi2-prayer-times";
+  var prayerTimesCache = loadJSON(STORE_PRAYER_TIMES, null);
+  var prayerTimesToday = (prayerTimesCache && prayerTimesCache.date === todayStr()) ? prayerTimesCache.timings : null;
+  var adhanAudioEl = new Audio();
+  adhanAudioEl.preload = "none";
+  var ADHAN_URL = "https://audio.islamweb.net/audio/downloadmp3.php?audioid=206930";
+  var ADHAN_FAJR_URL = "https://audio.islamweb.net/audio/downloadmp3.php?audioid=206932";
+
+  function fetchPrayerTimes(){
+    fetch("https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=5")
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if (!data || !data.data || !data.data.timings) return;
+        var t = data.data.timings;
+        prayerTimesToday = { Fajr:t.Fajr, Dhuhr:t.Dhuhr, Asr:t.Asr, Maghrib:t.Maghrib, Isha:t.Isha };
+        prayerTimesCache = { date: todayStr(), timings: prayerTimesToday };
+        saveJSON(STORE_PRAYER_TIMES, prayerTimesCache);
+        if (currentView === "settings") renderPrayerTimesRow();
+      })
+      .catch(function(){ /* no internet right now — silently keep whatever we last cached */ });
+  }
+
+  document.getElementById("adhanToggle").addEventListener("change", function(e){
+    appSettings.adhanEnabled = e.target.checked;
+    saveSettings();
+    if (appSettings.adhanEnabled && !prayerTimesToday) fetchPrayerTimes();
+    renderPrayerTimesRow();
+  });
+
+  function checkAdhan(){
+    if (!appSettings.adhanEnabled) return;
+    if (!prayerTimesToday) { fetchPrayerTimes(); return; }
+    var now = new Date();
+    var hm = pad2(now.getHours()) + ":" + pad2(now.getMinutes());
+    var t = todayStr();
+    var prayers = [["Fajr","الفجر",ADHAN_FAJR_URL],["Dhuhr","الظهر",ADHAN_URL],["Asr","العصر",ADHAN_URL],["Maghrib","المغرب",ADHAN_URL],["Isha","العشاء",ADHAN_URL]];
+    prayers.forEach(function(p){
+      if (prayerTimesToday[p[0]] === hm){
+        var fireKey = p[0] + ":" + t;
+        if (appSettings.adhanLastFired[fireKey]) return;
+        appSettings.adhanLastFired[fireKey] = true;
+        saveSettings();
+        adhanAudioEl.src = p[2];
+        adhanAudioEl.play().catch(function(){});
+        if (("Notification" in window) && Notification.permission === "granted"){
+          try { new Notification("حان وقت الأذان", { body: "صلاة " + p[1], icon: "icon-192.png" }); } catch(err){}
+        }
+      }
+    });
+  }
+  if (appSettings.adhanEnabled && !prayerTimesToday) fetchPrayerTimes();
+  setInterval(checkAdhan, 20000);
+
   ["morningTimeInput","eveningTimeInput","wirdTimeInput"].forEach(function(id){
     document.getElementById(id).addEventListener("change", function(e){
       var map = { morningTimeInput:"morningTime", eveningTimeInput:"eveningTime", wirdTimeInput:"wirdTime" };
