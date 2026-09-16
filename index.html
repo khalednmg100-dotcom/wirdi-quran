@@ -277,6 +277,8 @@
   }
   .mushaf-info-btn .mib-surah{font-family:"Amiri",serif; font-weight:700; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .mushaf-info-btn .mib-meta{font-size:0.62rem; color:var(--ink-soft); font-weight:600; flex:none; display:flex; gap:6px;}
+  .mushaf-play-btn{width:34px; height:34px; border-radius:50%; background:var(--teal); color:#fff; border:none; display:flex; align-items:center; justify-content:center; font-size:0.85rem; flex:none;}
+  .mushaf-page .ayah-text.playing{background:#F3EACB; border-radius:6px; box-shadow:0 0 0 3px #F3EACB;}
 
   .mushaf-tools-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0;}
   .mushaf-tool-item{
@@ -459,6 +461,7 @@
         <span class="mib-meta" id="mushafMetaLine"></span>
         <span aria-hidden="true">☰</span>
       </button>
+      <button class="mushaf-play-btn" id="mushafPlayBtn" aria-label="استماع">▶</button>
     </div>
     <div class="mushaf-viewport" id="mushafViewport">
       <div class="mushaf-page" id="mushafPageContent"></div>
@@ -478,7 +481,7 @@
         <button class="mushaf-tool-item" id="toolSearchBtn"><span>🔍</span>بحث</button>
         <button class="mushaf-tool-item" id="toolSurahsBtn"><span>📚</span>السور</button>
         <button class="mushaf-tool-item" id="toolJuzBtn"><span>🕌</span>الأجزاء</button>
-        <a class="mushaf-tool-item" id="mushafListenLink" href="#" target="_blank" rel="noopener"><span>🎧</span>استماع</a>
+        <button class="mushaf-tool-item" id="toolListenBtn"><span>🎧</span>استماع</button>
         <button class="mushaf-tool-item" id="toolZoomInBtn"><span>+</span>تكبير</button>
         <button class="mushaf-tool-item" id="toolZoomOutBtn"><span>−</span>تصغير</button>
       </div>
@@ -1930,6 +1933,7 @@ const EVENING_ADHKAR = [
 
   function showView(name){
     name = String(name).toLowerCase();
+    if (currentView === "mushaf" && name !== "mushaf" && typeof stopQuranAudio === "function") stopQuranAudio();
     VIEW_IDS.forEach(function(v){
       var el = document.getElementById("view-"+v);
       if (el) el.hidden = (v !== name);
@@ -2260,7 +2264,8 @@ const EVENING_ADHKAR = [
       }
       var ayahs = QURAN_AYAHS[surahNo-1];
       for (var a = from; a <= to; a++){
-        html += ayahs[a-1] + ' <span class="ayah-num">' + toArabicIndic(a) + '</span> ';
+        html += '<span class="ayah-text" data-surah="' + surahNo + '" data-ayah="' + a + '">' + ayahs[a-1] + '</span> ' +
+          '<span class="ayah-num" data-surah="' + surahNo + '" data-ayah="' + a + '">' + toArabicIndic(a) + '</span> ';
       }
       html += '</div>';
     });
@@ -2278,10 +2283,9 @@ const EVENING_ADHKAR = [
     document.getElementById("mushafPrevBtn").disabled = (pg.p <= 1);
     document.getElementById("mushafNextBtn").disabled = (pg.p >= 604);
 
-    var firstRun = pg.r[0];
-    document.getElementById("mushafListenLink").href = "https://quran.com/" + firstRun[0] + "/" + firstRun[1] + "-" + firstRun[2];
-
     saveJSON(STORE_MUSHAF_PAGE, mushafPageNum);
+
+    if (quranPlaying && quranCurrent) highlightAyah(quranCurrent.surah, quranCurrent.ayah);
 
     fitMushafPage();
     if (mushafFocusSurah){
@@ -2295,6 +2299,7 @@ const EVENING_ADHKAR = [
   function mushafGoTo(newPage, dir){
     newPage = clamp(newPage, 1, 604);
     if (newPage === mushafPageNum) return;
+    if (typeof stopQuranAudio === "function") stopQuranAudio();
     var el = document.getElementById("mushafPageContent");
     el.classList.add(dir > 0 ? "turn-next" : "turn-prev");
     setTimeout(function(){
@@ -2325,6 +2330,91 @@ const EVENING_ADHKAR = [
     });
     vp.addEventListener("pointercancel", function(){ startX = null; });
   })();
+
+  // ============================================================
+  // In-app ayah-by-ayah audio (Mishary Al-Afasy, everyayah.com — real
+  // per-ayah files with CORS enabled, cached by the service worker after
+  // first play so ayahs already heard work offline too)
+  // ============================================================
+  var quranAudioEl = new Audio();
+  quranAudioEl.preload = "none";
+  var quranPlaying = false;
+  var quranCurrent = null; // {surah, ayah}
+
+  function ayahAudioUrl(surah, ayah){
+    var s = ("00" + surah).slice(-3);
+    var a = ("00" + ayah).slice(-3);
+    return "https://everyayah.com/data/Alafasy_128kbps/" + s + a + ".mp3";
+  }
+  function clearAyahHighlight(){
+    document.querySelectorAll(".ayah-text.playing").forEach(function(el){ el.classList.remove("playing"); });
+  }
+  function highlightAyah(surah, ayah){
+    clearAyahHighlight();
+    var el = document.querySelector('.ayah-text[data-surah="' + surah + '"][data-ayah="' + ayah + '"]');
+    if (el) el.scrollIntoView({ block: "nearest" });
+    if (el) el.classList.add("playing");
+  }
+  function updatePlayButtons(){
+    var icon = quranPlaying ? "⏸" : "▶";
+    var b = document.getElementById("mushafPlayBtn");
+    if (b) b.textContent = icon;
+  }
+  function nextAyahOf(surah, ayah){
+    if (ayah < ayahCount(surah)) return { surah: surah, ayah: ayah + 1 };
+    if (surah < 114) return { surah: surah + 1, ayah: 1 };
+    return null;
+  }
+  function playAyah(surah, ayah){
+    quranCurrent = { surah: surah, ayah: ayah };
+    var targetPage = pageOf(surah, ayah);
+    if (targetPage !== mushafPageNum){
+      mushafPageNum = targetPage;
+      renderMushafPage();
+    } else {
+      highlightAyah(surah, ayah);
+    }
+    quranAudioEl.src = ayahAudioUrl(surah, ayah);
+    quranAudioEl.play().catch(function(){
+      showToast("محتاج إنترنت أول مرة تسمع فيها الآية، وبعدها الآيات اللي سمعتها هتشتغل من غير نت");
+      quranPlaying = false;
+      updatePlayButtons();
+    });
+  }
+  quranAudioEl.addEventListener("ended", function(){
+    if (!quranPlaying || !quranCurrent) return;
+    var next = nextAyahOf(quranCurrent.surah, quranCurrent.ayah);
+    if (!next){ quranPlaying = false; clearAyahHighlight(); quranCurrent = null; updatePlayButtons(); return; }
+    playAyah(next.surah, next.ayah);
+  });
+  function toggleQuranAudio(){
+    if (currentView !== "mushaf") return;
+    if (quranPlaying){
+      quranPlaying = false;
+      quranAudioEl.pause();
+      clearAyahHighlight();
+      updatePlayButtons();
+      return;
+    }
+    quranPlaying = true;
+    updatePlayButtons();
+    var start = quranCurrent;
+    if (!start || pageOf(start.surah, start.ayah) !== mushafPageNum){
+      var pg = MUSHAF_PAGES[mushafPageNum - 1];
+      var firstRun = pg.r[0];
+      start = { surah: firstRun[0], ayah: firstRun[1] };
+    }
+    playAyah(start.surah, start.ayah);
+  }
+  function stopQuranAudio(){
+    if (!quranPlaying) return;
+    quranPlaying = false;
+    quranAudioEl.pause();
+    clearAyahHighlight();
+    updatePlayButtons();
+  }
+  document.getElementById("mushafPlayBtn").addEventListener("click", toggleQuranAudio);
+  document.getElementById("toolListenBtn").addEventListener("click", function(){ closeMushafTools(); toggleQuranAudio(); });
 
   function openMushafTools(){ document.getElementById("mushafToolsSheet").hidden = false; }
   function closeMushafTools(){ document.getElementById("mushafToolsSheet").hidden = true; }
