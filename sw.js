@@ -1,4 +1,4 @@
-const CACHE_NAME = "wirdi-cache-v4";
+const CACHE_NAME = "wirdi-cache-v5";
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", function(event) {
@@ -14,7 +14,7 @@ self.addEventListener("activate", function(event) {
   event.waitUntil(
     caches.keys().then(function(keys) {
       return Promise.all(
-        keys.filter(function(key) { return key !== CACHE_NAME; }).map(function(key) { return caches.delete(key); })
+        keys.filter(function(key) { return key !== CACHE_NAME && key.indexOf("wirdi-audio") !== 0 && key.indexOf("wirdi-tafsir") !== 0; }).map(function(key) { return caches.delete(key); })
       );
     })
   );
@@ -27,6 +27,8 @@ self.addEventListener("activate", function(event) {
 // cache-first strategy for those avoids unnecessary refetching.
 self.addEventListener("fetch", function(event) {
   if (event.request.method !== "GET") return;
+  var reqHost = new URL(event.request.url).hostname;
+  if (reqHost === "everyayah.com" || reqHost === "api.quran.com") return;
 
   var isDocument = event.request.mode === "navigate" || event.request.destination === "document";
 
