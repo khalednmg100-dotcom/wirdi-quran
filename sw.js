@@ -1,4 +1,4 @@
-const CACHE_NAME = "wirdi-cache-v5";
+const CACHE_NAME = "wirdi-cache-v6";
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", function(event) {
@@ -28,7 +28,7 @@ self.addEventListener("activate", function(event) {
 self.addEventListener("fetch", function(event) {
   if (event.request.method !== "GET") return;
   var reqHost = new URL(event.request.url).hostname;
-  if (reqHost === "everyayah.com" || reqHost === "api.quran.com") return;
+  if (reqHost === "everyayah.com" || reqHost === "api.quran.com" || reqHost === "verses.quran.com" || /quranicaudio.com$/.test(reqHost) || /mp3quran.net$/.test(reqHost)) return;
 
   var isDocument = event.request.mode === "navigate" || event.request.destination === "document";
 
