@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-y4K25QQgYt/Nhe4s5o8HLJjiOi717H6Cnncaz+qZPBo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-5vcrNOTP543WyJyEhtoGyWPqj2blL2YBhLBnCEI/esU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -4703,6 +4703,10 @@ const EVENING_ADHKAR = [
     var speechEnd = Math.min(b.duration, (z + 1) * 0.02);
     it.speech = Math.max(0.2, speechEnd - it.off);                       // voiced part
     it.dur = Math.min(b.duration - it.off, it.speech + REEL_TAIL);        // + a fading tail (no hard cut)
+    // some recordings (e.g. Al-Sudais on Quran.com) are clipped right at the last letter with no echo:
+    // fade the very end of the voice itself and let the next ayah start just before it
+    it.clipped = b.duration - speechEnd < 0.1;
+    if (it.clipped){ it.speech = Math.max(0.2, b.duration - it.off - 0.14); it.dur = b.duration - it.off; }
   }
   function reelPickMime(){
     var c = ["video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/mp4", "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"];
@@ -4729,7 +4733,7 @@ const EVENING_ADHKAR = [
     ]).then(function(res){
       if (job !== reel.job) return;
       var items = res[1], t = 0.9;
-      items.forEach(function(it){ reelTrim(it); it.start = t; t += it.speech + REEL_GAP; });
+      items.forEach(function(it){ reelTrim(it); it.start = t; t += it.speech + (it.clipped ? 0.06 : REEL_GAP); });
       t += REEL_TAIL;
       var data = { items: items, total: t + 0.8 };
       reel.lastData = data; reel.lastCfg = cfg;
