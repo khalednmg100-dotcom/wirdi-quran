@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-nQplyxW8Pa++djaiCFU3kW2S/1lr7dkRxT6cI0eX1k8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-lgoV0I/kSU+B22Pe37jWRBTPKRLQPtl9aVUPlpsWpT4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -673,6 +673,7 @@
     <div class="reel-actions" id="reelOut" hidden>
       <button class="btn primary" id="reelDownloadBtn">⬇ تنزيل</button>
       <button class="btn ghost" id="reelShareBtn">↗ مشاركة</button>
+      <button class="btn ghost" id="reelCoverBtn">🖼 صورة الغلاف</button>
     </div>
     <p class="muted" style="font-size:0.75rem; text-align:center;">فيديو رأسي ٩:١٦ يُصنع على جهازك. نص الآيات حفص عن عاصم (الرسم العثماني) وتوقيت الكلمات من Quran.com، والتلاوات من Quran.com.</p>
   </main>
@@ -4658,7 +4659,7 @@ const EVENING_ADHKAR = [
     g.fillStyle = "rgba(233,196,106,0.7)"; g.fillRect(RW / 2 - 90, 400, 180, 3);
     var cur = data.items[0], wi = -1;
     for (var i = 0; i < data.items.length; i++){ if (t >= data.items[i].start) cur = data.items[i]; }
-    var local = (t - cur.start) * 1000;
+    var local = (t - cur.start + (cur.off || 0)) * 1000;
     if (local >= 0) cur.segs.forEach(function(sg){ if (local >= sg[2] && local < sg[3] + 120) wi = sg[1] - 1; });
     reelDrawText(g, cfg, cur, wi, cfg.surah);
     g.textAlign = "center"; g.fillStyle = "rgba(255,255,255,0.85)"; g.font = '36px "Amiri", serif';
@@ -4688,6 +4689,18 @@ const EVENING_ADHKAR = [
     reelStop(); reel.blob = null; reelUpdateButtons();
     document.getElementById("reelStatus").textContent = wasRec ? "توقف إنشاء الفيديو لأنك خرجت من التطبيق — أعد المحاولة وأبقِ الشاشة مفتوحة" : "توقفت المعاينة";
   });
+  // silence at the start/end of each ayah file is cut so the ayahs follow each other naturally
+  var REEL_GAP = 0.12;
+  function reelTrim(it){
+    // loudness in 20 ms windows; the ayah is where the voice is above 6% of its loudest window
+    var b = it.buf, d = b.getChannelData(0), sr = b.sampleRate, win = Math.round(sr * 0.02), nW = Math.floor(d.length / win), rms = new Float32Array(nW), peak = 0, i, j;
+    for (i = 0; i < nW; i++){ var sum = 0; for (j = i * win; j < (i + 1) * win; j += 4) sum += d[j] * d[j]; rms[i] = Math.sqrt(sum / (win / 4)); if (rms[i] > peak) peak = rms[i]; }
+    var thr = peak * 0.06, a = 0, z = nW - 1;
+    while (a < nW && rms[a] < thr) a++;
+    while (z > a && rms[z] < thr) z--;
+    it.off = Math.max(0, a * 0.02 - 0.06);
+    it.dur = Math.max(0.2, Math.min(b.duration, (z + 1) * 0.02 + 0.12) - it.off);
+  }
   function reelPickMime(){
     var c = ["video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/mp4", "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"];
     if (!window.MediaRecorder) return null;
@@ -4713,20 +4726,25 @@ const EVENING_ADHKAR = [
     ]).then(function(res){
       if (job !== reel.job) return;
       var items = res[1], t = 0.9;
-      items.forEach(function(it){ it.start = t; t += it.buf.duration + 0.35; });
+      items.forEach(function(it){ reelTrim(it); it.start = t; t += it.dur + REEL_GAP; });
       var data = { items: items, total: t + 0.8 };
+      reel.lastData = data; reel.lastCfg = cfg;
       if (data.total > 90) showToast("المدة " + toArabicIndic(Math.round(data.total)) + " ثانية — إنستجرام يقبل حتى ٩٠ ثانية للريلز العادية");
       var master = actx.createGain(); master.connect(actx.destination);
       var dest = null;
       if (record){ dest = actx.createMediaStreamDestination(); master.connect(dest); }
-      var t0 = actx.currentTime + 0.25;
+      reelFrame(g, cfg, data, 0);   // the first recorded frame is a complete, clean picture (used as cover)
+      var t0 = actx.currentTime + (record ? 0.6 : 0.25);
       if (cfg.bg === "custom" && reelMedia && reelMedia.kind === "video"){ try { reelMedia.el.currentTime = 0; reelMedia.el.play(); } catch(e){} }
-      items.forEach(function(it){ var src = actx.createBufferSource(); src.buffer = it.buf; src.connect(master); src.start(t0 + it.start); });
+      items.forEach(function(it){ var src = actx.createBufferSource(); src.buffer = it.buf; src.connect(master); src.start(t0 + it.start, it.off, it.dur); });
       if (record){
         var stream = canvas.captureStream(30);
         dest.stream.getAudioTracks().forEach(function(tr){ stream.addTrack(tr); });
         var mime = reelPickMime(), chunks = [];
-        var rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 6000000 } : { videoBitsPerSecond: 6000000 });
+        var opts = { videoBitsPerSecond: 8000000, audioBitsPerSecond: 160000, videoKeyFrameIntervalDuration: 1000 };
+        if (mime) opts.mimeType = mime;
+        var rec;
+        try { rec = new MediaRecorder(stream, opts); } catch(e){ delete opts.videoKeyFrameIntervalDuration; rec = new MediaRecorder(stream, opts); }
         reel.rec = rec;
         rec.ondataavailable = function(e){ if (e.data && e.data.size) chunks.push(e.data); };
         rec.onstop = function(){
@@ -4856,6 +4874,18 @@ const EVENING_ADHKAR = [
   document.getElementById("reelMakeBtn").addEventListener("click", function(){ reelRun(true); });
   document.getElementById("reelStopBtn").addEventListener("click", function(){ reelStop(); document.getElementById("reelStatus").textContent = "تم الإيقاف"; });
   function reelFileName(){ return "wirdi-" + surahName(reelCfg.surah) + "-" + reelCfg.from + "-" + reelCfg.to + "." + (reel.blobExt || "webm"); }
+  document.getElementById("reelCoverBtn").addEventListener("click", function(){
+    // a clean still of the reel's opening (title + first ayah) to set as the TikTok / Instagram cover
+    var cv = document.createElement("canvas"); cv.width = RW; cv.height = RH;
+    var data = reel.lastData;
+    if (data) reelFrame(cv.getContext("2d"), reel.lastCfg, data, data.items[0].start + 0.01);
+    else { reelStaticPreview(); cv.getContext("2d").drawImage(document.getElementById("reelCanvas"), 0, 0); }
+    cv.toBlob(function(b){
+      var u = URL.createObjectURL(b), a = document.createElement("a");
+      a.href = u; a.download = "wirdi-cover-" + surahName(reelCfg.surah) + ".png"; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(u); }, 5000);
+    }, "image/png");
+  });
   document.getElementById("reelDownloadBtn").addEventListener("click", function(){
     if (!reel.blob) return;
     var u = URL.createObjectURL(reel.blob), a = document.createElement("a");
