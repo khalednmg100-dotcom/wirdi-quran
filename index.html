@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-lgoV0I/kSU+B22Pe37jWRBTPKRLQPtl9aVUPlpsWpT4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-y4K25QQgYt/Nhe4s5o8HLJjiOi717H6Cnncaz+qZPBo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -4690,7 +4690,8 @@ const EVENING_ADHKAR = [
     document.getElementById("reelStatus").textContent = wasRec ? "توقف إنشاء الفيديو لأنك خرجت من التطبيق — أعد المحاولة وأبقِ الشاشة مفتوحة" : "توقفت المعاينة";
   });
   // silence at the start/end of each ayah file is cut so the ayahs follow each other naturally
-  var REEL_GAP = 0.12;
+  var REEL_GAP = 0.1;      // breath between the end of one ayah and the start of the next
+  var REEL_TAIL = 0.6;     // the voice/echo after an ayah fades out over this time (overlapping the next ayah) instead of being cut
   function reelTrim(it){
     // loudness in 20 ms windows; the ayah is where the voice is above 6% of its loudest window
     var b = it.buf, d = b.getChannelData(0), sr = b.sampleRate, win = Math.round(sr * 0.02), nW = Math.floor(d.length / win), rms = new Float32Array(nW), peak = 0, i, j;
@@ -4698,8 +4699,10 @@ const EVENING_ADHKAR = [
     var thr = peak * 0.06, a = 0, z = nW - 1;
     while (a < nW && rms[a] < thr) a++;
     while (z > a && rms[z] < thr) z--;
-    it.off = Math.max(0, a * 0.02 - 0.06);
-    it.dur = Math.max(0.2, Math.min(b.duration, (z + 1) * 0.02 + 0.12) - it.off);
+    it.off = Math.max(0, a * 0.02 - 0.05);
+    var speechEnd = Math.min(b.duration, (z + 1) * 0.02);
+    it.speech = Math.max(0.2, speechEnd - it.off);                       // voiced part
+    it.dur = Math.min(b.duration - it.off, it.speech + REEL_TAIL);        // + a fading tail (no hard cut)
   }
   function reelPickMime(){
     var c = ["video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/mp4", "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"];
@@ -4726,7 +4729,8 @@ const EVENING_ADHKAR = [
     ]).then(function(res){
       if (job !== reel.job) return;
       var items = res[1], t = 0.9;
-      items.forEach(function(it){ reelTrim(it); it.start = t; t += it.dur + REEL_GAP; });
+      items.forEach(function(it){ reelTrim(it); it.start = t; t += it.speech + REEL_GAP; });
+      t += REEL_TAIL;
       var data = { items: items, total: t + 0.8 };
       reel.lastData = data; reel.lastCfg = cfg;
       if (data.total > 90) showToast("المدة " + toArabicIndic(Math.round(data.total)) + " ثانية — إنستجرام يقبل حتى ٩٠ ثانية للريلز العادية");
@@ -4736,7 +4740,14 @@ const EVENING_ADHKAR = [
       reelFrame(g, cfg, data, 0);   // the first recorded frame is a complete, clean picture (used as cover)
       var t0 = actx.currentTime + (record ? 0.6 : 0.25);
       if (cfg.bg === "custom" && reelMedia && reelMedia.kind === "video"){ try { reelMedia.el.currentTime = 0; reelMedia.el.play(); } catch(e){} }
-      items.forEach(function(it){ var src = actx.createBufferSource(); src.buffer = it.buf; src.connect(master); src.start(t0 + it.start, it.off, it.dur); });
+      items.forEach(function(it){
+        // each ayah: 15 ms fade-in, full voice, then a smooth fade of the echo while the next ayah begins
+        var src = actx.createBufferSource(), env = actx.createGain(), s0 = t0 + it.start;
+        src.buffer = it.buf; src.connect(env); env.connect(master);
+        env.gain.setValueAtTime(0, s0); env.gain.linearRampToValueAtTime(1, s0 + 0.015);
+        env.gain.setValueAtTime(1, s0 + it.speech); env.gain.linearRampToValueAtTime(0, s0 + it.dur);
+        src.start(s0, it.off, it.dur);
+      });
       if (record){
         var stream = canvas.captureStream(30);
         dest.stream.getAudioTracks().forEach(function(tr){ stream.addTrack(tr); });
