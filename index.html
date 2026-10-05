@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-5vcrNOTP543WyJyEhtoGyWPqj2blL2YBhLBnCEI/esU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-u/f8Sj8y1mSjX5ZO/UywpsxtILyEt5JE1o9pvWy4JC0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -455,6 +455,41 @@
   #hfDays{flex:0 0 96px; min-width:0; text-align:center; font-weight:800;}
 
 /*/WIRDI3-CSS*/
+/*WIRDI4-CSS*/
+  /* ---------- wirdi v4: tasbih, duas, sunan ---------- */
+  .tb-dhikr .hf-chip{font-family:"Amiri",serif; font-size:0.95rem;}
+  .tb-wrap{display:flex; justify-content:center; margin:14px 0 6px;}
+  .tb-btn{position:relative; width:min(78vw,280px); aspect-ratio:1; border-radius:50%; border:none; background:radial-gradient(circle at 50% 35%, #138a77, #0B5A4E); color:#fff;
+    box-shadow:0 10px 26px var(--shadow), inset 0 -6px 14px rgba(0,0,0,.18); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none; transition:transform .08s;}
+  .tb-btn:active{transform:scale(.97);}
+  .tb-ring{position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg);}
+  .tb-track{fill:none; stroke:rgba(255,255,255,.15); stroke-width:8;}
+  .tb-prog{fill:none; stroke:#E9C46A; stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset .15s;}
+  .tb-dhikr-name{font-family:"Amiri",serif; font-size:1.25rem; font-weight:700; padding:0 18px; text-align:center; position:relative;}
+  .tb-count{font-size:3.4rem; font-weight:800; line-height:1.1; position:relative;}
+  .tb-of{font-size:0.8rem; opacity:.85; position:relative;}
+  .tb-stats{grid-template-columns:repeat(2,1fr);}
+  .dua-card{margin-bottom:10px;}
+  .dua-title, .sn-title{font-weight:800; color:var(--teal-deep); margin-bottom:6px;}
+  .dua-text{font-family:"Amiri",serif; font-size:1.12rem; line-height:2.1; color:var(--ink); background:var(--paper); border:1px solid var(--paper-3); border-radius:12px; padding:10px 12px;}
+  .dua-ref{font-family:"Amiri",serif; font-size:0.8rem; color:#7a6a45; margin:6px 2px 0;}
+  .dua-actions{display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;}
+  .dua-actions .btn{flex:1; min-width:90px; padding-left:6px; padding-right:6px;}
+  .sn-desc{font-size:0.88rem; color:var(--ink-soft); margin-bottom:8px; line-height:1.8;}
+  .sn-done{flex:1; display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--teal-deep); font-size:0.85rem;}
+  .sn-streak{font-size:0.8rem; font-weight:800; color:#b0553f;}
+  .sunnah-card{background:linear-gradient(180deg,var(--gold-tint),var(--paper-2));}
+  .sn-item{padding:0; margin-bottom:8px;}
+  .sn-item summary{padding:12px 14px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:8px; font-weight:700; list-style:none;}
+  .sn-item summary::-webkit-details-marker{display:none;}
+  .sn-item summary small{font-weight:600; color:var(--teal-deep); font-size:0.72rem; flex:none;}
+  .sn-item[open] summary{border-bottom:1px solid var(--paper-3);}
+  .sn-item > :not(summary){margin:10px 14px;}
+  .sn-item > .dua-ref{margin-bottom:12px;}
+  .sunnah-card .wird-top{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;}
+
+/*/WIRDI4-CSS*/
 </style>
 </head>
 <body>
@@ -494,6 +529,7 @@
 
     <div class="wird-card" id="wirdCard"></div>
     <div class="hf-card" id="hifzHomeCard"></div>
+    <div class="hf-card sunnah-card" id="sunnahHomeCard"></div>
 
     <div class="quick-grid">
       <button class="quick-btn" data-nav="continueReading"><span class="emoji">📖</span>القرآن الكريم</button>
@@ -501,6 +537,9 @@
       <button class="quick-btn" data-nav="reels"><span class="emoji">🎬</span>صانع الريلز</button>
       <button class="quick-btn" data-nav="stories"><span class="emoji">📜</span>قصص الأنبياء</button>
       <button class="quick-btn" data-nav="tafsirQuick"><span class="emoji">💡</span>التفسير</button>
+      <button class="quick-btn" data-nav="tasbih"><span class="emoji">📿</span>السبحة</button>
+      <button class="quick-btn" data-nav="duas"><span class="emoji">🤲</span>الأدعية</button>
+      <button class="quick-btn" data-nav="sunan"><span class="emoji">🌿</span>سنن النبي ﷺ</button>
       <button class="quick-btn" data-nav="surahs"><span class="emoji">📚</span>السور</button>
       <button class="quick-btn" data-nav="juzList"><span class="emoji">🕌</span>الأجزاء</button>
       <button class="quick-btn" data-nav="morningAdhkar"><span class="emoji">📿</span>أذكار الصباح</button>
@@ -680,6 +719,26 @@
 
 
 <!--/WIRDI3-VIEWS-->
+<!--WIRDI4-VIEWS-->
+  <!-- ================= TASBIH ================= -->
+  <main id="view-tasbih" class="view" hidden>
+    <div class="view-header"><span class="view-title">📿 السبحة</span></div>
+    <div id="tasbihBody"></div>
+  </main>
+
+  <!-- ================= DUAS ================= -->
+  <main id="view-duas" class="view" hidden>
+    <div class="view-header"><span class="view-title">🤲 الأدعية</span></div>
+    <div id="duasBody"></div>
+  </main>
+
+  <!-- ================= SUNAN ================= -->
+  <main id="view-sunan" class="view" hidden>
+    <div class="view-header"><span class="view-title">🌿 سنن النبي ﷺ</span></div>
+    <div id="sunanBody"></div>
+  </main>
+
+<!--/WIRDI4-VIEWS-->
   <!-- ================= JUZ LIST ================= -->
   <main id="view-juzlist" class="view" hidden>
     <div class="view-header"><span class="view-title">أجزاء القرآن (30)</span></div>
@@ -2079,6 +2138,7 @@ const EVENING_ADHKAR = [
       adhkarProgress: adhkarProgress, activityLog: activityLog, appSettings: appSettings,
       hifzPlan: loadJSON("wirdi3-hifz-plan", null), stories: loadJSON("wirdi3-stories", {}), reels: loadJSON("wirdi3-reels", null),
       favAyahs: loadJSON("wirdi2-fav-ayahs", []), readPos: loadJSON("wirdi2-read-pos", null),
+      tasbih: loadJSON("wirdi4-tasbih", null), sunan: loadJSON("wirdi4-sunan", null), duaFav: loadJSON("wirdi4-dua-fav", []),
       exportedAt: new Date().toISOString(), version: 3
     };
     var blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
@@ -2108,6 +2168,9 @@ const EVENING_ADHKAR = [
         if (data.reels) { saveJSON("wirdi3-reels", data.reels); reelCfg = data.reels; }
         if (data.favAyahs) saveJSON("wirdi2-fav-ayahs", data.favAyahs);
         if (data.readPos) saveJSON("wirdi2-read-pos", data.readPos);
+        if (data.tasbih) { saveJSON("wirdi4-tasbih", data.tasbih); tasbih = data.tasbih; }
+        if (data.sunan) { saveJSON("wirdi4-sunan", data.sunan); sunanLog = data.sunan; }
+        if (data.duaFav) { saveJSON("wirdi4-dua-fav", data.duaFav); duaFav = data.duaFav; }
         showToast("تم استيراد البيانات بنجاح");
         applyTheme();
         showView("home");
@@ -2134,7 +2197,7 @@ const EVENING_ADHKAR = [
   // ============================================================
   // Navigation
   // ============================================================
-  var VIEW_IDS = ["home","surahs","mushaf","juzlist","juzdetail","morning","evening","progress","settings","hifz","nasab","stories","story","reels"];
+  var VIEW_IDS = ["home","surahs","mushaf","juzlist","juzdetail","morning","evening","progress","settings","hifz","nasab","stories","story","reels","tasbih","duas","sunan"];
   var currentView = "home";
   var mushafReturnView = "home";
   var lastJuzIndex = 1;
@@ -2151,6 +2214,7 @@ const EVENING_ADHKAR = [
     if (currentView === "mushaf" && name !== "mushaf" && typeof stopQuranAudio === "function") stopQuranAudio();
     if (currentView === "story" && name !== "story" && typeof storyLeave === "function") storyLeave();
     if (currentView === "reels" && name !== "reels" && typeof reelStop === "function") reelStop();
+    if (currentView === "duas" && name !== "duas" && typeof duaStop === "function") duaStop();
     VIEW_IDS.forEach(function(v){
       var el = document.getElementById("view-"+v);
       if (el) el.hidden = (v !== name);
@@ -2183,6 +2247,9 @@ const EVENING_ADHKAR = [
     if (pos && pos.page === mushafPageNum && typeof markSelected === "function"){ selectedAyah = { surah: pos.surah, ayah: pos.ayah, verseKey: pos.verseKey }; markSelected(selectedAyah); var el = document.querySelector('.ayah-text[data-surah="' + pos.surah + '"][data-ayah="' + pos.ayah + '"]'); if (el) el.scrollIntoView({ block: "nearest" }); }
   }
   function handleNav(name){
+    if (name === "tasbih"){ showView("tasbih"); renderTasbih(); return; }
+    if (name === "duas"){ showView("duas"); renderDuas(); return; }
+    if (name === "sunan"){ showView("sunan"); renderSunan(); return; }
     if (name === "hifz"){ showView("hifz"); renderHifz(); return; }
     if (name === "reels"){ showView("reels"); renderReels(); return; }
     if (name === "stories"){ showView("stories"); renderStories(); return; }
@@ -2219,7 +2286,7 @@ const EVENING_ADHKAR = [
       '<div class="stat-sub"><span>من أصل 30 جزء</span><span>الباقي: ' + (30-doneJ) + '</span></div>';
 
     renderWirdCard();
-    renderNasabCard(); renderHifzHomeCard();
+    renderNasabCard(); renderHifzHomeCard(); renderSunnahHomeCard();
   }
 
   function renderWirdCard(){
@@ -4922,6 +4989,195 @@ const EVENING_ADHKAR = [
     document.getElementById("actTafsir").click();
   }
   ///WIRDI3-JS
+  //WIRDI4-JS
+  // ============================================================
+  // v4: Tasbih counter, Duas (Quran + Sunnah), Sunnah of the day
+  // Hadith texts are generated verbatim from Sahih al-Bukhari / Sahih Muslim (see wirdi-dev/gen_content.js);
+  // Quran duas take their text from the validated Hafs data (QURAN_AYAHS).
+  // Storage (new keys only): wirdi4-tasbih, wirdi4-sunan, wirdi4-dua-fav
+  // ============================================================
+  var SUNAN_CATS = [["wake","عند الاستيقاظ"],["home","البيت واللباس"],["food","الطعام والشراب"],["wudu","الوضوء والصلاة"],["masjid","المسجد والأذان"],["sleep","قبل النوم"],["social","مع الناس"],["fast","الصيام"]];
+  var SUNAN = [{"id":"s1","cat":"wake","title":"دعاء الاستيقاظ","desc":"أول ما تصحى من النوم قل هذا الذكر.","text":"الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ","ref":"صحيح البخاري (6312)"},{"id":"s2","cat":"wake","title":"السواك عند القيام من الليل","desc":"نظّف أسنانك بالسواك أو الفرشاة لما تقوم من النوم.","text":"إِذَا قَامَ مِنَ اللَّيْلِ يَشُوصُ فَاهُ بِالسِّوَاكِ","ref":"صحيح البخاري (245)"},{"id":"s3","cat":"home","title":"السواك عند دخول البيت","desc":"أول ما تدخل بيتك ابدأ بالسواك.","text":"إِذَا دَخَلَ بَيْتَهُ بَدَأَ بِالسِّوَاكِ","ref":"صحيح مسلم (253)"},{"id":"s4","cat":"home","title":"ذكر الله عند دخول البيت والطعام","desc":"اذكر الله وأنت داخل البيت وقبل الأكل، فلا يجد الشيطان مبيتًا ولا عشاء.","text":"إِذَا دَخَلَ الرَّجُلُ بَيْتَهُ فَذَكَرَ اللَّهَ عِنْدَ دُخُولِهِ وَعِنْدَ طَعَامِهِ قَالَ الشَّيْطَانُ لاَ مَبِيتَ لَكُمْ وَلاَ عَشَاءَ","ref":"صحيح مسلم (2018)"},{"id":"s5","cat":"home","title":"البدء باليمين","desc":"ابدأ باليمين في لبس الحذاء، وبالشمال في خلعه.","text":"إِذَا انْتَعَلَ أَحَدُكُمْ فَلْيَبْدَأْ بِالْيَمِينِ وَإِذَا نَزَعَ فَلْيَبْدَأْ بِالشِّمَالِ","ref":"صحيح البخاري (5855)"},{"id":"s6","cat":"home","title":"حب التيامن في كل شيء","desc":"قدّم اليمين في لبسك وتسريح شعرك ووضوئك.","text":"يُعْجِبُهُ التَّيَمُّنُ فِي تَنَعُّلِهِ وَتَرَجُّلِهِ وَطُهُورِهِ وَفِي شَأْنِهِ كُلِّهِ","ref":"صحيح البخاري (168)"},{"id":"s7","cat":"food","title":"التسمية والأكل باليمين ومما يليك","desc":"قل بسم الله، وكل بيدك اليمين، ومن الجزء القريب منك.","text":"يَا غُلاَمُ سَمِّ اللَّهَ، وَكُلْ بِيَمِينِكَ وَكُلْ مِمَّا يَلِيكَ","ref":"صحيح البخاري (5376)"},{"id":"s8","cat":"food","title":"حمد الله بعد الأكل والشرب","desc":"احمد الله بعد كل أكلة وكل شربة، فهذا يرضي الله عنك.","text":"إِنَّ اللَّهَ لَيَرْضَى عَنِ الْعَبْدِ أَنْ يَأْكُلَ الأَكْلَةَ فَيَحْمَدَهُ عَلَيْهَا أَوْ يَشْرَبَ الشَّرْبَةَ فَيَحْمَدَهُ عَلَيْهَا","ref":"صحيح مسلم (2734)"},{"id":"s9","cat":"food","title":"التنفس ثلاثًا عند الشرب","desc":"اشرب على ثلاث دفعات وتنفّس خارج الإناء.","text":"كَانَ يَتَنَفَّسُ فِي الإِنَاءِ ثَلاَثًا","ref":"صحيح مسلم (2028)"},{"id":"s10","cat":"food","title":"اللقمة إذا سقطت","desc":"لو وقعت منك لقمة، أزل ما عليها وكلها ولا تتركها.","text":"إِذَا سَقَطَتْ لُقْمَةُ أَحَدِكُمْ فَلْيُمِطْ عَنْهَا الأَذَى وَلْيَأْكُلْهَا","ref":"صحيح مسلم (2034)"},{"id":"s11","cat":"wudu","title":"الدعاء بعد الوضوء","desc":"بعد ما تخلص وضوءك قل الشهادتين.","text":"أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ","ref":"صحيح مسلم (234)"},{"id":"s12","cat":"wudu","title":"ركعتان بعد الوضوء","desc":"صلِّ ركعتين بعد الوضوء بخشوع.","text":"مَنْ تَوَضَّأَ نَحْوَ وُضُوئِي هَذَا، ثُمَّ صَلَّى رَكْعَتَيْنِ، لاَ يُحَدِّثُ فِيهِمَا نَفْسَهُ، غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ","ref":"صحيح البخاري (159)"},{"id":"s13","cat":"wudu","title":"السواك مع كل صلاة","desc":"استعمل السواك قبل كل صلاة.","text":"لَوْلاَ أَنْ أَشُقَّ عَلَى أُمَّتِي ـ أَوْ عَلَى النَّاسِ ـ لأَمَرْتُهُمْ بِالسِّوَاكِ مَعَ كُلِّ صَلاَةٍ","ref":"صحيح البخاري (887)"},{"id":"s14","cat":"wudu","title":"السنن الرواتب","desc":"حافظ على اثنتي عشرة ركعة نافلة في اليوم والليلة.","text":"مَنْ صَلَّى اثْنَتَىْ عَشْرَةَ رَكْعَةً فِي يَوْمٍ وَلَيْلَةٍ بُنِيَ لَهُ بِهِنَّ بَيْتٌ فِي الْجَنَّةِ","ref":"صحيح مسلم (728)"},{"id":"s15","cat":"wudu","title":"ركعتا الفجر","desc":"لا تترك سنة الفجر، فهي خير من الدنيا وما فيها.","text":"رَكْعَتَا الْفَجْرِ خَيْرٌ مِنَ الدُّنْيَا وَمَا فِيهَا","ref":"صحيح مسلم (725)"},{"id":"s16","cat":"wudu","title":"صلاة الضحى","desc":"ركعتان في الضحى تجزئ عن صدقات مفاصل جسمك كلها.","text":"وَيُجْزِئُ مِنْ ذَلِكَ رَكْعَتَانِ يَرْكَعُهُمَا مِنَ الضُّحَى","ref":"صحيح مسلم (720)"},{"id":"s17","cat":"wudu","title":"الوتر آخر صلاة الليل","desc":"اختم صلاتك بالليل بالوتر.","text":"اجْعَلُوا آخِرَ صَلاَتِكُمْ بِاللَّيْلِ وِتْرًا","ref":"صحيح البخاري (998)"},{"id":"s18","cat":"wudu","title":"التسبيح بعد الصلاة","desc":"بعد كل صلاة: سبحان الله ٣٣، الحمد لله ٣٣، الله أكبر ٣٣، وتمام المائة لا إله إلا الله.","text":"مَنْ سَبَّحَ اللَّهَ فِي دُبُرِ كُلِّ صَلاَةٍ ثَلاَثًا وَثَلاَثِينَ","ref":"صحيح مسلم (597)"},{"id":"s19","cat":"masjid","title":"تحية المسجد","desc":"لما تدخل المسجد صلِّ ركعتين قبل ما تقعد.","text":"إِذَا دَخَلَ أَحَدُكُمُ الْمَسْجِدَ فَلْيَرْكَعْ رَكْعَتَيْنِ قَبْلَ أَنْ يَجْلِسَ","ref":"صحيح البخاري (444)"},{"id":"s20","cat":"masjid","title":"دعاء دخول المسجد والخروج منه","desc":"ادعُ بهذا عند الدخول وعند الخروج.","text":"اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ ‏.‏ وَإِذَا خَرَجَ فَلْيَقُلِ اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ","ref":"صحيح مسلم (713)"},{"id":"s21","cat":"masjid","title":"الترديد مع المؤذن","desc":"قل مثل ما يقول المؤذن.","text":"إِذَا سَمِعْتُمُ النِّدَاءَ فَقُولُوا مِثْلَ ما يَقُولُ الْمُؤَذِّنُ","ref":"صحيح البخاري (611)"},{"id":"s22","cat":"masjid","title":"الدعاء بعد الأذان","desc":"بعد الأذان قل هذا الدعاء تنل الشفاعة.","text":"اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلاَةِ الْقَائِمَةِ آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ، حَلَّتْ لَهُ شَفَاعَتِي يَوْمَ الْقِيَامَةِ","ref":"صحيح البخاري (614)"},{"id":"s23","cat":"masjid","title":"غسل الجمعة","desc":"اغتسل يوم الجمعة قبل الصلاة.","text":"إِذَا جَاءَ أَحَدُكُمُ الْجُمُعَةَ فَلْيَغْتَسِلْ","ref":"صحيح البخاري (877)"},{"id":"s24","cat":"sleep","title":"الوضوء والنوم على الشق الأيمن","desc":"توضأ قبل النوم ونم على جنبك اليمين.","text":"إِذَا أَتَيْتَ مَضْجَعَكَ فَتَوَضَّأْ وُضُوءَكَ لِلصَّلاَةِ، ثُمَّ اضْطَجِعْ عَلَى شِقِّكَ الأَيْمَنِ","ref":"صحيح البخاري (247)"},{"id":"s25","cat":"sleep","title":"المعوذات قبل النوم","desc":"اجمع كفيك وانفث فيهما واقرأ الإخلاص والفلق والناس، وامسح جسدك ثلاثًا.","text":"كَانَ إِذَا أَوَى إِلَى فِرَاشِهِ كُلَّ لَيْلَةٍ جَمَعَ كَفَّيْهِ ثُمَّ نَفَثَ فِيهِمَا","ref":"صحيح البخاري (5017)"},{"id":"s26","cat":"sleep","title":"آية الكرسي قبل النوم","desc":"اقرأ آية الكرسي قبل ما تنام، فلا يزال عليك من الله حافظ.","text":"إِذَا أَوَيْتَ إِلَى فِرَاشِكَ فَاقْرَأْ آيَةَ الْكُرْسِيِّ","ref":"صحيح البخاري (2311)"},{"id":"s27","cat":"sleep","title":"التسبيح قبل النوم","desc":"سبحان الله ٣٣، الحمد لله ٣٣، الله أكبر ٣٤ قبل النوم.","text":"فَكَبِّرَا ثَلاَثًا وَثَلاَثِينَ، وَسَبِّحَا ثَلاَثًا وَثَلاَثِينَ، وَاحْمَدَا ثَلاَثًا وَثَلاَثِينَ","ref":"صحيح البخاري (6318)"},{"id":"s28","cat":"sleep","title":"نفض الفراش قبل النوم","desc":"انفض فراشك قبل ما تنام عليه.","text":"إِذَا أَوَى أَحَدُكُمْ إِلَى فِرَاشِهِ فَلْيَنْفُضْ فِرَاشَهُ بِدَاخِلَةِ إِزَارِهِ","ref":"صحيح البخاري (6320)"},{"id":"s29","cat":"social","title":"إفشاء السلام","desc":"سلّم على من تعرف ومن لا تعرف، فالسلام يزرع المحبة.","text":"أَوَلاَ أَدُلُّكُمْ عَلَى شَىْءٍ إِذَا فَعَلْتُمُوهُ تَحَابَبْتُمْ أَفْشُوا السَّلاَمَ بَيْنَكُمْ","ref":"صحيح مسلم (54)"},{"id":"s30","cat":"social","title":"الحمد عند العطاس وتشميت العاطس","desc":"لو عطست قل الحمد لله، ولو سمعت أخاك قل يرحمك الله.","text":"إِذَا عَطَسَ أَحَدُكُمْ فَلْيَقُلِ الْحَمْدُ لِلَّهِ‏.‏ وَلْيَقُلْ لَهُ أَخُوهُ أَوْ صَاحِبُهُ يَرْحَمُكَ اللَّهُ","ref":"صحيح البخاري (6224)"},{"id":"s31","cat":"social","title":"كظم التثاؤب","desc":"لو تثاءبت ضع يدك على فمك.","text":"إِذَا تَثَاوَبَ أَحَدُكُمْ فَلْيُمْسِكْ بِيَدِهِ عَلَى فِيهِ","ref":"صحيح مسلم (2995)"},{"id":"s32","cat":"social","title":"الكلمة الطيبة صدقة","desc":"قل كلمة طيبة لكل من تقابله اليوم.","text":"وَالْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ","ref":"صحيح البخاري (2989)"},{"id":"s33","cat":"social","title":"إطعام الطعام والسلام","desc":"أطعم الطعام وسلّم على الناس.","text":"تُطْعِمُ الطَّعَامَ، وَتَقْرَأُ السَّلاَمَ عَلَى مَنْ عَرَفْتَ وَمَنْ لَمْ تَعْرِفْ","ref":"صحيح البخاري (12)"},{"id":"s34","cat":"social","title":"زيارة المريض","desc":"زُر مريضًا، فأنت في بستان الجنة حتى ترجع.","text":"إِنَّ الْمُسْلِمَ إِذَا عَادَ أَخَاهُ الْمُسْلِمَ لَمْ يَزَلْ فِي خُرْفَةِ الْجَنَّةِ حَتَّى يَرْجِعَ","ref":"صحيح مسلم (2568)"},{"id":"s35","cat":"social","title":"إماطة الأذى عن الطريق","desc":"شِل أي حاجة مؤذية من طريق الناس.","text":"لَقَدْ رَأَيْتُ رَجُلاً يَتَقَلَّبُ فِي الْجَنَّةِ فِي شَجَرَةٍ قَطَعَهَا مِنْ ظَهْرِ الطَّرِيقِ كَانَتْ تُؤْذِي النَّاسَ","ref":"صحيح مسلم (1914)"},{"id":"s36","cat":"fast","title":"صيام الاثنين","desc":"صُم يوم الاثنين، اليوم الذي وُلد فيه النبي ﷺ.","text":"ذَاكَ يَوْمٌ وُلِدْتُ فِيهِ","ref":"صحيح مسلم (1162)"},{"id":"s37","cat":"fast","title":"صيام ثلاثة أيام من كل شهر","desc":"صُم ثلاثة أيام من كل شهر.","text":"صِيَامِ ثَلاَثَةِ أَيَّامٍ مِنْ كُلِّ شَهْرٍ","ref":"صحيح البخاري (1981)"}];
+  var SUNNAH_DUAS = [{"id":"d1","title":"سيد الاستغفار","text":"اللَّهُمَّ أَنْتَ رَبِّي، لاَ إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَىَّ وَأَبُوءُ لَكَ بِذَنْبِي، فَاغْفِرْ لِي، فَإِنَّهُ لاَ يَغْفِرُ الذُّنُوبَ إِلاَّ أَنْتَ","ref":"صحيح البخاري (6306)"},{"id":"d2","title":"أكثر دعاء النبي ﷺ","text":"اللَّهُمَّ رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً، وَفِي الآخِرَةِ حَسَنَةً، وَقِنَا عَذَابَ النَّارِ","ref":"صحيح البخاري (6389)"},{"id":"d3","title":"الاستعاذة من الهم والحزن","text":"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْجُبْنِ وَالْبُخْلِ، وَضَلَعِ الدَّيْنِ، وَغَلَبَةِ الرِّجَالِ","ref":"صحيح البخاري (6369)"},{"id":"d4","title":"دعاء علّمه النبي ﷺ لأبي بكر في الصلاة","text":"اللَّهُمَّ إِنِّي ظَلَمْتُ نَفْسِي ظُلْمًا كَثِيرًا، وَلاَ يَغْفِرُ الذُّنُوبَ إِلاَّ أَنْتَ، فَاغْفِرْ لِي مَغْفِرَةً مِنْ عِنْدِكَ، وَارْحَمْنِي، إِنَّكَ أَنْتَ الْغَفُورُ الرَّحِيمُ","ref":"صحيح البخاري (6326)"},{"id":"d5","title":"دعاء الكرب","text":"لاَ إِلَهَ إِلاَّ اللَّهُ الْعَظِيمُ الْحَلِيمُ، لاَ إِلَهَ إِلاَّ اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لاَ إِلَهَ إِلاَّ اللَّهُ رَبُّ السَّمَوَاتِ، وَرَبُّ الأَرْضِ، وَرَبُّ الْعَرْشِ الْكَرِيمِ","ref":"صحيح البخاري (6346)"},{"id":"d6","title":"صلاح الدين والدنيا والآخرة","text":"اللَّهُمَّ أَصْلِحْ لِي دِينِيَ الَّذِي هُوَ عِصْمَةُ أَمْرِي وَأَصْلِحْ لِي دُنْيَاىَ الَّتِي فِيهَا مَعَاشِي وَأَصْلِحْ لِي آخِرَتِي الَّتِي فِيهَا مَعَادِي وَاجْعَلِ الْحَيَاةَ زِيَادَةً لِي فِي كُلِّ خَيْرٍ وَاجْعَلِ الْمَوْتَ رَاحَةً لِي مِنْ كُلِّ شَرٍّ","ref":"صحيح مسلم (2720)"},{"id":"d7","title":"الهدى والتقى والعفاف والغنى","text":"اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى","ref":"صحيح مسلم (2721)"},{"id":"d8","title":"ثبات القلب على الطاعة","text":"اللَّهُمَّ مُصَرِّفَ الْقُلُوبِ صَرِّفْ قُلُوبَنَا عَلَى طَاعَتِكَ","ref":"صحيح مسلم (2655)"},{"id":"d9","title":"دوام النعمة والعافية","text":"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ وَتَحَوُّلِ عَافِيَتِكَ وَفُجَاءَةِ نِقْمَتِكَ وَجَمِيعِ سَخَطِكَ","ref":"صحيح مسلم (2739)"},{"id":"d10","title":"تزكية النفس","text":"اللَّهُمَّ آتِ نَفْسِي تَقْوَاهَا وَزَكِّهَا أَنْتَ خَيْرُ مَنْ زَكَّاهَا أَنْتَ وَلِيُّهَا وَمَوْلاَهَا","ref":"صحيح مسلم (2722)"},{"id":"d11","title":"المغفرة الشاملة","text":"اللَّهُمَّ اغْفِرْ لِي خَطِيئَتِي وَجَهْلِي وَإِسْرَافِي فِي أَمْرِي، وَمَا أَنْتَ أَعْلَمُ بِهِ مِنِّي","ref":"صحيح البخاري (6399)"},{"id":"d12","title":"الاستعاذة من أربع","text":"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عِلْمٍ لاَ يَنْفَعُ وَمِنْ قَلْبٍ لاَ يَخْشَعُ وَمِنْ نَفْسٍ لاَ تَشْبَعُ وَمِنْ دَعْوَةٍ لاَ يُسْتَجَابُ لَهَا","ref":"صحيح مسلم (2722)"},{"id":"d13","title":"الاستعاذة من عذاب القبر وفتنة الدجال","text":"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ جَهَنَّمَ وَمِنْ عَذَابِ الْقَبْرِ وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ وَمِنْ شَرِّ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ","ref":"صحيح مسلم (588)"},{"id":"d14","title":"كلمتان حبيبتان إلى الرحمن","text":"سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ","ref":"صحيح البخاري (6682)"},{"id":"d15","title":"كنز من كنوز الجنة","text":"لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ","ref":"صحيح البخاري (6384)"}];
+  var QURAN_DUAS = [{"s":1,"a":[6,7],"t":"الهداية للصراط المستقيم"},{"s":2,"a":[127,128],"t":"قبول العمل"},{"s":2,"a":[201,201],"t":"خير الدنيا والآخرة"},{"s":2,"a":[250,250],"t":"الصبر والثبات"},{"s":2,"a":[286,286],"t":"العفو والمغفرة ورفع الحرج"},{"s":3,"a":[8,8],"t":"ثبات القلب"},{"s":3,"a":[16,16],"t":"المغفرة والنجاة من النار"},{"s":3,"a":[38,38],"t":"الذرية الطيبة"},{"s":3,"a":[147,147],"t":"مغفرة الذنوب والنصر"},{"s":3,"a":[193,194],"t":"حسن الخاتمة"},{"s":7,"a":[23,23],"t":"دعاء آدم عليه السلام"},{"s":7,"a":[126,126],"t":"الصبر والموت على الإسلام"},{"s":10,"a":[85,86],"t":"النجاة من الظالمين"},{"s":14,"a":[40,41],"t":"إقامة الصلاة والمغفرة للوالدين"},{"s":17,"a":[24,24],"t":"الدعاء للوالدين"},{"s":17,"a":[80,80],"t":"حسن المدخل والمخرج"},{"s":18,"a":[10,10],"t":"الرحمة والرشاد"},{"s":20,"a":[25,28],"t":"شرح الصدر وتيسير الأمر"},{"s":20,"a":[114,114],"t":"زيادة العلم"},{"s":21,"a":[83,83],"t":"دعاء أيوب عليه السلام"},{"s":21,"a":[87,87],"t":"دعاء يونس عليه السلام"},{"s":21,"a":[89,89],"t":"دعاء زكريا عليه السلام"},{"s":23,"a":[97,98],"t":"الاستعاذة من الشياطين"},{"s":23,"a":[118,118],"t":"المغفرة والرحمة"},{"s":25,"a":[65,66],"t":"النجاة من النار"},{"s":25,"a":[74,74],"t":"صلاح الأزواج والذرية"},{"s":26,"a":[83,85],"t":"دعاء إبراهيم عليه السلام"},{"s":27,"a":[19,19],"t":"شكر النعمة"},{"s":28,"a":[24,24],"t":"دعاء موسى عليه السلام"},{"s":46,"a":[15,15],"t":"شكر النعمة وصلاح الذرية"},{"s":59,"a":[10,10],"t":"سلامة القلب للمؤمنين"},{"s":66,"a":[8,8],"t":"تمام النور يوم القيامة"},{"s":71,"a":[28,28],"t":"المغفرة للوالدين والمؤمنين"}];
+
+  // ---------------- Tasbih ----------------
+  var STORE_TASBIH = "wirdi4-tasbih";
+  var TASBIH_DHIKR = ["سُبْحَانَ اللَّهِ", "الْحَمْدُ لِلَّهِ", "اللَّهُ أَكْبَرُ", "لَا إِلَٰهَ إِلَّا اللَّهُ", "أَسْتَغْفِرُ اللَّهَ",
+    "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ", "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ"];
+  var tasbih = loadJSON(STORE_TASBIH, { d: 0, target: 33, count: 0, days: {}, total: 0 });
+  function tasbihSave(){ saveJSON(STORE_TASBIH, tasbih); }
+  function renderTasbih(){
+    var t = todayStr(), today = tasbih.days[t] || 0, tgt = tasbih.target;
+    var pct = tgt ? Math.min(1, tasbih.count / tgt) : 0, C = 2 * Math.PI * 118;
+    document.getElementById("tasbihBody").innerHTML =
+      '<div class="hf-chips tb-dhikr">' + TASBIH_DHIKR.map(function(x, i){ return '<button class="hf-chip' + (i === tasbih.d ? " on" : "") + '" data-tb="dhikr" data-v="' + i + '">' + x + '</button>'; }).join("") + '</div>' +
+      '<div class="hf-chips tb-target">' + [[33, "٣٣"], [100, "١٠٠"], [0, "مفتوح ∞"]].map(function(x){ return '<button class="hf-chip' + (x[0] === tgt ? " on" : "") + '" data-tb="target" data-v="' + x[0] + '">' + x[1] + '</button>'; }).join("") + '</div>' +
+      '<div class="tb-wrap"><button class="tb-btn" id="tasbihTap" aria-label="سبّح">' +
+        '<svg viewBox="0 0 260 260" class="tb-ring"><circle cx="130" cy="130" r="118" class="tb-track"/><circle cx="130" cy="130" r="118" class="tb-prog" style="stroke-dasharray:' + C + ';stroke-dashoffset:' + (C * (1 - pct)) + '"/></svg>' +
+        '<span class="tb-dhikr-name">' + TASBIH_DHIKR[tasbih.d] + '</span><span class="tb-count" id="tasbihCount">' + toArabicIndic(tasbih.count) + '</span>' +
+        '<span class="tb-of">' + (tgt ? "من " + toArabicIndic(tgt) : "اضغط للتسبيح") + '</span></button></div>' +
+      '<div class="hf-actions"><button class="btn ghost" data-tb="reset">↺ تصفير العدّاد</button></div>' +
+      '<div class="hf-stats tb-stats"><div><b>' + toArabicIndic(today) + '</b><small>تسبيحة اليوم</small></div><div><b>' + toArabicIndic(tasbih.total) + '</b><small>الإجمالي</small></div></div>' +
+      '<p class="muted" style="font-size:0.75rem;text-align:center;">يهتز الموبايل اهتزازة خفيفة مع كل تسبيحة، واهتزازة أطول عند إكمال العدد.</p>';
+  }
+  document.getElementById("tasbihBody").addEventListener("click", function(e){
+    if (e.target.closest("#tasbihTap")){
+      var t = todayStr();
+      tasbih.count++; tasbih.total++; tasbih.days[t] = (tasbih.days[t] || 0) + 1;
+      // keep only the last 60 days of daily totals
+      var ks = Object.keys(tasbih.days).sort(); while (ks.length > 60) delete tasbih.days[ks.shift()];
+      var done = tasbih.target && tasbih.count >= tasbih.target;
+      try { if (navigator.vibrate) navigator.vibrate(done ? [80, 60, 160] : 15); } catch(err){}
+      if (done){ showToast("أتممت " + toArabicIndic(tasbih.target) + " ✓ — " + TASBIH_DHIKR[tasbih.d]); tasbih.count = 0; }
+      tasbihSave(); markActivityToday(); renderTasbih();
+      return;
+    }
+    var b = e.target.closest("[data-tb]"); if (!b) return;
+    var act = b.getAttribute("data-tb");
+    if (act === "dhikr"){ tasbih.d = +b.getAttribute("data-v"); tasbih.count = 0; }
+    else if (act === "target"){ tasbih.target = +b.getAttribute("data-v"); tasbih.count = 0; }
+    else if (act === "reset"){ tasbih.count = 0; }
+    tasbihSave(); renderTasbih();
+  });
+
+  // ---------------- Duas ----------------
+  var STORE_DUA_FAV = "wirdi4-dua-fav";
+  var duaFav = loadJSON(STORE_DUA_FAV, []);
+  var duaTab = "quran", duaPlay = { gen: 0, audio: new Audio(), key: "" };
+  function quranDuaKey(q){ return "q" + q.s + "_" + q.a[0]; }
+  function quranDuaText(q){
+    var t = ""; for (var a = q.a[0]; a <= q.a[1]; a++) t += QURAN_AYAHS[q.s - 1][a - 1] + ' <span class="ayah-num">' + toArabicIndic(a) + '</span> ';
+    return t;
+  }
+  function quranDuaRef(q){ return "سورة " + surahName(q.s) + ": " + toArabicIndic(q.a[0]) + (q.a[1] > q.a[0] ? "–" + toArabicIndic(q.a[1]) : ""); }
+  function duaCard(key, title, html, ref, isQuran){
+    var fav = duaFav.indexOf(key) !== -1;
+    return '<div class="hf-card dua-card"><div class="dua-title">' + title + '</div>' +
+      '<div class="' + (isQuran ? "st-quote" : "dua-text") + '">' + html + '</div><div class="dua-ref">' + ref + '</div>' +
+      '<div class="dua-actions">' + (isQuran ? '<button class="btn ghost" data-dua="play" data-k="' + key + '">' + (duaPlay.key === key ? "⏸ إيقاف" : "🔊 استماع") + '</button>' : '') +
+      '<button class="btn ghost" data-dua="copy" data-k="' + key + '">📋 نسخ</button>' +
+      '<button class="btn ghost" data-dua="fav" data-k="' + key + '">' + (fav ? "★ مفضل" : "☆ مفضلة") + '</button></div></div>';
+  }
+  function duaByKey(key){
+    var q = QURAN_DUAS.filter(function(x){ return quranDuaKey(x) === key; })[0];
+    if (q) return { quran: q };
+    return { sunnah: SUNNAH_DUAS.filter(function(x){ return x.id === key; })[0] };
+  }
+  function renderDuas(){
+    var tabs = [["quran", "من القرآن"], ["sunnah", "من السنة"], ["fav", "المفضلة"]], h = '<div class="hf-chips">';
+    tabs.forEach(function(t){ h += '<button class="hf-chip' + (duaTab === t[0] ? " on" : "") + '" data-dua="tab" data-v="' + t[0] + '">' + t[1] + '</button>'; });
+    h += '</div>';
+    var list = [];
+    if (duaTab === "quran" || duaTab === "fav") QURAN_DUAS.forEach(function(q){ var k = quranDuaKey(q); if (duaTab !== "fav" || duaFav.indexOf(k) !== -1) list.push(duaCard(k, q.t, quranDuaText(q), "﴿ " + quranDuaRef(q) + " ﴾", true)); });
+    if (duaTab === "sunnah" || duaTab === "fav") SUNNAH_DUAS.forEach(function(d){ if (duaTab !== "fav" || duaFav.indexOf(d.id) !== -1) list.push(duaCard(d.id, d.title, d.text, d.ref, false)); });
+    if (!list.length) h += '<div class="hf-none" style="text-align:center;padding:20px;">لسه مفيش أدعية في المفضلة — دوس ☆ على أي دعاء</div>';
+    h += list.join("");
+    h += '<p class="muted" style="font-size:0.72rem;text-align:center;">أدعية القرآن من نص المصحف (حفص عن عاصم) • أدعية السنة منقولة بنصها من صحيح البخاري وصحيح مسلم مع رقم الحديث.</p>';
+    document.getElementById("duasBody").innerHTML = h;
+  }
+  function duaStop(){ duaPlay.gen++; try { duaPlay.audio.pause(); } catch(e){} duaPlay.key = ""; }
+  function duaPlayQuran(q){
+    stopQuranAudio && stopQuranAudio();
+    duaStop(); var g = duaPlay.gen, a = q.a[0]; duaPlay.key = quranDuaKey(q); renderDuas();
+    (function next(){
+      if (g !== duaPlay.gen) return;
+      if (a > q.a[1]){ duaPlay.key = ""; renderDuas(); return; }
+      audioBlobUrl(ayahAudioUrl(q.s, a)).then(function(u){
+        if (g !== duaPlay.gen) return;
+        duaPlay.audio.src = u; duaPlay.audio.onended = function(){ a++; next(); };
+        return duaPlay.audio.play();
+      }).catch(function(){ if (g === duaPlay.gen){ showToast("تعذر تشغيل التلاوة — تحتاج الإنترنت أول مرة"); duaPlay.key = ""; renderDuas(); } });
+    })();
+  }
+  document.getElementById("duasBody").addEventListener("click", function(e){
+    var b = e.target.closest("[data-dua]"); if (!b) return;
+    var act = b.getAttribute("data-dua"), key = b.getAttribute("data-k");
+    if (act === "tab"){ duaTab = b.getAttribute("data-v"); duaStop(); renderDuas(); return; }
+    var d = duaByKey(key);
+    if (act === "play" && d.quran){ if (duaPlay.key === key){ duaStop(); renderDuas(); } else duaPlayQuran(d.quran); }
+    else if (act === "copy"){
+      var txt = d.quran ? (function(){ var t = []; for (var a = d.quran.a[0]; a <= d.quran.a[1]; a++) t.push(QURAN_AYAHS[d.quran.s - 1][a - 1]); return t.join(" ") + "\n﴿ " + quranDuaRef(d.quran) + " ﴾"; })() : d.sunnah.text + "\n— " + d.sunnah.ref;
+      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function(){ showToast("تم النسخ ✓"); }, function(){ showToast("تعذر النسخ"); });
+      else showToast("النسخ غير مدعوم على هذا الجهاز");
+    }
+    else if (act === "fav"){
+      var i = duaFav.indexOf(key); if (i === -1) duaFav.push(key); else duaFav.splice(i, 1);
+      saveJSON(STORE_DUA_FAV, duaFav); renderDuas();
+    }
+  });
+
+  // ---------------- Sunnah of the day ----------------
+  var STORE_SUNAN = "wirdi4-sunan";
+  var sunanLog = loadJSON(STORE_SUNAN, { days: {}, applied: {} });
+  // the same sunnah for everyone on a given day, cycling through the list
+  function sunnahOfDay(dateStr){
+    var p = dateStr.split("-"), days = Math.floor(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000);
+    return SUNAN[((days % SUNAN.length) + SUNAN.length) % SUNAN.length];
+  }
+  function sunnahStreak(){
+    var n = 0, d = new Date();
+    if (!(sunanLog.days[todayStr()] || {}).read) d.setDate(d.getDate() - 1);   // today not done yet → count up to yesterday
+    for (;;){ var k = d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); if (!(sunanLog.days[k] || {}).read) break; n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+  function sunnahMark(kind){
+    var t = todayStr(), s = sunnahOfDay(t), e = sunanLog.days[t] || { id: s.id };
+    e.id = s.id; e.read = true;
+    if (kind === "apply" && !e.applied){ e.applied = true; sunanLog.applied[s.id] = (sunanLog.applied[s.id] || 0) + 1; }
+    if (kind === "unapply" && e.applied){ e.applied = false; sunanLog.applied[s.id] = Math.max(0, (sunanLog.applied[s.id] || 1) - 1); }
+    sunanLog.days[t] = e;
+    var ks = Object.keys(sunanLog.days).sort(); while (ks.length > 400) delete sunanLog.days[ks.shift()];
+    saveJSON(STORE_SUNAN, sunanLog); markActivityToday();
+  }
+  function sunnahBlock(s, withActions){
+    var e = sunanLog.days[todayStr()] || {};
+    var h = '<div class="sn-title">' + s.title + '</div><div class="sn-desc">' + s.desc + '</div>' +
+      '<div class="dua-text">«' + s.text + '»</div><div class="dua-ref">' + s.ref + '</div>';
+    if (withActions){
+      h += '<div class="hf-actions">' +
+        (e.read ? '<span class="sn-done">📖 قرأتها ✓</span>' : '<button class="btn ghost" data-sn="read">📖 قرأتها</button>') +
+        (e.applied ? '<button class="btn ghost" data-sn="unapply">↩ تراجع</button>' : '<button class="btn primary" data-sn="apply">✓ طبّقتها</button>') + '</div>' +
+        (e.applied ? '<div class="hf-done">✓ طبّقت سنّة اليوم، جزاك الله خيرًا</div>' : '');
+    }
+    return h;
+  }
+  function renderSunnahHomeCard(){
+    var box = document.getElementById("sunnahHomeCard"); if (!box) return;
+    var s = sunnahOfDay(todayStr()), st = sunnahStreak();
+    box.innerHTML = '<div class="wird-top"><span class="wird-title">🌿 سنّة اليوم</span>' + (st ? '<span class="sn-streak">🔥 ' + toArabicIndic(st) + ' يوم</span>' : '') + '</div>' + sunnahBlock(s, true) +
+      '<button class="btn ghost block" data-nav="sunan" style="margin-top:8px;">كل السنن</button>';
+  }
+  function renderSunan(){
+    var t = todayStr(), s = sunnahOfDay(t), applied = Object.keys(sunanLog.applied).filter(function(k){ return sunanLog.applied[k] > 0; }).length;
+    var h = '<div class="hf-card sunnah-card"><div class="wird-top"><span class="wird-title">🌿 سنّة اليوم</span></div>' + sunnahBlock(s, true) + '</div>' +
+      '<div class="hf-stats tb-stats"><div><b>' + toArabicIndic(sunnahStreak()) + '</b><small>أيام متتالية</small></div><div><b>' + toArabicIndic(applied) + ' / ' + toArabicIndic(SUNAN.length) + '</b><small>سنن طبّقتها</small></div></div>';
+    SUNAN_CATS.forEach(function(c){
+      var items = SUNAN.filter(function(x){ return x.cat === c[0]; }); if (!items.length) return;
+      h += '<div class="hf-label" style="margin:14px 4px 6px;">' + c[1] + '</div>';
+      items.forEach(function(x){
+        var n = sunanLog.applied[x.id] || 0;
+        h += '<details class="hf-card sn-item"><summary><span>' + (n ? "✓ " : "") + x.title + '</span>' + (n ? '<small>طبّقتها ' + toArabicIndic(n) + ' مرة</small>' : '') + '</summary>' +
+          '<div class="sn-desc">' + x.desc + '</div><div class="dua-text">«' + x.text + '»</div><div class="dua-ref">' + x.ref + '</div></details>';
+      });
+    });
+    h += '<p class="muted" style="font-size:0.72rem;text-align:center;">كل حديث منقول بنصه من صحيح البخاري أو صحيح مسلم مع رقمه.</p>';
+    document.getElementById("sunanBody").innerHTML = h;
+  }
+  function sunnahClick(e){
+    var b = e.target.closest("[data-sn]"); if (!b) return;
+    var act = b.getAttribute("data-sn");
+    sunnahMark(act);
+    if (act === "apply") showToast("طبّقت سنّة اليوم ✓ جزاك الله خيرًا");
+    renderSunnahHomeCard(); if (currentView === "sunan") renderSunan();
+  }
+  document.getElementById("sunanBody").addEventListener("click", sunnahClick);
+  document.getElementById("sunnahHomeCard").addEventListener("click", function(e){
+    if (e.target.closest("[data-nav]")){ handleNav("sunan"); return; }
+    sunnahClick(e);
+  });
+
+  ///WIRDI4-JS
   // ============================================================
   // Init
   // ============================================================
