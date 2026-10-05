@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-u/f8Sj8y1mSjX5ZO/UywpsxtILyEt5JE1o9pvWy4JC0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-I6Jm+onW4ixoTFVVwExEp7UqfRTUi6h2UbgpOqCMR9g='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -629,6 +629,7 @@
         <button class="mushaf-tool-item" id="toolZoomInBtn"><span>+</span>تكبير</button>
         <button class="mushaf-tool-item" id="toolZoomOutBtn"><span>−</span>تصغير</button>
       </div>
+      <div class="goto-page-row"><label style="font-weight:700; flex:none;">🎧 القارئ</label><select id="mushafReciterSelect" style="flex:1; min-width:0;"></select></div>
       <div class="goto-page-row">
         <input type="number" min="1" max="604" id="gotoPageInput" placeholder="١ - ٦٠٤">
         <button class="btn primary" id="gotoPageBtn">اذهب</button>
@@ -835,6 +836,15 @@
       <div class="settings-row"><label>وقت أذكار الصباح</label><input type="time" id="morningTimeInput"></div>
       <div class="settings-row"><label>وقت أذكار المساء</label><input type="time" id="eveningTimeInput"></div>
       <div class="settings-row"><label>وقت الورد اليومي</label><input type="time" id="wirdTimeInput"></div>
+    </div>
+
+    <div class="settings-section">
+      <h3>القارئ</h3>
+      <div class="settings-row">
+        <div style="flex:1;"><label>صوت تلاوة القرآن</label><span class="hint">للمصحف وقصص الأنبياء وأدعية القرآن</span>
+          <select id="reciterSelect" style="width:100%; margin-top:6px;"></select></div>
+        <button class="btn ghost" id="reciterPreviewBtn">🔊 اسمع</button>
+      </div>
     </div>
 
     <div class="settings-section">
@@ -2653,7 +2663,8 @@ const EVENING_ADHKAR = [
     return { surahNumber: surah, ayahNumber: ayah, verseKey: surah + ":" + ayah, audioUrl: ayahAudioUrl(surah, ayah) };
   }
   function ayahAudioUrl(surah, ayah){
-    return "https://everyayah.com/data/Alafasy_128kbps/" + ("00" + surah).slice(-3) + ("00" + ayah).slice(-3) + ".mp3";
+    // reciter chosen in settings / mushaf tools (default Alafasy)
+    return "https://everyayah.com/data/" + (appSettings.reciter || "Alafasy_128kbps") + "/" + ("00" + surah).slice(-3) + ("00" + ayah).slice(-3) + ".mp3";
   }
   function nextInSurah(surah, ayah){ return ayah < ayahCount(surah) ? { surah: surah, ayah: ayah + 1 } : null; }
   function prevInSurah(surah, ayah){ return ayah > 1 ? { surah: surah, ayah: ayah - 1 } : null; }
@@ -2722,7 +2733,7 @@ const EVENING_ADHKAR = [
       try {
         ms.metadata = new MediaMetadata({
           title: "سورة " + surahName(quranCurrent.surah) + " — آية " + toArabicIndic(quranCurrent.ayah),
-          artist: "مشاري راشد العفاسي", album: "وِرْدِي",
+          artist: (typeof currentReciter === "function" ? currentReciter()[1] : "مشاري راشد العفاسي"), album: "وِرْدِي",
           artwork: [{ src: "icon-512.png", sizes: "512x512", type: "image/png" }]
         });
       } catch(e){}
@@ -5175,6 +5186,66 @@ const EVENING_ADHKAR = [
   document.getElementById("sunnahHomeCard").addEventListener("click", function(e){
     if (e.target.closest("[data-nav]")){ handleNav("sunan"); return; }
     sunnahClick(e);
+  });
+
+  // ---------------- Reciters for in-app listening ----------------
+  // Ayah-by-ayah recordings from everyayah.com (every folder verified complete: 1:1 … 114:6 + random sample).
+  // Used by the mushaf player, the stories' Quran quotes and the Quranic duas (all go through ayahAudioUrl).
+  var QURAN_RECITERS = [
+    ["Alafasy_128kbps", "مشاري راشد العفاسي"],
+    ["Abdul_Basit_Murattal_192kbps", "عبد الباسط عبد الصمد (مرتل)"],
+    ["Abdul_Basit_Mujawwad_128kbps", "عبد الباسط عبد الصمد (مجود)"],
+    ["Husary_128kbps", "محمود خليل الحصري (مرتل)"],
+    ["Husary_128kbps_Mujawwad", "محمود خليل الحصري (مجود)"],
+    ["Minshawy_Murattal_128kbps", "محمد صديق المنشاوي (مرتل)"],
+    ["Minshawy_Mujawwad_192kbps", "محمد صديق المنشاوي (مجود)"],
+    ["Mohammad_al_Tablaway_128kbps", "محمد محمود الطبلاوي"],
+    ["Abdurrahmaan_As-Sudais_192kbps", "عبد الرحمن السديس"],
+    ["Saood_ash-Shuraym_128kbps", "سعود الشريم"],
+    ["Maher_AlMuaiqly_64kbps", "ماهر المعيقلي"],
+    ["Ghamadi_40kbps", "سعد الغامدي"],
+    ["ahmed_ibn_ali_al_ajamy_128kbps", "أحمد بن علي العجمي"],
+    ["Yasser_Ad-Dussary_128kbps", "ياسر الدوسري"],
+    ["Nasser_Alqatami_128kbps", "ناصر القطامي"],
+    ["Abu_Bakr_Ash-Shaatree_128kbps", "أبو بكر الشاطري"],
+    ["Hani_Rifai_192kbps", "هاني الرفاعي"],
+    ["Muhammad_Ayyoub_128kbps", "محمد أيوب"],
+    ["Muhammad_Jibreel_128kbps", "محمد جبريل"],
+    ["Fares_Abbad_64kbps", "فارس عباد"],
+    ["Ali_Jaber_64kbps", "علي جابر"]
+  ];
+  function currentReciter(){
+    var id = appSettings.reciter;
+    return QURAN_RECITERS.filter(function(r){ return r[0] === id; })[0] || QURAN_RECITERS[0];
+  }
+  function reciterOptionsHtml(){
+    var cur = currentReciter()[0];
+    return QURAN_RECITERS.map(function(r){ return '<option value="' + r[0] + '"' + (r[0] === cur ? " selected" : "") + '>' + r[1] + '</option>'; }).join("");
+  }
+  function setReciter(id){
+    if (!QURAN_RECITERS.some(function(r){ return r[0] === id; })) return;
+    appSettings.reciter = id; saveSettings();
+    ["reciterSelect", "mushafReciterSelect"].forEach(function(k){ var el = document.getElementById(k); if (el) el.value = id; });
+    // switching while the mushaf is playing: continue from the same ayah with the new voice
+    if (qa && (qa.state === "playing" || qa.state === "loading") && quranCurrent){ var c = quranCurrent; startQueue(c.surah, c.ayah); }
+    if (typeof msUpdate === "function") msUpdate();
+    showToast("القارئ: " + currentReciter()[1]);
+  }
+  var reciterPreview = new Audio();
+  function fillReciterSelects(){
+    ["reciterSelect", "mushafReciterSelect"].forEach(function(k){ var el = document.getElementById(k); if (el) el.innerHTML = reciterOptionsHtml(); });
+  }
+  fillReciterSelects();
+  ["reciterSelect", "mushafReciterSelect"].forEach(function(k){
+    var el = document.getElementById(k); if (el) el.addEventListener("change", function(){ setReciter(el.value); });
+  });
+  document.getElementById("reciterPreviewBtn").addEventListener("click", function(){
+    var b = this;
+    if (!reciterPreview.paused){ reciterPreview.pause(); b.textContent = "🔊 اسمع"; return; }
+    if (typeof stopQuranAudio === "function") stopQuranAudio();
+    reciterPreview.src = ayahAudioUrl(1, 2);   // «الحمد لله رب العالمين»
+    reciterPreview.onended = function(){ b.textContent = "🔊 اسمع"; };
+    reciterPreview.play().then(function(){ b.textContent = "⏸ إيقاف"; }, function(){ showToast("تعذر التشغيل — تحتاج الإنترنت"); });
   });
 
   ///WIRDI4-JS
