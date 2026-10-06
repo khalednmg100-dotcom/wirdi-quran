@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-JhSmQqLSKBZEJVkkDZSWIVjMuwNbwqs5uT9iA/vT6u8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-v50CynE3A8Kw2yqW37VdOX6/U3mbjytdt7sSpMpkqUY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -4851,10 +4851,14 @@ const EVENING_ADHKAR = [
         rec.ondataavailable = function(e){ if (e.data && e.data.size) chunks.push(e.data); };
         rec.onstop = function(){
           if (!chunks.length) return;
-          reel.blob = new Blob(chunks, { type: (rec.mimeType || mime || "video/webm").split(";")[0] });
-          reel.blobExt = /mp4/.test(reel.blob.type) ? "mp4" : "webm";
-          st.textContent = "✓ الفيديو جاهز (" + (reel.blob.size / 1048576).toFixed(1) + " ميجا، " + reel.blobExt.toUpperCase() + ")";
-          reelUpdateButtons();
+          var raw = new Blob(chunks, { type: (rec.mimeType || mime || "video/webm").split(";")[0] });
+          st.textContent = "⏳ تجهيز الفيديو للنشر…";
+          reelFixContainer(raw, data.total).then(function(fixed){
+            reel.blob = fixed;
+            reel.blobExt = /mp4/.test(reel.blob.type) ? "mp4" : "webm";
+            st.textContent = "✓ الفيديو جاهز (" + (reel.blob.size / 1048576).toFixed(1) + " ميجا، " + reel.blobExt.toUpperCase() + "، " + toArabicIndic(Math.round(data.total)) + " ثانية)";
+            reelUpdateButtons();
+          });
         };
         rec.start(1000);
       }
@@ -5350,6 +5354,192 @@ const EVENING_ADHKAR = [
   document.getElementById("notifToggle").addEventListener("change", function(){ setTimeout(syncReminderMeta, 1500); });
   document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") recordVisit(); });
   recordVisit();
+
+  // ---------------- Reels: make the recorded video acceptable to TikTok / Instagram ----------------
+  // Chrome's MediaRecorder writes a *fragmented* MP4 whose header says duration = 0 (and WebM with no
+  // duration at all). Players compute the length themselves, but TikTok reads the header and refuses
+  // the file ("unsupported duration"). This rewrites the same frames/sound into a standard MP4:
+  // one moov (placed first, "fast start") with full sample tables and the real duration, then one mdat.
+  // Nothing is re-encoded.
+  function mp4Defragment(ab){
+    var u8 = new Uint8Array(ab), dv = new DataView(ab);
+    function type(o){ return String.fromCharCode(u8[o + 4], u8[o + 5], u8[o + 6], u8[o + 7]); }
+    function size(o, end){ var s = dv.getUint32(o); if (s === 1) s = Number(dv.getBigUint64(o + 8)); if (s === 0) s = end - o; return s; }
+    function children(o, end){ var out = [], p = o; while (p + 8 <= end){ var s = size(p, end); if (s < 8) break; out.push({ t: type(p), o: p, s: s }); p += s; } return out; }
+    function find(list, t){ for (var i = 0; i < list.length; i++) if (list[i].t === t) return list[i]; return null; }
+    var top = children(0, u8.length), moov = find(top, "moov");
+    if (!moov || !top.some(function(b){ return b.t === "moof"; })) return null;   // already a normal MP4 (or not MP4)
+    var mk = children(moov.o + 8, moov.o + moov.s), tracks = {}, order = [], trex = {};
+    var mvex = find(mk, "mvex");
+    if (mvex) children(mvex.o + 8, mvex.o + mvex.s).forEach(function(b){
+      if (b.t !== "trex") return;
+      trex[dv.getUint32(b.o + 12)] = { dur: dv.getUint32(b.o + 20), size: dv.getUint32(b.o + 24), flags: dv.getUint32(b.o + 28) };
+    });
+    mk.forEach(function(b){
+      if (b.t !== "trak") return;
+      var tk = children(b.o + 8, b.o + b.s), tkhd = find(tk, "tkhd"), mdia = find(tk, "mdia");
+      var md = children(mdia.o + 8, mdia.o + mdia.s), mdhd = find(md, "mdhd"), hdlr = find(md, "hdlr"), minf = find(md, "minf");
+      var mi = children(minf.o + 8, minf.o + minf.s), stbl = find(mi, "stbl"), stsd = find(children(stbl.o + 8, stbl.o + stbl.s), "stsd");
+      var v = u8[tkhd.o + 8], id = dv.getUint32(tkhd.o + (v ? 28 : 20)), mv = u8[mdhd.o + 8];
+      tracks[id] = { id: id, tkhd: tkhd, mdhd: mdhd, hdlr: hdlr, minfOther: mi.filter(function(x){ return x.t !== "stbl"; }), stsd: stsd,
+        ts: dv.getUint32(mdhd.o + (mv ? 28 : 20)), handler: String.fromCharCode(u8[hdlr.o + 16], u8[hdlr.o + 17], u8[hdlr.o + 18], u8[hdlr.o + 19]),
+        samples: [] };
+      order.push(id);
+    });
+    top.forEach(function(b){
+      if (b.t !== "moof") return;
+      children(b.o + 8, b.o + b.s).forEach(function(tf){
+        if (tf.t !== "traf") return;
+        var parts = children(tf.o + 8, tf.o + tf.s), tfhd = find(parts, "tfhd"), fl = dv.getUint32(tfhd.o + 8) & 0xffffff, p = tfhd.o + 12;
+        var id = dv.getUint32(p); p += 4;
+        var T = tracks[id], d = trex[id] || { dur: 0, size: 0, flags: 0 }, base = b.o, dDur = d.dur, dSize = d.size, dFlags = d.flags;
+        if (fl & 0x1){ base = Number(dv.getBigUint64(p)); p += 8; }
+        if (fl & 0x2) p += 4;
+        if (fl & 0x8){ dDur = dv.getUint32(p); p += 4; }
+        if (fl & 0x10){ dSize = dv.getUint32(p); p += 4; }
+        if (fl & 0x20){ dFlags = dv.getUint32(p); p += 4; }
+        // tfdt = this fragment's real start on the track timeline. Chrome leaves gaps between fragments,
+        // so timing must come from tfdt, not from adding up sample durations (that drifts A/V apart).
+        var tfdt = find(parts, "tfdt"), dts = null;
+        if (tfdt) dts = u8[tfdt.o + 8] ? Number(dv.getBigUint64(tfdt.o + 12)) : dv.getUint32(tfdt.o + 12);
+        if (dts === null) dts = T.samples.length ? T.samples[T.samples.length - 1].dts + T.samples[T.samples.length - 1].dur : 0;
+        var cursor = null;
+        parts.forEach(function(tr){
+          if (tr.t !== "trun") return;
+          var tv = u8[tr.o + 8], f = dv.getUint32(tr.o + 8) & 0xffffff, q = tr.o + 12, n = dv.getUint32(q); q += 4;
+          var off = cursor === null ? base : cursor, first = null;
+          if (f & 0x1){ off = base + dv.getInt32(q); q += 4; }
+          if (f & 0x4){ first = dv.getUint32(q); q += 4; }
+          for (var i = 0; i < n; i++){
+            var sd = dDur, ss = dSize, sf = (i === 0 && first !== null) ? first : dFlags, ct = 0;
+            if (f & 0x100){ sd = dv.getUint32(q); q += 4; }
+            if (f & 0x200){ ss = dv.getUint32(q); q += 4; }
+            if (f & 0x400){ sf = dv.getUint32(q); q += 4; }
+            if (f & 0x800){ ct = tv ? dv.getInt32(q) : dv.getUint32(q); q += 4; }
+            T.samples.push({ off: off, size: ss, dur: sd, sync: !(sf & 0x10000), cto: ct, dts: dts });
+            off += ss; dts += sd;
+          }
+          cursor = off;
+        });
+      });
+    });
+    order = order.filter(function(id){ return tracks[id].samples.length; });
+    if (!order.length) return null;
+    // re-derive each sample's duration from the real timeline (closes the gaps between fragments)
+    order.forEach(function(id){
+      var S = tracks[id].samples;
+      S.sort(function(a, b){ return a.dts - b.dts; });
+      for (var i = 0; i + 1 < S.length; i++) S[i].dur = Math.max(1, S[i + 1].dts - S[i].dts);
+      tracks[id].startDts = S[0].dts;
+    });
+    // ---- writer ----
+    function box(t, payloadParts){
+      var len = 8; payloadParts.forEach(function(p){ len += p.length; });
+      var out = new Uint8Array(len), w = new DataView(out.buffer); w.setUint32(0, len);
+      for (var i = 0; i < 4; i++) out[4 + i] = t.charCodeAt(i);
+      var p = 8; payloadParts.forEach(function(x){ out.set(x, p); p += x.length; });
+      return out;
+    }
+    function u32s(arr){ var o = new Uint8Array(arr.length * 4), w = new DataView(o.buffer); arr.forEach(function(v, i){ w.setUint32(i * 4, v >>> 0); }); return o; }
+    function copy(b){ return u8.slice(b.o, b.o + b.s); }
+    var mediaDur = {}, movieDur = 0;
+    order.forEach(function(id){
+      var T = tracks[id], s = 0; T.samples.forEach(function(x){ s += x.dur; }); mediaDur[id] = s;
+      T.delayMs = Math.round(T.startDts * 1000 / T.ts);   // a track that starts later than 0 gets an empty edit
+      movieDur = Math.max(movieDur, T.delayMs + Math.round(s * 1000 / T.ts));
+    });
+    function edts(T){
+      if (!T.delayMs) return null;
+      var e = new Uint8Array(4 + 4 + 2 * 12), w = new DataView(e.buffer);
+      w.setUint32(4, 2);
+      w.setUint32(8, T.delayMs); w.setInt32(12, -1); w.setUint32(16, 0x00010000);                          // empty edit (delay)
+      w.setUint32(20, Math.round(mediaDur[T.id] * 1000 / T.ts)); w.setInt32(24, 0); w.setUint32(28, 0x00010000);
+      return box("edts", [box("elst", [e])]);
+    }
+    function stbl(T, chunkOffsets){
+      var S = T.samples, stts = [], last = null;
+      S.forEach(function(x){ if (last && last[1] === x.dur) last[0]++; else { last = [1, x.dur]; stts.push(last); } });
+      var parts = [copy(T.stsd),
+        box("stts", [u32s([0, stts.length].concat([].concat.apply([], stts)))]),
+        box("stsc", [u32s([0, 1, 1, 1, 1])]),
+        box("stsz", [u32s([0, 0, S.length].concat(S.map(function(x){ return x.size; })))]),
+        box("stco", [u32s([0, S.length].concat(chunkOffsets))])];
+      if (T.handler === "vide"){
+        var sync = []; S.forEach(function(x, i){ if (x.sync) sync.push(i + 1); });
+        if (sync.length && sync.length < S.length) parts.push(box("stss", [u32s([0, sync.length].concat(sync))]));
+        if (S.some(function(x){ return x.cto; })){
+          var ct = [], l2 = null; S.forEach(function(x){ if (l2 && l2[1] === x.cto) l2[0]++; else { l2 = [1, x.cto]; ct.push(l2); } });
+          parts.push(box("ctts", [u32s([0, ct.length].concat([].concat.apply([], ct)))]));
+        }
+      }
+      return box("stbl", parts);
+    }
+    function patchDur(b, isTkhd, value){
+      var c = copy(b), w = new DataView(c.buffer), v = c[8];
+      var at = isTkhd ? (v ? 36 : 28) : (v ? 32 : 24);   // tkhd: after track_ID+reserved; mdhd: after timescale
+      if (v) w.setBigUint64(at, BigInt(value)); else w.setUint32(at, value >>> 0);
+      if (isTkhd) c[11] = c[11] | 0x3;                     // track enabled + in movie
+      return c;
+    }
+    function buildMoov(offsets){
+      var mvhd = new Uint8Array(108), w = new DataView(mvhd.buffer);
+      w.setUint32(0, 108); mvhd.set([109, 118, 104, 100], 4);              // "mvhd", version 0
+      w.setUint32(20, 1000); w.setUint32(24, movieDur); w.setUint32(28, 0x00010000); w.setUint16(32, 0x0100);
+      [0x00010000, 0, 0, 0, 0x00010000, 0, 0, 0, 0x40000000].forEach(function(v, i){ w.setUint32(44 + i * 4, v); });
+      w.setUint32(104, Math.max.apply(null, order) + 1);
+      var traks = order.map(function(id){
+        var T = tracks[id];
+        var minf = box("minf", T.minfOther.map(copy).concat([stbl(T, offsets[id])]));
+        var mdia = box("mdia", [patchDur(T.mdhd, false, mediaDur[id]), copy(T.hdlr), minf]);
+        var ed = edts(T);
+        return box("trak", [patchDur(T.tkhd, true, T.delayMs + Math.round(mediaDur[id] * 1000 / T.ts))].concat(ed ? [ed] : []).concat([mdia]));
+      });
+      return box("moov", [mvhd].concat(traks));
+    }
+    var ftyp = box("ftyp", [new Uint8Array([105, 115, 111, 109, 0, 0, 2, 0, 105, 115, 111, 109, 105, 115, 111, 50, 97, 118, 99, 49, 109, 112, 52, 49])]);
+    // first pass with dummy offsets to learn the moov size, then the real offsets
+    var dummy = {}; order.forEach(function(id){ dummy[id] = tracks[id].samples.map(function(){ return 0; }); });
+    var moovLen = buildMoov(dummy).length, dataStart = ftyp.length + moovLen + 8, pos = dataStart, offsets = {}, total = 0;
+    order.forEach(function(id){ offsets[id] = tracks[id].samples.map(function(x){ var o = pos; pos += x.size; total += x.size; return o; }); });
+    var moovReal = buildMoov(offsets), out = new Uint8Array(ftyp.length + moovReal.length + 8 + total);
+    out.set(ftyp, 0); out.set(moovReal, ftyp.length);
+    var mdatAt = ftyp.length + moovReal.length; new DataView(out.buffer).setUint32(mdatAt, 8 + total); out.set([109, 100, 97, 116], mdatAt + 4);
+    var w2 = mdatAt + 8;
+    order.forEach(function(id){ tracks[id].samples.forEach(function(x){ out.set(u8.subarray(x.off, x.off + x.size), w2); w2 += x.size; }); });
+    return { bytes: out, seconds: movieDur / 1000 };
+  }
+  // WebM from MediaRecorder has no Duration element: add it to Segment > Info (EBML float64, ms).
+  function webmAddDuration(ab, ms){
+    var u8 = new Uint8Array(ab);
+    function vint(p){ var b = u8[p], len = 1, m = 0x80; while (len <= 8 && !(b & m)){ len++; m >>= 1; } var v = b & (m - 1); for (var i = 1; i < len; i++) v = v * 256 + u8[p + i]; return { len: len, v: v, unknown: v === Math.pow(2, 7 * len) - 1 }; }
+    function find(id, from, to){ for (var p = from; p < to - 4; p++){ if (u8[p] === id[0] && u8[p + 1] === id[1] && u8[p + 2] === id[2] && (id.length < 4 || u8[p + 3] === id[3])) return p; } return -1; }
+    var info = find([0x15, 0x49, 0xA9, 0x66], 0, Math.min(u8.length, 4096));
+    if (info < 0) return null;
+    var sz = vint(info + 4);
+    if (sz.unknown) return null;
+    var body = info + 4 + sz.len, end = body + sz.v;
+    if (find([0x44, 0x89], body, end) >= 0) return null;           // already has a duration
+    var el = new Uint8Array(11); el.set([0x44, 0x89, 0x88]); new DataView(el.buffer).setFloat64(3, ms);
+    var newSize = sz.v + 11, sizeBytes = new Uint8Array(8); sizeBytes[0] = 0x01; var t = newSize;
+    for (var i = 7; i >= 1; i--){ sizeBytes[i] = t & 0xff; t = Math.floor(t / 256); }
+    var out = new Uint8Array(u8.length - sz.len + 8 + 11);
+    out.set(u8.subarray(0, info + 4), 0); out.set(sizeBytes, info + 4);
+    out.set(u8.subarray(body, end), info + 12); out.set(el, info + 12 + sz.v);
+    out.set(u8.subarray(end), info + 12 + sz.v + 11);
+    // the Segment's own size must grow by the same amount when it is not "unknown"
+    var seg = find([0x18, 0x53, 0x80, 0x67], 0, 64);
+    if (seg >= 0){ var ss = vint(seg + 4); if (!ss.unknown) return null; }
+    return out;
+  }
+  function reelFixContainer(blob, seconds){
+    return blob.arrayBuffer().then(function(ab){
+      try {
+        if (/mp4/.test(blob.type)){ var r = mp4Defragment(ab); return r ? new Blob([r.bytes], { type: "video/mp4" }) : blob; }
+        if (/webm/.test(blob.type)){ var w = webmAddDuration(ab, seconds * 1000); return w ? new Blob([w], { type: "video/webm" }) : blob; }
+      } catch(e){}
+      return blob;
+    });
+  }
 
   ///WIRDI4-JS
   // ============================================================
