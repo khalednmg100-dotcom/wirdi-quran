@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-IflYRCpnkXe0hYuYPG786acT3A1NgIrc7XlnvQH3Yik='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-JhSmQqLSKBZEJVkkDZSWIVjMuwNbwqs5uT9iA/vT6u8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -493,6 +493,8 @@
   .ri-item.on{border-color:var(--teal); background:var(--teal-tint);}
   .ri-t{font-family:"Amiri",serif; font-weight:700; font-size:0.95rem; line-height:1.6; white-space:normal;}
   .ri-ref{font-size:0.7rem; color:var(--ink-soft);}
+  .streak-chip{border:1px solid #f0c9a8; background:#fff3e8; color:#b0553f; font-weight:800; font-size:0.85rem; border-radius:99px; padding:4px 10px; line-height:1.4;}
+  .streak-chip.cold{filter:grayscale(.6); opacity:.75;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -510,7 +512,7 @@
   <!-- ================= HOME ================= -->
   <main id="view-home" class="view">
     <div class="topbar">
-      <div class="brand"><h1>وِرْدِي</h1></div>
+      <div class="brand"><h1>وِرْدِي</h1><button class="streak-chip" id="streakChip" type="button"></button></div>
       <div style="display:flex; gap:8px;">
         <button class="icon-btn" id="openSearchBtn" aria-label="بحث">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -842,6 +844,7 @@
       <div class="settings-row"><label>وقت أذكار الصباح</label><input type="time" id="morningTimeInput"></div>
       <div class="settings-row"><label>وقت أذكار المساء</label><input type="time" id="eveningTimeInput"></div>
       <div class="settings-row"><label>وقت الورد اليومي</label><input type="time" id="wirdTimeInput"></div>
+      <div class="settings-row" id="dailyReminderHint"><div><label>🔥 تذكير السلسلة</label><span class="hint">لو ما فتحتش التطبيق طول اليوم، يوصلك تذكير لطيف بعد العصر عشان ماتخسرش سلسلتك. يشتغل على أندرويد لما تكون التنبيهات مفعّلة والتطبيق متثبت (كروم بيحدد الوقت بالظبط).</span></div></div>
     </div>
 
     <div class="settings-section">
@@ -5287,6 +5290,66 @@ const EVENING_ADHKAR = [
     showToast("اخترت: " + x.t);
     document.getElementById("reelCanvas").scrollIntoView({ behavior: "smooth", block: "center" });
   });
+
+  // ---------------- Daily visit streak + gentle "don't lose your streak" reminder ----------------
+  // The streak counts consecutive days the app was opened (wirdi4-visits).
+  // Reminder while the app is closed: Periodic Background Sync (Chrome on Android, installed app).
+  // The page writes a tiny state file to the "wirdi-meta" cache; sw.js reads it on "periodicsync"
+  // and shows ONE kind notification on a day with no visit. No server, nothing leaves the device.
+  var STORE_VISITS = "wirdi4-visits";
+  var visits = loadJSON(STORE_VISITS, { days: {}, best: 0 });
+  var STREAK_MILESTONES = [3, 7, 14, 21, 30, 40, 60, 100, 200, 365];
+  function dayKey(d){ return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+  function visitStreak(){
+    var n = 0, d = new Date();
+    if (!visits.days[dayKey(d)]) d.setDate(d.getDate() - 1);   // not opened yet today → streak still counts up to yesterday
+    while (visits.days[dayKey(d)]){ n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+  function renderStreakChip(){
+    var chip = document.getElementById("streakChip"); if (!chip) return;
+    var s = visitStreak();
+    chip.textContent = "🔥 " + toArabicIndic(s);
+    chip.classList.toggle("cold", !visits.days[todayStr()]);
+    chip.setAttribute("aria-label", "دخلت " + s + " يوم متتالي");
+  }
+  function recordVisit(){
+    var t = todayStr();
+    if (!visits.days[t]){
+      visits.days[t] = true;
+      var ks = Object.keys(visits.days).sort(); while (ks.length > 400) delete visits.days[ks.shift()];
+      var s = visitStreak(); if (s > (visits.best || 0)) visits.best = s;
+      saveJSON(STORE_VISITS, visits);
+      if (STREAK_MILESTONES.indexOf(s) !== -1) setTimeout(function(){ showToast("ما شاء الله 🔥 " + toArabicIndic(s) + " يوم متتالي مع وِرْدِي — ربنا يثبتك"); }, 1800);
+    }
+    renderStreakChip();
+    syncReminderMeta();
+  }
+  function reminderEnabled(){ return !!appSettings.notificationsEnabled && ("Notification" in window) && Notification.permission === "granted"; }
+  function syncReminderMeta(){
+    if (!window.caches) return;
+    var meta = { lastVisit: todayStr(), streak: visitStreak(), enabled: reminderEnabled(), hour: 17 };
+    caches.open("wirdi-meta").then(function(c){
+      return c.put("meta.json", new Response(JSON.stringify(meta), { headers: { "Content-Type": "application/json" } }));
+    }).catch(function(){});
+    if (!("serviceWorker" in navigator)) return;
+    navigator.serviceWorker.ready.then(function(reg){
+      if (!reg.periodicSync) return;
+      if (!meta.enabled){ reg.periodicSync.unregister("wirdi-daily").catch(function(){}); return; }
+      return navigator.permissions.query({ name: "periodic-background-sync" }).then(function(st){
+        if (st.state === "granted") return reg.periodicSync.register("wirdi-daily", { minInterval: 6 * 60 * 60 * 1000 });
+      });
+    }).catch(function(){});
+  }
+  document.getElementById("streakChip").addEventListener("click", function(){
+    var s = visitStreak();
+    showToast(visits.days[todayStr()]
+      ? "🔥 " + toArabicIndic(s) + " يوم متتالي • أطول سلسلة " + toArabicIndic(visits.best || s) + " — ادخل كل يوم ولو لآية واحدة 🤍"
+      : "افتح وردك النهارده عشان تكمّل سلسلتك 🤍");
+  });
+  document.getElementById("notifToggle").addEventListener("change", function(){ setTimeout(syncReminderMeta, 1500); });
+  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") recordVisit(); });
+  recordVisit();
 
   ///WIRDI4-JS
   // ============================================================
