@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-e5TOUlj7enR+yBvYknJKyGH2xzRCyyRS1uQR6OfeMVg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-G5QZF4rP1VdcWFMFMadnavJaoOXTJNjJBgP6gaPwav0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -5556,8 +5556,8 @@ const EVENING_ADHKAR = [
 
   // ---------------- Ruqyah ----------------
   // RUQYAH_QURAN (verified references, text from the app's Hafs data) + RUQYAH_SUNNAH (verbatim from
-  // Sahih al-Bukhari / Muslim, see gen_content.js). Audio: the reciter chosen in settings.
-  var ruq = { gen: 0, audio: new Audio(), item: -1, rep: 0, all: false, tab: "quran" };
+  // Sahih al-Bukhari / Muslim, see gen_content.js). Audio: the chosen reciter (same setting as the mushaf), played back to back.
+  var ruq = { gen: 0, players: [new Audio(), new Audio()], item: -1, all: false, paused: false, tab: "quran", restart: null };
   function ruqAyahsHtml(q){
     var t = ""; for (var a = q.a[0]; a <= q.a[1]; a++) t += QURAN_AYAHS[q.s - 1][a - 1] + ' <span class="ayah-num">' + toArabicIndic(a) + '</span> ';
     return t;
@@ -5565,8 +5565,11 @@ const EVENING_ADHKAR = [
   function ruqRef(q){ return "سورة " + surahName(q.s) + ": " + toArabicIndic(q.a[0]) + (q.a[1] > q.a[0] ? "–" + toArabicIndic(q.a[1]) : ""); }
   function renderRuqyah(){
     var h = '<div class="hf-card ruq-intro"><div class="hf-meta">الرقية الشرعية: قراءة القرآن والأدعية الثابتة عن النبي ﷺ بنية الشفاء. اقرأها على نفسك أو على المريض مع النفث، ويمكنك القراءة في ماء والشرب منه.</div>' +
-      '<button class="btn primary" style="width:100%;margin-top:10px;" data-ruq="all">' + (ruq.all ? "⏹ إيقاف الرقية" : "▶ استمع للرقية كاملة") + '</button>' +
-      '<div class="muted" style="font-size:0.72rem;margin-top:6px;text-align:center;">بصوت: ' + currentReciter()[1] + ' — تقدر تغيّر القارئ من الإعدادات</div></div>';
+      '<div class="hf-row" style="margin-top:10px;"><label>🎧 القارئ</label><select id="ruqReciter">' + reciterOptionsHtml() + '</select></div>' +
+      (ruq.all
+        ? '<div style="display:flex;gap:8px;margin-top:10px;"><button class="btn primary" style="flex:2;" data-ruq="pause">' + (ruq.paused ? "▶ متابعة" : "⏸ إيقاف مؤقت") + '</button><button class="btn ghost" style="flex:1;" data-ruq="stop">⏹ إيقاف</button></div>'
+        : '<button class="btn primary" style="width:100%;margin-top:10px;" data-ruq="all">▶ استمع للرقية كاملة</button>') +
+      '<div class="muted" style="font-size:0.72rem;margin-top:6px;text-align:center;">بتشتغل ورا بعض لحد آخرها — ودوس «ابدأ من هنا» على أي جزء عشان تبدأ منه</div></div>';
     h += '<div class="hf-chips">' + [["quran", "📖 من القرآن"], ["sunnah", "🤲 من السنة"]].map(function(t){
       return '<button class="hf-chip' + (ruq.tab === t[0] ? " on" : "") + '" data-ruq="tab" data-v="' + t[0] + '">' + t[1] + '</button>'; }).join("") + '</div>';
     if (ruq.tab === "quran"){
@@ -5575,7 +5578,7 @@ const EVENING_ADHKAR = [
         h += '<div class="hf-card dua-card' + (on ? " ruq-on" : "") + '" id="ruqItem' + i + '"><div class="dua-title">' + q.t +
           (q.rep > 1 ? ' <span class="ruq-rep">× ' + toArabicIndic(q.rep) + '</span>' : '') + '</div>' +
           '<div class="st-quote">' + ruqAyahsHtml(q) + '</div><div class="dua-ref">﴿ ' + ruqRef(q) + ' ﴾</div>' +
-          '<div class="dua-actions"><button class="btn ghost" data-ruq="play" data-i="' + i + '">' + (on && !ruq.all ? "⏸ إيقاف" : "🔊 استماع") + '</button>' +
+          '<div class="dua-actions"><button class="btn ghost" data-ruq="play" data-i="' + i + '">' + (on ? "🔊 بيتقري الآن" : "▶ ابدأ من هنا") + '</button>' +
           '<button class="btn ghost" data-ruq="copy" data-i="' + i + '">📋 نسخ</button></div></div>';
       });
     } else {
@@ -5589,29 +5592,52 @@ const EVENING_ADHKAR = [
     h += '<p class="muted" style="font-size:0.72rem;text-align:center;">الآيات من نص المصحف (حفص عن عاصم) • الأحاديث منقولة بنصها من صحيح البخاري وصحيح مسلم مع رقم الحديث.<br>الرقية لا تُغني عن الأخذ بالأسباب ومراجعة الطبيب، والشفاء بيد الله وحده.</p>';
     document.getElementById("ruqyahBody").innerHTML = h;
   }
-  function ruqStop(){ ruq.gen++; try { ruq.audio.pause(); } catch(e){} ruq.item = -1; ruq.all = false; }
-  // plays item i (rep times), then the next item when playing the whole ruqyah
-  function ruqPlay(i, all){
+  // ---- player: one flat playlist (with repeats) from the chosen part to the end; the next ayah is
+  // fetched while the current one plays and two <audio> elements alternate, so there is no gap.
+  function ruqStop(){ ruq.gen++; ruq.players.forEach(function(p){ try { p.pause(); } catch(e){} }); ruq.item = -1; ruq.all = false; ruq.paused = false; }
+  function ruqPlaylist(from){
+    var list = [];
+    for (var i = from; i < RUQYAH_QURAN.length; i++){
+      var q = RUQYAH_QURAN[i];
+      for (var r = 0; r < q.rep; r++) for (var a = q.a[0]; a <= q.a[1]; a++) list.push({ i: i, s: q.s, a: a });
+    }
+    return list;
+  }
+  function ruqMedia(i){
+    if (!("mediaSession" in navigator) || i < 0) return;
+    try { navigator.mediaSession.metadata = new MediaMetadata({ title: "الرقية الشرعية — " + RUQYAH_QURAN[i].t, artist: currentReciter()[1], album: "وِرْدِي", artwork: [{ src: "icon-512.png", sizes: "512x512", type: "image/png" }] }); } catch(e){}
+  }
+  function ruqPlay(from){
     if (typeof stopQuranAudio === "function") stopQuranAudio();
     if (typeof duaStop === "function") duaStop();
-    ruqStop(); ruq.all = !!all; ruq.tab = "quran";
-    var g = ruq.gen;
-    (function item(i){
+    ruqStop(); ruq.all = true; ruq.tab = "quran";
+    var g = ruq.gen, list = ruqPlaylist(from), pos = 0, cur = 0, ready = {};
+    function load(k){ if (k < list.length && !ready[k]) ready[k] = audioBlobUrl(ayahAudioUrl(list[k].s, list[k].a)); return ready[k]; }
+    function step(){
       if (g !== ruq.gen) return;
-      if (i >= RUQYAH_QURAN.length){ ruqStop(); renderRuqyah(); return; }
-      var q = RUQYAH_QURAN[i], rep = 0, a = q.a[0];
-      ruq.item = i; renderRuqyah();
-      var el = document.getElementById("ruqItem" + i); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-      (function next(){
+      if (pos >= list.length){ ruqStop(); renderRuqyah(); showToast("تمت الرقية — شفاك الله وعافاك 🤍"); return; }
+      var it = list[pos];
+      if (ruq.item !== it.i){
+        ruq.item = it.i; renderRuqyah(); ruqMedia(it.i);
+        var el = document.getElementById("ruqItem" + it.i); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      load(pos).then(function(u){
         if (g !== ruq.gen) return;
-        if (a > q.a[1]){ rep++; a = q.a[0]; if (rep >= q.rep){ if (ruq.all) item(i + 1); else { ruqStop(); renderRuqyah(); } return; } }
-        audioBlobUrl(ayahAudioUrl(q.s, a)).then(function(u){
-          if (g !== ruq.gen) return;
-          ruq.audio.src = u; ruq.audio.onended = function(){ a++; next(); };
-          return ruq.audio.play();
-        }).catch(function(){ if (g === ruq.gen){ showToast("تعذر تشغيل التلاوة — تحتاج الإنترنت أول مرة"); ruqStop(); renderRuqyah(); } });
-      })();
-    })(i);
+        var p = ruq.players[cur]; cur = 1 - cur;
+        p.src = u; ruq.active = p;
+        p.onended = function(){ delete ready[pos]; pos++; step(); };
+        load(pos + 1);                                     // fetch the next ayah while this one plays
+        return p.play();
+      }).catch(function(){ if (g === ruq.gen){ showToast("تعذر تشغيل التلاوة — تحتاج الإنترنت أول مرة"); ruqStop(); renderRuqyah(); } });
+    }
+    ruq.restart = function(){ var i = list[Math.min(pos, list.length - 1)].i; ruqPlay(i); };
+    step();
+  }
+  function ruqPauseToggle(){
+    var p = ruq.active;
+    if (!p) return;
+    if (ruq.paused){ p.play(); ruq.paused = false; } else { p.pause(); ruq.paused = true; }
+    renderRuqyah();
   }
   function ruqCopy(txt){
     if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function(){ showToast("تم النسخ ✓"); }, function(){ showToast("تعذر النسخ"); });
@@ -5621,10 +5647,19 @@ const EVENING_ADHKAR = [
     var b = e.target.closest("[data-ruq]"); if (!b) return;
     var act = b.getAttribute("data-ruq"), i = +b.getAttribute("data-i");
     if (act === "tab"){ ruq.tab = b.getAttribute("data-v"); renderRuqyah(); return; }
-    if (act === "all"){ if (ruq.all){ ruqStop(); renderRuqyah(); } else ruqPlay(0, true); return; }
-    if (act === "play"){ if (ruq.item === i && !ruq.all){ ruqStop(); renderRuqyah(); } else ruqPlay(i, false); return; }
+    if (act === "all"){ ruqPlay(0); return; }
+    if (act === "stop"){ ruqStop(); renderRuqyah(); return; }
+    if (act === "pause"){ ruqPauseToggle(); return; }
+    if (act === "play"){ if (ruq.item !== i) ruqPlay(i); return; }
     if (act === "copy"){ var q = RUQYAH_QURAN[i], t = []; for (var a = q.a[0]; a <= q.a[1]; a++) t.push(QURAN_AYAHS[q.s - 1][a - 1]); ruqCopy(t.join(" ") + "\n﴿ " + ruqRef(q) + " ﴾"); return; }
     if (act === "copyS"){ var r = RUQYAH_SUNNAH[i]; ruqCopy(r.text + "\n— " + r.ref); }
+  });
+  // reciter chosen here = the app-wide reciter; if the ruqyah is playing, continue from the same part in the new voice
+  document.getElementById("ruqyahBody").addEventListener("change", function(e){
+    if (e.target.id !== "ruqReciter") return;
+    var playing = ruq.all && ruq.restart;
+    setReciter(e.target.value);
+    if (playing) ruq.restart(); else renderRuqyah();
   });
 
   ///WIRDI4-JS
