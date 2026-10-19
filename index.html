@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-hlqejcEUzPLpUJPLDO06uDJP5RL4kFecdmFhQJPLWII='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-9eOt2ptzVh+IoKvwFIp624fAYmpB80qvsVkKS7rBGJM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -505,6 +505,83 @@
   .qsr-text mark{background:#f5d97a; color:inherit; border-radius:4px; padding:0 2px;}
   .qsr-meta{font-size:0.72rem; color:var(--ink-soft); margin-top:4px;}
   .mushaf-page .ayah-text.qsr-flash{background:#f5d97a88; border-radius:6px; transition:background .6s;}
+  /* ===== calmer palette (v4): off-white background, white cards, one green for actions ===== */
+  :root{
+    --paper:#F5F3ED; --paper-2:#FFFFFF; --paper-3:#E4DED0;
+    --ink:#1D2622; --ink-soft:#66716B;
+    --teal:#0F7666; --teal-deep:#0A5247; --teal-tint:#E4F1EC;
+    --gold:#AD872D; --gold-tint:#F7EFDA;
+    --shadow: rgba(29,38,34,0.07);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#111513; --paper-2:#1A201D; --paper-3:#2B3430;
+      --ink:#ECEFEA; --ink-soft:#A7B1AB;
+      --teal:#4DBDA6; --teal-deep:#7FD3C1; --teal-tint:#16302A;
+      --gold:#D8B35A; --gold-tint:#2D2716;
+      --shadow: rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#111513; --paper-2:#1A201D; --paper-3:#2B3430;
+    --ink:#ECEFEA; --ink-soft:#A7B1AB;
+    --teal:#4DBDA6; --teal-deep:#7FD3C1; --teal-tint:#16302A;
+    --gold:#D8B35A; --gold-tint:#2D2716;
+    --shadow: rgba(0,0,0,0.4);
+  }
+  .hf-card, .stat-card, .quick-btn{box-shadow:0 1px 3px var(--shadow);}
+
+  /* ===== home (v4) ===== */
+  .hello-card{background:linear-gradient(135deg, var(--teal-deep), var(--teal)); color:#fff; border-radius:18px; padding:18px 16px 16px; margin-bottom:14px; box-shadow:0 4px 14px var(--shadow);}
+  .hello-title{font-family:"Amiri",serif; font-size:1.55rem; font-weight:700; line-height:1.4;}
+  .hello-sub{font-size:0.95rem; opacity:.92; margin:4px 0 12px;}
+  .hello-actions{display:flex; gap:8px;}
+  .hello-actions .btn{flex:1; background:#fff; color:#0A5247; border-color:#fff;}
+  .hello-actions .btn.alt{background:transparent; color:#fff; border-color:rgba(255,255,255,.6);}
+  :root[data-theme="dark"] .hello-card{background:linear-gradient(135deg, #0B4A40, #0F6C5D);}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .hello-card{background:linear-gradient(135deg, #0B4A40, #0F6C5D);} }
+
+  .prayer-card{background:var(--paper-2); border:1px solid var(--paper-3); border-radius:16px; padding:14px 12px; margin-bottom:14px; box-shadow:0 1px 3px var(--shadow);}
+  .prayer-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;}
+  .prayer-head b{color:var(--teal-deep); font-size:0.95rem;}
+  .prayer-head span{font-size:0.72rem; color:var(--ink-soft);}
+  .prayer-row{display:grid; grid-template-columns:repeat(5,1fr); gap:6px;}
+  .prayer-cell{text-align:center; border-radius:12px; padding:8px 2px; background:var(--paper); border:1px solid transparent;}
+  .prayer-cell .pn{font-size:0.75rem; font-weight:800; color:var(--ink-soft);}
+  .prayer-cell .pt{font-size:0.85rem; font-weight:800; color:var(--ink); margin-top:2px; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .prayer-cell.past{opacity:.55;}
+  .prayer-cell.next{background:var(--teal-tint); border-color:var(--teal);}
+  .prayer-cell.next .pn, .prayer-cell.next .pt{color:var(--teal-deep);}
+  .prayer-next{margin-top:10px; font-size:0.85rem; font-weight:700; color:var(--teal-deep); text-align:center;}
+  .prayer-tip{margin-top:10px; border-top:1px dashed var(--paper-3); padding-top:10px; font-size:0.8rem; line-height:1.9;}
+  .prayer-tip b{color:var(--gold);}
+  .prayer-tip q{font-family:"Amiri",serif; font-size:0.95rem; quotes:"«" "»";}
+  .prayer-tip small{color:var(--ink-soft);}
+
+  .home-sec-title{font-weight:800; font-size:0.95rem; color:var(--ink); margin:18px 2px 8px; display:flex; align-items:center; gap:6px;}
+  .home-sec-title::after{content:""; flex:1; height:1px; background:var(--paper-3);}
+  .quick-grid.g3{grid-template-columns:repeat(3,1fr); gap:8px; margin-top:0;}
+  .quick-grid.g2{grid-template-columns:repeat(2,1fr); gap:8px; margin-top:0;}
+  .quick-grid.g3 .quick-btn, .quick-grid.g2 .quick-btn{padding:12px 4px; font-size:0.78rem;}
+  .quick-grid.g2 .quick-btn{flex-direction:row; justify-content:center; gap:8px;}
+  .quick-grid.g2 .quick-btn .emoji{font-size:1.25rem;}
+  .home-bottom{margin-top:18px;}
+  /* ===== hifz page (v4) — one card style, tasks numbered ===== */
+  .hf-today, .hf-today.rev{background:var(--paper-2);}
+  .hfv-sum .hfv-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .hfv-pct{font-size:2rem; font-weight:800; color:var(--teal-deep); line-height:1.1;}
+  .hfv-end{text-align:left; background:var(--teal-tint); border-radius:12px; padding:8px 10px;}
+  .hfv-end small{display:block; font-size:0.7rem; color:var(--ink-soft);}
+  .hfv-end b{font-size:0.85rem; color:var(--teal-deep);}
+  .hfv-badge{font-size:0.75rem; font-weight:800; color:var(--teal-deep); background:var(--teal-tint); border-radius:99px; padding:2px 10px;}
+  .hfv-task{display:flex; gap:12px; align-items:flex-start; border-inline-start:4px solid var(--teal);}
+  .hfv-task + .hfv-task{border-inline-start-color:var(--gold);}
+  .hfv-step{flex:none; width:30px; height:30px; border-radius:50%; background:var(--teal-tint); color:var(--teal-deep); font-weight:800; display:flex; align-items:center; justify-content:center;}
+  .hfv-body{flex:1; min-width:0;}
+  .hfv-task.done{opacity:.75;}
+  .hfv-task.done .hfv-step{background:var(--teal); color:#fff; font-size:0;}
+  .hfv-task.done .hfv-step::after{content:"✓"; font-size:1rem;}
+  .hfv-manage .hf-actions{margin-top:8px;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -539,31 +616,46 @@
       <button id="dismissInstallTip" aria-label="إغلاق">✕</button>
     </div>
 
-    <div class="greeting" id="greetingLine">السلام عليكم 👋</div>
-    <div class="greeting-sub">رحلتك مع القرآن</div>
+    <div class="hello-card" id="helloCard">
+      <div class="hello-title" id="greetingLine">السلام عليكم ورحمة الله 🤍</div>
+      <div class="hello-sub" id="greetingSub"></div>
+      <div class="hello-actions" id="greetActions"></div>
+    </div>
 
-    <div class="nasab-card" id="nasabCard"></div>
+    <div class="prayer-card" id="prayerCard"></div>
 
     <div class="wird-card" id="wirdCard"></div>
     <div class="hf-card" id="hifzHomeCard"></div>
-    <div class="hf-card sunnah-card" id="sunnahHomeCard"></div>
 
-    <div class="quick-grid">
-      <button class="quick-btn" data-nav="continueReading"><span class="emoji">📖</span>القرآن الكريم</button>
-      <button class="quick-btn" data-nav="hifz"><span class="emoji">🌱</span>خطة الحفظ</button>
-      <button class="quick-btn" data-nav="reels"><span class="emoji">🎬</span>صانع الريلز</button>
-      <button class="quick-btn" data-nav="stories"><span class="emoji">📜</span>قصص الأنبياء</button>
-      <button class="quick-btn" data-nav="tafsirQuick"><span class="emoji">💡</span>التفسير</button>
+    <div class="home-sec-title">📿 الأذكار والأدعية</div>
+    <div class="quick-grid g3">
+      <button class="quick-btn" data-nav="morningAdhkar"><span class="emoji">☀️</span>أذكار الصباح</button>
+      <button class="quick-btn" data-nav="eveningAdhkar"><span class="emoji">🌙</span>أذكار المساء</button>
       <button class="quick-btn" data-nav="tasbih"><span class="emoji">📿</span>السبحة</button>
       <button class="quick-btn" data-nav="duas"><span class="emoji">🤲</span>الأدعية</button>
-      <button class="quick-btn" data-nav="sunan"><span class="emoji">🌿</span>سنن النبي ﷺ</button>
       <button class="quick-btn" data-nav="ruqyah"><span class="emoji">🛡️</span>الرقية الشرعية</button>
+      <button class="quick-btn" data-nav="sunan"><span class="emoji">🌿</span>سنن النبي ﷺ</button>
+    </div>
+
+    <div class="home-sec-title">📖 القرآن الكريم</div>
+    <div class="quick-grid g3">
+      <button class="quick-btn" data-nav="continueReading"><span class="emoji">📖</span>المصحف</button>
       <button class="quick-btn" data-nav="surahs"><span class="emoji">📚</span>السور</button>
       <button class="quick-btn" data-nav="juzList"><span class="emoji">🕌</span>الأجزاء</button>
-      <button class="quick-btn" data-nav="morningAdhkar"><span class="emoji">📿</span>أذكار الصباح</button>
-      <button class="quick-btn" data-nav="eveningAdhkar"><span class="emoji">🌙</span>أذكار المساء</button>
+      <button class="quick-btn" data-nav="tafsirQuick"><span class="emoji">💡</span>التفسير</button>
+      <button class="quick-btn" data-nav="hifz"><span class="emoji">🌱</span>خطة الحفظ</button>
       <button class="quick-btn" data-nav="progress"><span class="emoji">📊</span>تقدمي</button>
-      <button class="quick-btn" data-nav="settings"><span class="emoji">⚙️</span>الإعدادات</button>
+    </div>
+
+    <div class="home-sec-title">✨ قصص ومشاركة</div>
+    <div class="quick-grid g2">
+      <button class="quick-btn" data-nav="stories"><span class="emoji">📜</span>قصص الأنبياء</button>
+      <button class="quick-btn" data-nav="reels"><span class="emoji">🎬</span>صانع الريلز</button>
+    </div>
+
+    <div class="home-bottom">
+      <div class="hf-card sunnah-card" id="sunnahHomeCard"></div>
+      <div class="nasab-card" id="nasabCard"></div>
     </div>
 
     <div class="home-section home-progress">
@@ -878,6 +970,10 @@
       <div class="settings-row">
         <div><label>تفعيل الأذان في مواعيد الصلاة</label><span class="hint" id="adhanHint">لازم التطبيق يكون مفتوح وقت الأذان عشان يشتغل الصوت — التنبيهات لما التطبيق مقفول محدوديّة زي أي تطبيق ويب.</span></div>
         <label class="switch"><input type="checkbox" id="adhanToggle"><span class="slider"></span></label>
+      </div>
+      <div class="settings-row">
+        <div><label>🌿 تذكير بسنن الصلاة</label><span class="hint">إشعار في وقت كل صلاة مع سنة من سننها (أحاديث من البخاري ومسلم). يحتاج تفعيل التنبيهات.</span></div>
+        <label class="switch"><input type="checkbox" id="prayerSunnahToggle"><span class="slider"></span></label>
       </div>
       <div class="settings-row" id="prayerTimesRow" hidden>
         <div style="width:100%;">
@@ -2307,7 +2403,7 @@ const EVENING_ADHKAR = [
   // ============================================================
   function renderHome(){
     var hour = new Date().getHours();
-    document.getElementById("greetingLine").textContent = hour < 12 ? "صباح الخير 🌅" : (hour < 18 ? "مساء الخير 🌤️" : "مساء الخير 🌙");
+    void hour; renderHello(); renderPrayerCard();
 
     var doneS = countSurahsByStatus(2);
     var pctS = Math.round((doneS/114)*100);
@@ -3497,6 +3593,7 @@ const EVENING_ADHKAR = [
         prayerTimesCache = { date: todayStr(), timings: prayerTimesToday };
         saveJSON(STORE_PRAYER_TIMES, prayerTimesCache);
         if (currentView === "settings") renderPrayerTimesRow();
+        if (typeof renderPrayerCard === "function"){ renderPrayerCard(); renderHello(); }
       })
       .catch(function(){ /* no internet right now — silently keep whatever we last cached */ });
   }
@@ -3524,7 +3621,7 @@ const EVENING_ADHKAR = [
         adhanAudioEl.src = p[2];
         adhanAudioEl.play().catch(function(){});
         if (("Notification" in window) && Notification.permission === "granted"){
-          try { new Notification("حان وقت الأذان", { body: "صلاة " + p[1], icon: "icon-192.png" }); } catch(err){}
+          // adhan notification → checkPrayerReminders (with a sunnah of the prayer)
         }
       }
     });
@@ -3656,7 +3753,7 @@ const EVENING_ADHKAR = [
         if (appSettings.notifLastFired[fireKey]) return;
         appSettings.notifLastFired[fireKey] = true;
         saveSettings();
-        try { new Notification(cfg[1], { body: cfg[2], icon: "icon-192.png" }); } catch(e){}
+        wirdiNotify(cfg[1], cfg[2], cfg[0]);
       }
     });
   }
@@ -4056,6 +4153,7 @@ const EVENING_ADHKAR = [
   function renderHifz(){
     var body = document.getElementById("hifzBody");
     if (!hifzPlan || hifzEditing){ body.innerHTML = hifzSetupHtml(); return; }
+    if (typeof renderHifzV4 === "function") return renderHifzV4();
     var t = todayStr(), nw = hifzTodayNew(hifzPlan, t), rv = hifzTodayReview(hifzPlan, t), st = hifzStats(), h = "";
     h += '<div class="hf-card hf-today"><div class="hf-label">ورد اليوم للحفظ</div>';
     if (!nw) h += '<div class="hf-none">🎉 أتممت خطة الحفظ كاملة، بارك الله فيك</div>';
@@ -5050,6 +5148,7 @@ const EVENING_ADHKAR = [
   var SUNNAH_DUAS = [{"id":"d1","title":"سيد الاستغفار","text":"اللَّهُمَّ أَنْتَ رَبِّي، لاَ إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَىَّ وَأَبُوءُ لَكَ بِذَنْبِي، فَاغْفِرْ لِي، فَإِنَّهُ لاَ يَغْفِرُ الذُّنُوبَ إِلاَّ أَنْتَ","ref":"صحيح البخاري (6306)"},{"id":"d2","title":"أكثر دعاء النبي ﷺ","text":"اللَّهُمَّ رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً، وَفِي الآخِرَةِ حَسَنَةً، وَقِنَا عَذَابَ النَّارِ","ref":"صحيح البخاري (6389)"},{"id":"d3","title":"الاستعاذة من الهم والحزن","text":"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْجُبْنِ وَالْبُخْلِ، وَضَلَعِ الدَّيْنِ، وَغَلَبَةِ الرِّجَالِ","ref":"صحيح البخاري (6369)"},{"id":"d4","title":"دعاء علّمه النبي ﷺ لأبي بكر في الصلاة","text":"اللَّهُمَّ إِنِّي ظَلَمْتُ نَفْسِي ظُلْمًا كَثِيرًا، وَلاَ يَغْفِرُ الذُّنُوبَ إِلاَّ أَنْتَ، فَاغْفِرْ لِي مَغْفِرَةً مِنْ عِنْدِكَ، وَارْحَمْنِي، إِنَّكَ أَنْتَ الْغَفُورُ الرَّحِيمُ","ref":"صحيح البخاري (6326)"},{"id":"d5","title":"دعاء الكرب","text":"لاَ إِلَهَ إِلاَّ اللَّهُ الْعَظِيمُ الْحَلِيمُ، لاَ إِلَهَ إِلاَّ اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لاَ إِلَهَ إِلاَّ اللَّهُ رَبُّ السَّمَوَاتِ، وَرَبُّ الأَرْضِ، وَرَبُّ الْعَرْشِ الْكَرِيمِ","ref":"صحيح البخاري (6346)"},{"id":"d6","title":"صلاح الدين والدنيا والآخرة","text":"اللَّهُمَّ أَصْلِحْ لِي دِينِيَ الَّذِي هُوَ عِصْمَةُ أَمْرِي وَأَصْلِحْ لِي دُنْيَاىَ الَّتِي فِيهَا مَعَاشِي وَأَصْلِحْ لِي آخِرَتِي الَّتِي فِيهَا مَعَادِي وَاجْعَلِ الْحَيَاةَ زِيَادَةً لِي فِي كُلِّ خَيْرٍ وَاجْعَلِ الْمَوْتَ رَاحَةً لِي مِنْ كُلِّ شَرٍّ","ref":"صحيح مسلم (2720)"},{"id":"d7","title":"الهدى والتقى والعفاف والغنى","text":"اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى","ref":"صحيح مسلم (2721)"},{"id":"d8","title":"ثبات القلب على الطاعة","text":"اللَّهُمَّ مُصَرِّفَ الْقُلُوبِ صَرِّفْ قُلُوبَنَا عَلَى طَاعَتِكَ","ref":"صحيح مسلم (2655)"},{"id":"d9","title":"دوام النعمة والعافية","text":"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ وَتَحَوُّلِ عَافِيَتِكَ وَفُجَاءَةِ نِقْمَتِكَ وَجَمِيعِ سَخَطِكَ","ref":"صحيح مسلم (2739)"},{"id":"d10","title":"تزكية النفس","text":"اللَّهُمَّ آتِ نَفْسِي تَقْوَاهَا وَزَكِّهَا أَنْتَ خَيْرُ مَنْ زَكَّاهَا أَنْتَ وَلِيُّهَا وَمَوْلاَهَا","ref":"صحيح مسلم (2722)"},{"id":"d11","title":"المغفرة الشاملة","text":"اللَّهُمَّ اغْفِرْ لِي خَطِيئَتِي وَجَهْلِي وَإِسْرَافِي فِي أَمْرِي، وَمَا أَنْتَ أَعْلَمُ بِهِ مِنِّي","ref":"صحيح البخاري (6399)"},{"id":"d12","title":"الاستعاذة من أربع","text":"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عِلْمٍ لاَ يَنْفَعُ وَمِنْ قَلْبٍ لاَ يَخْشَعُ وَمِنْ نَفْسٍ لاَ تَشْبَعُ وَمِنْ دَعْوَةٍ لاَ يُسْتَجَابُ لَهَا","ref":"صحيح مسلم (2722)"},{"id":"d13","title":"الاستعاذة من عذاب القبر وفتنة الدجال","text":"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ جَهَنَّمَ وَمِنْ عَذَابِ الْقَبْرِ وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ وَمِنْ شَرِّ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ","ref":"صحيح مسلم (588)"},{"id":"d14","title":"كلمتان حبيبتان إلى الرحمن","text":"سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ","ref":"صحيح البخاري (6682)"},{"id":"d15","title":"كنز من كنوز الجنة","text":"لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ","ref":"صحيح البخاري (6384)"}];
   var REEL_IDEAS = [{"c":"hope","s":13,"a":[28,28],"t":"ألا بذكر الله تطمئن القلوب"},{"c":"hope","s":94,"a":[5,6],"t":"فإن مع العسر يسرًا"},{"c":"hope","s":2,"a":[286,286],"t":"لا يكلف الله نفسًا إلا وسعها"},{"c":"hope","s":2,"a":[216,216],"t":"وعسى أن تكرهوا شيئًا"},{"c":"hope","s":9,"a":[40,40],"t":"لا تحزن إن الله معنا"},{"c":"hope","s":12,"a":[86,87],"t":"إنما أشكو بثي وحزني إلى الله"},{"c":"hope","s":39,"a":[53,53],"t":"لا تقنطوا من رحمة الله"},{"c":"hope","s":65,"a":[2,3],"t":"ومن يتق الله يجعل له مخرجًا"},{"c":"hope","s":2,"a":[186,186],"t":"فإني قريب أجيب دعوة الداع"},{"c":"hope","s":40,"a":[60,60],"t":"ادعوني أستجب لكم"},{"c":"hope","s":3,"a":[139,139],"t":"ولا تهنوا ولا تحزنوا"},{"c":"hope","s":26,"a":[61,62],"t":"كلا إن معي ربي سيهدين"},{"c":"hope","s":2,"a":[152,153],"t":"فاذكروني أذكركم"},{"c":"hope","s":14,"a":[7,7],"t":"لئن شكرتم لأزيدنكم"},{"c":"hope","s":11,"a":[88,88],"t":"وما توفيقي إلا بالله"},{"c":"hope","s":3,"a":[173,173],"t":"حسبنا الله ونعم الوكيل"},{"c":"hope","s":50,"a":[16,16],"t":"ونحن أقرب إليه من حبل الوريد"},{"c":"hope","s":57,"a":[4,4],"t":"وهو معكم أين ما كنتم"},{"c":"hope","s":89,"a":[27,30],"t":"يا أيتها النفس المطمئنة"},{"c":"hope","s":8,"a":[30,30],"t":"والله خير الماكرين"},{"c":"great","s":2,"a":[255,255],"t":"آية الكرسي"},{"c":"great","s":2,"a":[285,286],"t":"خواتيم سورة البقرة"},{"c":"great","s":59,"a":[21,24],"t":"أواخر سورة الحشر"},{"c":"great","s":36,"a":[82,83],"t":"إنما أمره إذا أراد شيئًا"},{"c":"great","s":3,"a":[190,191],"t":"إن في خلق السماوات والأرض"},{"c":"short","s":93,"a":[1,11],"t":"سورة الضحى"},{"c":"short","s":94,"a":[1,8],"t":"سورة الشرح"},{"c":"short","s":103,"a":[1,3],"t":"سورة العصر"},{"c":"short","s":97,"a":[1,5],"t":"سورة القدر"},{"c":"short","s":108,"a":[1,3],"t":"سورة الكوثر"},{"c":"short","s":110,"a":[1,3],"t":"سورة النصر"},{"c":"short","s":112,"a":[1,4],"t":"سورة الإخلاص"},{"c":"short","s":113,"a":[1,5],"t":"سورة الفلق"},{"c":"short","s":114,"a":[1,6],"t":"سورة الناس"}];
   var RUQYAH_QURAN = [{"s":1,"a":[1,7],"t":"سورة الفاتحة","rep":1},{"s":2,"a":[1,5],"t":"أول سورة البقرة","rep":1},{"s":2,"a":[102,102],"t":"آية السحر من سورة البقرة","rep":1},{"s":2,"a":[163,164],"t":"وإلهكم إله واحد","rep":1},{"s":2,"a":[255,255],"t":"آية الكرسي","rep":1},{"s":2,"a":[285,286],"t":"خواتيم سورة البقرة","rep":1},{"s":3,"a":[18,19],"t":"شهد الله أنه لا إله إلا هو","rep":1},{"s":7,"a":[54,56],"t":"إن ربكم الله","rep":1},{"s":7,"a":[117,122],"t":"إبطال سحر فرعون","rep":1},{"s":10,"a":[81,82],"t":"إن الله سيبطله","rep":1},{"s":20,"a":[69,69],"t":"ولا يفلح الساحر حيث أتى","rep":1},{"s":23,"a":[115,118],"t":"خواتيم سورة المؤمنون","rep":1},{"s":37,"a":[1,10],"t":"أول سورة الصافات","rep":1},{"s":46,"a":[29,32],"t":"نفر من الجن (الأحقاف)","rep":1},{"s":55,"a":[33,36],"t":"يا معشر الجن والإنس","rep":1},{"s":59,"a":[21,24],"t":"أواخر سورة الحشر","rep":1},{"s":72,"a":[1,9],"t":"أول سورة الجن","rep":1},{"s":9,"a":[14,14],"t":"آيات الشفاء (١) — ويشف صدور قوم مؤمنين","rep":1},{"s":10,"a":[57,57],"t":"آيات الشفاء (٢) — وشفاء لما في الصدور","rep":1},{"s":16,"a":[69,69],"t":"آيات الشفاء (٣) — فيه شفاء للناس","rep":1},{"s":17,"a":[82,82],"t":"آيات الشفاء (٤) — ما هو شفاء ورحمة","rep":1},{"s":26,"a":[80,80],"t":"آيات الشفاء (٥) — وإذا مرضت فهو يشفين","rep":1},{"s":41,"a":[44,44],"t":"آيات الشفاء (٦) — هدى وشفاء","rep":1},{"s":68,"a":[51,52],"t":"آية العين","rep":1},{"s":112,"a":[1,4],"t":"سورة الإخلاص","rep":3},{"s":113,"a":[1,5],"t":"سورة الفلق","rep":3},{"s":114,"a":[1,6],"t":"سورة الناس","rep":3}];
+  var PRAYER_SUNAN = [{"id":"ps1","prayers":["Fajr"],"title":"سنة الفجر","text":"رَكْعَتَا الْفَجْرِ خَيْرٌ مِنَ الدُّنْيَا وَمَا فِيهَا","ref":"صحيح مسلم (725)"},{"id":"ps2","prayers":["Fajr","Asr"],"title":"فضل الفجر والعصر","text":"مَنْ صَلَّى الْبَرْدَيْنِ دَخَلَ الْجَنَّةَ","ref":"صحيح البخاري (574)"},{"id":"ps3","prayers":["Dhuhr"],"title":"أربع قبل الظهر","text":"كَانَ لاَ يَدَعُ أَرْبَعًا قَبْلَ الظُّهْرِ وَرَكْعَتَيْنِ قَبْلَ الْغَدَاةِ","ref":"صحيح البخاري (1182)"},{"id":"ps4","prayers":["Dhuhr","Maghrib","Isha"],"title":"السنن الرواتب","text":"حَفِظْتُ مِنَ النَّبِيِّ صلى الله عليه وسلم عَشْرَ رَكَعَاتٍ رَكْعَتَيْنِ قَبْلَ الظُّهْرِ، وَرَكْعَتَيْنِ بَعْدَهَا، وَرَكْعَتَيْنِ بَعْدَ الْمَغْرِبِ فِي بَيْتِهِ، وَرَكْعَتَيْنِ بَعْدَ الْعِشَاءِ فِي بَيْتِهِ، وَرَكْعَتَيْنِ قَبْلَ صَلاَةِ الصُّبْحِ","ref":"صحيح البخاري (1180)"},{"id":"ps5","prayers":["Dhuhr","Maghrib","Isha","Fajr"],"title":"بيت في الجنة","text":"مَنْ صَلَّى اثْنَتَىْ عَشْرَةَ رَكْعَةً فِي يَوْمٍ وَلَيْلَةٍ بُنِيَ لَهُ بِهِنَّ بَيْتٌ فِي الْجَنَّةِ","ref":"صحيح مسلم (728)"},{"id":"ps6","prayers":["Isha","Fajr"],"title":"العشاء والفجر في جماعة","text":"مَنْ صَلَّى الْعِشَاءَ فِي جَمَاعَةٍ فَكَأَنَّمَا قَامَ نِصْفَ اللَّيْلِ وَمَنْ صَلَّى الصُّبْحَ فِي جَمَاعَةٍ فَكَأَنَّمَا صَلَّى اللَّيْلَ كُلَّهُ","ref":"صحيح مسلم (656)"},{"id":"ps7","prayers":["Fajr","Dhuhr","Asr","Maghrib","Isha"],"title":"الدعاء بعد الأذان","text":"اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلاَةِ الْقَائِمَةِ آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ، حَلَّتْ لَهُ شَفَاعَتِي يَوْمَ الْقِيَامَةِ","ref":"صحيح البخاري (614)"},{"id":"ps8","prayers":["Fajr","Dhuhr","Asr","Maghrib","Isha"],"title":"بعد السلام من الصلاة","text":"اللَّهُمَّ أَنْتَ السَّلاَمُ وَمِنْكَ السَّلاَمُ تَبَارَكْتَ ذَا الْجَلاَلِ وَالإِكْرَامِ","ref":"صحيح مسلم (591)"},{"id":"ps9","prayers":["Fajr","Dhuhr","Asr","Maghrib","Isha"],"title":"التسبيح بعد الصلاة","text":"مَنْ سَبَّحَ اللَّهَ فِي دُبُرِ كُلِّ صَلاَةٍ ثَلاَثًا وَثَلاَثِينَ وَحَمِدَ اللَّهَ ثَلاَثًا وَثَلاَثِينَ وَكَبَّرَ اللَّهَ ثَلاَثًا وَثَلاَثِينَ","ref":"صحيح مسلم (597)"}];
   var RUQYAH_SUNNAH = [{"id":"r1","title":"رقية النبي ﷺ للمريض","desc":"يمسح بيده اليمنى على موضع الألم ويقول:","text":"اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَاسَ، اشْفِهِ وَأَنْتَ الشَّافِي، لاَ شِفَاءَ إِلاَّ شِفَاؤُكَ، شِفَاءً لاَ يُغَادِرُ سَقَمًا","ref":"صحيح البخاري (5743)"},{"id":"r2","title":"رقية جبريل عليه السلام للنبي ﷺ","desc":"","text":"بِاسْمِ اللَّهِ أَرْقِيكَ مِنْ كُلِّ شَىْءٍ يُؤْذِيكَ مِنْ شَرِّ كُلِّ نَفْسٍ أَوْ عَيْنِ حَاسِدٍ اللَّهُ يَشْفِيكَ بِاسْمِ اللَّهِ أَرْقِيكَ","ref":"صحيح مسلم (2186)"},{"id":"r3","title":"لمن يجد ألمًا في جسده","desc":"ضع يدك على موضع الألم وقل «بسم الله» ثلاثًا، ثم قل سبع مرات:","text":"أَعُوذُ بِاللَّهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ","ref":"صحيح مسلم (2202)"},{"id":"r4","title":"تعويذ الأطفال (عوّذ بها النبي ﷺ الحسن والحسين)","desc":"","text":"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّةِ مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ، وَمِنْ كُلِّ عَيْنٍ لاَمَّةٍ","ref":"صحيح البخاري (3371)"},{"id":"r5","title":"عند نزول أي مكان","desc":"","text":"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ","ref":"صحيح مسلم (2708)"},{"id":"r6","title":"النفث بالمعوذات","desc":"كان النبي ﷺ إذا اشتكى يقرأ على نفسه بالمعوذات وينفث (ينفخ نفخًا خفيفًا مع ريق قليل) ويمسح بيده:","text":"كَانَ إِذَا اشْتَكَى يَقْرَأُ عَلَى نَفْسِهِ بِالْمُعَوِّذَاتِ وَيَنْفُثُ","ref":"صحيح البخاري (5016)"},{"id":"r7","title":"الفاتحة رقية","desc":"رقى صحابي لديغًا بالفاتحة فشُفي، فقال النبي ﷺ:","text":"وَمَا أَدْرَاكَ أَنَّهَا رُقْيَةٌ","ref":"صحيح البخاري (5736)"},{"id":"r8","title":"العين حق","desc":"","text":"الْعَيْنُ حَقٌّ","ref":"صحيح البخاري (5740)"}];
   var QURAN_DUAS = [{"s":1,"a":[6,7],"t":"الهداية للصراط المستقيم"},{"s":2,"a":[127,128],"t":"قبول العمل"},{"s":2,"a":[201,201],"t":"خير الدنيا والآخرة"},{"s":2,"a":[250,250],"t":"الصبر والثبات"},{"s":2,"a":[286,286],"t":"العفو والمغفرة ورفع الحرج"},{"s":3,"a":[8,8],"t":"ثبات القلب"},{"s":3,"a":[16,16],"t":"المغفرة والنجاة من النار"},{"s":3,"a":[38,38],"t":"الذرية الطيبة"},{"s":3,"a":[147,147],"t":"مغفرة الذنوب والنصر"},{"s":3,"a":[193,194],"t":"حسن الخاتمة"},{"s":7,"a":[23,23],"t":"دعاء آدم عليه السلام"},{"s":7,"a":[126,126],"t":"الصبر والموت على الإسلام"},{"s":10,"a":[85,86],"t":"النجاة من الظالمين"},{"s":14,"a":[40,41],"t":"إقامة الصلاة والمغفرة للوالدين"},{"s":17,"a":[24,24],"t":"الدعاء للوالدين"},{"s":17,"a":[80,80],"t":"حسن المدخل والمخرج"},{"s":18,"a":[10,10],"t":"الرحمة والرشاد"},{"s":20,"a":[25,28],"t":"شرح الصدر وتيسير الأمر"},{"s":20,"a":[114,114],"t":"زيادة العلم"},{"s":21,"a":[83,83],"t":"دعاء أيوب عليه السلام"},{"s":21,"a":[87,87],"t":"دعاء يونس عليه السلام"},{"s":21,"a":[89,89],"t":"دعاء زكريا عليه السلام"},{"s":23,"a":[97,98],"t":"الاستعاذة من الشياطين"},{"s":23,"a":[118,118],"t":"المغفرة والرحمة"},{"s":25,"a":[65,66],"t":"النجاة من النار"},{"s":25,"a":[74,74],"t":"صلاح الأزواج والذرية"},{"s":26,"a":[83,85],"t":"دعاء إبراهيم عليه السلام"},{"s":27,"a":[19,19],"t":"شكر النعمة"},{"s":28,"a":[24,24],"t":"دعاء موسى عليه السلام"},{"s":46,"a":[15,15],"t":"شكر النعمة وصلاح الذرية"},{"s":59,"a":[10,10],"t":"سلامة القلب للمؤمنين"},{"s":66,"a":[8,8],"t":"تمام النور يوم القيامة"},{"s":71,"a":[28,28],"t":"المغفرة للوالدين والمؤمنين"}];
 
@@ -5996,6 +6095,175 @@ const EVENING_ADHKAR = [
     });
     window.__wirdiSearchDebounce = function(v){ clearTimeout(timer); timer = setTimeout(function(){ quranSearchInput(v); }, 120); };
   })();
+
+  // ---------------- Home (v4): greeting by time of day, prayer times card, prayer-sunnah reminders ----------------
+  // Notifications: on Android Chrome `new Notification()` throws ("use ServiceWorkerRegistration.showNotification"),
+  // so every notification in the app goes through the service worker when one is available.
+  function wirdiNotify(title, body, tag){
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    var opts = { body: body, icon: "icon-192.png", badge: "icon-192.png", lang: "ar", dir: "rtl", tag: tag || undefined, data: { url: "./" } };
+    if ("serviceWorker" in navigator){
+      navigator.serviceWorker.ready.then(function(reg){ return reg.showNotification(title, opts); })
+        .catch(function(){ try { new Notification(title, opts); } catch(e){} });
+    } else { try { new Notification(title, opts); } catch(e){} }
+  }
+
+  var PRAYER_NAMES = [["Fajr", "الفجر"], ["Dhuhr", "الظهر"], ["Asr", "العصر"], ["Maghrib", "المغرب"], ["Isha", "العشاء"]];
+  function hmToMin(hm){ var p = String(hm || "").slice(0, 5).split(":"); return (+p[0]) * 60 + (+p[1]); }
+  // 24h "17:42" → "٥:٤٢ م"
+  function to12h(hm){
+    var m = hmToMin(hm), h = Math.floor(m / 60), mi = m % 60, ap = h < 12 ? "ص" : "م";
+    h = h % 12; if (h === 0) h = 12;
+    return toArabicIndic(h) + ":" + toArabicIndic(pad2(mi)) + " " + ap;
+  }
+  function nowMin(){ var d = new Date(); return d.getHours() * 60 + d.getMinutes(); }
+  // next prayer today, or tomorrow's Fajr after Isha
+  function nextPrayer(){
+    if (!prayerTimesToday) return null;
+    var n = nowMin();
+    for (var i = 0; i < PRAYER_NAMES.length; i++){
+      var m = hmToMin(prayerTimesToday[PRAYER_NAMES[i][0]]);
+      if (m > n) return { key: PRAYER_NAMES[i][0], name: PRAYER_NAMES[i][1], inMin: m - n };
+    }
+    return { key: "Fajr", name: "الفجر", inMin: hmToMin(prayerTimesToday.Fajr) + 1440 - n, tomorrow: true };
+  }
+  function durText(min){
+    var h = Math.floor(min / 60), m = min % 60;
+    if (!h) return toArabicIndic(m) + " دقيقة";
+    return toArabicIndic(h) + " س" + (m ? " و" + toArabicIndic(m) + " د" : "");
+  }
+  // one verified sunnah for a prayer, changing by day
+  function prayerSunnah(key){
+    var list = PRAYER_SUNAN.filter(function(x){ return x.prayers.indexOf(key) !== -1; });
+    if (!list.length) return null;
+    var d = new Date(), day = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
+    return list[day % list.length];
+  }
+
+  // time of day: by today's prayer times when known, otherwise by the clock
+  function dayPart(){
+    var n = nowMin(), t = prayerTimesToday;
+    var fajr = t ? hmToMin(t.Fajr) : 270, dhuhr = t ? hmToMin(t.Dhuhr) : 720, asr = t ? hmToMin(t.Asr) : 930, isha = t ? hmToMin(t.Isha) : 1170;
+    if (n >= fajr && n < dhuhr) return "morning";
+    if (n >= dhuhr && n < asr) return "noon";
+    if (n >= asr && n < isha) return "evening";
+    return n < fajr && n >= 0 && n < 720 ? "sahar" : "night";   // after midnight until Fajr
+  }
+  function renderHello(){
+    var title = document.getElementById("greetingLine"), sub = document.getElementById("greetingSub"), acts = document.getElementById("greetActions");
+    if (!title || !sub || !acts) return;
+    title.textContent = "السلام عليكم ورحمة الله 🤍";
+    var p = dayPart(), cfg = {
+      morning: ["ابدأ صباحك بأذكار الصباح 🌅", [["morningAdhkar", "☀️ أذكار الصباح"], ["continueReading", "📖 وردي"]]],
+      noon:    ["خصّص دقائق لوردك من القرآن اليوم 📖", [["continueReading", "📖 افتح المصحف"], ["tasbih", "📿 السبحة"]]],
+      evening: ["حصّن مساءك بأذكار المساء 🌙", [["eveningAdhkar", "🌙 أذكار المساء"], ["continueReading", "📖 وردي"]]],
+      night:   ["اختم يومك بآيات من كتاب الله 🌙", [["continueReading", "📖 افتح المصحف"], ["eveningAdhkar", "🌙 أذكار المساء"]]],
+      sahar:   ["وقت السَّحَر — وقت مبارك للدعاء والاستغفار ✨", [["duas", "🤲 الأدعية"], ["continueReading", "📖 المصحف"]]]
+    }[p];
+    sub.textContent = cfg[0];
+    acts.innerHTML = cfg[1].map(function(a, i){ return '<button class="btn' + (i ? " alt" : "") + '" data-nav="' + a[0] + '">' + a[1] + '</button>'; }).join("");
+  }
+  document.getElementById("greetActions").addEventListener("click", function(e){
+    var b = e.target.closest("[data-nav]"); if (b) handleNav(b.getAttribute("data-nav"));
+  });
+
+  function renderPrayerCard(){
+    var box = document.getElementById("prayerCard"); if (!box) return;
+    if (!prayerTimesToday){
+      box.innerHTML = '<div class="prayer-head"><b>🕌 مواقيت الصلاة</b><span>القاهرة</span></div><div class="hf-meta" style="text-align:center;">جارٍ تحميل المواقيت… (تحتاج الإنترنت أول مرة كل يوم)</div>';
+      return;
+    }
+    var n = nowMin(), nx = nextPrayer(), h = '<div class="prayer-head"><b>🕌 مواقيت الصلاة</b><span>القاهرة • الهيئة المصرية</span></div><div class="prayer-row">';
+    PRAYER_NAMES.forEach(function(p){
+      var m = hmToMin(prayerTimesToday[p[0]]), cls = (nx && !nx.tomorrow && nx.key === p[0]) || (nx && nx.tomorrow && p[0] === "Fajr") ? " next" : (m <= n ? " past" : "");
+      h += '<div class="prayer-cell' + cls + '"><div class="pn">' + p[1] + '</div><div class="pt">' + to12h(prayerTimesToday[p[0]]) + '</div></div>';
+    });
+    h += '</div>';
+    if (nx) h += '<div class="prayer-next">⏳ ' + (nx.tomorrow ? 'صلاة الفجر غدًا' : 'صلاة ' + nx.name) + ' بعد ' + durText(nx.inMin) + '</div>';
+    var tip = nx && prayerSunnah(nx.key);
+    if (tip) h += '<div class="prayer-tip"><b>🌿 ' + tip.title + ':</b> <q>' + tip.text + '</q> <small>— ' + tip.ref + '</small></div>';
+    box.innerHTML = h;
+  }
+
+  // reminder at each prayer time: the prayer + one verified sunnah (foreground / app in background)
+  function checkPrayerReminders(){
+    if (!prayerTimesToday){ return; }
+    if (currentView === "home") renderPrayerCard();
+    if (!appSettings.notificationsEnabled || appSettings.prayerSunnahNotif === false) return;
+    var n = nowMin(), t = todayStr();
+    PRAYER_NAMES.forEach(function(p){
+      var m = hmToMin(prayerTimesToday[p[0]]);
+      if (n < m || n > m + 10) return;                    // within 10 minutes of the prayer time
+      var key = "pr:" + p[0] + ":" + t;
+      if (appSettings.notifLastFired[key]) return;
+      appSettings.notifLastFired[key] = true; saveSettings();
+      var tip = prayerSunnah(p[0]);
+      wirdiNotify("🕌 حان وقت صلاة " + p[1], tip ? ("🌿 " + tip.title + ": «" + tip.text + "» — " + tip.ref) : "", "prayer-" + p[0]);
+    });
+  }
+  // prayer times are now needed by the home screen, not only by the adhan option
+  if (!prayerTimesToday) fetchPrayerTimes();
+  setInterval(function(){
+    if (prayerTimesCache && prayerTimesCache.date !== todayStr()){ prayerTimesToday = null; fetchPrayerTimes(); }   // new day
+    checkPrayerReminders();
+  }, 30000);
+  document.addEventListener("visibilitychange", function(){
+    if (document.visibilityState === "visible" && currentView === "home"){ renderHello(); renderPrayerCard(); }
+  });
+  var prayerSunnahToggle = document.getElementById("prayerSunnahToggle");
+  if (prayerSunnahToggle){
+    prayerSunnahToggle.checked = appSettings.prayerSunnahNotif !== false;
+    prayerSunnahToggle.addEventListener("change", function(){ appSettings.prayerSunnahNotif = prayerSunnahToggle.checked; saveSettings(); });
+  }
+
+  // ---------------- Hifz plan page (v4 layout) ----------------
+  // Order: progress summary → today's two tasks (1 new, 2 review) → calendar → plan settings.
+  // Same data and actions (data-hf) as before; only the layout changed.
+  var AR_MONTHS = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+  function hfDate(iso){ var p = String(iso).split("-"); return toArabicIndic(+p[2]) + " " + AR_MONTHS[+p[1] - 1] + " " + toArabicIndic(+p[0]); }
+  function hfPlanText(){
+    if (hifzPlan.mode === "custom") return "ورد يومي ثابت: " + toArabicIndic(hifzPlan.amount) + " " + (hifzPlan.unit === "pages" ? "صفحة" : "آية");
+    return "خطة " + toArabicIndic(hifzPlan.span) + " يوم";
+  }
+  function renderHifzV4(){
+    var body = document.getElementById("hifzBody");
+    var t = todayStr(), nw = hifzTodayNew(hifzPlan, t), rv = hifzTodayReview(hifzPlan, t), st = hifzStats(), h = "";
+    // 1) summary
+    h += '<div class="hf-card hfv-sum">' +
+      '<div class="hfv-top"><div><div class="hfv-pct">' + toArabicIndic(st.pct) + '٪</div><div class="hf-meta">' + hfPlanText() + '</div></div>' +
+      '<div class="hfv-end"><small>الختم المتوقع</small><b>' + hfDate(st.end) + '</b></div></div>' +
+      '<div class="bar" style="margin:10px 0;"><div class="fill" style="width:' + st.pct + '%"></div></div>' +
+      '<div class="hf-stats"><div><b>' + toArabicIndic(st.left) + '</b><small>يوم متبقٍ</small></div>' +
+      '<div><b>' + toArabicIndic(st.doneAy) + '</b><small>آية من ' + toArabicIndic(st.tot) + '</small></div>' +
+      '<div><b>' + toArabicIndic(st.surahsDone) + '</b><small>سورة محفوظة</small></div></div></div>';
+    // 2) today's tasks
+    var doneCount = (nw && nw.done ? 1 : 0) + (rv.count && rv.done ? 1 : 0), taskCount = (nw ? 1 : 0) + (rv.count ? 1 : 0);
+    h += '<div class="home-sec-title">📅 مهام اليوم <span class="hfv-badge">' + toArabicIndic(doneCount) + ' / ' + toArabicIndic(taskCount) + '</span></div>';
+    h += '<div class="hf-card hfv-task' + (nw && nw.done ? " done" : "") + '"><div class="hfv-step">١</div><div class="hfv-body"><div class="hf-label">الحفظ الجديد</div>';
+    if (!nw) h += '<div class="hf-none">🎉 أتممت خطة الحفظ كاملة، بارك الله فيك</div>';
+    else {
+      h += '<div class="hf-range big"><span>' + hifzRangeText(nw.from, nw.to) + '</span></div>' +
+        '<div class="hf-meta">' + toArabicIndic(nw.to - nw.from + 1) + ' آية • حوالي ' + toArabicIndic(hifzPagesOf(nw.from, nw.to)) + ' صفحة</div>' +
+        '<div class="hf-actions"><button class="btn ghost" data-hf="open" data-from="' + nw.from + '">📖 افتح في المصحف</button>' +
+        (nw.done ? '<button class="btn ghost" data-hf="undonew">↩ تراجع</button>' : '<button class="btn primary" data-hf="donenew">✓ تم الحفظ</button>') + '</div>';
+    }
+    h += '</div></div>';
+    h += '<div class="hf-card hfv-task' + (rv.count && rv.done ? " done" : "") + '"><div class="hfv-step">٢</div><div class="hfv-body"><div class="hf-label">المراجعة</div>';
+    if (!rv.count) h += '<div class="hf-none">لا توجد مراجعة اليوم — المراجعة تبدأ بعد أول يوم حفظ</div>';
+    else {
+      if (rv.near.length) h += '<div class="hf-sub">قريبة (آخر ٧ أيام)</div>' + hifzSegHtml(rv.near);
+      if (rv.far.length) h += '<div class="hf-sub">بعيدة (دورة ٣٠ يومًا)</div>' + hifzSegHtml(rv.far);
+      h += '<div class="hf-actions">' + (rv.done ? '<button class="btn ghost" data-hf="togrev">↩ تراجع</button>' : '<button class="btn primary" data-hf="togrev">✓ تمت المراجعة</button>') + '</div>';
+    }
+    h += '</div></div>';
+    // 3) calendar
+    h += '<div class="home-sec-title">🗓 تقويم الحفظ</div><div class="hf-card">' + hifzCalendarHtml() + '</div>';
+    // 4) plan settings
+    h += '<div class="home-sec-title">⚙️ إدارة الخطة</div><div class="hf-card hfv-manage">' +
+      '<div class="hf-meta">بدأت في ' + hfDate(hifzPlan.startDate) + ' • ' + hfPlanText() + '</div>' +
+      '<div class="hf-actions"><button class="btn ghost" data-hf="edit">✏️ تعديل المدة</button><button class="btn ghost" data-hf="reset">🗑 حذف الخطة</button></div></div>';
+    body.innerHTML = h;
+  }
 
   ///WIRDI4-JS
   // ============================================================
