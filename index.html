@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-Lpwhk6uYu8upDI3LiKDMewNuOXIfyPypVEIy37M71xk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-hlqejcEUzPLpUJPLDO06uDJP5RL4kFecdmFhQJPLWII='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -497,6 +497,14 @@
   .streak-chip.cold{filter:grayscale(.6); opacity:.75;}
   .ruq-on{border-color:var(--teal); box-shadow:0 0 0 2px var(--teal-tint);}
   .ruq-rep{font-size:0.75rem; font-weight:800; color:var(--teal); background:var(--teal-tint); border-radius:99px; padding:1px 8px; margin-inline-start:6px;}
+  .qsr-summary{background:var(--teal-tint); color:var(--teal-deep); border-radius:10px; padding:10px 12px; font-size:0.85rem; font-weight:700; margin:4px 0 8px;}
+  .qsr-surah{font-weight:800; color:var(--teal-deep); font-size:0.85rem; margin:12px 2px 6px; display:flex; justify-content:space-between;}
+  .qsr-surah span{font-weight:700; color:var(--ink-soft); font-size:0.75rem;}
+  .qsr-hit{display:block; width:100%; text-align:right; margin-bottom:6px;}
+  .qsr-text{font-family:"Amiri Quran","Amiri",serif; font-size:1.05rem; line-height:2; color:var(--ink);}
+  .qsr-text mark{background:#f5d97a; color:inherit; border-radius:4px; padding:0 2px;}
+  .qsr-meta{font-size:0.72rem; color:var(--ink-soft); margin-top:4px;}
+  .mushaf-page .ayah-text.qsr-flash{background:#f5d97a88; border-radius:6px; transition:background .6s;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -570,7 +578,7 @@
       <div class="modal-head"><h2>البحث</h2><button id="closeSearch">✕</button></div>
       <div class="search-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input id="searchInput" placeholder="اسم سورة، رقمها، رقم جزء، أو كلمة من آية...">
+        <input id="searchInput" placeholder="اكتب كلمة أو جزء من آية — أو اسم سورة / رقم جزء">
       </div>
       <div class="search-results" id="searchResults"></div>
     </div>
@@ -3572,6 +3580,7 @@ const EVENING_ADHKAR = [
   });
   document.getElementById("closeSearch").addEventListener("click", function(){ document.getElementById("searchModal").hidden = true; });
   document.getElementById("searchInput").addEventListener("input", function(e){
+    if (window.__wirdiSearchDebounce) return window.__wirdiSearchDebounce(e.target.value);
     var q = e.target.value.trim();
     var results = document.getElementById("searchResults");
     if (!q){ results.innerHTML = ""; return; }
@@ -5852,6 +5861,140 @@ const EVENING_ADHKAR = [
     document.addEventListener("visibilitychange", function(){
       if (document.visibilityState === "visible" && qs.on && quranAlive() && quranCurrent) syncToCurrent();
     });
+  })();
+
+  // ---------------- Quran search (tashkeel- and Uthmani-spelling-insensitive) ----------------
+  // The old search compared the typed text with the fully vowelled Uthmani text, so "كل شيء عنده بمقدار"
+  // never matched "كُلُّ شَىْءٍ عِندَهُۥ بِمِقْدَارٍ". Both sides are now reduced to a "skeleton":
+  // no diacritics / Quranic marks, no alef or hamza forms, no spaces (Uthmani joins يَٰٓأَيُّهَا),
+  // وٰ (as in ٱلصَّلَوٰة) dropped, ى→ي, ة→ه. A map keeps each skeleton letter's position in the
+  // original text so the match can be highlighted.
+  function qsrSkeleton(s){
+    var out = "", map = [], ws = [], fresh = true;
+    for (var i = 0; i < s.length; i++){
+      var c = s[i], nx = s[i + 1];
+      if (c === " " || c === " " || c === "\n"){ fresh = true; continue; }   // word boundary
+      // small waw / yaa: inside a word they are real letters (دَاوُۥدَ، إِبْرَٰهِـۧمَ، إِۦلَٰفِ);
+      // at the end of a word they only lengthen a pronoun (عِندَهُۥ، بِهِۦ) and nobody types them
+      if (c === "ۥ" || c === "ۦ" || c === "ۧ"){
+        var k = i + 1; while (k < s.length && /[ً-ٰٟۖ-ۤۨ-ۭـ]/.test(s[k])) k++;
+        if (k >= s.length || s[k] === " " || s[k] === "\n") continue;
+        if (c === "ۥ" && out[out.length - 1] === "و") continue;   // دَاوُۥدَ is spelled داود
+        c = c === "ۥ" ? "و" : "ي";
+      }
+      if (/[ً-ٰٟۖ-ۭـ࣓-ࣿ]/.test(c)) continue;   // marks, dagger alef, tatweel
+      if (c === "و" && nx === "ٰ") continue;                                        // صلوٰة → صله
+      if (/[اأإآٱءٔ]/.test(c)) continue;                                                   // alef / hamza forms
+      if (c === "ئ") continue;
+      if (c === "ؤ") c = "و";
+      else if (c === "ى" || c === "ی") c = "ي";
+      else if (c === "ة") c = "ه";
+      if (!/[ء-ي]/.test(c)) continue;                                            // spaces, digits, punctuation
+      out += c; map.push(i); ws.push(fresh); fresh = false;
+    }
+    return { k: out, map: map, ws: ws };
+  }
+  function qsrFind(sk, qk, from){
+    var at = from;
+    while ((at = sk.k.indexOf(qk, at)) !== -1){
+      var j = at, ok = false;
+      for (var n = 0; n <= 3 && j >= 0; n++, j--){
+        if (sk.ws[j]){ ok = true; break; }
+        if ("وفبلكسي".indexOf(sk.k[j - 1]) === -1) break;
+      }
+      if (ok) return at;
+      at++;
+    }
+    return -1;
+  }
+  var qsrIndex = null;   // [{s, a, k}] built once on first search (≈ 6236 ayahs, a few ms)
+  function qsrBuild(){
+    if (qsrIndex) return qsrIndex;
+    qsrIndex = [];
+    for (var s = 1; s <= 114; s++){ var arr = QURAN_AYAHS[s - 1]; for (var a = 0; a < arr.length; a++) qsrIndex.push({ s: s, a: a + 1, sk: qsrSkeleton(arr[a]) }); }
+    return qsrIndex;
+  }
+  function qsrJuzOf(s, a){
+    for (var j = 0; j < JUZ_BOUNDS.length; j++){
+      var b = JUZ_BOUNDS[j];
+      if ((s > b[0] || (s === b[0] && a >= b[1])) && (s < b[2] || (s === b[2] && a <= b[3]))) return j + 1;
+    }
+    return 0;
+  }
+  function qsrEsc(t){ return t.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  // ayah text with every occurrence of the skeleton query highlighted
+  function qsrHighlight(text, qk){
+    var sk = qsrSkeleton(text), ranges = [], from = 0, at;
+    while ((at = qsrFind(sk, qk, from)) !== -1){
+      var st = sk.map[at], en = sk.map[at + qk.length - 1] + 1;
+      while (en < text.length && /[ً-ٰٟۖ-ۭ]/.test(text[en])) en++;   // keep the last letter's marks
+      ranges.push([st, en]); from = at + qk.length;
+    }
+    var h = "", p = 0;
+    ranges.forEach(function(r){ h += qsrEsc(text.slice(p, r[0])) + "<mark>" + qsrEsc(text.slice(r[0], r[1])) + "</mark>"; p = r[1]; });
+    return h + qsrEsc(text.slice(p));
+  }
+  // Arabic count wording: آية واحدة / آيتين / ٥ آيات / ٥٧ آية
+  function qsrCount(n, one, two, few, many){ return n === 1 ? one : n === 2 ? two : toArabicIndic(n) + " " + (n <= 10 ? few : many); }
+  var qsrState = { q: "", hits: [], shown: 0 };
+  var QSR_PAGE = 40;
+  function qsrRenderHits(results, append){
+    var hits = qsrState.hits, end = Math.min(hits.length, qsrState.shown + QSR_PAGE), h = "", lastS = append && qsrState.shown ? hits[qsrState.shown - 1].s : 0;
+    for (var i = qsrState.shown; i < end; i++){
+      var x = hits[i];
+      if (x.s !== lastS){
+        var n = qsrState.perSurah[x.s];
+        h += '<div class="qsr-surah">سورة ' + surahName(x.s) + ' <span>' + qsrCount(n, "موضع واحد", "موضعين", "مواضع", "موضعًا") + '</span></div>';
+        lastS = x.s;
+      }
+      h += '<button class="search-result qsr-hit" data-qsr="' + x.s + ',' + x.a + '"><div class="qsr-text">' + qsrHighlight(QURAN_AYAHS[x.s - 1][x.a - 1], qsrState.qk) + ' <span class="ayah-num">' + toArabicIndic(x.a) + '</span></div>' +
+        '<div class="qsr-meta">سورة ' + surahName(x.s) + ' • آية ' + toArabicIndic(x.a) + ' • صفحة ' + toArabicIndic(pageOf(x.s, x.a)) + ' • الجزء ' + toArabicIndic(qsrJuzOf(x.s, x.a)) + '</div></button>';
+    }
+    qsrState.shown = end;
+    var more = results.querySelector(".qsr-more"); if (more) more.remove();
+    results.insertAdjacentHTML("beforeend", h + (end < hits.length ? '<button class="btn ghost qsr-more" style="width:100%;">عرض المزيد (' + toArabicIndic(hits.length - end) + ')</button>' : ''));
+  }
+  function quranSearchInput(raw){
+    var q = String(raw || "").trim(), results = document.getElementById("searchResults");
+    if (!q){ results.innerHTML = ""; return; }
+    var html = "", qNum = /^\d+$/.test(q) ? parseInt(q, 10) : NaN, qk = qsrSkeleton(q).k;
+    if (qNum >= 1 && qNum <= 30) html += '<button class="search-result" data-goto-juz="' + qNum + '">جزء رقم <b>' + qNum + '</b> — الجزء ' + JUZ_ORDINALS[qNum - 1] + '</button>';
+    for (var i = 1; i <= 114; i++){
+      if (qNum === i || (qk.length >= 2 && qsrSkeleton(surahName(i)).k.indexOf(qk) !== -1))
+        html += '<button class="search-result" data-goto-surah="' + i + '">سورة <b>' + surahName(i) + '</b> (' + i + ') — ' + ayahCount(i) + ' آية</button>';
+    }
+    qsrState = { q: q, qk: qk, hits: [], shown: 0, perSurah: {} };
+    if (qk.length >= 2){
+      qsrBuild().forEach(function(x){ if (qsrFind(x.sk, qk, 0) !== -1){ qsrState.hits.push(x); qsrState.perSurah[x.s] = (qsrState.perSurah[x.s] || 0) + 1; } });
+      var nh = qsrState.hits.length, ns = Object.keys(qsrState.perSurah).length;
+      if (nh) html += '<div class="qsr-summary">🔎 «' + qsrEsc(q) + '» موجودة في <b>' + qsrCount(nh, "آية واحدة", "آيتين", "آيات", "آية") + '</b> في <b>' + qsrCount(ns, "سورة واحدة", "سورتين", "سور", "سورة") + '</b></div>';
+    }
+    results.innerHTML = html;
+    if (qsrState.hits.length) qsrRenderHits(results, false);
+    if (!results.innerHTML) results.innerHTML = '<div class="empty-state">' + (qk.length < 2 ? 'اكتب حرفين على الأقل' : 'لا توجد نتائج — جرّب كلمة أقل أو تأكد من الإملاء') + '</div>';
+  }
+  // open the mushaf on the ayah and mark it (selected = play button starts from it)
+  function qsrOpenAyah(s, a){
+    document.getElementById("searchModal").hidden = true;
+    openMushaf(pageOf(s, a), "surahs");
+    selectedAyah = { surah: s, ayah: a, verseKey: s + ":" + a };
+    setTimeout(function(){
+      markSelected(selectedAyah);
+      var el = document.querySelector('.ayah-text[data-surah="' + s + '"][data-ayah="' + a + '"]');
+      if (el){ el.classList.add("qsr-flash"); el.scrollIntoView({ block: "center" }); setTimeout(function(){ el.classList.remove("qsr-flash"); }, 2600); }
+    }, 60);
+  }
+  (function(){
+    var results = document.getElementById("searchResults"), timer = null;
+    document.getElementById("searchInput").addEventListener("keydown", function(e){ if (e.key === "Enter") e.target.blur(); });
+    results.addEventListener("click", function(e){
+      var b = e.target.closest("[data-qsr], .qsr-more, [data-goto-surah], [data-goto-juz]"); if (!b) return;
+      if (b.classList.contains("qsr-more")){ qsrRenderHits(results, true); return; }
+      if (b.hasAttribute("data-qsr")){ var p = b.getAttribute("data-qsr").split(",").map(Number); qsrOpenAyah(p[0], p[1]); return; }
+      if (b.hasAttribute("data-goto-surah")){ var no = +b.getAttribute("data-goto-surah"); document.getElementById("searchModal").hidden = true; openMushaf(pageOf(no, 1), "surahs", no); return; }
+      var idx = +b.getAttribute("data-goto-juz"); document.getElementById("searchModal").hidden = true; showView("juzdetail"); openJuzDetail(idx);
+    });
+    window.__wirdiSearchDebounce = function(v){ clearTimeout(timer); timer = setTimeout(function(){ quranSearchInput(v); }, 120); };
   })();
 
   ///WIRDI4-JS
