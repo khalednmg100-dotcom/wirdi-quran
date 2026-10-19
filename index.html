@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-G5QZF4rP1VdcWFMFMadnavJaoOXTJNjJBgP6gaPwav0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-Lpwhk6uYu8upDI3LiKDMewNuOXIfyPypVEIy37M71xk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -2806,6 +2806,8 @@ const EVENING_ADHKAR = [
     setQState("idle");
   }
   function startQueue(surah, ayah){
+    if (qsStart(surah, ayah)) return;   // whole-surah file when the reciter has ayah timings
+    qs.on = false;
     qa.gen++;
     var g = qa.gen;
     quranPlayers.forEach(function(p){ try { p.pause(); } catch(e){} p._item = null; p._prep = null; });
@@ -2843,7 +2845,7 @@ const EVENING_ADHKAR = [
   }
   quranPlayers.forEach(function(p){
     p.addEventListener("ended", function(){
-      if (p !== quranPlayers[qa.active] || qa.state !== "playing" || !quranCurrent) return;
+      if (p !== quranPlayers[qa.active] || qa.state !== "playing" || !quranCurrent || qs.on) return;
       var n = nextInSurah(quranCurrent.surah, quranCurrent.ayah);
       if (!n){
         qa.gen++;
@@ -2856,6 +2858,7 @@ const EVENING_ADHKAR = [
       advanceTo(n, qa.gen);
     });
     p.addEventListener("error", function(){
+      if (qs.on) return;   // continuous player handles its own errors
       if (p === quranPlayers[qa.active] && quranAlive() && p.src) failQueue();
     });
   });
@@ -2881,6 +2884,7 @@ const EVENING_ADHKAR = [
   }
   function stepAyah(dir){
     if (!quranCurrent) return;
+    if (qs.on){ qsStep(dir); return; }
     var t = dir > 0 ? nextInSurah(quranCurrent.surah, quranCurrent.ayah) : prevInSurah(quranCurrent.surah, quranCurrent.ayah);
     if (t) startQueue(t.surah, t.ayah);
   }
@@ -5594,12 +5598,15 @@ const EVENING_ADHKAR = [
   }
   // ---- player: one flat playlist (with repeats) from the chosen part to the end; the next ayah is
   // fetched while the current one plays and two <audio> elements alternate, so there is no gap.
-  function ruqStop(){ ruq.gen++; ruq.players.forEach(function(p){ try { p.pause(); } catch(e){} }); ruq.item = -1; ruq.all = false; ruq.paused = false; }
+  function ruqStop(){ clearInterval(ruq.tick); ruq.segEnd = Infinity; ruq.gen++; ruq.players.forEach(function(p){ try { p.pause(); } catch(e){} }); ruq.item = -1; ruq.all = false; ruq.paused = false; }
+  // one segment per part × repeat; each segment is played from the whole-surah recording between the
+  // part's first-ayah start and last-ayah end (ayah timings) on ONE <audio> element → no gap between
+  // ayahs and Android keeps it going with the screen off. No timings / offline → ayah files instead.
   function ruqPlaylist(from){
     var list = [];
     for (var i = from; i < RUQYAH_QURAN.length; i++){
       var q = RUQYAH_QURAN[i];
-      for (var r = 0; r < q.rep; r++) for (var a = q.a[0]; a <= q.a[1]; a++) list.push({ i: i, s: q.s, a: a });
+      for (var r = 0; r < q.rep; r++) list.push({ i: i, s: q.s, a0: q.a[0], a1: q.a[1] });
     }
     return list;
   }
@@ -5611,25 +5618,63 @@ const EVENING_ADHKAR = [
     if (typeof stopQuranAudio === "function") stopQuranAudio();
     if (typeof duaStop === "function") duaStop();
     ruqStop(); ruq.all = true; ruq.tab = "quran";
-    var g = ruq.gen, list = ruqPlaylist(from), pos = 0, cur = 0, ready = {};
-    function load(k){ if (k < list.length && !ready[k]) ready[k] = audioBlobUrl(ayahAudioUrl(list[k].s, list[k].a)); return ready[k]; }
+    var g = ruq.gen, list = ruqPlaylist(from), pos = 0, p = ruq.players[0];
+    ruq.active = p; ruq.segEnd = Infinity;
+    function fail(){ if (g === ruq.gen){ showToast("تعذر تشغيل التلاوة — تحتاج الإنترنت أول مرة"); ruqStop(); renderRuqyah(); } }
+    function next(){ if (g !== ruq.gen) return; ruq.segEnd = Infinity; pos++; step(); }
+    function loadSrc(src){
+      if (p.src === src && p.readyState >= 1) return Promise.resolve();
+      return new Promise(function(resolve, reject){
+        function ok(){ cleanup(); resolve(); }
+        function bad(){ cleanup(); reject(new Error("media")); }
+        function cleanup(){ p.removeEventListener("loadedmetadata", ok); p.removeEventListener("error", bad); }
+        p.addEventListener("loadedmetadata", ok); p.addEventListener("error", bad);
+        p.src = src; p.load();
+      });
+    }
+    // fallback: the segment's ayahs one file at a time (cached for offline)
+    function playAyahs(seg){
+      var a = seg.a0;
+      (function one(){
+        if (g !== ruq.gen) return;
+        if (a > seg.a1){ next(); return; }
+        audioBlobUrl(ayahAudioUrl(seg.s, a)).then(function(u){
+          if (g !== ruq.gen) return;
+          p.onended = function(){ a++; one(); };
+          p.src = u; return p.play();
+        }).catch(fail);
+      })();
+    }
     function step(){
       if (g !== ruq.gen) return;
       if (pos >= list.length){ ruqStop(); renderRuqyah(); showToast("تمت الرقية — شفاك الله وعافاك 🤍"); return; }
-      var it = list[pos];
-      if (ruq.item !== it.i){
-        ruq.item = it.i; renderRuqyah(); ruqMedia(it.i);
-        var el = document.getElementById("ruqItem" + it.i); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      var seg = list[pos];
+      if (ruq.item !== seg.i){
+        ruq.item = seg.i; renderRuqyah(); ruqMedia(seg.i);
+        var el = document.getElementById("ruqItem" + seg.i); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-      load(pos).then(function(u){
+      var read = qsReadFor();
+      if (!read || (QS_SKIP[read[0]] || []).indexOf(seg.s) !== -1){ playAyahs(seg); return; }
+      qsTiming(read, seg.s).then(function(t){
         if (g !== ruq.gen) return;
-        var p = ruq.players[cur]; cur = 1 - cur;
-        p.src = u; ruq.active = p;
-        p.onended = function(){ delete ready[pos]; pos++; step(); };
-        load(pos + 1);                                     // fetch the next ayah while this one plays
-        return p.play();
-      }).catch(function(){ if (g === ruq.gen){ showToast("تعذر تشغيل التلاوة — تحتاج الإنترنت أول مرة"); ruqStop(); renderRuqyah(); } });
+        var start = seg.a0 === 1 ? 0 : t[seg.a0][0] / 1000;
+        var end = seg.a1 === ayahCount(seg.s) ? Infinity : t[seg.a1][1] / 1000 - 0.08;   // last ayah of the surah → file end
+        return loadSrc(qsSrc(read, seg.s)).then(function(){
+          if (g !== ruq.gen) return;
+          p.onended = next;
+          p.currentTime = start; ruq.segEnd = end;
+          var nx = list[pos + 1]; if (nx && nx.s !== seg.s) qsTiming(read, nx.s).catch(function(){});
+          return p.play();
+        });
+      }).catch(function(){ if (g === ruq.gen) playAyahs(seg); });
     }
+    // end of a part inside a surah file: timeupdate (works in background) + a finer check while visible
+    p.ontimeupdate = function(){ if (g === ruq.gen && p.currentTime >= ruq.segEnd) next(); };
+    clearInterval(ruq.tick);
+    ruq.tick = setInterval(function(){
+      if (g !== ruq.gen){ clearInterval(ruq.tick); return; }
+      if (!p.paused && p.currentTime >= ruq.segEnd) next();
+    }, 100);
     ruq.restart = function(){ var i = list[Math.min(pos, list.length - 1)].i; ruqPlay(i); };
     step();
   }
@@ -5661,6 +5706,153 @@ const EVENING_ADHKAR = [
     setReciter(e.target.value);
     if (playing) ruq.restart(); else renderRuqyah();
   });
+
+  // ---------------- Continuous (whole-surah) Quran playback ----------------
+  // Per-ayah files left a gap after every ayah, and Android suspends the page in that gap when the
+  // screen is off, so playback stopped. Here each surah is ONE audio file played on ONE <audio>
+  // element; per-ayah timings (mp3quran.net ayat_timing, ms) drive highlighting / page turning /
+  // prev-next, and at the end of a surah the same element moves on to the next surah.
+  // Reciters without timing data, or no internet → the original ayah-by-ayah player (cached files).
+  // Every read below was checked for all 114 surahs: timings for ayahs 1..N in order, the audio file
+  // exists, and the last timing matches the file's length (see wirdi-dev verify notes).
+  var QS_READS = {
+    "Alafasy_128kbps": [123, "mishary-alafasy/r1"],
+    "Abdul_Basit_Murattal_192kbps": [53, "abdulbasit-abdulsamad/r3"],
+    "Abdul_Basit_Mujawwad_128kbps": [51, "abdulbasit-abdulsamad/r1"],
+    "Husary_128kbps": [118, "mahmoud-husary/r1"],
+    "Husary_128kbps_Mujawwad": [119, "mahmoud-husary/r2"],
+    "Minshawy_Murattal_128kbps": [112, "muhammad-minshawi/r1"],
+    "Mohammad_al_Tablaway_128kbps": [106, "muhammad-tablawi/r1"],
+    "Abdurrahmaan_As-Sudais_192kbps": [54, "abdulrahman-sudais/r1"],
+    "Saood_ash-Shuraym_128kbps": [31, "saud-shuraim/r1"],
+    "Maher_AlMuaiqly_64kbps": [133, "maher-muaiqly/r3"],
+    "Ghamadi_40kbps": [30, "saad-ghamdi/r1"],
+    "ahmed_ibn_ali_al_ajamy_128kbps": [5, "ahmad-ajmi/r1"],
+    "Yasser_Ad-Dussary_128kbps": [92, "yasser-dosari/r1"],
+    "Nasser_Alqatami_128kbps": [86, "nasser-qatami/r1"],
+    "Abu_Bakr_Ash-Shaatree_128kbps": [4, "abubakr-shatri/r1"],
+    "Hani_Rifai_192kbps": [89, "hani-rifai/r1"],
+    "Muhammad_Ayyoub_128kbps": [109, "muhammad-ayyub/r1"],
+    "Fares_Abbad_64kbps": [81, "fares-abbad/r1"],
+    "Ali_Jaber_64kbps": [76, "ali-jaber/r1"]
+  };
+  // surahs whose file length differs noticeably from the timing → ayah-by-ayah for safety
+  var QS_SKIP = { 4: [65, 67], 81: [66], 92: [97], 86: [78, 79, 80, 82, 83, 89, 99, 100, 101, 102, 107] };
+  var QS_TIMING_CACHE = "wirdi-timing-v1";
+  var qs = { on: false, skip: false, surah: 0, read: null, times: null, memo: {} };
+  function qsReadFor(reciter){ return QS_READS[reciter || appSettings.reciter || "Alafasy_128kbps"] || null; }
+  function qsSrc(read, surah){ return "https://cdn.mp3quran.net/audio/" + read[1] + "/" + ("00" + surah).slice(-3) + ".mp3"; }
+  // → { ayah: [startMs, endMs] } ; cached on the device (a few KB per surah)
+  function qsTiming(read, surah){
+    var url = "https://www.mp3quran.net/api/v3/ayat_timing?surah=" + surah + "&read=" + read[0], key = read[0] + ":" + surah;
+    if (qs.memo[key]) return qs.memo[key];
+    function net(cache){
+      return fetch(url).then(function(r){
+        if (!r.ok) throw new Error("http " + r.status);
+        if (cache) { try { cache.put(url, r.clone()); } catch(e){} }
+        return r.json();
+      });
+    }
+    var p = (window.caches ? caches.open(QS_TIMING_CACHE) : Promise.resolve(null)).then(function(cache){
+      if (!cache) return net(null);
+      return cache.match(url).then(function(hit){ return hit ? hit.json() : net(cache); });
+    }, function(){ return net(null); }).then(function(list){
+      var t = {}, n = 0;
+      list.forEach(function(x){ if (x.ayah >= 1){ t[x.ayah] = [x.start_time, x.end_time]; n++; } });
+      if (n !== ayahCount(surah)) throw new Error("incomplete timing");
+      return t;
+    });
+    p.catch(function(){ delete qs.memo[key]; });
+    qs.memo[key] = p;
+    return p;
+  }
+  function qsAyahAt(ms){
+    var t = qs.times, n = ayahCount(qs.surah), a = 1;
+    for (var i = 1; i <= n; i++){ if (t[i][0] <= ms + 30) a = i; else break; }
+    return a;
+  }
+  function qsSetCurrent(surah, ayah){
+    if (quranCurrent && quranCurrent.surah === surah && quranCurrent.ayah === ayah) return;
+    quranCurrent = { surah: surah, ayah: ayah, verseKey: surah + ":" + ayah };
+    qa.cur = quranCurrent;
+    qa.log.push(quranCurrent.verseKey); if (qa.log.length > 200) qa.log.shift();
+    if (document.visibilityState === "visible") syncToCurrent(); else { saveReadPos(surah, ayah); msUpdate(); }
+    if (ayah === ayahCount(surah) && surah < 114) qsTiming(qs.read, surah + 1).catch(function(){});   // ready for the next surah
+  }
+  // returns true when the continuous player took over
+  function qsStart(surah, ayah){
+    var read = qsReadFor();
+    if (qs.skip || !read || (QS_SKIP[read[0]] || []).indexOf(surah) !== -1) return false;
+    var p = quranPlayers[0];
+    // same surah already loaded → just seek (no reload, no gap)
+    if (qs.on && qs.times && qs.surah === surah && qs.read === read && p.src === qsSrc(read, surah) && quranAlive()){
+      p.currentTime = ayah <= 1 ? 0 : qs.times[ayah][0] / 1000;
+      qsSetCurrent(surah, ayah);
+      if (p.paused) resumeQuran();
+      return true;
+    }
+    qa.gen++;
+    var g = qa.gen;
+    quranPlayers.forEach(function(x){ try { x.pause(); } catch(e){} x._item = null; x._prep = null; });
+    qa.active = 0; qs.on = true; qs.surah = surah; qs.read = read; qs.times = null;
+    quranCurrent = null; qsSetCurrent(surah, ayah);
+    setQState("loading");
+    qsTiming(read, surah).then(function(times){
+      if (g !== qa.gen) return;
+      qs.times = times;
+      return new Promise(function(resolve, reject){
+        function ok(){ cleanup(); resolve(); }
+        function bad(){ cleanup(); reject(new Error("media")); }
+        function cleanup(){ p.removeEventListener("loadedmetadata", ok); p.removeEventListener("error", bad); }
+        p.addEventListener("loadedmetadata", ok);
+        p.addEventListener("error", bad);
+        p.src = qsSrc(read, surah);
+        p.load();
+      }).then(function(){
+        if (g !== qa.gen) return;
+        p.currentTime = ayah <= 1 ? 0 : times[ayah][0] / 1000;     // ayah 1: from the start (isti'adha / basmala)
+        return p.play().then(function(){ if (g === qa.gen) setQState("playing"); });
+      });
+    }).catch(function(e){
+      if (g !== qa.gen) return;
+      qsFallback(surah, ayah);
+    });
+    return true;
+  }
+  // no internet / no timing → the ayah-by-ayah player (works offline for ayahs heard before)
+  function qsFallback(surah, ayah){
+    qs.on = false;
+    qs.skip = true;
+    try { startQueue(surah, ayah); } finally { qs.skip = false; }
+  }
+  function qsStep(dir){
+    if (!qs.times || !quranCurrent) return;
+    var a = quranCurrent.ayah + dir, p = quranPlayers[0];
+    if (a < 1 || a > ayahCount(qs.surah)) return;
+    p.currentTime = qs.times[a][0] / 1000;
+    qsSetCurrent(qs.surah, a);
+  }
+  (function(){
+    var p = quranPlayers[0];
+    p.addEventListener("timeupdate", function(){
+      if (!qs.on || !qs.times || qa.state !== "playing") return;
+      qsSetCurrent(qs.surah, qsAyahAt(p.currentTime * 1000));
+    });
+    p.addEventListener("ended", function(){
+      if (!qs.on || qa.state !== "playing") return;
+      if (qs.surah < 114) qsStart(qs.surah + 1, 1);                  // keep going: next surah, same element
+      else { qa.gen++; qs.on = false; clearAyahHighlight(); setQState("completed"); showToast("صدق الله العظيم — تمت التلاوة 🤍"); setQState("idle"); }
+    });
+    p.addEventListener("error", function(){
+      if (!qs.on || !quranAlive() || !qs.times) return;                // load errors are handled in qsStart
+      var c = quranCurrent; qa.gen++;
+      if (c) qsFallback(c.surah, c.ayah);
+    });
+    // back on screen: jump the page / highlight to where the recitation is now
+    document.addEventListener("visibilitychange", function(){
+      if (document.visibilityState === "visible" && qs.on && quranAlive() && quranCurrent) syncToCurrent();
+    });
+  })();
 
   ///WIRDI4-JS
   // ============================================================
