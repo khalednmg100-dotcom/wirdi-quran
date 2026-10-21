@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-nkmnH+t3Ja3V8/qnxBEuouWAq68GJrgvaLAMFQLyIxM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-ciWm26nKRrSq9LujDjaklwK4h7KKisDuQxgoCo3ycYA='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -611,6 +611,10 @@
   .dua-amira .da-actions{display:flex; gap:8px; justify-content:center;}
   .dua-amira .da-actions .btn{min-width:110px;}
   @keyframes daIn{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:none;}}
+  /* ===== full lines to the edges (printed mushaf) ===== */
+  .mushaf-page .surah-run{text-align:justify;}
+  .mushaf-page.mp-full .surah-run{text-align-last:justify;}
+  .mushaf-page .bismillah, .mushaf-page .surah-title-break{text-align-last:center;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -2697,8 +2701,10 @@ const EVENING_ADHKAR = [
     var viewport = document.getElementById("mushafViewport");
     var containerH = viewport.clientHeight;
     if (!containerH) return;
+    if (typeof mpFitCached === "function" && mpFitCached(content, containerH)) return;   // remembered layout
     var prevOverflow = content.style.overflow;
     content.style.overflow = "hidden";
+    content.style.wordSpacing = ""; content.classList.remove("mp-full");   // measure the plain layout
     var lo = 8, hi = 34, best = lo;
     content.style.fontSize = lo + "px";
     if (content.scrollHeight <= containerH){
@@ -2718,6 +2724,8 @@ const EVENING_ADHKAR = [
     }
     content.style.overflow = prevOverflow || "";
     content.classList.toggle("zoomed", content.scrollHeight > containerH + 2);
+    if (typeof mpBalance === "function") mpBalance(content, containerH);
+    if (typeof mpFitSave === "function") mpFitSave(content, containerH);
   }
 
   function renderMushafPage(){
@@ -6375,6 +6383,122 @@ const EVENING_ADHKAR = [
     if (rng) rng.addEventListener("input", function(){ mqSetZoom(+rng.value / 100, false); });
     mqApplyScale();
   })();
+  // ---- full last line, like the printed mushaf ----
+  // Every line of a printed page runs edge to edge, including the last one. After the page is fitted,
+  // if its last line is short, try slightly smaller sizes (≤ ~10%) and keep the one whose last line is
+  // fullest; then the last line is justified to both edges (class mp-full).
+  function mpLastFill(content){
+    var runs = content.querySelectorAll(".surah-run"); if (!runs.length) return 1;
+    var run = runs[runs.length - 1], rng = document.createRange(), rects = [];
+    var spans = run.querySelectorAll(".ayah-text, .ayah-num");
+    Array.prototype.slice.call(spans, -12).forEach(function(s){
+      rng.selectNodeContents(s); var rs = rng.getClientRects();
+      for (var i = 0; i < rs.length; i++) if (rs[i].width > 0) rects.push(rs[i]);
+    });
+    if (!rects.length) return 1;
+    // group by the middle of each box: the ayah-number circle sits a little lower than the words
+    var mid = function(r){ return (r.top + r.bottom) / 2; }, lh = parseFloat(getComputedStyle(content).fontSize) * 2.15;
+    var maxMid = Math.max.apply(null, rects.map(mid));
+    var line = rects.filter(function(r){ return mid(r) > maxMid - lh * 0.5; });
+    var left = Math.min.apply(null, line.map(function(r){ return r.left; })), right = Math.max.apply(null, line.map(function(r){ return r.right; }));
+    return (right - left) / run.getBoundingClientRect().width;
+  }
+  // every combination of extra word spacing (0–0.3em) and a slightly smaller size (0–8%), smallest change first
+  var MP_TRIES = (function(){
+    var t = [];
+    for (var w = 0; w <= 5; w++) for (var k = 0; k <= 10; k++) if (w || k) t.push([w * 0.06, k, w + k * 0.75]);
+    return t.sort(function(x, y){ return x[2] - y[2]; });
+  })();
+  function mpBalance(content, containerH){
+    content.classList.remove("mp-full");
+    content.style.wordSpacing = "";
+    if (!content.classList.contains("zoomed")){
+      var f0 = parseFloat(content.style.fontSize), best = { f: f0, ws: 0 }, bestFill = mpLastFill(content);
+      for (var i = 0; i < MP_TRIES.length && bestFill < 0.85; i++){
+        var ws = MP_TRIES[i][0], f = Math.round(f0 * (1 - 0.008 * MP_TRIES[i][1]) * 10) / 10;
+        content.style.fontSize = f + "px"; content.style.wordSpacing = ws ? ws.toFixed(2) + "em" : "";
+        if (content.scrollHeight > containerH) continue;
+        var fill = mpLastFill(content);
+        if (fill > bestFill + 0.02){ bestFill = fill; best = { f: f, ws: ws }; }
+      }
+      content.style.fontSize = best.f + "px";
+      content.style.wordSpacing = best.ws ? best.ws.toFixed(2) + "em" : "";
+    }
+    content.classList.add("mp-full");
+  }
+
+  // ---- remember each page's final layout on this device (size, word spacing) → later visits are instant ----
+  var MP_STORE = "wirdi4-mp-fit-v3", mpFit = loadJSON(MP_STORE, {}), mpSaveT = null;
+  function mpKey(page, w, h){ return page + "|" + w + "x" + h + "|" + (mushafZoom || 1); }
+  function mpFitCached(content, containerH){
+    if (!mushafFontsReady) return false;
+    var key = mpKey(mushafPageNum, content.clientWidth, containerH), r = mpFit[key]; if (!r) return false;
+    content.style.fontSize = r.f + "px";
+    content.style.wordSpacing = r.ws ? r.ws + "em" : "";
+    content.classList.toggle("zoomed", !!r.z);
+    content.classList.add("mp-full");
+    if (content.scrollHeight > containerH + 2 && !r.z){ delete mpFit[key]; return false; }   // stale → recompute
+    return true;
+  }
+  function mpStore(page, content, containerH){
+    if (!mushafFontsReady) return;
+    mpFit[mpKey(page, content.clientWidth, containerH)] = { f: parseFloat(content.style.fontSize), ws: parseFloat(content.style.wordSpacing) || 0, z: content.classList.contains("zoomed") ? 1 : 0 };
+    clearTimeout(mpSaveT); mpSaveT = setTimeout(function(){ saveJSON(MP_STORE, mpFit); }, 1500);
+  }
+  function mpFitSave(content, containerH){ mpStore(mushafPageNum, content, containerH); mpPrefetchSoon(); }
+
+  // ---- prepare the next / previous page while the reader is on this one ----
+  // Same markup and the same fitting steps as the visible page, done on an invisible copy of the same size.
+  function mpPageHtml(p){
+    var pg = MUSHAF_PAGES[p - 1], names = [], html = "";
+    pg.r.forEach(function(run){
+      var s = run[0], nm = surahName(s); if (names.indexOf(nm) === -1) names.push(nm);
+      html += '<div class="surah-run">';
+      if (run[1] === 1){ html += '<span class="surah-title-break">سورة ' + nm + '</span>'; if (s !== 1 && s !== 9) html += '<div class="bismillah">' + BISMILLAH + '</div>'; }
+      for (var a = run[1]; a <= run[2]; a++) html += '<span class="ayah-text">' + QURAN_AYAHS[s - 1][a - 1] + '</span> <span class="ayah-num">' + toArabicIndic(a) + '</span> ';
+      html += '</div>';
+    });
+    var q = ["", "¼ ", "½ ", "¾ "][(pg.hq - 1) % 4];
+    return '<div class="mp-head"><span class="mp-surah">سورة ' + names.join(" • ") + '</span><span class="mp-juz">الجزء ' + JUZ_ORDINALS[pg.j - 1] + ' • ' + q + 'الحزب ' + toArabicIndic(Math.ceil(pg.hq / 4)) + '</span></div>' +
+      html + '<div class="mp-foot"><span>' + toArabicIndic(pg.p) + '</span></div>';
+  }
+  function mpLayout(content, containerH){
+    content.style.wordSpacing = ""; content.classList.remove("mp-full", "zoomed"); content.style.overflow = "hidden";
+    var lo = 8, hi = 34, best = lo;
+    content.style.fontSize = lo + "px";
+    if (content.scrollHeight <= containerH){
+      for (var i = 0; i < 10; i++){ var mid = (lo + hi) / 2; content.style.fontSize = mid + "px"; if (content.scrollHeight <= containerH){ best = mid; lo = mid; } else hi = mid; }
+    }
+    var f = clamp(Math.round(best * (mushafZoom || 1) * 10) / 10, 8, 90), guard = 0;
+    content.style.fontSize = f + "px";
+    while ((mushafZoom || 1) <= 1 && content.scrollHeight > containerH && f > 8 && guard < 60){ f = Math.max(8, f - 0.3); content.style.fontSize = f + "px"; guard++; }
+    content.style.overflow = "";
+    content.classList.toggle("zoomed", content.scrollHeight > containerH + 2);
+    mpBalance(content, containerH);
+  }
+  var mpPrefetchT = null;
+  function mpPrefetchSoon(){
+    clearTimeout(mpPrefetchT);
+    mpPrefetchT = setTimeout(function(){
+      if (window.requestIdleCallback) requestIdleCallback(mpPrefetch, { timeout: 1500 }); else setTimeout(mpPrefetch, 1);
+    }, 600);
+  }
+  function mpPrefetch(){
+    if (currentView !== "mushaf" || !mushafFontsReady) return;
+    var vp = document.getElementById("mushafViewport"), real = document.getElementById("mushafPageContent");
+    var w = real.clientWidth, h = vp.clientHeight; if (!w || !h) return;
+    [mushafPageNum + 1, mushafPageNum - 1].forEach(function(p){
+      if (p < 1 || p > 604 || mpFit[mpKey(p, w, h)]) return;
+      var box = document.createElement("div");
+      box.style.cssText = "position:fixed; left:-10000px; top:0; visibility:hidden; pointer-events:none; width:" + vp.clientWidth + "px; height:" + h + "px;";
+      var page = document.createElement("div");
+      page.className = "mushaf-page"; page.style.width = real.offsetWidth + "px";
+      page.innerHTML = mpPageHtml(p);
+      box.appendChild(page); document.body.appendChild(box);
+      try { mpLayout(page, h); if (page.clientWidth === w) mpStore(p, page, h); } catch(e){}
+      box.remove();
+    });
+  }
 
   // ---------------- Hourly reminder: make dua for Amira Hamed Abdel-Fattah (alive, may Allah preserve her) ----------------
   // App open → a gentle card at the bottom once an hour (آمين closes it). App in the background → a notification.
