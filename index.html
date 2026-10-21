@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-+wOV+yJfKwbUfG0wnwCJB16seoT9cGcz+HmTKR12l6E='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-nkmnH+t3Ja3V8/qnxBEuouWAq68GJrgvaLAMFQLyIxM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -601,6 +601,16 @@
   .mushaf-page .mp-foot span{display:inline-block; min-width:2.4em; font-family:"Amiri",serif; font-weight:700; font-size:0.85rem; color:#8A6A1F; border:1px solid #CDB677; border-radius:99px; padding:3px 10px;}
   .mushaf-page.zoomed .mp-head{margin-bottom:8px;}
   .mushaf-page.zoomed .mp-foot{margin-top:12px;}
+  /* ===== hourly dua reminder card ===== */
+  .dua-amira{position:fixed; left:12px; right:12px; bottom:calc(var(--bottom-bar-h, 0px) + 12px); max-width:560px; margin:0 auto; z-index:60;
+    background:var(--paper-2); border:1px solid var(--gold); border-radius:16px; padding:14px 14px 12px; box-shadow:0 8px 28px rgba(0,0,0,.18);
+    animation:daIn .35s ease; text-align:center;}
+  .dua-amira.out{opacity:0; transform:translateY(16px); transition:all .3s ease;}
+  .dua-amira .da-title{font-weight:800; color:var(--gold); font-size:0.9rem;}
+  .dua-amira .da-text{font-family:"Amiri",serif; font-size:1.15rem; line-height:1.9; color:var(--ink); margin:6px 0 10px;}
+  .dua-amira .da-actions{display:flex; gap:8px; justify-content:center;}
+  .dua-amira .da-actions .btn{min-width:110px;}
+  @keyframes daIn{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:none;}}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -973,6 +983,10 @@
       <div class="settings-row"><label>وقت أذكار الصباح</label><input type="time" id="morningTimeInput"></div>
       <div class="settings-row"><label>وقت أذكار المساء</label><input type="time" id="eveningTimeInput"></div>
       <div class="settings-row"><label>وقت الورد اليومي</label><input type="time" id="wirdTimeInput"></div>
+      <div class="settings-row">
+        <div><label>🤍 تذكير بالدعاء لأميرة حامد</label><span class="hint">رسالة كل ساعة فيها دعاء لها (والتطبيق مفتوح، أو إشعار لو التنبيهات مفعّلة)</span></div>
+        <label class="switch"><input type="checkbox" id="duaRemindToggle"><span class="slider"></span></label>
+      </div>
       <div class="settings-row" id="dailyReminderHint"><div><label>🔥 تذكير السلسلة</label><span class="hint">لو ما فتحتش التطبيق طول اليوم، يوصلك تذكير لطيف بعد العصر عشان ماتخسرش سلسلتك. يشتغل على أندرويد لما تكون التنبيهات مفعّلة والتطبيق متثبت (كروم بيحدد الوقت بالظبط).</span></div></div>
     </div>
 
@@ -5485,7 +5499,8 @@ const EVENING_ADHKAR = [
   function reminderEnabled(){ return !!appSettings.notificationsEnabled && ("Notification" in window) && Notification.permission === "granted"; }
   function syncReminderMeta(){
     if (!window.caches) return;
-    var meta = { lastVisit: todayStr(), streak: visitStreak(), enabled: reminderEnabled(), hour: 17 };
+    var meta = { lastVisit: todayStr(), streak: visitStreak(), enabled: reminderEnabled(), hour: 17,
+      duaOn: typeof duaRemindOn === "function" ? duaRemindOn() : true, duaAt: typeof duaLast === "function" ? duaLast() : 0 };
     caches.open("wirdi-meta").then(function(c){
       return c.put("meta.json", new Response(JSON.stringify(meta), { headers: { "Content-Type": "application/json" } }));
     }).catch(function(){});
@@ -5494,7 +5509,7 @@ const EVENING_ADHKAR = [
       if (!reg.periodicSync) return;
       if (!meta.enabled){ reg.periodicSync.unregister("wirdi-daily").catch(function(){}); return; }
       return navigator.permissions.query({ name: "periodic-background-sync" }).then(function(st){
-        if (st.state === "granted") return reg.periodicSync.register("wirdi-daily", { minInterval: 6 * 60 * 60 * 1000 });
+        if (st.state === "granted") return reg.periodicSync.register("wirdi-daily", { minInterval: 60 * 60 * 1000 });
       });
     }).catch(function(){});
   }
@@ -6360,6 +6375,59 @@ const EVENING_ADHKAR = [
     if (rng) rng.addEventListener("input", function(){ mqSetZoom(+rng.value / 100, false); });
     mqApplyScale();
   })();
+
+  // ---------------- Hourly reminder: make dua for Amira Hamed Abdel-Fattah (alive, may Allah preserve her) ----------------
+  // App open → a gentle card at the bottom once an hour (آمين closes it). App in the background → a notification.
+  // App closed → sw.js shows it on Chrome's periodic sync (Chrome decides how often; not exactly hourly).
+  var DUA_AMIRA = [
+    "اللهم احفظها بحفظك، وبارك في عمرها وصحتها، وألبسها ثوب العافية",
+    "اللهم اشفها وعافها، واجعل القرآن ربيع قلبها ونور صدرها",
+    "اللهم ارزقها السعادة في الدنيا والآخرة، وتقبّل منها صالح الأعمال",
+    "اللهم اغفر لها وارحمها، وأطل عمرها في طاعتك، وأحسن خاتمتها",
+    "اللهم اجعل هذا التطبيق في ميزان حسناتها، وأجرًا لا ينقطع لها",
+    "اللهم أسعد قلبها، واقضِ حوائجها، واكفها ما أهمّها",
+    "اللهم ارزقها الفردوس الأعلى من الجنة بغير حساب ولا سابقة عذاب",
+    "اللهم بارك لها في رزقها وأهلها، واجعلها من أهل القرآن"
+  ];
+  var STORE_DUA_LAST = "wirdi4-dua-last", DUA_EVERY_MS = 60 * 60 * 1000;
+  function duaRemindOn(){ return appSettings.duaRemind !== false; }
+  function duaLast(){ try { return +localStorage.getItem(STORE_DUA_LAST) || 0; } catch(e){ return 0; } }
+  function duaMark(){ try { localStorage.setItem(STORE_DUA_LAST, String(Date.now())); } catch(e){} }
+  function duaPick(){ return DUA_AMIRA[Math.floor(Date.now() / DUA_EVERY_MS) % DUA_AMIRA.length]; }
+  function duaShowCard(){
+    var old = document.getElementById("duaAmiraCard"); if (old) old.remove();
+    var c = document.createElement("div");
+    c.id = "duaAmiraCard"; c.className = "dua-amira"; c.setAttribute("role", "status");
+    c.innerHTML = '<div class="da-title">🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح</div><div class="da-text">' + duaPick() + '</div>' +
+      '<div class="da-actions"><button class="btn primary" data-da="amen">آمين 🤍</button><button class="btn ghost" data-da="later">لاحقًا</button></div>';
+    c.addEventListener("click", function(e){
+      var b = e.target.closest("[data-da]"); if (!b) return;
+      if (b.getAttribute("data-da") === "amen") showToast("تقبّل الله دعاءك 🤍");
+      c.classList.add("out"); setTimeout(function(){ c.remove(); }, 300);
+    });
+    document.body.appendChild(c);
+    setTimeout(function(){ if (c.isConnected){ c.classList.add("out"); setTimeout(function(){ c.remove(); }, 300); } }, 45000);
+  }
+  function duaCheck(){
+    if (!duaRemindOn() || Date.now() - duaLast() < DUA_EVERY_MS) return;
+    var splash = document.getElementById("splashScreen");
+    if (document.visibilityState === "visible"){
+      if (splash && splash.isConnected && !splash.hidden && getComputedStyle(splash).display !== "none") return;   // not over the splash
+      duaMark(); duaShowCard();
+    } else if (appSettings.notificationsEnabled){
+      duaMark(); wirdiNotify("🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", duaPick(), "dua-amira");
+    }
+  }
+  // first reminder a little after opening (not on the very first launch), then every hour
+  if (!duaLast()) duaMark();
+  setTimeout(duaCheck, 8000);
+  setInterval(duaCheck, 60000);
+  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") setTimeout(duaCheck, 1500); });
+  var duaToggle = document.getElementById("duaRemindToggle");
+  if (duaToggle){
+    duaToggle.checked = duaRemindOn();
+    duaToggle.addEventListener("change", function(){ appSettings.duaRemind = duaToggle.checked; saveSettings(); if (typeof syncReminderMeta === "function") syncReminderMeta(); });
+  }
 
   ///WIRDI4-JS
   // ============================================================

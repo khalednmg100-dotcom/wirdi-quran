@@ -1,4 +1,4 @@
-const CACHE_NAME = "wirdi-cache-v7";
+const CACHE_NAME = "wirdi-cache-v8";
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", function(event) {
@@ -26,10 +26,35 @@ self.addEventListener("activate", function(event) {
 // up and the user hasn't opened the app today (after `hour`), show ONE gentle reminder for the day.
 function arDigits(n) { return String(n).replace(/\d/g, function(d) { return "٠١٢٣٤٥٦٧٨٩"[d]; }); }
 function dayKey(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+// Dua reminder for Amira Hamed Abdel-Fattah (alive): at most once an hour, 8:00–23:00 (same list as the page).
+var DUA_AMIRA = [
+  "اللهم احفظها بحفظك، وبارك في عمرها وصحتها، وألبسها ثوب العافية",
+  "اللهم اشفها وعافها، واجعل القرآن ربيع قلبها ونور صدرها",
+  "اللهم ارزقها السعادة في الدنيا والآخرة، وتقبّل منها صالح الأعمال",
+  "اللهم اغفر لها وارحمها، وأطل عمرها في طاعتك، وأحسن خاتمتها",
+  "اللهم اجعل هذا التطبيق في ميزان حسناتها، وأجرًا لا ينقطع لها",
+  "اللهم أسعد قلبها، واقضِ حوائجها، واكفها ما أهمّها",
+  "اللهم ارزقها الفردوس الأعلى من الجنة بغير حساب ولا سابقة عذاب",
+  "اللهم بارك لها في رزقها وأهلها، واجعلها من أهل القرآن"
+];
+function duaCheck(c, m) {
+  var now = Date.now(), h = new Date().getHours();
+  if (m.duaOn === false || now - (m.duaAt || 0) < 3600000 || h < 8 || h >= 23) return Promise.resolve();
+  m.duaAt = now;
+  return c.put("meta.json", new Response(JSON.stringify(m), { headers: { "Content-Type": "application/json" } })).then(function() {
+    return self.registration.showNotification("🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", { body: DUA_AMIRA[Math.floor(now / 3600000) % DUA_AMIRA.length], icon: "icon-192.png", badge: "icon-192.png", tag: "dua-amira", lang: "ar", dir: "rtl", data: { url: "./" } });
+  });
+}
 function dailyCheck() {
   return caches.open("wirdi-meta").then(function(c) {
     return c.match("meta.json").then(function(r) { return r ? r.json() : null; }).then(function(m) {
       if (!m || !m.enabled) return;
+      return duaCheck(c, m).then(function() { return streakCheck(c, m); });
+    });
+  }).catch(function() {});
+}
+function streakCheck(c, m) {
+    return Promise.resolve().then(function() {
       var now = new Date(), today = dayKey(now), y = new Date(now); y.setDate(y.getDate() - 1);
       if (m.lastVisit === today || m.notified === today || now.getHours() < (m.hour || 17) || now.getHours() >= 23) return;
       var alive = m.lastVisit === dayKey(y) && m.streak > 0, title, body;
@@ -48,7 +73,6 @@ function dailyCheck() {
         return self.registration.showNotification(title, { body: body, icon: "icon-192.png", badge: "icon-192.png", tag: "wirdi-daily", lang: "ar", dir: "rtl", data: { url: "./" } });
       });
     });
-  }).catch(function() {});
 }
 self.addEventListener("periodicsync", function(event) {
   if (event.tag === "wirdi-daily") event.waitUntil(dailyCheck());
