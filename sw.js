@@ -1,5 +1,5 @@
-const CACHE_NAME = "wirdi-cache-v8";
-const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
+const CACHE_NAME = "wirdi-cache-v9";
+const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./fonts/UthmanicHafs.woff2"];
 
 self.addEventListener("install", function(event) {
   event.waitUntil(
