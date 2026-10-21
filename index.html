@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-jRiK/8xBJvO45P2WbK+x5uWGIRKZNpDo1BAGjPcS33A='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-+wOV+yJfKwbUfG0wnwCJB16seoT9cGcz+HmTKR12l6E='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -594,6 +594,13 @@
   .qsr-text{font-size:calc(1.05rem * var(--quran-scale, 1));}
   .ayah-sheet-text{font-size:calc(1.25rem * var(--quran-scale, 1));}
   .size-range{width:100%; accent-color:var(--teal);}
+  /* ===== printed-mushaf frame inside the page ===== */
+  .mushaf-page .mp-head{display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-family:"Amiri",serif; font-weight:700; font-size:0.8rem; line-height:1.6; color:#8A6A1F; border-bottom:1px solid #D9C9A0; padding:0 2px 4px; margin-bottom:auto;}
+  .mushaf-page .mp-head .mp-surah{color:#094B41;}
+  .mushaf-page .mp-foot{text-align:center; margin-top:auto; padding-top:6px; line-height:1;}
+  .mushaf-page .mp-foot span{display:inline-block; min-width:2.4em; font-family:"Amiri",serif; font-weight:700; font-size:0.85rem; color:#8A6A1F; border:1px solid #CDB677; border-radius:99px; padding:3px 10px;}
+  .mushaf-page.zoomed .mp-head{margin-bottom:8px;}
+  .mushaf-page.zoomed .mp-foot{margin-top:12px;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -2720,7 +2727,10 @@ const EVENING_ADHKAR = [
       }
       html += '</div>';
     });
-    document.getElementById("mushafPageContent").innerHTML = html;
+    var mpHq = (pg.hq - 1) % 4, mpQuarter = ["", "¼ ", "½ ", "¾ "][mpHq];
+    var mpHead = '<div class="mp-head"><span class="mp-surah">سورة ' + surahNames.join(" • ") + '</span><span class="mp-juz">الجزء ' + JUZ_ORDINALS[pg.j - 1] + ' • ' + mpQuarter + 'الحزب ' + toArabicIndic(Math.ceil(pg.hq / 4)) + '</span></div>';
+    var mpFoot = '<div class="mp-foot"><span>' + toArabicIndic(pg.p) + '</span></div>';
+    document.getElementById("mushafPageContent").innerHTML = mpHead + html + mpFoot;
     document.getElementById("mushafSurahLine").textContent = surahNames.join(" • ");
 
     var hqIdx = (pg.hq - 1) % 4;
