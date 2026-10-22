@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LKWOPx4TQiYapIvx3yrjFxy1IXo6J2o7S/1o+OVWXp0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-+Gnw4w+fKXYHGHQ0NohNt8YXTblvs7YlyziQCBbGyto='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -619,6 +619,12 @@
   /* ===== official King Fahd Complex (KFGQPC) Hafs font — pairs with the KFGQPC Quran text ===== */
   @font-face{font-family:"KFGQPC Hafs"; src:url("fonts/UthmanicHafs.woff2") format("woff2"); font-display:swap;}
   .mushaf-page{font-weight:normal;}
+  /* ===== ruqyah mini player (shown on other pages while the ruqyah plays) ===== */
+  .ruq-mini{position:fixed; left:12px; right:12px; bottom:calc(var(--bottom-bar-h, 0px) + 10px); max-width:560px; margin:0 auto; z-index:55;
+    display:flex; align-items:center; gap:8px; background:var(--teal-deep); color:#fff; border-radius:99px; padding:8px 8px 8px 14px; box-shadow:0 6px 18px rgba(0,0,0,.2); cursor:pointer;}
+  .ruq-mini[hidden]{display:none;}
+  .ruq-mini .rm-t{flex:1; min-width:0; font-weight:700; font-size:0.82rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .ruq-mini .rm-b{flex:none; width:34px; height:34px; border-radius:50%; border:none; background:rgba(255,255,255,.18); color:#fff; font-size:0.9rem;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -2393,7 +2399,6 @@ const EVENING_ADHKAR = [
     if (currentView === "story" && name !== "story" && typeof storyLeave === "function") storyLeave();
     if (currentView === "reels" && name !== "reels" && typeof reelStop === "function") reelStop();
     if (currentView === "duas" && name !== "duas" && typeof duaStop === "function") duaStop();
-    if (currentView === "ruqyah" && name !== "ruqyah" && typeof ruqStop === "function") ruqStop();
     VIEW_IDS.forEach(function(v){
       var el = document.getElementById("view-"+v);
       if (el) el.hidden = (v !== name);
@@ -5392,8 +5397,10 @@ const EVENING_ADHKAR = [
     ["Husary_128kbps", "محمود خليل الحصري (مرتل)"],
     ["Husary_128kbps_Mujawwad", "محمود خليل الحصري (مجود)"],
     ["Minshawy_Murattal_128kbps", "محمد صديق المنشاوي (مرتل)"],
-    ["Minshawy_Mujawwad_192kbps", "محمد صديق المنشاوي (مجود)"],
     ["Mohammad_al_Tablaway_128kbps", "محمد محمود الطبلاوي"],
+    ["Mustafa_Ismail_48kbps", "مصطفى إسماعيل (مجود)"],
+    ["mahmoud_ali_al_banna_32kbps", "محمود علي البنا (مجود)"],
+    ["Ahmed_Neana_128kbps", "أحمد نعينع"],
     ["Abdurrahmaan_As-Sudais_192kbps", "عبد الرحمن السديس"],
     ["Saood_ash-Shuraym_128kbps", "سعود الشريم"],
     ["Maher_AlMuaiqly_64kbps", "ماهر المعيقلي"],
@@ -5404,10 +5411,11 @@ const EVENING_ADHKAR = [
     ["Abu_Bakr_Ash-Shaatree_128kbps", "أبو بكر الشاطري"],
     ["Hani_Rifai_192kbps", "هاني الرفاعي"],
     ["Muhammad_Ayyoub_128kbps", "محمد أيوب"],
-    ["Muhammad_Jibreel_128kbps", "محمد جبريل"],
     ["Fares_Abbad_64kbps", "فارس عباد"],
     ["Ali_Jaber_64kbps", "علي جابر"]
   ];
+  // a reciter that was removed from the list (no ayah timings → recitation with gaps) → back to the default
+  if (appSettings.reciter && !QURAN_RECITERS.some(function(r){ return r[0] === appSettings.reciter; })){ appSettings.reciter = QURAN_RECITERS[0][0]; saveSettings(); }
   function currentReciter(){
     var id = appSettings.reciter;
     return QURAN_RECITERS.filter(function(r){ return r[0] === id; })[0] || QURAN_RECITERS[0];
@@ -5820,6 +5828,7 @@ const EVENING_ADHKAR = [
       if (!read || (QS_SKIP[read[0]] || []).indexOf(seg.s) !== -1){ playAyahs(seg); return; }
       qsTiming(read, seg.s).then(function(t){
         if (g !== ruq.gen) return;
+        if (!t.complete){ playAyahs(seg); return; }   // the ruqyah needs exact ayah boundaries
         var start = seg.a0 === 1 ? 0 : t[seg.a0][0] / 1000;
         var end = seg.a1 === ayahCount(seg.s) ? Infinity : t[seg.a1][1] / 1000 - 0.08;   // last ayah of the surah → file end
         return loadSrc(qsSrc(read, seg.s)).then(function(){
@@ -5869,6 +5878,56 @@ const EVENING_ADHKAR = [
     setReciter(e.target.value);
     if (playing) ruq.restart(); else renderRuqyah();
   });
+  // ---- the ruqyah keeps playing when you move to another page: a small bar at the bottom + lock-screen controls ----
+  function ruqMiniRender(){
+    var bar = document.getElementById("ruqMini");
+    var show = ruq.all && ruq.item !== -1 && currentView !== "ruqyah";
+    if (!show){ if (bar) bar.hidden = true; return; }
+    if (!bar){
+      bar = document.createElement("div"); bar.id = "ruqMini"; bar.className = "ruq-mini";
+      bar.addEventListener("click", function(e){
+        var b = e.target.closest("[data-rm]");
+        if (b && b.getAttribute("data-rm") === "pause"){ ruqPauseToggle(); ruqMiniRender(); return; }
+        if (b && b.getAttribute("data-rm") === "stop"){ ruqStop(); renderRuqyah(); ruqMiniRender(); return; }
+        handleNav("ruqyah");
+      });
+      document.body.appendChild(bar);
+    }
+    bar.hidden = false;
+    bar.innerHTML = '<span class="rm-t">🛡️ الرقية: ' + RUQYAH_QURAN[ruq.item].t + '</span>' +
+      '<button class="rm-b" data-rm="pause" aria-label="إيقاف مؤقت / متابعة">' + (ruq.paused ? "▶" : "⏸") + '</button>' +
+      '<button class="rm-b" data-rm="stop" aria-label="إيقاف">⏹</button>';
+  }
+  // lock screen / headphones: while the ruqyah plays, the media keys control it; afterwards they go back to the mushaf
+  function ruqMediaKeys(on){
+    if (!("mediaSession" in navigator)) return;
+    var set = function(a, f){ try { navigator.mediaSession.setActionHandler(a, f); } catch(e){} };
+    if (on){
+      set("play", function(){ if (ruq.paused) ruqPauseToggle(); ruqMiniRender(); });
+      set("pause", function(){ if (!ruq.paused) ruqPauseToggle(); ruqMiniRender(); });
+      set("stop", function(){ ruqStop(); renderRuqyah(); ruqMiniRender(); });
+      set("previoustrack", null); set("nexttrack", null);
+    } else {
+      set("play", function(){ if (qa.state === "paused") resumeQuran(); });
+      set("pause", pauseQuran);
+      set("stop", stopQuranAudio);
+      set("previoustrack", function(){ stepAyah(-1); });
+      set("nexttrack", function(){ stepAyah(1); });
+    }
+  }
+  (function(){
+    // re-render the bar whenever the ruqyah state or the page changes (MutationObserver on the ruqyah body + view switches)
+    var body = document.getElementById("ruqyahBody");
+    new MutationObserver(function(){ ruqMiniRender(); }).observe(body, { childList: true });
+    document.querySelectorAll("main.view").forEach(function(v){ new MutationObserver(function(){ ruqMiniRender(); }).observe(v, { attributes: true, attributeFilter: ["hidden"] }); });
+    var _stop = ruqStop, _play = ruqPlay;
+    ruqStop = function(){ var was = ruq.all; _stop(); if (was) ruqMediaKeys(false); };
+    ruqPlay = function(from){ _play(from); ruqMediaKeys(true); };
+    // starting the mushaf recitation or a dua stops the ruqyah (never two voices at once)
+    var _sq = startQueue;
+    startQueue = function(s, a){ if (ruq.all){ ruqStop(); renderRuqyah(); } return _sq(s, a); };
+    if (typeof duaPlayQuran === "function"){ var _dp = duaPlayQuran; duaPlayQuran = function(q){ if (ruq.all){ ruqStop(); renderRuqyah(); } return _dp(q); }; }
+  })();
 
   // ---------------- Continuous (whole-surah) Quran playback ----------------
   // Per-ayah files left a gap after every ayah, and Android suspends the page in that gap when the
@@ -5897,9 +5956,13 @@ const EVENING_ADHKAR = [
     "Hani_Rifai_192kbps": [89, "hani-rifai/r1"],
     "Muhammad_Ayyoub_128kbps": [109, "muhammad-ayyub/r1"],
     "Fares_Abbad_64kbps": [81, "fares-abbad/r1"],
-    "Ali_Jaber_64kbps": [76, "ali-jaber/r1"]
+    "Ali_Jaber_64kbps": [76, "ali-jaber/r1"],
+    "Ahmed_Neana_128kbps": [9, "ahmad-naina/r1"],
+    "Mustafa_Ismail_48kbps": [288, "mustafa-ismail/r2"],
+    "mahmoud_ali_al_banna_32kbps": [122, "mahmoud-banna/r2"]
   };
-  // surahs whose file length differs noticeably from the timing → ayah-by-ayah for safety
+  // surahs whose file length differs noticeably from the timing → the ruqyah uses ayah files there
+  // (exact boundaries matter); the mushaf still plays them continuously
   var QS_SKIP = { 4: [65, 67], 81: [66], 92: [97], 86: [78, 79, 80, 82, 83, 89, 99, 100, 101, 102, 107] };
   var QS_TIMING_CACHE = "wirdi-timing-v1";
   var qs = { on: false, skip: false, surah: 0, read: null, times: null, memo: {} };
@@ -5920,9 +5983,22 @@ const EVENING_ADHKAR = [
       if (!cache) return net(null);
       return cache.match(url).then(function(hit){ return hit ? hit.json() : net(cache); });
     }, function(){ return net(null); }).then(function(list){
-      var t = {}, n = 0;
-      list.forEach(function(x){ if (x.ayah >= 1){ t[x.ayah] = [x.start_time, x.end_time]; n++; } });
-      if (n !== ayahCount(surah)) throw new Error("incomplete timing");
+      // exact timings → t.complete = true (used for the ruqyah, which needs exact ayah boundaries).
+      // A few surahs have one missing / extra entry: the gaps are filled by interpolation so the
+      // mushaf still plays the whole surah continuously (only the highlight can be slightly off).
+      var N = ayahCount(surah), t = {}, n = 0;
+      list.forEach(function(x){ if (x.ayah >= 1 && x.ayah <= N && !t[x.ayah]){ t[x.ayah] = [x.start_time, x.end_time]; n++; } });
+      if (n < N * 0.8) throw new Error("timing unusable");
+      var a, b, prevEnd = 0;
+      for (a = 1; a <= N; a++){
+        if (t[a]){ prevEnd = t[a][1]; continue; }
+        for (b = a + 1; b <= N && !t[b]; b++){}
+        var from = prevEnd, to = b <= N ? t[b][0] : from + 5000 * (b - a), step = (to - from) / (b - a);
+        for (var k = a; k < b; k++) t[k] = [Math.round(from + step * (k - a)), Math.round(from + step * (k - a + 1))];
+        prevEnd = t[b - 1][1]; a = b - 1;
+      }
+      for (a = 2; a <= N; a++) if (t[a][0] < t[a - 1][0]) t[a][0] = t[a - 1][0];   // keep the order
+      t.complete = (n === N);
       return t;
     });
     p.catch(function(){ delete qs.memo[key]; });
@@ -5945,7 +6021,7 @@ const EVENING_ADHKAR = [
   // returns true when the continuous player took over
   function qsStart(surah, ayah){
     var read = qsReadFor();
-    if (qs.skip || !read || (QS_SKIP[read[0]] || []).indexOf(surah) !== -1) return false;
+    if (qs.skip || !read) return false;
     var p = quranPlayers[0];
     // same surah already loaded → just seek (no reload, no gap)
     if (qs.on && qs.times && qs.surah === surah && qs.read === read && p.src === qsSrc(read, surah) && quranAlive()){
