@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-+Gnw4w+fKXYHGHQ0NohNt8YXTblvs7YlyziQCBbGyto='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-2WPtbKU+eSbkWmMTVe+nTS+qpe/ozCjd5P/xRWfIvKI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -625,6 +625,8 @@
   .ruq-mini[hidden]{display:none;}
   .ruq-mini .rm-t{flex:1; min-width:0; font-weight:700; font-size:0.82rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .ruq-mini .rm-b{flex:none; width:34px; height:34px; border-radius:50%; border:none; background:rgba(255,255,255,.18); color:#fff; font-size:0.9rem;}
+  .diag-box{white-space:pre-wrap; direction:ltr; text-align:left; font:11px/1.5 monospace; background:var(--paper); border:1px solid var(--paper-3); border-radius:10px; padding:8px; max-height:50vh; overflow:auto; margin-top:8px;}
+  .diag-box[hidden]{display:none;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -1048,6 +1050,11 @@
           <option value="light">فاتح دائمًا</option>
           <option value="dark">داكن دائمًا</option>
         </select>
+      </div>
+      <div class="settings-row">
+        <div style="flex:1;"><label>🔧 سجل التشغيل</label><span class="hint">لو الصوت بيقف والشاشة مقفولة: شغّل، اقفل الشاشة لحد ما يقف، ارجع هنا وصوّر السجل وابعته</span>
+          <div class="diag-box" id="diagBox" hidden></div></div>
+        <button class="btn ghost" id="diagShowBtn">عرض</button>
       </div>
       <div class="settings-row">
         <div style="flex:1;"><label>📖 حجم خط القرآن</label><span class="hint">للمصحف والآيات في كل التطبيق — فوق ١٠٠٪ الصفحة بتنزل بالتمرير</span>
@@ -6082,10 +6089,31 @@ const EVENING_ADHKAR = [
       if (qs.surah < 114) qsStart(qs.surah + 1, 1);                  // keep going: next surah, same element
       else { qa.gen++; qs.on = false; clearAyahHighlight(); setQState("completed"); showToast("صدق الله العظيم — تمت التلاوة 🤍"); setQState("idle"); }
     });
+    // a network drop mid-surah (common when the screen locks): reload the same file at the same spot,
+    // up to 4 times with growing pauses, before falling back to the ayah files
+    var retries = 0;
+    p.addEventListener("playing", function(){ retries = 0; });
     p.addEventListener("error", function(){
       if (!qs.on || !quranAlive() || !qs.times) return;                // load errors are handled in qsStart
-      var c = quranCurrent; qa.gen++;
+      var c = quranCurrent, at = p.currentTime, src = p.src, g = qa.gen;
+      if (retries < 4 && src){
+        retries++;
+        setTimeout(function(){
+          if (g !== qa.gen || !qs.on) return;
+          var ok = function(){ p.removeEventListener("loadedmetadata", ok); try { p.currentTime = at; } catch(e){} p.play().catch(function(){}); };
+          p.addEventListener("loadedmetadata", ok);
+          p.src = src; p.load();
+        }, 1500 * retries);
+        return;
+      }
+      qa.gen++;
       if (c) qsFallback(c.surah, c.ayah);
+    });
+    // lock screen: position + duration (Android shows a proper media player and keeps it alive)
+    p.addEventListener("timeupdate", function(){
+      if (!qs.on || !("mediaSession" in navigator) || !navigator.mediaSession.setPositionState || !isFinite(p.duration)) return;
+      if (Math.floor(p.currentTime) % 5) return;
+      try { navigator.mediaSession.setPositionState({ duration: p.duration, playbackRate: p.playbackRate || 1, position: Math.min(p.currentTime, p.duration) }); } catch(e){}
     });
     // back on screen: jump the page / highlight to where the recitation is now
     document.addEventListener("visibilitychange", function(){
@@ -6579,6 +6607,21 @@ const EVENING_ADHKAR = [
       box.remove();
     });
   }
+  // ---- true full screen while reading: hide the phone's status bar (clock, Wi-Fi) with the Fullscreen API ----
+  function mqFullscreen(on){
+    var d = document, el = d.documentElement;
+    try {
+      if (on && d.fullscreenEnabled && !d.fullscreenElement) el.requestFullscreen({ navigationUI: "hide" }).catch(function(){});
+      if (!on && d.fullscreenElement) d.exitFullscreen().catch(function(){});
+    } catch(e){}
+  }
+  (function(){
+    var view = document.getElementById("view-mushaf");
+    new MutationObserver(function(){ mqFullscreen(!view.hidden); }).observe(view, { attributes: true, attributeFilter: ["hidden"] });
+    // after the phone's back gesture leaves full screen, the next tap on the page brings it back
+    document.getElementById("mushafViewport").addEventListener("click", function(){ if (!view.hidden) mqFullscreen(true); });
+    document.addEventListener("fullscreenchange", function(){ setTimeout(function(){ if (currentView === "mushaf") fitMushafPage(); }, 80); });
+  })();
 
   // ---------------- Hourly reminder: make dua for Amira Hamed Abdel-Fattah (alive, may Allah preserve her) ----------------
   // App open → a gentle card at the bottom once an hour (آمين closes it). App in the background → a notification.
@@ -6632,6 +6675,42 @@ const EVENING_ADHKAR = [
     duaToggle.checked = duaRemindOn();
     duaToggle.addEventListener("change", function(){ appSettings.duaRemind = duaToggle.checked; saveSettings(); if (typeof syncReminderMeta === "function") syncReminderMeta(); });
   }
+
+  // ---------------- Playback log (to find out why audio stops with the screen locked on a phone) ----------------
+  // Records what happens to the Quran / ruqyah audio and to the page (hidden, frozen, offline…) with the time.
+  // Kept on the device only (last 80 lines); shown from Settings so the user can send a screenshot.
+  var STORE_DIAG = "wirdi4-diag";
+  var diagLog = loadJSON(STORE_DIAG, []), diagT = null;
+  function diag(msg){
+    var d = new Date(), t = pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":" + pad2(d.getSeconds());
+    diagLog.push(t + " " + msg); if (diagLog.length > 80) diagLog.splice(0, diagLog.length - 80);
+    clearTimeout(diagT); diagT = setTimeout(function(){ saveJSON(STORE_DIAG, diagLog); }, 400);
+  }
+  (function(){
+    function watch(el, name){
+      ["play", "playing", "pause", "waiting", "stalled", "ended", "error", "emptied"].forEach(function(ev){
+        el.addEventListener(ev, function(){
+          var src = (el.src || "").split("/").slice(-2).join("/");
+          diag(name + " " + ev + (ev === "error" && el.error ? " code " + el.error.code : "") + " @" + Math.round(el.currentTime || 0) + "s " + (src.indexOf("blob:") === 0 ? "ayah-file" : src));
+        });
+      });
+    }
+    quranPlayers.forEach(function(p, i){ watch(p, "quran" + i); });
+    if (typeof ruq !== "undefined") ruq.players.forEach(function(p, i){ watch(p, "ruqyah" + i); });
+    document.addEventListener("visibilitychange", function(){ diag("page " + document.visibilityState); });
+    document.addEventListener("freeze", function(){ diag("page FROZEN by the phone"); });
+    document.addEventListener("resume", function(){ diag("page resumed"); });
+    window.addEventListener("pagehide", function(){ diag("page closed"); saveJSON(STORE_DIAG, diagLog); });
+    window.addEventListener("online", function(){ diag("internet back"); });
+    window.addEventListener("offline", function(){ diag("internet LOST"); });
+    diag("app opened");
+    var btn = document.getElementById("diagShowBtn");
+    if (btn) btn.addEventListener("click", function(){
+      var box = document.getElementById("diagBox");
+      box.hidden = !box.hidden;
+      box.textContent = diagLog.length ? diagLog.slice().reverse().join("\n") : "لسه مفيش تسجيل";
+    });
+  })();
 
   ///WIRDI4-JS
   // ============================================================
