@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-2WPtbKU+eSbkWmMTVe+nTS+qpe/ozCjd5P/xRWfIvKI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-8//V+1h5qoaJTX0aPxgnidHUykHL1YyaT/gH0wpDMOM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -1050,6 +1050,10 @@
           <option value="light">فاتح دائمًا</option>
           <option value="dark">داكن دائمًا</option>
         </select>
+      </div>
+      <div class="settings-row">
+        <div><label>📱 ملء الشاشة</label><span class="hint">إخفاء الساعة وشريط الإشعارات أثناء استخدام التطبيق</span></div>
+        <label class="switch"><input type="checkbox" id="fullScreenToggle"><span class="slider"></span></label>
       </div>
       <div class="settings-row">
         <div style="flex:1;"><label>🔧 سجل التشغيل</label><span class="hint">لو الصوت بيقف والشاشة مقفولة: شغّل، اقفل الشاشة لحد ما يقف، ارجع هنا وصوّر السجل وابعته</span>
@@ -6612,7 +6616,7 @@ const EVENING_ADHKAR = [
     var d = document, el = d.documentElement;
     try {
       if (on && d.fullscreenEnabled && !d.fullscreenElement) el.requestFullscreen({ navigationUI: "hide" }).catch(function(){});
-      if (!on && d.fullscreenElement) d.exitFullscreen().catch(function(){});
+      if (!on && d.fullscreenElement && appSettings.fullScreen === false) d.exitFullscreen().catch(function(){});
     } catch(e){}
   }
   (function(){
@@ -6621,6 +6625,26 @@ const EVENING_ADHKAR = [
     // after the phone's back gesture leaves full screen, the next tap on the page brings it back
     document.getElementById("mushafViewport").addEventListener("click", function(){ if (!view.hidden) mqFullscreen(true); });
     document.addEventListener("fullscreenchange", function(){ setTimeout(function(){ if (currentView === "mushaf") fitMushafPage(); }, 80); });
+  })();
+  // ---- full screen for the whole app (hide the phone's clock / notification bar) ----
+  // Browsers only allow full screen after a tap, so it starts with the first tap anywhere in the app
+  // (and again after the app comes back from the background). Switch in Settings.
+  function appFullscreenOn(){ return appSettings.fullScreen !== false; }
+  (function(){
+    function go(){
+      if (!appFullscreenOn() || !document.fullscreenEnabled || document.fullscreenElement) return;
+      try { document.documentElement.requestFullscreen({ navigationUI: "hide" }).catch(function(){}); } catch(e){}
+    }
+    document.addEventListener("click", go, true);
+    document.addEventListener("touchend", go, true);
+    var t = document.getElementById("fullScreenToggle");
+    if (t){
+      t.checked = appFullscreenOn();
+      t.addEventListener("change", function(){
+        appSettings.fullScreen = t.checked; saveSettings();
+        if (!t.checked && document.fullscreenElement) document.exitFullscreen().catch(function(){});
+      });
+    }
   })();
 
   // ---------------- Hourly reminder: make dua for Amira Hamed Abdel-Fattah (alive, may Allah preserve her) ----------------
@@ -6711,6 +6735,16 @@ const EVENING_ADHKAR = [
       box.textContent = diagLog.length ? diagLog.slice().reverse().join("\n") : "لسه مفيش تسجيل";
     });
   })();
+  // ---- how was the app opened? (Android app = TWA, installed shortcut, or a normal browser tab) ----
+  var LAUNCH_MODE = (function(){
+    var ref = document.referrer || "", dm = function(m){ try { return window.matchMedia("(display-mode: " + m + ")").matches; } catch(e){ return false; } };
+    if (ref.indexOf("android-app://io.github.khalednmg100_dotcom.twa") === 0) return "تطبيق أندرويد (TWA) ✓";
+    if (ref.indexOf("android-app://") === 0) return "تطبيق تاني: " + ref;
+    if (dm("fullscreen")) return "تطبيق متثبّت (ملء الشاشة)";
+    if (dm("standalone")) return "اختصار متثبّت من المتصفح";
+    return "صفحة متصفح عادية ✗";
+  })();
+  diag("opened as: " + LAUNCH_MODE + " | browser: " + (navigator.userAgent.match(/(SamsungBrowser|MiuiBrowser|OPR|Firefox|EdgA|Chrome)\/[\d.]+/) || ["?"])[0]);
 
   ///WIRDI4-JS
   // ============================================================
