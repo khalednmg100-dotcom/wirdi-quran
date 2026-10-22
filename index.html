@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-8//V+1h5qoaJTX0aPxgnidHUykHL1YyaT/gH0wpDMOM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-sm8hTVaz7iBWT04oKDJJIPBPQfuSn2iiUNHYzGNpnCM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -3676,6 +3676,7 @@ const EVENING_ADHKAR = [
   });
 
   function checkAdhan(){
+    if (window.__wirdiNative) return;   // the phone app plays the adhan with its own notification
     if (!appSettings.adhanEnabled) return;
     if (!prayerTimesToday) { fetchPrayerTimes(); return; }
     var now = new Date();
@@ -6737,6 +6738,7 @@ const EVENING_ADHKAR = [
   })();
   // ---- how was the app opened? (Android app = TWA, installed shortcut, or a normal browser tab) ----
   var LAUNCH_MODE = (function(){
+    if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) return "أبلكيشن أندرويد حقيقي ✓";
     var ref = document.referrer || "", dm = function(m){ try { return window.matchMedia("(display-mode: " + m + ")").matches; } catch(e){ return false; } };
     if (ref.indexOf("android-app://io.github.khalednmg100_dotcom.twa") === 0) return "تطبيق أندرويد (TWA) ✓";
     if (ref.indexOf("android-app://") === 0) return "تطبيق تاني: " + ref;
@@ -6745,6 +6747,181 @@ const EVENING_ADHKAR = [
     return "صفحة متصفح عادية ✗";
   })();
   diag("opened as: " + LAUNCH_MODE + " | browser: " + (navigator.userAgent.match(/(SamsungBrowser|MiuiBrowser|OPR|Firefox|EdgA|Chrome)\/[\d.]+/) || ["?"])[0]);
+
+  // ---------------- Native Android app (Capacitor) ----------------
+  // When the site runs inside the native وِرْدِي app (window.Capacitor present), notifications are
+  // scheduled on the phone itself (they arrive at the exact time even with the app closed): prayers with
+  // the adhan sound, morning / evening adhkar, the daily wird, the streak, the hourly dua for Amira Hamed.
+  // A foreground service keeps the recitation alive with the screen off. In a normal browser nothing changes.
+  function wnIsNative(){ return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform() && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications); }
+  window.__wirdiNative = wnIsNative();
+  function wnInit(){
+    if (wnInit.done) return; wnInit.done = true; window.__wirdiNative = true;
+    var LN = Capacitor.Plugins.LocalNotifications, WN = Capacitor.Plugins.WirdiNative;
+    var perm = "default";
+    function readPerm(){ return LN.checkPermissions().then(function(r){ perm = r.display === "granted" ? "granted" : (r.display === "denied" ? "denied" : "default"); return perm; }); }
+
+    // the page's notification code keeps working: "Notification" maps to the phone's notifications
+    function NativeNotification(title, opts){
+      LN.schedule({ notifications: [{ id: 90000000 + (Date.now() % 9000000), title: title, body: (opts && opts.body) || "", channelId: "wirdi_reminders", smallIcon: "ic_stat_wirdi" }] }).catch(function(){});
+    }
+    Object.defineProperty(NativeNotification, "permission", { get: function(){ return perm; } });
+    NativeNotification.requestPermission = function(){
+      return LN.requestPermissions().then(function(r){
+        perm = r.display === "granted" ? "granted" : "denied";
+        if (perm === "granted") askExactAlarms();
+        nativeRescheduleSoon();
+        return perm;
+      });
+    };
+    window.Notification = NativeNotification;
+    // reminders are scheduled on the phone below, so the page itself must not send duplicates
+    wirdiNotify = function(){};
+    // the phone app is always full screen (status bar hidden natively)
+    appFullscreenOn = function(){ return false; };
+    mqFullscreen = function(){};
+    var fsRow = document.getElementById("fullScreenToggle"); if (fsRow) fsRow.closest(".settings-row").hidden = true;
+    var tip = document.getElementById("installTip"); if (tip) tip.hidden = true;
+
+    // ---- channels (sound is fixed per channel by Android) ----
+    var channelsReady = null;
+    function ensureChannels(){
+      if (channelsReady) return channelsReady;
+      channelsReady = Promise.all([
+        LN.createChannel({ id: "wirdi_adhan", name: "الأذان", description: "صوت الأذان في وقت كل صلاة", importance: 5, visibility: 1, sound: "adhan.mp3", vibration: true }),
+        LN.createChannel({ id: "wirdi_adhan_fajr", name: "أذان الفجر", description: "صوت أذان الفجر", importance: 5, visibility: 1, sound: "adhan_fajr.mp3", vibration: true }),
+        LN.createChannel({ id: "wirdi_prayer", name: "مواقيت الصلاة", description: "تنبيه بدون أذان في وقت الصلاة مع سنة من سننها", importance: 4, visibility: 1, vibration: true }),
+        LN.createChannel({ id: "wirdi_reminders", name: "الأذكار والورد", description: "أذكار الصباح والمساء والورد اليومي والسلسلة", importance: 4, visibility: 1, vibration: true }),
+        LN.createChannel({ id: "wirdi_dua", name: "الدعاء لأميرة حامد", description: "تذكير كل ساعة بالدعاء", importance: 3, visibility: 1 })
+      ]).catch(function(){});
+      return channelsReady;
+    }
+    // exact time (Android 12+): ask once; otherwise Android may deliver a few minutes late
+    function askExactAlarms(){
+      if (!LN.checkExactNotificationSetting) return;
+      LN.checkExactNotificationSetting().then(function(r){
+        if (r && r.exact_alarm === "granted") return;
+        var asked = false; try { asked = localStorage.getItem("wirdi4-exact-asked") === "1"; } catch(e){}
+        if (asked) return;
+        try { localStorage.setItem("wirdi4-exact-asked", "1"); } catch(e){}
+        showToast("اسمح لوردي بالتنبيهات في وقتها بالظبط (للأذان)");
+        setTimeout(function(){ LN.changeExactNotificationSetting().catch(function(){}); }, 1200);
+      }).catch(function(){});
+    }
+
+    // ---- prayer times for the coming days (Aladhan monthly calendar, cached per month) ----
+    function monthTimes(y, m){
+      var key = "wirdi4-pt-" + y + "-" + m, c = loadJSON(key, null);
+      if (c) return Promise.resolve(c);
+      return fetch("https://api.aladhan.com/v1/calendarByCity/" + y + "/" + m + "?city=Cairo&country=Egypt&method=5")
+        .then(function(r){ return r.json(); })
+        .then(function(j){
+          var out = {};
+          (j.data || []).forEach(function(d){
+            var p = d.date.gregorian.date.split("-");   // DD-MM-YYYY
+            var t = {}; ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(function(k){ t[k] = String(d.timings[k]).slice(0, 5); });
+            out[p[2] + "-" + p[1] + "-" + p[0]] = t;
+          });
+          saveJSON(key, out);
+          return out;
+        });
+    }
+    function nextDaysTimes(n){
+      var now = new Date(), months = {}, days = [];
+      for (var i = 0; i < n; i++){ var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i); days.push(d); months[d.getFullYear() + "-" + (d.getMonth() + 1)] = [d.getFullYear(), d.getMonth() + 1]; }
+      return Promise.all(Object.keys(months).map(function(k){ return monthTimes(months[k][0], months[k][1]).catch(function(){ return {}; }); })).then(function(all){
+        var merged = {}; all.forEach(function(o){ for (var k in o) merged[k] = o[k]; });
+        return days.map(function(d){ return { date: d, t: merged[dayKey(d)] || null }; });
+      });
+    }
+    function at(d, hm){ var p = String(hm).split(":"); return new Date(d.getFullYear(), d.getMonth(), d.getDate(), +p[0], +p[1], 0); }
+
+    // ---- build every notification for the next days, replacing what was scheduled before ----
+    function reschedule(){
+      return readPerm().then(function(p){
+        return LN.getPending().then(function(pend){
+          var old = (pend.notifications || []).map(function(n){ return { id: n.id }; });
+          return old.length ? LN.cancel({ notifications: old }) : null;
+        }).then(function(){
+          if (p !== "granted" || !appSettings.notificationsEnabled) return;
+          return ensureChannels().then(function(){ return nextDaysTimes(7); }).then(function(days){
+            var list = [], now = Date.now() + 30000, ic = "ic_stat_wirdi";
+            function add(id, when, title, body, ch){ if (when.getTime() > now) list.push({ id: id, title: title, body: body, channelId: ch, smallIcon: ic, schedule: { at: when, allowWhileIdle: true } }); }
+            days.forEach(function(day, di){
+              // prayers (adhan sound if the adhan option is on)
+              if (day.t && (appSettings.adhanEnabled || appSettings.prayerSunnahNotif !== false)){
+                PRAYER_NAMES.forEach(function(pn, pi){
+                  var tip = prayerSunnah(pn[0]), ch = appSettings.adhanEnabled ? (pn[0] === "Fajr" ? "wirdi_adhan_fajr" : "wirdi_adhan") : "wirdi_prayer";
+                  add(1000 + di * 10 + pi, at(day.date, day.t[pn[0]]), "🕌 حان وقت صلاة " + pn[1], tip ? "🌿 " + tip.title + ": «" + tip.text + "» — " + tip.ref : "", ch);
+                });
+              }
+              // morning / evening adhkar and the daily wird at the times chosen in settings
+              add(2000 + di * 10 + 1, at(day.date, appSettings.morningTime || "07:00"), "🌅 أذكار الصباح", "ابدأ صباحك بأذكار الصباح 🤍", "wirdi_reminders");
+              add(2000 + di * 10 + 2, at(day.date, appSettings.eveningTime || "18:00"), "🌙 أذكار المساء", "حصّن مساءك بأذكار المساء 🤍", "wirdi_reminders");
+              add(2000 + di * 10 + 3, at(day.date, appSettings.wirdTime || "20:00"), "📖 وردك اليومي", "لا تنسَ وردك من القرآن اليوم", "wirdi_reminders");
+              // streak: from tomorrow on, a gentle reminder at 18:00 (cancelled and rebuilt every time the app is opened)
+              if (di >= 1){
+                var s = visitStreak();
+                add(4000 + di, at(day.date, "18:00"), "🔥 لا تخسر سلسلتك", s > 0 ? "سلسلتك " + toArabicIndic(s + di - 1) + " يوم — دقيقة مع وِرْدِي النهارده تكمّلها 🤍" : "افتح وِرْدِي واقرأ ولو آية 🤍", "wirdi_reminders");
+              }
+              // hourly dua for Amira Hamed (08:00–22:00), first 3 days
+              if (di < 3 && (typeof duaRemindOn !== "function" || duaRemindOn())){
+                for (var h = 8; h <= 22; h++){
+                  var when = new Date(day.date.getFullYear(), day.date.getMonth(), day.date.getDate(), h, 0, 0);
+                  add(3000 + di * 100 + h, when, "🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", DUA_AMIRA[Math.floor(when.getTime() / 3600000) % DUA_AMIRA.length], "wirdi_dua");
+                }
+              }
+            });
+            var chunks = []; for (var i = 0; i < list.length; i += 40) chunks.push(list.slice(i, i + 40));
+            return chunks.reduce(function(pr, c){ return pr.then(function(){ return LN.schedule({ notifications: c }); }); }, Promise.resolve())
+              .then(function(){ if (typeof diag === "function") diag("native: scheduled " + list.length + " notifications for 7 days"); });
+          });
+        });
+      }).catch(function(e){ if (typeof diag === "function") diag("native schedule error: " + (e && e.message)); });
+    }
+    var rsT = null, lastRs = 0;
+    function nativeRescheduleSoon(){ clearTimeout(rsT); rsT = setTimeout(function(){ lastRs = Date.now(); reschedule(); }, 1500); }
+    window.__wirdiReschedule = nativeRescheduleSoon;
+    readPerm().then(function(){ nativeRescheduleSoon(); if (perm === "granted") askExactAlarms(); });
+    document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible" && Date.now() - lastRs > 10 * 60 * 1000) nativeRescheduleSoon(); });
+    // any change in settings (times, adhan, dua, notifications) → rebuild the schedule
+    var settingsView = document.getElementById("view-settings");
+    if (settingsView) settingsView.addEventListener("change", nativeRescheduleSoon);
+
+    // ---- keep the recitation alive with the screen off (foreground service while any audio plays) ----
+    var playing = new Set(), stopT = null, svcOn = false;
+    function title(){ try { var m = navigator.mediaSession && navigator.mediaSession.metadata; return m && m.title ? m.title : "التلاوة شغالة"; } catch(e){ return "التلاوة شغالة"; } }
+    document.addEventListener("playing", function(e){
+      if (!(e.target instanceof HTMLMediaElement) || e.target.muted) return;
+      playing.add(e.target); clearTimeout(stopT);
+      WN.startPlayback({ title: title() }).then(function(){ if (!svcOn && typeof diag === "function") diag("native: background service ON"); svcOn = true; }).catch(function(){});
+    }, true);
+    ["pause", "ended", "emptied"].forEach(function(ev){
+      document.addEventListener(ev, function(e){
+        if (!(e.target instanceof HTMLMediaElement)) return;
+        if (e.target.paused || e.target.ended) playing.delete(e.target);
+        clearTimeout(stopT);
+        // a short grace period: moving to the next surah / ayah briefly pauses the element
+        stopT = setTimeout(function(){
+          playing.forEach(function(m){ if (m.paused || m.ended) playing.delete(m); });
+          if (!playing.size && svcOn){ WN.stopPlayback().catch(function(){}); svcOn = false; if (typeof diag === "function") diag("native: background service OFF"); }
+        }, 8000);
+      }, true);
+    });
+
+    // ---- settings: background playback (battery) helper ----
+    var sec = document.getElementById("notifToggle"); sec = sec && sec.closest(".settings-section");
+    if (sec && WN.batteryStatus){
+      var row = document.createElement("div"); row.className = "settings-row";
+      row.innerHTML = '<div><label>🔋 التشغيل والشاشة مقفولة</label><span class="hint" id="wnBatteryHint">…</span></div><button class="btn ghost" id="wnBatteryBtn">الإعدادات</button>';
+      sec.appendChild(row);
+      var refresh = function(){ WN.batteryStatus().then(function(r){ document.getElementById("wnBatteryHint").textContent = r.unrestricted ? "مسموح ✓ — التلاوة والتنبيهات هتشتغل والشاشة مقفولة" : "الموبايل ممكن يوقف التطبيق في الخلفية — افتح الإعدادات ← البطارية ← «غير مقيّد»"; }).catch(function(){}); };
+      refresh(); document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") refresh(); });
+      document.getElementById("wnBatteryBtn").addEventListener("click", function(){ WN.openAppSettings().catch(function(){}); });
+    }
+  }
+  // the bridge is normally ready before this script; if it arrives a little later, start on load
+  if (window.__wirdiNative) wnInit(); else window.addEventListener("load", function(){ if (wnIsNative()) wnInit(); });
 
   ///WIRDI4-JS
   // ============================================================
