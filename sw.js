@@ -1,4 +1,5 @@
-const CACHE_NAME = "wirdi-cache-v10";
+const CACHE_NAME = "wirdi-cache-v11";
+const QCF_CACHE = "wirdi-qcf";   // mushaf page fonts: kept across app updates, so pages read once work offline
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./fonts/UthmanicHafs.woff2"];
 
 self.addEventListener("install", function(event) {
@@ -14,7 +15,7 @@ self.addEventListener("activate", function(event) {
   event.waitUntil(
     caches.keys().then(function(keys) {
       return Promise.all(
-        keys.filter(function(key) { return key !== CACHE_NAME && key.indexOf("wirdi-audio") !== 0 && key.indexOf("wirdi-tafsir") !== 0 && key !== "wirdi-meta"; }).map(function(key) { return caches.delete(key); })
+        keys.filter(function(key) { return key !== CACHE_NAME && key.indexOf("wirdi-audio") !== 0 && key.indexOf("wirdi-tafsir") !== 0 && key !== "wirdi-meta" && key !== QCF_CACHE; }).map(function(key) { return caches.delete(key); })
       );
     })
   );
@@ -92,7 +93,15 @@ self.addEventListener("notificationclick", function(event) {
 self.addEventListener("fetch", function(event) {
   if (event.request.method !== "GET") return;
   var reqUrl = new URL(event.request.url), reqHost = reqUrl.hostname;
-  if (reqUrl.pathname.slice(-12) === "/donate.json") return;   // always fresh from the network (the owner edits it)
+  if (reqUrl.pathname.slice(-12) === "/donate.json") return;
+  if (reqHost === "verses.quran.com" && reqUrl.pathname.indexOf("/fonts/quran/") === 0) {
+    event.respondWith(caches.open(QCF_CACHE).then(function(c) {
+      return c.match(event.request).then(function(hit) {
+        return hit || fetch(event.request).then(function(r) { if (r.ok) c.put(event.request, r.clone()); return r; });
+      });
+    }));
+    return;
+  }   // always fresh from the network (the owner edits it)
   if (reqHost === "everyayah.com" || reqHost === "api.quran.com" || reqHost === "verses.quran.com" || /quranicaudio.com$/.test(reqHost) || /mp3quran.net$/.test(reqHost)) return;
 
   var isDocument = event.request.mode === "navigate" || event.request.destination === "document";
