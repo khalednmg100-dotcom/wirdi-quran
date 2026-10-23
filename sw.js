@@ -1,4 +1,4 @@
-const CACHE_NAME = "wirdi-cache-v9";
+const CACHE_NAME = "wirdi-cache-v10";
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./fonts/UthmanicHafs.woff2"];
 
 self.addEventListener("install", function(event) {
@@ -91,7 +91,8 @@ self.addEventListener("notificationclick", function(event) {
 // cache-first strategy for those avoids unnecessary refetching.
 self.addEventListener("fetch", function(event) {
   if (event.request.method !== "GET") return;
-  var reqHost = new URL(event.request.url).hostname;
+  var reqUrl = new URL(event.request.url), reqHost = reqUrl.hostname;
+  if (reqUrl.pathname.slice(-12) === "/donate.json") return;   // always fresh from the network (the owner edits it)
   if (reqHost === "everyayah.com" || reqHost === "api.quran.com" || reqHost === "verses.quran.com" || /quranicaudio.com$/.test(reqHost) || /mp3quran.net$/.test(reqHost)) return;
 
   var isDocument = event.request.mode === "navigate" || event.request.destination === "document";

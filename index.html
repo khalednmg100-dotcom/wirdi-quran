@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-sm8hTVaz7iBWT04oKDJJIPBPQfuSn2iiUNHYzGNpnCM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-CmJYRqL6Mmgzihyydm+U4JiyTgf+iYWDusbQiARAYuU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -627,6 +627,24 @@
   .ruq-mini .rm-b{flex:none; width:34px; height:34px; border-radius:50%; border:none; background:rgba(255,255,255,.18); color:#fff; font-size:0.9rem;}
   .diag-box{white-space:pre-wrap; direction:ltr; text-align:left; font:11px/1.5 monospace; background:var(--paper); border:1px solid var(--paper-3); border-radius:10px; padding:8px; max-height:50vh; overflow:auto; margin-top:8px;}
   .diag-box[hidden]{display:none;}
+  /* ===== sadaqah page ===== */
+  .don-big{font-family:"Amiri",serif; font-size:1.35rem; font-weight:700; color:var(--teal-deep); margin-bottom:4px;}
+  .don-intro{background:linear-gradient(135deg, var(--gold-tint), var(--paper-2));}
+  .don-causes{display:grid; grid-template-columns:repeat(2,1fr); gap:8px;}
+  .don-cause{display:flex; flex-direction:column; align-items:flex-start; gap:2px; text-align:right; background:var(--paper-2); border:1px solid var(--paper-3); border-radius:14px; padding:12px; color:var(--ink); box-shadow:0 1px 3px var(--shadow);}
+  .don-cause .don-ic{font-size:1.6rem;}
+  .don-cause small{color:var(--ink-soft); font-size:0.72rem; line-height:1.5;}
+  .don-cause:last-child{grid-column:1 / -1;}
+  .don-method{display:flex; justify-content:space-between; align-items:center; gap:10px;}
+  .don-val{font-weight:800; font-size:1rem; color:var(--teal-deep); margin-top:4px; word-break:break-all;}
+  .don-acts{display:flex; gap:6px; flex:none;}
+  .don-acts a.btn{text-decoration:none; display:inline-flex; align-items:center;}
+  .don-wa{display:block; text-align:center; text-decoration:none; margin:6px 0 4px;}
+  .don-note{font-size:0.72rem; text-align:center; line-height:1.8; margin-top:12px;}
+  .donate-home{display:flex; align-items:center; gap:12px; cursor:pointer; background:linear-gradient(135deg, var(--gold-tint), var(--paper-2)); border-color:var(--gold);}
+  .donate-home[hidden]{display:none;}
+  .donate-home .dh-ic{font-size:2rem;}
+  .donate-home b{color:var(--teal-deep);}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -697,6 +715,8 @@
       <button class="quick-btn" data-nav="stories"><span class="emoji">📜</span>قصص الأنبياء</button>
       <button class="quick-btn" data-nav="reels"><span class="emoji">🎬</span>صانع الريلز</button>
     </div>
+
+    <div class="hf-card donate-home" id="donateHomeCard" data-nav="donate" hidden><span class="dh-ic">💝</span><div><b>صدقة جارية</b><div class="hf-meta">كفالة أيتام • إطعام • سقيا ماء • علاج مرضى</div></div></div>
 
     <div class="home-bottom">
       <div class="hf-card sunnah-card" id="sunnahHomeCard"></div>
@@ -900,6 +920,12 @@
   <main id="view-ruqyah" class="view" hidden>
     <div class="view-header"><span class="view-title">🛡️ الرقية الشرعية</span></div>
     <div id="ruqyahBody"></div>
+  </main>
+
+  <!-- ================= DONATE ================= -->
+  <main id="view-donate" class="view" hidden>
+    <div class="view-header"><span class="view-title">💝 صدقة</span></div>
+    <div id="donateBody"></div>
   </main>
 
 <!--/WIRDI4-VIEWS-->
@@ -2392,7 +2418,7 @@ const EVENING_ADHKAR = [
   // ============================================================
   // Navigation
   // ============================================================
-  var VIEW_IDS = ["home","surahs","mushaf","juzlist","juzdetail","morning","evening","progress","settings","hifz","nasab","stories","story","reels","tasbih","duas","sunan","ruqyah"];
+  var VIEW_IDS = ["home","surahs","mushaf","juzlist","juzdetail","morning","evening","progress","settings","hifz","nasab","stories","story","reels","tasbih","duas","sunan","ruqyah","donate"];
   var currentView = "home";
   var mushafReturnView = "home";
   var lastJuzIndex = 1;
@@ -2446,6 +2472,7 @@ const EVENING_ADHKAR = [
     if (name === "duas"){ showView("duas"); renderDuas(); return; }
     if (name === "sunan"){ showView("sunan"); renderSunan(); return; }
     if (name === "ruqyah"){ showView("ruqyah"); renderRuqyah(); return; }
+    if (name === "donate"){ showView("donate"); openDonate(); return; }
     if (name === "hifz"){ showView("hifz"); renderHifz(); return; }
     if (name === "reels"){ showView("reels"); renderReels(); return; }
     if (name === "stories"){ showView("stories"); renderStories(); return; }
@@ -5220,6 +5247,7 @@ const EVENING_ADHKAR = [
   var REEL_IDEAS = [{"c":"hope","s":13,"a":[28,28],"t":"ألا بذكر الله تطمئن القلوب"},{"c":"hope","s":94,"a":[5,6],"t":"فإن مع العسر يسرًا"},{"c":"hope","s":2,"a":[286,286],"t":"لا يكلف الله نفسًا إلا وسعها"},{"c":"hope","s":2,"a":[216,216],"t":"وعسى أن تكرهوا شيئًا"},{"c":"hope","s":9,"a":[40,40],"t":"لا تحزن إن الله معنا"},{"c":"hope","s":12,"a":[86,87],"t":"إنما أشكو بثي وحزني إلى الله"},{"c":"hope","s":39,"a":[53,53],"t":"لا تقنطوا من رحمة الله"},{"c":"hope","s":65,"a":[2,3],"t":"ومن يتق الله يجعل له مخرجًا"},{"c":"hope","s":2,"a":[186,186],"t":"فإني قريب أجيب دعوة الداع"},{"c":"hope","s":40,"a":[60,60],"t":"ادعوني أستجب لكم"},{"c":"hope","s":3,"a":[139,139],"t":"ولا تهنوا ولا تحزنوا"},{"c":"hope","s":26,"a":[61,62],"t":"كلا إن معي ربي سيهدين"},{"c":"hope","s":2,"a":[152,153],"t":"فاذكروني أذكركم"},{"c":"hope","s":14,"a":[7,7],"t":"لئن شكرتم لأزيدنكم"},{"c":"hope","s":11,"a":[88,88],"t":"وما توفيقي إلا بالله"},{"c":"hope","s":3,"a":[173,173],"t":"حسبنا الله ونعم الوكيل"},{"c":"hope","s":50,"a":[16,16],"t":"ونحن أقرب إليه من حبل الوريد"},{"c":"hope","s":57,"a":[4,4],"t":"وهو معكم أين ما كنتم"},{"c":"hope","s":89,"a":[27,30],"t":"يا أيتها النفس المطمئنة"},{"c":"hope","s":8,"a":[30,30],"t":"والله خير الماكرين"},{"c":"great","s":2,"a":[255,255],"t":"آية الكرسي"},{"c":"great","s":2,"a":[285,286],"t":"خواتيم سورة البقرة"},{"c":"great","s":59,"a":[21,24],"t":"أواخر سورة الحشر"},{"c":"great","s":36,"a":[82,83],"t":"إنما أمره إذا أراد شيئًا"},{"c":"great","s":3,"a":[190,191],"t":"إن في خلق السماوات والأرض"},{"c":"short","s":93,"a":[1,11],"t":"سورة الضحى"},{"c":"short","s":94,"a":[1,8],"t":"سورة الشرح"},{"c":"short","s":103,"a":[1,3],"t":"سورة العصر"},{"c":"short","s":97,"a":[1,5],"t":"سورة القدر"},{"c":"short","s":108,"a":[1,3],"t":"سورة الكوثر"},{"c":"short","s":110,"a":[1,3],"t":"سورة النصر"},{"c":"short","s":112,"a":[1,4],"t":"سورة الإخلاص"},{"c":"short","s":113,"a":[1,5],"t":"سورة الفلق"},{"c":"short","s":114,"a":[1,6],"t":"سورة الناس"}];
   var RUQYAH_QURAN = [{"s":1,"a":[1,7],"t":"سورة الفاتحة","rep":1},{"s":2,"a":[1,5],"t":"أول سورة البقرة","rep":1},{"s":2,"a":[102,102],"t":"آية السحر من سورة البقرة","rep":1},{"s":2,"a":[163,164],"t":"وإلهكم إله واحد","rep":1},{"s":2,"a":[255,255],"t":"آية الكرسي","rep":1},{"s":2,"a":[285,286],"t":"خواتيم سورة البقرة","rep":1},{"s":3,"a":[18,19],"t":"شهد الله أنه لا إله إلا هو","rep":1},{"s":7,"a":[54,56],"t":"إن ربكم الله","rep":1},{"s":7,"a":[117,122],"t":"إبطال سحر فرعون","rep":1},{"s":10,"a":[81,82],"t":"إن الله سيبطله","rep":1},{"s":20,"a":[69,69],"t":"ولا يفلح الساحر حيث أتى","rep":1},{"s":23,"a":[115,118],"t":"خواتيم سورة المؤمنون","rep":1},{"s":37,"a":[1,10],"t":"أول سورة الصافات","rep":1},{"s":46,"a":[29,32],"t":"نفر من الجن (الأحقاف)","rep":1},{"s":55,"a":[33,36],"t":"يا معشر الجن والإنس","rep":1},{"s":59,"a":[21,24],"t":"أواخر سورة الحشر","rep":1},{"s":72,"a":[1,9],"t":"أول سورة الجن","rep":1},{"s":9,"a":[14,14],"t":"آيات الشفاء (١) — ويشف صدور قوم مؤمنين","rep":1},{"s":10,"a":[57,57],"t":"آيات الشفاء (٢) — وشفاء لما في الصدور","rep":1},{"s":16,"a":[69,69],"t":"آيات الشفاء (٣) — فيه شفاء للناس","rep":1},{"s":17,"a":[82,82],"t":"آيات الشفاء (٤) — ما هو شفاء ورحمة","rep":1},{"s":26,"a":[80,80],"t":"آيات الشفاء (٥) — وإذا مرضت فهو يشفين","rep":1},{"s":41,"a":[44,44],"t":"آيات الشفاء (٦) — هدى وشفاء","rep":1},{"s":68,"a":[51,52],"t":"آية العين","rep":1},{"s":112,"a":[1,4],"t":"سورة الإخلاص","rep":3},{"s":113,"a":[1,5],"t":"سورة الفلق","rep":3},{"s":114,"a":[1,6],"t":"سورة الناس","rep":3}];
   var PRAYER_SUNAN = [{"id":"ps1","prayers":["Fajr"],"title":"سنة الفجر","text":"رَكْعَتَا الْفَجْرِ خَيْرٌ مِنَ الدُّنْيَا وَمَا فِيهَا","ref":"صحيح مسلم (725)"},{"id":"ps2","prayers":["Fajr","Asr"],"title":"فضل الفجر والعصر","text":"مَنْ صَلَّى الْبَرْدَيْنِ دَخَلَ الْجَنَّةَ","ref":"صحيح البخاري (574)"},{"id":"ps3","prayers":["Dhuhr"],"title":"أربع قبل الظهر","text":"كَانَ لاَ يَدَعُ أَرْبَعًا قَبْلَ الظُّهْرِ وَرَكْعَتَيْنِ قَبْلَ الْغَدَاةِ","ref":"صحيح البخاري (1182)"},{"id":"ps4","prayers":["Dhuhr","Maghrib","Isha"],"title":"السنن الرواتب","text":"حَفِظْتُ مِنَ النَّبِيِّ صلى الله عليه وسلم عَشْرَ رَكَعَاتٍ رَكْعَتَيْنِ قَبْلَ الظُّهْرِ، وَرَكْعَتَيْنِ بَعْدَهَا، وَرَكْعَتَيْنِ بَعْدَ الْمَغْرِبِ فِي بَيْتِهِ، وَرَكْعَتَيْنِ بَعْدَ الْعِشَاءِ فِي بَيْتِهِ، وَرَكْعَتَيْنِ قَبْلَ صَلاَةِ الصُّبْحِ","ref":"صحيح البخاري (1180)"},{"id":"ps5","prayers":["Dhuhr","Maghrib","Isha","Fajr"],"title":"بيت في الجنة","text":"مَنْ صَلَّى اثْنَتَىْ عَشْرَةَ رَكْعَةً فِي يَوْمٍ وَلَيْلَةٍ بُنِيَ لَهُ بِهِنَّ بَيْتٌ فِي الْجَنَّةِ","ref":"صحيح مسلم (728)"},{"id":"ps6","prayers":["Isha","Fajr"],"title":"العشاء والفجر في جماعة","text":"مَنْ صَلَّى الْعِشَاءَ فِي جَمَاعَةٍ فَكَأَنَّمَا قَامَ نِصْفَ اللَّيْلِ وَمَنْ صَلَّى الصُّبْحَ فِي جَمَاعَةٍ فَكَأَنَّمَا صَلَّى اللَّيْلَ كُلَّهُ","ref":"صحيح مسلم (656)"},{"id":"ps7","prayers":["Fajr","Dhuhr","Asr","Maghrib","Isha"],"title":"الدعاء بعد الأذان","text":"اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلاَةِ الْقَائِمَةِ آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ، حَلَّتْ لَهُ شَفَاعَتِي يَوْمَ الْقِيَامَةِ","ref":"صحيح البخاري (614)"},{"id":"ps8","prayers":["Fajr","Dhuhr","Asr","Maghrib","Isha"],"title":"بعد السلام من الصلاة","text":"اللَّهُمَّ أَنْتَ السَّلاَمُ وَمِنْكَ السَّلاَمُ تَبَارَكْتَ ذَا الْجَلاَلِ وَالإِكْرَامِ","ref":"صحيح مسلم (591)"},{"id":"ps9","prayers":["Fajr","Dhuhr","Asr","Maghrib","Isha"],"title":"التسبيح بعد الصلاة","text":"مَنْ سَبَّحَ اللَّهَ فِي دُبُرِ كُلِّ صَلاَةٍ ثَلاَثًا وَثَلاَثِينَ وَحَمِدَ اللَّهَ ثَلاَثًا وَثَلاَثِينَ وَكَبَّرَ اللَّهَ ثَلاَثًا وَثَلاَثِينَ","ref":"صحيح مسلم (597)"}];
+  var SADAQAH_HADITH = [{"id":"sd1","title":"كافل اليتيم","text":"أَنَا وَكَافِلُ الْيَتِيمِ فِي الْجَنَّةِ هَكَذَا","ref":"صحيح البخاري (5304)"},{"id":"sd2","title":"الصدقة لا تنقص المال","text":"مَا نَقَصَتْ صَدَقَةٌ مِنْ مَالٍ","ref":"صحيح مسلم (2588)"},{"id":"sd3","title":"الصدقة الجارية","text":"إِذَا مَاتَ الإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلاَّ مِنْ ثَلاَثَةٍ إِلاَّ مِنْ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ","ref":"صحيح مسلم (1631)"},{"id":"sd4","title":"ولو بشق تمرة","text":"اتَّقُوا النَّارَ وَلَوْ بِشِقِّ تَمْرَةٍ","ref":"صحيح البخاري (1417)"},{"id":"sd5","title":"الساعي على الأرملة والمسكين","text":"السَّاعِي عَلَى الأَرْمَلَةِ وَالْمِسْكِينِ كَالْمُجَاهِدِ فِي سَبِيلِ اللَّهِ، أَوِ الْقَائِمِ اللَّيْلَ الصَّائِمِ النَّهَارَ","ref":"صحيح البخاري (5353)"},{"id":"sd6","title":"دعاء الملكين","text":"مَا مِنْ يَوْمٍ يُصْبِحُ الْعِبَادُ فِيهِ إِلاَّ مَلَكَانِ يَنْزِلاَنِ فَيَقُولُ أَحَدُهُمَا اللَّهُمَّ أَعْطِ مُنْفِقًا خَلَفًا، وَيَقُولُ الآخَرُ اللَّهُمَّ أَعْطِ مُمْسِكًا تَلَفًا","ref":"صحيح البخاري (1442)"}];
   var RUQYAH_SUNNAH = [{"id":"r1","title":"رقية النبي ﷺ للمريض","desc":"يمسح بيده اليمنى على موضع الألم ويقول:","text":"اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَاسَ، اشْفِهِ وَأَنْتَ الشَّافِي، لاَ شِفَاءَ إِلاَّ شِفَاؤُكَ، شِفَاءً لاَ يُغَادِرُ سَقَمًا","ref":"صحيح البخاري (5743)"},{"id":"r2","title":"رقية جبريل عليه السلام للنبي ﷺ","desc":"","text":"بِاسْمِ اللَّهِ أَرْقِيكَ مِنْ كُلِّ شَىْءٍ يُؤْذِيكَ مِنْ شَرِّ كُلِّ نَفْسٍ أَوْ عَيْنِ حَاسِدٍ اللَّهُ يَشْفِيكَ بِاسْمِ اللَّهِ أَرْقِيكَ","ref":"صحيح مسلم (2186)"},{"id":"r3","title":"لمن يجد ألمًا في جسده","desc":"ضع يدك على موضع الألم وقل «بسم الله» ثلاثًا، ثم قل سبع مرات:","text":"أَعُوذُ بِاللَّهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ","ref":"صحيح مسلم (2202)"},{"id":"r4","title":"تعويذ الأطفال (عوّذ بها النبي ﷺ الحسن والحسين)","desc":"","text":"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّةِ مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ، وَمِنْ كُلِّ عَيْنٍ لاَمَّةٍ","ref":"صحيح البخاري (3371)"},{"id":"r5","title":"عند نزول أي مكان","desc":"","text":"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ","ref":"صحيح مسلم (2708)"},{"id":"r6","title":"النفث بالمعوذات","desc":"كان النبي ﷺ إذا اشتكى يقرأ على نفسه بالمعوذات وينفث (ينفخ نفخًا خفيفًا مع ريق قليل) ويمسح بيده:","text":"كَانَ إِذَا اشْتَكَى يَقْرَأُ عَلَى نَفْسِهِ بِالْمُعَوِّذَاتِ وَيَنْفُثُ","ref":"صحيح البخاري (5016)"},{"id":"r7","title":"الفاتحة رقية","desc":"رقى صحابي لديغًا بالفاتحة فشُفي، فقال النبي ﷺ:","text":"وَمَا أَدْرَاكَ أَنَّهَا رُقْيَةٌ","ref":"صحيح البخاري (5736)"},{"id":"r8","title":"العين حق","desc":"","text":"الْعَيْنُ حَقٌّ","ref":"صحيح البخاري (5740)"}];
   var QURAN_DUAS = [{"s":1,"a":[6,7],"t":"الهداية للصراط المستقيم"},{"s":2,"a":[127,128],"t":"قبول العمل"},{"s":2,"a":[201,201],"t":"خير الدنيا والآخرة"},{"s":2,"a":[250,250],"t":"الصبر والثبات"},{"s":2,"a":[286,286],"t":"العفو والمغفرة ورفع الحرج"},{"s":3,"a":[8,8],"t":"ثبات القلب"},{"s":3,"a":[16,16],"t":"المغفرة والنجاة من النار"},{"s":3,"a":[38,38],"t":"الذرية الطيبة"},{"s":3,"a":[147,147],"t":"مغفرة الذنوب والنصر"},{"s":3,"a":[193,194],"t":"حسن الخاتمة"},{"s":7,"a":[23,23],"t":"دعاء آدم عليه السلام"},{"s":7,"a":[126,126],"t":"الصبر والموت على الإسلام"},{"s":10,"a":[85,86],"t":"النجاة من الظالمين"},{"s":14,"a":[40,41],"t":"إقامة الصلاة والمغفرة للوالدين"},{"s":17,"a":[24,24],"t":"الدعاء للوالدين"},{"s":17,"a":[80,80],"t":"حسن المدخل والمخرج"},{"s":18,"a":[10,10],"t":"الرحمة والرشاد"},{"s":20,"a":[25,28],"t":"شرح الصدر وتيسير الأمر"},{"s":20,"a":[114,114],"t":"زيادة العلم"},{"s":21,"a":[83,83],"t":"دعاء أيوب عليه السلام"},{"s":21,"a":[87,87],"t":"دعاء يونس عليه السلام"},{"s":21,"a":[89,89],"t":"دعاء زكريا عليه السلام"},{"s":23,"a":[97,98],"t":"الاستعاذة من الشياطين"},{"s":23,"a":[118,118],"t":"المغفرة والرحمة"},{"s":25,"a":[65,66],"t":"النجاة من النار"},{"s":25,"a":[74,74],"t":"صلاح الأزواج والذرية"},{"s":26,"a":[83,85],"t":"دعاء إبراهيم عليه السلام"},{"s":27,"a":[19,19],"t":"شكر النعمة"},{"s":28,"a":[24,24],"t":"دعاء موسى عليه السلام"},{"s":46,"a":[15,15],"t":"شكر النعمة وصلاح الذرية"},{"s":59,"a":[10,10],"t":"سلامة القلب للمؤمنين"},{"s":66,"a":[8,8],"t":"تمام النور يوم القيامة"},{"s":71,"a":[28,28],"t":"المغفرة للوالدين والمؤمنين"}];
 
@@ -6747,6 +6775,78 @@ const EVENING_ADHKAR = [
     return "صفحة متصفح عادية ✗";
   })();
   diag("opened as: " + LAUNCH_MODE + " | browser: " + (navigator.userAgent.match(/(SamsungBrowser|MiuiBrowser|OPR|Firefox|EdgA|Chrome)\/[\d.]+/) || ["?"])[0]);
+
+  // ---------------- Sadaqah (donations) page ----------------
+  // The payment details live in donate.json on the site (filled in by the app owner, never in this code).
+  // Money never passes through the app: it shows the owner's transfer details (copy buttons) and a WhatsApp
+  // button to report the transfer and the chosen cause. Clearly labelled as a personal initiative.
+  var DONATE_CAUSES = [
+    { id: "yatim", icon: "🧒", t: "كفالة أيتام", d: "مساهمة في احتياجات الأيتام وكفالتهم", h: "sd1" },
+    { id: "food", icon: "🍲", t: "إطعام", d: "وجبات وشنط غذائية للأسر المحتاجة", h: "sd4" },
+    { id: "water", icon: "💧", t: "سقيا ماء", d: "توصيل مياه الشرب للمحتاجين", h: "sd3" },
+    { id: "sick", icon: "💊", t: "علاج مرضى", d: "المساهمة في علاج غير القادرين", h: "sd5" },
+    { id: "general", icon: "🤲", t: "صدقة عامة", d: "تُصرف في أحوج باب وقت التوزيع", h: "sd2" }
+  ];
+  var donateCfg = null, donateCause = null;
+  function donateLoad(){
+    return fetch("donate.json", { cache: "no-store" }).then(function(r){ return r.json(); })
+      .then(function(c){ donateCfg = c; saveJSON("wirdi4-donate-cfg", c); return c; })
+      .catch(function(){ donateCfg = loadJSON("wirdi4-donate-cfg", null); return donateCfg; });
+  }
+  function donateSafeLink(u){ u = String(u || ""); return u.indexOf("https://") === 0 && !/[\s"<>]/.test(u) ? u : ""; }
+  function donateHasMethod(c){ return !!(c && (c.instapay || c.instapayLink || c.vodafoneCash)); }
+  function donateVisible(c){ return !!(c && c.enabled !== false && !(c.hideInAndroidApp && window.__wirdiNative)); }
+  function donateHadith(id){ return SADAQAH_HADITH.filter(function(x){ return x.id === id; })[0]; }
+  function donateEsc(s){ return String(s || "").replace(/[&<>"]/g, function(ch){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]; }); }
+  function renderDonate(){
+    var box = document.getElementById("donateBody"), c = donateCfg;
+    var h = '<div class="hf-card don-intro"><div class="don-big">💝 صدقة جارية</div>' +
+      '<div class="hf-meta">قال رسول الله ﷺ: «' + donateHadith("sd3").text + '» — ' + donateHadith("sd3").ref + '</div></div>';
+    if (!donateVisible(c)){ box.innerHTML = h + '<div class="hf-card hf-none" style="text-align:center;">باب التبرع غير متاح حاليًا</div>'; return; }
+    if (!donateCause){
+      h += '<div class="home-sec-title">اختار باب الخير</div><div class="don-causes">';
+      DONATE_CAUSES.forEach(function(x){ h += '<button class="don-cause" data-don="cause" data-v="' + x.id + '"><span class="don-ic">' + x.icon + '</span><b>' + x.t + '</b><small>' + x.d + '</small></button>'; });
+      h += '</div><div class="home-sec-title">من فضل الصدقة</div>';
+      SADAQAH_HADITH.forEach(function(x){ h += '<div class="hf-card dua-card"><div class="dua-title">' + x.title + '</div><div class="dua-text">«' + x.text + '»</div><div class="dua-ref">' + x.ref + '</div></div>'; });
+    } else {
+      var cause = DONATE_CAUSES.filter(function(x){ return x.id === donateCause; })[0], hd = donateHadith(cause.h);
+      h += '<button class="btn ghost" data-don="back" style="margin-bottom:10px;">→ كل الأبواب</button>' +
+        '<div class="hf-card"><div class="don-big">' + cause.icon + ' ' + cause.t + '</div><div class="hf-meta">' + cause.d + '</div>' +
+        (hd ? '<div class="dua-text" style="margin-top:8px;">«' + hd.text + '»</div><div class="dua-ref">' + hd.ref + '</div>' : '') + '</div>';
+      if (!donateHasMethod(c)){
+        h += '<div class="hf-card hf-none" style="text-align:center;">🕊️ قريبًا بإذن الله — طرق التبرع لسه بتتجهز</div>';
+      } else {
+        h += '<div class="home-sec-title">طرق التحويل</div>';
+        if (c.instapay || c.instapayLink) h += '<div class="hf-card don-method"><div><b>إنستاباي InstaPay</b>' + (c.instapay ? '<div class="don-val" dir="ltr">' + donateEsc(c.instapay) + '</div>' : '') + '</div><div class="don-acts">' +
+          (c.instapay ? '<button class="btn ghost" data-don="copy" data-v="' + donateEsc(c.instapay) + '">📋 نسخ</button>' : '') +
+          (donateSafeLink(c.instapayLink) ? '<a class="btn primary" href="' + donateEsc(donateSafeLink(c.instapayLink)) + '" target="_blank" rel="noopener">فتح إنستاباي</a>' : '') + '</div></div>';
+        if (c.vodafoneCash) h += '<div class="hf-card don-method"><div><b>فودافون كاش</b><div class="don-val" dir="ltr">' + donateEsc(c.vodafoneCash) + '</div></div><div class="don-acts"><button class="btn ghost" data-don="copy" data-v="' + donateEsc(c.vodafoneCash) + '">📋 نسخ</button></div></div>';
+        if (c.whatsapp){
+          var msg = "السلام عليكم، حوّلت صدقة لباب «" + cause.t + "» من تطبيق وِرْدِي. المبلغ: ";
+          h += '<a class="btn primary block don-wa" href="https://wa.me/' + donateEsc(String(c.whatsapp).replace(/\D/g, "")) + '?text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">📩 بلّغنا بالتحويل على واتساب</a>';
+        }
+      }
+    }
+    h += '<p class="muted don-note">' + (c && c.ownerName ? 'مبادرة شخصية من ' + donateEsc(c.ownerName) : 'مبادرة شخصية') + ' وليست جمعية مسجّلة. التبرع يُصرف في الباب اللي تختاره، وتقدر تطلب ما يثبت التوزيع.' +
+      (c && c.note ? '<br>' + donateEsc(c.note) : '') + '</p>';
+    box.innerHTML = h;
+  }
+  document.getElementById("donateBody").addEventListener("click", function(e){
+    var b = e.target.closest("[data-don]"); if (!b) return;
+    var a = b.getAttribute("data-don");
+    if (a === "cause"){ donateCause = b.getAttribute("data-v"); renderDonate(); scrollTo(0, 0); }
+    else if (a === "back"){ donateCause = null; renderDonate(); }
+    else if (a === "copy"){
+      var v = b.getAttribute("data-v");
+      (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(function(){ showToast("تم النسخ ✓"); }, function(){ showToast("تعذر النسخ — انسخه يدويًا"); });
+    }
+  });
+  function openDonate(){ donateCause = null; renderDonate(); donateLoad().then(renderDonate); }
+  // home card (hidden when donations are switched off in donate.json)
+  donateLoad().then(function(c){
+    var card = document.getElementById("donateHomeCard"); if (!card) return;
+    card.hidden = !donateVisible(c);
+  });
 
   // ---------------- Native Android app (Capacitor) ----------------
   // When the site runs inside the native وِرْدِي app (window.Capacitor present), notifications are
