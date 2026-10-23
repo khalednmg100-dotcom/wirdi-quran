@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-GgtL8uu0RvRX6vQU/IfNnSCaRQBr2yheqJQrf59Mfv0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-0HoMOea7o1aO97eEgyZOwvPuMRDt/Z3hG6PuIQb0WuA='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -696,6 +696,16 @@
   /* adhan playing in the page: stop bar */
   .adhan-bar{position:fixed; left:12px; right:12px; bottom:calc(14px + env(safe-area-inset-bottom)); z-index:60; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; border-radius:16px; background:var(--card, #fff); border:1px solid #D9C48A; box-shadow:0 8px 28px rgba(0,0,0,0.18); font-weight:700;}
   .adhan-bar[hidden]{display:none;}
+  /* one bookmark: a ribbon hanging on the marked page, and a home card */
+  .mushaf-viewport{position:relative;}
+  .mq-ribbon{position:absolute; top:0; left:3px; width:14px; height:34px; z-index:5; pointer-events:none; background:linear-gradient(#C0392B,#9E2A1F); clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%); box-shadow:0 2px 6px rgba(0,0,0,0.25);}
+  .mq-ribbon[hidden]{display:none;}
+  .bm-home{display:flex; align-items:center; gap:12px; width:100%; text-align:right; font:inherit; color:inherit; cursor:pointer; border-right:4px solid #C0392B;}
+  .bm-home[hidden]{display:none;}
+  .bm-home .bm-ic{font-size:1.6rem;}
+  .bm-home > div{flex:1;}
+  .bm-home .bm-go{font-size:1.4rem; color:#AD872D;}
+  .mqb-mark.on svg{fill:#C0392B; stroke:#C0392B;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -739,6 +749,7 @@
 
     <div class="prayer-card" id="prayerCard"></div>
 
+    <button class="hf-card bm-home" id="bookmarkHomeCard" type="button" hidden></button>
     <div class="wird-card" id="wirdCard"></div>
     <div class="hf-card" id="hifzHomeCard"></div>
 
@@ -842,6 +853,7 @@
       <button class="mushaf-play-btn stop" id="mushafStopBtn" aria-label="إيقاف" hidden>⏹</button>
     </div>
     <div class="mushaf-viewport" id="mushafViewport">
+      <div class="mq-ribbon" id="mqRibbon" hidden aria-label="علامة الصفحة"></div>
       <div class="mushaf-page" id="mushafPageContent"></div>
     </div>
     <div class="mq-foot" id="mqFoot"><span id="mqPageNum"></span><button data-mqf="next" aria-label="الصفحة التالية">‹</button><button data-mqf="prev" aria-label="الصفحة السابقة">›</button></div>
@@ -7156,15 +7168,38 @@ const EVENING_ADHKAR = [
   }
 
   // ---- top / bottom bars like the reference (surah · search · menu · juz · bookmark / page number) ----
-  var STORE_BOOKMARKS = "wirdi4-bookmarks";
+  // ONE bookmark (like a ribbon in a printed mushaf): marking a page moves it there. On the marked page a
+  // ribbon hangs at the top; on the home screen a card opens the marked page directly.
+  var STORE_BOOKMARK = "wirdi4-bookmark";
+  function mqBookmark(){
+    var p = loadJSON(STORE_BOOKMARK, null);
+    if (p === null){   // older versions kept a list → keep the last one
+      var old = loadJSON("wirdi4-bookmarks", []);
+      p = old.length ? old[old.length - 1] : 0; saveJSON(STORE_BOOKMARK, p);
+    }
+    return p >= 1 && p <= 604 ? p : 0;
+  }
+  function mqBookmarkHome(){
+    var card = document.getElementById("bookmarkHomeCard"); if (!card) return;
+    var p = mqBookmark(); card.hidden = !p; if (!p) return;
+    var pg = MUSHAF_PAGES[p - 1];
+    card.innerHTML = '<span class="bm-ic">🔖</span><div><b>كمّل من علامتك</b><div class="hf-meta">سورة ' + surahName(pg.r[0][0]) + ' • صفحة ' + toArabicIndic(p) + ' • الجزء ' + toArabicIndic(pg.j) + '</div></div><span class="bm-go">‹</span>';
+  }
   function mqBarRender(){
     var bar = document.getElementById("mqBar"); if (!bar) return;
-    var pg = MUSHAF_PAGES[mushafPageNum - 1], run = pg.r[0], marked = loadJSON(STORE_BOOKMARKS, []).indexOf(mushafPageNum) !== -1;
+    var pg = MUSHAF_PAGES[mushafPageNum - 1], run = pg.r[0], marked = mqBookmark() === mushafPageNum;
     bar.querySelector(".mqb-surah").textContent = surahName(run[0]);
     bar.querySelector(".mqb-juz").textContent = "الجزء " + toArabicIndic(pg.j);
     bar.querySelector(".mqb-mark").classList.toggle("on", marked);
+    var rib = document.getElementById("mqRibbon"); if (rib) rib.hidden = !marked;
     var num = document.getElementById("mqPageNum"); if (num) num.textContent = toArabicIndic(pg.p);
+    mqBookmarkHome();
   }
+  (function(){
+    var card = document.getElementById("bookmarkHomeCard");
+    if (card) card.addEventListener("click", function(){ var p = mqBookmark(); if (p) openMushaf(p, "home"); });
+    mqBookmarkHome();
+  })();
   (function(){
     var bar = document.getElementById("mqBar"); if (!bar) return;
     bar.addEventListener("click", function(e){
@@ -7177,10 +7212,13 @@ const EVENING_ADHKAR = [
       else if (a === "menu") openMushafTools();
       else if (a === "juz") handleNav("juzList");
       else if (a === "mark"){
-        var list = loadJSON(STORE_BOOKMARKS, []), i = list.indexOf(mushafPageNum);
-        if (i === -1){ list.push(mushafPageNum); showToast("🔖 اتحفظت علامة على صفحة " + toArabicIndic(mushafPageNum)); }
-        else { list.splice(i, 1); showToast("اتشالت العلامة"); }
-        saveJSON(STORE_BOOKMARKS, list); mqBarRender();
+        var cur = mqBookmark();
+        if (cur === mushafPageNum){ saveJSON(STORE_BOOKMARK, 0); showToast("اتشالت العلامة"); }
+        else {
+          saveJSON(STORE_BOOKMARK, mushafPageNum);
+          showToast(cur ? "🔖 العلامة اتنقلت من صفحة " + toArabicIndic(cur) + " لصفحة " + toArabicIndic(mushafPageNum) : "🔖 اتحطت العلامة على صفحة " + toArabicIndic(mushafPageNum));
+        }
+        mqBarRender();
       }
     });
     var foot = document.getElementById("mqFoot");
