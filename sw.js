@@ -1,4 +1,4 @@
-const CACHE_NAME = "wirdi-cache-v11";
+const CACHE_NAME = "wirdi-cache-v12";
 const QCF_CACHE = "wirdi-qcf";   // mushaf page fonts: kept across app updates, so pages read once work offline
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./fonts/UthmanicHafs.woff2"];
 
@@ -27,7 +27,8 @@ self.addEventListener("activate", function(event) {
 // up and the user hasn't opened the app today (after `hour`), show ONE gentle reminder for the day.
 function arDigits(n) { return String(n).replace(/\d/g, function(d) { return "٠١٢٣٤٥٦٧٨٩"[d]; }); }
 function dayKey(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
-// Dua reminder for Amira Hamed Abdel-Fattah (alive): at most once an hour, 8:00–23:00 (same list as the page).
+// Dua reminder for Amira Hamed Abdel-Fattah (alive): twice a day (10:00, 21:00); the other hours 8:00–23:00
+// a dhikr / salah upon the Prophet ﷺ (same lists as the page, at most once an hour).
 var DUA_AMIRA = [
   "اللهم احفظها بحفظك، وبارك في عمرها وصحتها، وألبسها ثوب العافية",
   "اللهم اشفها وعافها، واجعل القرآن ربيع قلبها ونور صدرها",
@@ -38,12 +39,24 @@ var DUA_AMIRA = [
   "اللهم ارزقها الفردوس الأعلى من الجنة بغير حساب ولا سابقة عذاب",
   "اللهم بارك لها في رزقها وأهلها، واجعلها من أهل القرآن"
 ];
+var DHIKR = [
+  ["صلِّ على محمد ﷺ", "اللهم صلِّ وسلم على نبينا محمد — «من صلى عليَّ واحدة صلى الله عليه عشرًا» (مسلم ٤٠٨)"],
+  ["سبحان الله وبحمده", "«من قال سبحان الله وبحمده في يوم مائة مرة حُطّت خطاياه وإن كانت مثل زبد البحر» (البخاري ٦٤٠٥)"],
+  ["صلِّ على محمد ﷺ", "اللهم صلِّ وسلم وبارك على نبينا محمد"],
+  ["كلمتان حبيبتان إلى الرحمن", "سبحان الله وبحمده، سبحان الله العظيم (البخاري ٦٦٨٢)"],
+  ["لا حول ولا قوة إلا بالله", "«فإنها كنز من كنوز الجنة» (البخاري ٦٣٨٤)"],
+  ["الاستغفار", "أستغفر الله وأتوب إليه (البخاري ٦٣٠٧)"]
+];
 function duaCheck(c, m) {
-  var now = Date.now(), h = new Date().getHours();
-  if (m.duaOn === false || now - (m.duaAt || 0) < 3600000 || h < 8 || h >= 23) return Promise.resolve();
+  var now = Date.now(), h = new Date().getHours(), hour = Math.floor(now / 3600000);
+  if (h < 8 || h >= 23 || Math.floor((m.duaAt || 0) / 3600000) === hour) return Promise.resolve();
+  var dua = (h === 10 || h === 21) && m.duaOn !== false, dhikr = !dua && m.dhikrOn !== false;
+  if (!dua && !dhikr) return Promise.resolve();
   m.duaAt = now;
   return c.put("meta.json", new Response(JSON.stringify(m), { headers: { "Content-Type": "application/json" } })).then(function() {
-    return self.registration.showNotification("🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", { body: DUA_AMIRA[Math.floor(now / 3600000) % DUA_AMIRA.length], icon: "icon-192.png", badge: "icon-192.png", tag: "dua-amira", lang: "ar", dir: "rtl", data: { url: "./" } });
+    if (dua) return self.registration.showNotification("🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", { body: DUA_AMIRA[hour % DUA_AMIRA.length], icon: "icon-192.png", badge: "icon-192.png", tag: "dua-amira", lang: "ar", dir: "rtl", data: { url: "./" } });
+    var d = DHIKR[hour % DHIKR.length];
+    return self.registration.showNotification("📿 " + d[0], { body: d[1], icon: "icon-192.png", badge: "icon-192.png", tag: "dhikr-hourly", lang: "ar", dir: "rtl", data: { url: "./" } });
   });
 }
 function dailyCheck() {

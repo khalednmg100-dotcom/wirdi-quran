@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-5zJ/H6PkvmJQBJb8yw3ziPmVZcjY+nKLxkWhENHNjdU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-GgtL8uu0RvRX6vQU/IfNnSCaRQBr2yheqJQrf59Mfv0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -689,6 +689,13 @@
   .mushaf-page.m15.ml-zoomed .ml-wrap{margin:0;}
   .mushaf-page.m15 .ml-qcf .ml .ml-end{font-size:1em; padding:0; color:#140F06;}
   .mushaf-page.m15 .ml-qcf .ml .ayah-text{line-height:1;}
+  /* sleep adhkar */
+  .sl-card.sl-done{opacity:0.62;}
+  .sl-count{margin-top:10px;}
+  .dua-amira .da-sub{font-size:0.78rem; color:var(--muted, #6b6b6b); line-height:1.7; margin:-4px 0 10px;}
+  /* adhan playing in the page: stop bar */
+  .adhan-bar{position:fixed; left:12px; right:12px; bottom:calc(14px + env(safe-area-inset-bottom)); z-index:60; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; border-radius:16px; background:var(--card, #fff); border:1px solid #D9C48A; box-shadow:0 8px 28px rgba(0,0,0,0.18); font-weight:700;}
+  .adhan-bar[hidden]{display:none;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -742,6 +749,7 @@
       <button class="quick-btn" data-nav="tasbih"><span class="emoji">📿</span>السبحة</button>
       <button class="quick-btn" data-nav="duas"><span class="emoji">🤲</span>الأدعية</button>
       <button class="quick-btn" data-nav="ruqyah"><span class="emoji">🛡️</span>الرقية الشرعية</button>
+      <button class="quick-btn" data-nav="sleep"><span class="emoji">😴</span>أذكار النوم</button>
       <button class="quick-btn" data-nav="sunan"><span class="emoji">🌿</span>سنن النبي ﷺ</button>
     </div>
 
@@ -980,6 +988,12 @@
     <div id="donateBody"></div>
   </main>
 
+  <!-- ================= SLEEP ADHKAR ================= -->
+  <main id="view-sleep" class="view" hidden>
+    <div class="view-header"><span class="view-title">😴 أذكار النوم</span></div>
+    <div id="sleepBody"></div>
+  </main>
+
 <!--/WIRDI4-VIEWS-->
   <!-- ================= JUZ LIST ================= -->
   <main id="view-juzlist" class="view" hidden>
@@ -1077,9 +1091,14 @@
       <div class="settings-row"><label>وقت أذكار الصباح</label><input type="time" id="morningTimeInput"></div>
       <div class="settings-row"><label>وقت أذكار المساء</label><input type="time" id="eveningTimeInput"></div>
       <div class="settings-row"><label>وقت الورد اليومي</label><input type="time" id="wirdTimeInput"></div>
+      <div class="settings-row"><label>😴 وقت أذكار النوم</label><input type="time" id="sleepTimeInput"></div>
       <div class="settings-row">
-        <div><label>🤍 تذكير بالدعاء لأميرة حامد</label><span class="hint">رسالة كل ساعة فيها دعاء لها (والتطبيق مفتوح، أو إشعار لو التنبيهات مفعّلة)</span></div>
+        <div><label>🤍 تذكير بالدعاء لأميرة حامد</label><span class="hint">مرتين في اليوم (١٠ الصبح و٩ بالليل) رسالة فيها دعاء لها</span></div>
         <label class="switch"><input type="checkbox" id="duaRemindToggle"><span class="slider"></span></label>
+      </div>
+      <div class="settings-row">
+        <div><label>📿 ذكر وصلاة على النبي ﷺ كل ساعة</label><span class="hint">من ٨ الصبح لـ ١١ بالليل: «صلِّ على محمد» أو ذكر من السنة مع فضله</span></div>
+        <label class="switch"><input type="checkbox" id="dhikrRemindToggle"><span class="slider"></span></label>
       </div>
       <div class="settings-row" id="dailyReminderHint"><div><label>🔥 تذكير السلسلة</label><span class="hint">لو ما فتحتش التطبيق طول اليوم، يوصلك تذكير لطيف بعد العصر عشان ماتخسرش سلسلتك. يشتغل على أندرويد لما تكون التنبيهات مفعّلة والتطبيق متثبت (كروم بيحدد الوقت بالظبط).</span></div></div>
     </div>
@@ -1098,6 +1117,11 @@
       <div class="settings-row">
         <div><label>تفعيل الأذان في مواعيد الصلاة</label><span class="hint" id="adhanHint">لازم التطبيق يكون مفتوح وقت الأذان عشان يشتغل الصوت — التنبيهات لما التطبيق مقفول محدوديّة زي أي تطبيق ويب.</span></div>
         <label class="switch"><input type="checkbox" id="adhanToggle"><span class="slider"></span></label>
+      </div>
+      <div class="settings-row">
+        <div><label>🕌 صوت الأذان</label><span class="hint">بصوت الشيخ علي ملا مؤذن الحرم المكي — تقدر توقفه من زرار «إيقاف الأذان» في الإشعار</span></div>
+        <select id="adhanLengthSelect"><option value="full">الأذان كامل</option><option value="short">التكبير فقط</option></select>
+        <button class="btn ghost" id="adhanPreviewBtn">🔊 اسمع</button>
       </div>
       <div class="settings-row">
         <div><label>🌿 تذكير بسنن الصلاة</label><span class="hint">إشعار في وقت كل صلاة مع سنة من سننها (أحاديث من البخاري ومسلم). يحتاج تفعيل التنبيهات.</span></div>
@@ -2470,7 +2494,7 @@ const EVENING_ADHKAR = [
   // ============================================================
   // Navigation
   // ============================================================
-  var VIEW_IDS = ["home","surahs","mushaf","juzlist","juzdetail","morning","evening","progress","settings","hifz","nasab","stories","story","reels","tasbih","duas","sunan","ruqyah","donate"];
+  var VIEW_IDS = ["home","surahs","mushaf","juzlist","juzdetail","morning","evening","progress","settings","hifz","nasab","stories","story","reels","tasbih","duas","sunan","ruqyah","donate","sleep"];
   var currentView = "home";
   var mushafReturnView = "home";
   var lastJuzIndex = 1;
@@ -2525,6 +2549,7 @@ const EVENING_ADHKAR = [
     if (name === "sunan"){ showView("sunan"); renderSunan(); return; }
     if (name === "ruqyah"){ showView("ruqyah"); renderRuqyah(); return; }
     if (name === "donate"){ showView("donate"); openDonate(); return; }
+    if (name === "sleep"){ showView("sleep"); renderSleep(); return; }
     if (name === "hifz"){ showView("hifz"); renderHifz(); return; }
     if (name === "reels"){ showView("reels"); renderReels(); return; }
     if (name === "stories"){ showView("stories"); renderStories(); return; }
@@ -3902,8 +3927,10 @@ const EVENING_ADHKAR = [
     var configs = [
       ["morningTime", "🌅 أذكار الصباح", "حان وقت أذكار الصباح"],
       ["eveningTime", "🌙 أذكار المساء", "حان وقت أذكار المساء"],
-      ["wirdTime", "📖 وردك اليومي", "حان وقت ورد القرآن"]
+      ["wirdTime", "📖 وردك اليومي", "حان وقت ورد القرآن"],
+      ["sleepTime", "😴 أذكار النوم", "قبل ما تنام: آية الكرسي والمعوذات وأذكار النوم 🤍"]
     ];
+    if (!appSettings.sleepTime) appSettings.sleepTime = "22:30";
     configs.forEach(function(cfg){
       if (appSettings[cfg[0]] === hm){
         var fireKey = cfg[0] + ":" + t;
@@ -5308,6 +5335,9 @@ const EVENING_ADHKAR = [
   var PRAYER_SUNAN = [{"id":"ps1","prayers":["Fajr"],"title":"سنة الفجر","text":"رَكْعَتَا الْفَجْرِ خَيْرٌ مِنَ الدُّنْيَا وَمَا فِيهَا","ref":"صحيح مسلم (725)"},{"id":"ps2","prayers":["Fajr","Asr"],"title":"فضل الفجر والعصر","text":"مَنْ صَلَّى الْبَرْدَيْنِ دَخَلَ الْجَنَّةَ","ref":"صحيح البخاري (574)"},{"id":"ps3","prayers":["Dhuhr"],"title":"أربع قبل الظهر","text":"كَانَ لاَ يَدَعُ أَرْبَعًا قَبْلَ الظُّهْرِ وَرَكْعَتَيْنِ قَبْلَ الْغَدَاةِ","ref":"صحيح البخاري (1182)"},{"id":"ps4","prayers":["Dhuhr","Maghrib","Isha"],"title":"السنن الرواتب","text":"حَفِظْتُ مِنَ النَّبِيِّ صلى الله عليه وسلم عَشْرَ رَكَعَاتٍ رَكْعَتَيْنِ قَبْلَ الظُّهْرِ، وَرَكْعَتَيْنِ بَعْدَهَا، وَرَكْعَتَيْنِ بَعْدَ الْمَغْرِبِ فِي بَيْتِهِ، وَرَكْعَتَيْنِ بَعْدَ الْعِشَاءِ فِي بَيْتِهِ، وَرَكْعَتَيْنِ قَبْلَ صَلاَةِ الصُّبْحِ","ref":"صحيح البخاري (1180)"},{"id":"ps5","prayers":["Dhuhr","Maghrib","Isha","Fajr"],"title":"بيت في الجنة","text":"مَنْ صَلَّى اثْنَتَىْ عَشْرَةَ رَكْعَةً فِي يَوْمٍ وَلَيْلَةٍ بُنِيَ لَهُ بِهِنَّ بَيْتٌ فِي الْجَنَّةِ","ref":"صحيح مسلم (728)"},{"id":"ps6","prayers":["Isha","Fajr"],"title":"العشاء والفجر في جماعة","text":"مَنْ صَلَّى الْعِشَاءَ فِي جَمَاعَةٍ فَكَأَنَّمَا قَامَ نِصْفَ اللَّيْلِ وَمَنْ صَلَّى الصُّبْحَ فِي جَمَاعَةٍ فَكَأَنَّمَا صَلَّى اللَّيْلَ كُلَّهُ","ref":"صحيح مسلم (656)"},{"id":"ps7","prayers":["Fajr","Dhuhr","Asr","Maghrib","Isha"],"title":"الدعاء بعد الأذان","text":"اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلاَةِ الْقَائِمَةِ آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ، حَلَّتْ لَهُ شَفَاعَتِي يَوْمَ الْقِيَامَةِ","ref":"صحيح البخاري (614)"},{"id":"ps8","prayers":["Fajr","Dhuhr","Asr","Maghrib","Isha"],"title":"بعد السلام من الصلاة","text":"اللَّهُمَّ أَنْتَ السَّلاَمُ وَمِنْكَ السَّلاَمُ تَبَارَكْتَ ذَا الْجَلاَلِ وَالإِكْرَامِ","ref":"صحيح مسلم (591)"},{"id":"ps9","prayers":["Fajr","Dhuhr","Asr","Maghrib","Isha"],"title":"التسبيح بعد الصلاة","text":"مَنْ سَبَّحَ اللَّهَ فِي دُبُرِ كُلِّ صَلاَةٍ ثَلاَثًا وَثَلاَثِينَ وَحَمِدَ اللَّهَ ثَلاَثًا وَثَلاَثِينَ وَكَبَّرَ اللَّهَ ثَلاَثًا وَثَلاَثِينَ","ref":"صحيح مسلم (597)"}];
   var SADAQAH_HADITH = [{"id":"sd1","title":"كافل اليتيم","text":"أَنَا وَكَافِلُ الْيَتِيمِ فِي الْجَنَّةِ هَكَذَا","ref":"صحيح البخاري (5304)"},{"id":"sd2","title":"الصدقة لا تنقص المال","text":"مَا نَقَصَتْ صَدَقَةٌ مِنْ مَالٍ","ref":"صحيح مسلم (2588)"},{"id":"sd3","title":"الصدقة الجارية","text":"إِذَا مَاتَ الإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلاَّ مِنْ ثَلاَثَةٍ إِلاَّ مِنْ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ","ref":"صحيح مسلم (1631)"},{"id":"sd4","title":"ولو بشق تمرة","text":"اتَّقُوا النَّارَ وَلَوْ بِشِقِّ تَمْرَةٍ","ref":"صحيح البخاري (1417)"},{"id":"sd5","title":"الساعي على الأرملة والمسكين","text":"السَّاعِي عَلَى الأَرْمَلَةِ وَالْمِسْكِينِ كَالْمُجَاهِدِ فِي سَبِيلِ اللَّهِ، أَوِ الْقَائِمِ اللَّيْلَ الصَّائِمِ النَّهَارَ","ref":"صحيح البخاري (5353)"},{"id":"sd6","title":"دعاء الملكين","text":"مَا مِنْ يَوْمٍ يُصْبِحُ الْعِبَادُ فِيهِ إِلاَّ مَلَكَانِ يَنْزِلاَنِ فَيَقُولُ أَحَدُهُمَا اللَّهُمَّ أَعْطِ مُنْفِقًا خَلَفًا، وَيَقُولُ الآخَرُ اللَّهُمَّ أَعْطِ مُمْسِكًا تَلَفًا","ref":"صحيح البخاري (1442)"}];
   var RUQYAH_SUNNAH = [{"id":"r1","title":"رقية النبي ﷺ للمريض","desc":"يمسح بيده اليمنى على موضع الألم ويقول:","text":"اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَاسَ، اشْفِهِ وَأَنْتَ الشَّافِي، لاَ شِفَاءَ إِلاَّ شِفَاؤُكَ، شِفَاءً لاَ يُغَادِرُ سَقَمًا","ref":"صحيح البخاري (5743)"},{"id":"r2","title":"رقية جبريل عليه السلام للنبي ﷺ","desc":"","text":"بِاسْمِ اللَّهِ أَرْقِيكَ مِنْ كُلِّ شَىْءٍ يُؤْذِيكَ مِنْ شَرِّ كُلِّ نَفْسٍ أَوْ عَيْنِ حَاسِدٍ اللَّهُ يَشْفِيكَ بِاسْمِ اللَّهِ أَرْقِيكَ","ref":"صحيح مسلم (2186)"},{"id":"r3","title":"لمن يجد ألمًا في جسده","desc":"ضع يدك على موضع الألم وقل «بسم الله» ثلاثًا، ثم قل سبع مرات:","text":"أَعُوذُ بِاللَّهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ","ref":"صحيح مسلم (2202)"},{"id":"r4","title":"تعويذ الأطفال (عوّذ بها النبي ﷺ الحسن والحسين)","desc":"","text":"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّةِ مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ، وَمِنْ كُلِّ عَيْنٍ لاَمَّةٍ","ref":"صحيح البخاري (3371)"},{"id":"r5","title":"عند نزول أي مكان","desc":"","text":"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ","ref":"صحيح مسلم (2708)"},{"id":"r6","title":"النفث بالمعوذات","desc":"كان النبي ﷺ إذا اشتكى يقرأ على نفسه بالمعوذات وينفث (ينفخ نفخًا خفيفًا مع ريق قليل) ويمسح بيده:","text":"كَانَ إِذَا اشْتَكَى يَقْرَأُ عَلَى نَفْسِهِ بِالْمُعَوِّذَاتِ وَيَنْفُثُ","ref":"صحيح البخاري (5016)"},{"id":"r7","title":"الفاتحة رقية","desc":"رقى صحابي لديغًا بالفاتحة فشُفي، فقال النبي ﷺ:","text":"وَمَا أَدْرَاكَ أَنَّهَا رُقْيَةٌ","ref":"صحيح البخاري (5736)"},{"id":"r8","title":"العين حق","desc":"","text":"الْعَيْنُ حَقٌّ","ref":"صحيح البخاري (5740)"}];
+  var SLEEP_QURAN = [{"s":2,"a":[255,255],"t":"آية الكرسي","rep":1,"note":{"text":"إِذَا أَوَيْتَ إِلَى فِرَاشِكَ فَاقْرَأْ آيَةَ الْكُرْسِيِّ","ref":"صحيح البخاري (2311)"}},{"s":2,"a":[285,286],"t":"آخر آيتين من سورة البقرة","rep":1,"note":{"text":"مَنْ قَرَأَ بِالآيَتَيْنِ مِنْ آخِرِ سُورَةِ الْبَقَرَةِ فِي لَيْلَةٍ كَفَتَاهُ","ref":"صحيح البخاري (5009)"}},{"s":112,"a":[1,4],"t":"سورة الإخلاص","rep":3,"note":{"text":"كَانَ إِذَا أَوَى إِلَى فِرَاشِهِ كُلَّ لَيْلَةٍ جَمَعَ كَفَّيْهِ ثُمَّ نَفَثَ فِيهِمَا فَقَرَأَ فِيهِمَا","ref":"صحيح البخاري (5017)"}},{"s":113,"a":[1,5],"t":"سورة الفلق","rep":3,"note":null},{"s":114,"a":[1,6],"t":"سورة الناس","rep":3,"note":null}];
+  var SLEEP_SUNNAH = [{"id":"ns1","title":"الوضوء والنوم على الشق الأيمن","desc":"","rep":1,"text":"إِذَا أَتَيْتَ مَضْجَعَكَ فَتَوَضَّأْ وُضُوءَكَ لِلصَّلاَةِ، ثُمَّ اضْطَجِعْ عَلَى شِقِّكَ الأَيْمَنِ","ref":"صحيح البخاري (247)"},{"id":"ns2","title":"دعاء النوم","desc":"","rep":1,"text":"اللَّهُمَّ أَسْلَمْتُ نَفْسِي إِلَيْكَ، وَوَجَّهْتُ وَجْهِي إِلَيْكَ وَفَوَّضْتُ أَمْرِي إِلَيْكَ، وَأَلْجَأْتُ ظَهْرِي إِلَيْكَ، رَغْبَةً وَرَهْبَةً إِلَيْكَ، لاَ مَلْجَأَ وَلاَ مَنْجَا مِنْكَ إِلاَّ إِلَيْكَ، آمَنْتُ بِكِتَابِكَ الَّذِي أَنْزَلْتَ، وَبِنَبِيِّكَ الَّذِي أَرْسَلْتَ","ref":"صحيح البخاري (7488)"},{"id":"ns3","title":"باسمك رب وضعت جنبي","desc":"","rep":1,"text":"بِاسْمِكَ رَبِّ وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، إِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ","ref":"صحيح البخاري (6320)"},{"id":"ns4","title":"باسمك اللهم أموت وأحيا","desc":"","rep":1,"text":"بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا","ref":"صحيح البخاري (6324)"},{"id":"ns5","title":"اللهم خلقت نفسي","desc":"","rep":1,"text":"اللَّهُمَّ خَلَقْتَ نَفْسِي وَأَنْتَ تَوَفَّاهَا لَكَ مَمَاتُهَا وَمَحْيَاهَا إِنْ أَحْيَيْتَهَا فَاحْفَظْهَا وَإِنْ أَمَتَّهَا فَاغْفِرْ لَهَا اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ","ref":"صحيح مسلم (2712)"},{"id":"ns6","title":"اللهم رب السماوات","desc":"","rep":1,"text":"اللَّهُمَّ رَبَّ السَّمَوَاتِ وَرَبَّ الأَرْضِ وَرَبَّ الْعَرْشِ الْعَظِيمِ رَبَّنَا وَرَبَّ كُلِّ شَىْءٍ فَالِقَ الْحَبِّ وَالنَّوَى وَمُنْزِلَ التَّوْرَاةِ وَالإِنْجِيلِ وَالْفُرْقَانِ أَعُوذُ بِكَ مِنْ شَرِّ كُلِّ شَىْءٍ أَنْتَ آخِذٌ بِنَاصِيَتِهِ اللَّهُمَّ أَنْتَ الأَوَّلُ فَلَيْسَ قَبْلَكَ شَىْءٌ وَأَنْتَ الآخِرُ فَلَيْسَ بَعْدَكَ شَىْءٌ وَأَنْتَ الظَّاهِرُ فَلَيْسَ فَوْقَكَ شَىْءٌ وَأَنْتَ الْبَاطِنُ فَلَيْسَ دُونَكَ شَىْءٌ اقْضِ عَنَّا الدَّيْنَ وَأَغْنِنَا مِنَ الْفَقْرِ","ref":"صحيح مسلم (2713)"},{"id":"ns7","title":"الحمد لله الذي أطعمنا","desc":"","rep":1,"text":"الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَكَفَانَا وَآوَانَا فَكَمْ مِمَّنْ لاَ كَافِيَ لَهُ وَلاَ مُئْوِيَ","ref":"صحيح مسلم (2715)"},{"id":"ns8","title":"التسبيح والتحميد والتكبير","desc":"الله أكبر ٣٤ • سبحان الله ٣٣ • الحمد لله ٣٣ — علّمها النبي ﷺ لعلي وفاطمة رضي الله عنهما:","rep":1,"text":"أَلاَ أُعَلِّمُكُمَا خَيْرًا مِمَّا سَأَلْتُمَانِي إِذَا أَخَذْتُمَا مَضَاجِعَكُمَا تُكَبِّرَا أَرْبَعًا وَثَلاَثِينَ، وَتُسَبِّحَا ثَلاَثًا وَثَلاَثِينَ، وَتَحْمَدَا ثَلاَثَةً وَثَلاَثِينَ، فَهْوَ خَيْرٌ لَكُمَا مِنْ خَادِمٍ","ref":"صحيح البخاري (3705)"}];
+  var HOURLY_DHIKR = [{"id":"hd1","title":"صلِّ على محمد ﷺ","say":"اللهم صلِّ وسلم على نبينا محمد","text":"مَنْ صَلَّى عَلَىَّ وَاحِدَةً صَلَّى اللَّهُ عَلَيْهِ عَشْرًا","ref":"صحيح مسلم (408)"},{"id":"hd2","title":"سبحان الله وبحمده","say":"سبحان الله وبحمده","text":"مَنْ قَالَ سُبْحَانَ اللَّهِ وَبِحَمْدِهِ‏.‏ فِي يَوْمٍ مِائَةَ مَرَّةٍ حُطَّتْ خَطَايَاهُ، وَإِنْ كَانَتْ مِثْلَ زَبَدِ الْبَحْرِ","ref":"صحيح البخاري (6405)"},{"id":"hd3","title":"صلِّ على محمد ﷺ","say":"اللهم صلِّ وسلم وبارك على نبينا محمد","text":"مَنْ صَلَّى عَلَىَّ وَاحِدَةً صَلَّى اللَّهُ عَلَيْهِ عَشْرًا","ref":"صحيح مسلم (408)"},{"id":"hd4","title":"كلمتان حبيبتان إلى الرحمن","say":"سبحان الله وبحمده، سبحان الله العظيم","text":"كَلِمَتَانِ خَفِيفَتَانِ عَلَى اللِّسَانِ، ثَقِيلَتَانِ فِي الْمِيزَانِ، حَبِيبَتَانِ إِلَى الرَّحْمَنِ سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ","ref":"صحيح البخاري (6682)"},{"id":"hd5","title":"صلِّ على محمد ﷺ","say":"اللهم صلِّ على محمد وعلى آل محمد","text":"مَنْ صَلَّى عَلَىَّ وَاحِدَةً صَلَّى اللَّهُ عَلَيْهِ عَشْرًا","ref":"صحيح مسلم (408)"},{"id":"hd6","title":"لا حول ولا قوة إلا بالله","say":"لا حول ولا قوة إلا بالله","text":"لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ فَإِنَّهَا‏.‏ كَنْزٌ مِنْ كُنُوزِ الْجَنَّةِ","ref":"صحيح البخاري (6384)"},{"id":"hd7","title":"صلِّ على محمد ﷺ","say":"اللهم صلِّ وسلم على نبينا محمد","text":"مَنْ صَلَّى عَلَىَّ وَاحِدَةً صَلَّى اللَّهُ عَلَيْهِ عَشْرًا","ref":"صحيح مسلم (408)"},{"id":"hd8","title":"أحب الكلام إلى الله","say":"سبحان الله، والحمد لله، ولا إله إلا الله، والله أكبر","text":"أَحَبُّ الْكَلاَمِ إِلَى اللَّهِ أَرْبَعٌ سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلاَ إِلَهَ إِلاَّ اللَّهُ وَاللَّهُ أَكْبَرُ","ref":"صحيح مسلم (2137)"},{"id":"hd9","title":"صلِّ على محمد ﷺ","say":"اللهم صلِّ وسلم على نبينا محمد","text":"مَنْ صَلَّى عَلَىَّ وَاحِدَةً صَلَّى اللَّهُ عَلَيْهِ عَشْرًا","ref":"صحيح مسلم (408)"},{"id":"hd10","title":"الاستغفار","say":"أستغفر الله وأتوب إليه","text":"وَاللَّهِ إِنِّي لأَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ فِي الْيَوْمِ أَكْثَرَ مِنْ سَبْعِينَ مَرَّةً","ref":"صحيح البخاري (6307)"},{"id":"hd11","title":"صلِّ على محمد ﷺ","say":"اللهم صلِّ وسلم على نبينا محمد","text":"مَنْ صَلَّى عَلَىَّ وَاحِدَةً صَلَّى اللَّهُ عَلَيْهِ عَشْرًا","ref":"صحيح مسلم (408)"},{"id":"hd12","title":"لا إله إلا الله وحده لا شريك له","say":"لا إله إلا الله وحده لا شريك له، له الملك وله الحمد، وهو على كل شيء قدير","text":"مَنْ قَالَ لاَ إِلَهَ إِلاَّ اللَّهُ، وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهْوَ عَلَى كُلِّ شَىْءٍ قَدِيرٌ‏.‏ فِي يَوْمٍ مِائَةَ مَرَّةٍ، كَانَتْ لَهُ عَدْلَ عَشْرِ رِقَابٍ","ref":"صحيح البخاري (6403)"}];
   var QURAN_DUAS = [{"s":1,"a":[6,7],"t":"الهداية للصراط المستقيم"},{"s":2,"a":[127,128],"t":"قبول العمل"},{"s":2,"a":[201,201],"t":"خير الدنيا والآخرة"},{"s":2,"a":[250,250],"t":"الصبر والثبات"},{"s":2,"a":[286,286],"t":"العفو والمغفرة ورفع الحرج"},{"s":3,"a":[8,8],"t":"ثبات القلب"},{"s":3,"a":[16,16],"t":"المغفرة والنجاة من النار"},{"s":3,"a":[38,38],"t":"الذرية الطيبة"},{"s":3,"a":[147,147],"t":"مغفرة الذنوب والنصر"},{"s":3,"a":[193,194],"t":"حسن الخاتمة"},{"s":7,"a":[23,23],"t":"دعاء آدم عليه السلام"},{"s":7,"a":[126,126],"t":"الصبر والموت على الإسلام"},{"s":10,"a":[85,86],"t":"النجاة من الظالمين"},{"s":14,"a":[40,41],"t":"إقامة الصلاة والمغفرة للوالدين"},{"s":17,"a":[24,24],"t":"الدعاء للوالدين"},{"s":17,"a":[80,80],"t":"حسن المدخل والمخرج"},{"s":18,"a":[10,10],"t":"الرحمة والرشاد"},{"s":20,"a":[25,28],"t":"شرح الصدر وتيسير الأمر"},{"s":20,"a":[114,114],"t":"زيادة العلم"},{"s":21,"a":[83,83],"t":"دعاء أيوب عليه السلام"},{"s":21,"a":[87,87],"t":"دعاء يونس عليه السلام"},{"s":21,"a":[89,89],"t":"دعاء زكريا عليه السلام"},{"s":23,"a":[97,98],"t":"الاستعاذة من الشياطين"},{"s":23,"a":[118,118],"t":"المغفرة والرحمة"},{"s":25,"a":[65,66],"t":"النجاة من النار"},{"s":25,"a":[74,74],"t":"صلاح الأزواج والذرية"},{"s":26,"a":[83,85],"t":"دعاء إبراهيم عليه السلام"},{"s":27,"a":[19,19],"t":"شكر النعمة"},{"s":28,"a":[24,24],"t":"دعاء موسى عليه السلام"},{"s":46,"a":[15,15],"t":"شكر النعمة وصلاح الذرية"},{"s":59,"a":[10,10],"t":"سلامة القلب للمؤمنين"},{"s":66,"a":[8,8],"t":"تمام النور يوم القيامة"},{"s":71,"a":[28,28],"t":"المغفرة للوالدين والمؤمنين"}];
 
   // ---------------- Tasbih ----------------
@@ -5619,7 +5649,8 @@ const EVENING_ADHKAR = [
   function syncReminderMeta(){
     if (!window.caches) return;
     var meta = { lastVisit: todayStr(), streak: visitStreak(), enabled: reminderEnabled(), hour: 17,
-      duaOn: typeof duaRemindOn === "function" ? duaRemindOn() : true, duaAt: typeof duaLast === "function" ? duaLast() : 0 };
+      duaOn: typeof duaRemindOn === "function" ? duaRemindOn() : true, duaAt: typeof duaLast === "function" ? duaLast() : 0,
+      dhikrOn: typeof dhikrRemindOn === "function" ? dhikrRemindOn() : true };
     caches.open("wirdi-meta").then(function(c){
       return c.put("meta.json", new Response(JSON.stringify(meta), { headers: { "Content-Type": "application/json" } }));
     }).catch(function(){});
@@ -6408,7 +6439,7 @@ const EVENING_ADHKAR = [
       morning: ["ابدأ صباحك بأذكار الصباح 🌅", [["morningAdhkar", "☀️ أذكار الصباح"], ["continueReading", "📖 وردي"]]],
       noon:    ["خصّص دقائق لوردك من القرآن اليوم 📖", [["continueReading", "📖 افتح المصحف"], ["tasbih", "📿 السبحة"]]],
       evening: ["حصّن مساءك بأذكار المساء 🌙", [["eveningAdhkar", "🌙 أذكار المساء"], ["continueReading", "📖 وردي"]]],
-      night:   ["اختم يومك بآيات من كتاب الله 🌙", [["continueReading", "📖 افتح المصحف"], ["eveningAdhkar", "🌙 أذكار المساء"]]],
+      night:   ["اختم يومك بآيات من كتاب الله وأذكار النوم 🌙", [["sleep", "😴 أذكار النوم"], ["continueReading", "📖 افتح المصحف"]]],
       sahar:   ["وقت السَّحَر — وقت مبارك للدعاء والاستغفار ✨", [["duas", "🤲 الأدعية"], ["continueReading", "📖 المصحف"]]]
     }[p];
     sub.textContent = cfg[0];
@@ -6735,9 +6766,10 @@ const EVENING_ADHKAR = [
     }
   })();
 
-  // ---------------- Hourly reminder: make dua for Amira Hamed Abdel-Fattah (alive, may Allah preserve her) ----------------
-  // App open → a gentle card at the bottom once an hour (آمين closes it). App in the background → a notification.
-  // App closed → sw.js shows it on Chrome's periodic sync (Chrome decides how often; not exactly hourly).
+  // ---------------- Reminders: dua for Amira Hamed Abdel-Fattah (alive, may Allah preserve her) + hourly dhikr ----------------
+  // The dua comes twice a day (DUA_HOURS); every other hour (8:00–23:00) a dhikr or the salah upon the Prophet ﷺ
+  // with its virtue (HOURLY_DHIKR, verified hadith). App open → a gentle card at the bottom; in the background →
+  // a notification. The phone app schedules the same reminders itself (native.js); sw.js covers Chrome's periodic sync.
   var DUA_AMIRA = [
     "اللهم احفظها بحفظك، وبارك في عمرها وصحتها، وألبسها ثوب العافية",
     "اللهم اشفها وعافها، واجعل القرآن ربيع قلبها ونور صدرها",
@@ -6748,45 +6780,152 @@ const EVENING_ADHKAR = [
     "اللهم ارزقها الفردوس الأعلى من الجنة بغير حساب ولا سابقة عذاب",
     "اللهم بارك لها في رزقها وأهلها، واجعلها من أهل القرآن"
   ];
-  var STORE_DUA_LAST = "wirdi4-dua-last", DUA_EVERY_MS = 60 * 60 * 1000;
+  var STORE_DUA_LAST = "wirdi4-dua-last", STORE_DHIKR_LAST = "wirdi4-dhikr-last", DUA_HOURS = [10, 21];
   function duaRemindOn(){ return appSettings.duaRemind !== false; }
-  function duaLast(){ try { return +localStorage.getItem(STORE_DUA_LAST) || 0; } catch(e){ return 0; } }
-  function duaMark(){ try { localStorage.setItem(STORE_DUA_LAST, String(Date.now())); } catch(e){} }
-  function duaPick(){ return DUA_AMIRA[Math.floor(Date.now() / DUA_EVERY_MS) % DUA_AMIRA.length]; }
-  function duaShowCard(){
+  function dhikrRemindOn(){ return appSettings.dhikrRemind !== false; }
+  function stamp(k){ try { return +localStorage.getItem(k) || 0; } catch(e){ return 0; } }
+  function setStamp(k){ try { localStorage.setItem(k, String(Date.now())); } catch(e){} }
+  function duaLast(){ return stamp(STORE_DUA_LAST); }
+  function duaPick(){ return DUA_AMIRA[Math.floor(Date.now() / 3600000) % DUA_AMIRA.length]; }
+  function dhikrPick(){ return HOURLY_DHIKR[Math.floor(Date.now() / 3600000) % HOURLY_DHIKR.length]; }
+  function hourStart(){ var d = new Date(); d.setMinutes(0, 0, 0); return d.getTime(); }
+  function remindCard(title, text, sub, okLabel, okToast){
     var old = document.getElementById("duaAmiraCard"); if (old) old.remove();
     var c = document.createElement("div");
     c.id = "duaAmiraCard"; c.className = "dua-amira"; c.setAttribute("role", "status");
-    c.innerHTML = '<div class="da-title">🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح</div><div class="da-text">' + duaPick() + '</div>' +
-      '<div class="da-actions"><button class="btn primary" data-da="amen">آمين 🤍</button><button class="btn ghost" data-da="later">لاحقًا</button></div>';
+    c.innerHTML = '<div class="da-title">' + title + '</div><div class="da-text">' + text + '</div>' + (sub ? '<div class="da-sub">' + sub + '</div>' : '') +
+      '<div class="da-actions"><button class="btn primary" data-da="ok">' + okLabel + '</button><button class="btn ghost" data-da="later">لاحقًا</button></div>';
     c.addEventListener("click", function(e){
       var b = e.target.closest("[data-da]"); if (!b) return;
-      if (b.getAttribute("data-da") === "amen") showToast("تقبّل الله دعاءك 🤍");
+      if (b.getAttribute("data-da") === "ok") showToast(okToast);
       c.classList.add("out"); setTimeout(function(){ c.remove(); }, 300);
     });
     document.body.appendChild(c);
     setTimeout(function(){ if (c.isConnected){ c.classList.add("out"); setTimeout(function(){ c.remove(); }, 300); } }, 45000);
   }
-  function duaCheck(){
-    if (!duaRemindOn() || Date.now() - duaLast() < DUA_EVERY_MS) return;
-    var splash = document.getElementById("splashScreen");
-    if (document.visibilityState === "visible"){
-      if (splash && splash.isConnected && !splash.hidden && getComputedStyle(splash).display !== "none") return;   // not over the splash
-      duaMark(); duaShowCard();
-    } else if (appSettings.notificationsEnabled){
-      duaMark(); wirdiNotify("🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", duaPick(), "dua-amira");
+  function remindNow(){
+    var h = new Date().getHours();
+    if (h < 8 || h >= 23) return;
+    var dua = DUA_HOURS.indexOf(h) !== -1 && duaRemindOn() && duaLast() < hourStart();
+    var dhikr = !dua && dhikrRemindOn() && stamp(STORE_DHIKR_LAST) < hourStart();
+    if (!dua && !dhikr) return;
+    var visible = document.visibilityState === "visible", splash = document.getElementById("splashScreen");
+    if (visible && splash && splash.isConnected && !splash.hidden && getComputedStyle(splash).display !== "none") return;   // not over the splash
+    if (!visible && !appSettings.notificationsEnabled) return;
+    setStamp(dua ? STORE_DUA_LAST : STORE_DHIKR_LAST);
+    if (dua){
+      if (visible) remindCard("🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", duaPick(), "", "آمين 🤍", "تقبّل الله دعاءك 🤍");
+      else wirdiNotify("🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", duaPick(), "dua-amira");
+    } else {
+      var d = dhikrPick();
+      if (visible) remindCard("📿 " + d.title, d.say, "قال رسول الله ﷺ: «" + d.text + "» — " + d.ref, "قلتها ✓", "جزاك الله خيرًا 🤍");
+      else wirdiNotify("📿 " + d.title, d.say + " — «" + d.text + "»", "dhikr-hourly");
     }
   }
-  // first reminder a little after opening (not on the very first launch), then every hour
-  if (!duaLast()) duaMark();
-  setTimeout(duaCheck, 8000);
-  setInterval(duaCheck, 60000);
-  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") setTimeout(duaCheck, 1500); });
-  var duaToggle = document.getElementById("duaRemindToggle");
-  if (duaToggle){
-    duaToggle.checked = duaRemindOn();
-    duaToggle.addEventListener("change", function(){ appSettings.duaRemind = duaToggle.checked; saveSettings(); if (typeof syncReminderMeta === "function") syncReminderMeta(); });
+  // not right at the very first launch; then checked every minute
+  if (!duaLast()) setStamp(STORE_DUA_LAST);
+  if (!stamp(STORE_DHIKR_LAST)) setStamp(STORE_DHIKR_LAST);
+  setTimeout(remindNow, 8000);
+  setInterval(remindNow, 60000);
+  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") setTimeout(remindNow, 1500); });
+  [["duaRemindToggle", "duaRemind", duaRemindOn], ["dhikrRemindToggle", "dhikrRemind", dhikrRemindOn]].forEach(function(t){
+    var el = document.getElementById(t[0]); if (!el) return;
+    el.checked = t[2]();
+    el.addEventListener("change", function(){ appSettings[t[1]] = el.checked; saveSettings(); if (typeof syncReminderMeta === "function") syncReminderMeta(); });
+  });
+
+  // ---------------- أذكار النوم ----------------
+  // Quran parts (Hafs text of the app) and sunnah adhkar (verbatim from al-Bukhari / Muslim, see gen_content.js),
+  // each with a tap counter; progress resets every day. A reminder comes at the time chosen in settings
+  // (sleepTime, default 22:30): in the page (checkNotifications) and from the phone app (native.js).
+  var STORE_SLEEP = "wirdi4-sleep";
+  function sleepItems(){
+    var out = [];
+    SLEEP_QURAN.forEach(function(q, i){ out.push({ k: "q" + i, rep: q.rep, q: q }); });
+    SLEEP_SUNNAH.forEach(function(x, i){ if (x.id !== "ns1") out.push({ k: "s" + i, rep: x.rep, h: x }); });   // ns1 (wudu, right side) is the intro
+    return out;
   }
+  function sleepState(){
+    var st = loadJSON(STORE_SLEEP, null);
+    if (!st || st.date !== todayStr()) st = { date: todayStr(), c: {} };
+    return st;
+  }
+  function renderSleep(){
+    var st = sleepState(), items = sleepItems(), done = items.filter(function(it){ return (st.c[it.k] || 0) >= it.rep; }).length;
+    var h = '<div class="hf-card"><div class="dua-title">' + SLEEP_SUNNAH[0].title + '</div><div class="hf-meta">«' + SLEEP_SUNNAH[0].text + '» — ' + SLEEP_SUNNAH[0].ref + '</div>' +
+      '<div class="bar" style="margin-top:10px;"><div class="fill" style="width:' + Math.round(done * 100 / items.length) + '%"></div></div>' +
+      '<div class="muted" style="font-size:0.78rem;text-align:center;margin-top:6px;">' + toArabicIndic(done) + ' / ' + toArabicIndic(items.length) + (done === items.length ? ' — تقبّل الله، تصبح على خير 🤍' : '') + '</div></div>';
+    items.forEach(function(it){
+      var n = st.c[it.k] || 0, full = n >= it.rep;
+      h += '<div class="hf-card dua-card sl-card' + (full ? ' sl-done' : '') + '">';
+      if (it.q){
+        h += '<div class="dua-title">' + it.q.t + (it.rep > 1 ? ' <span class="ruq-rep">× ' + toArabicIndic(it.rep) + '</span>' : '') + '</div>' +
+          '<div class="st-quote">' + ruqAyahsHtml(it.q) + '</div><div class="dua-ref">﴿ ' + ruqRef(it.q) + ' ﴾</div>' +
+          (it.q.note ? '<div class="hf-meta" style="margin-top:6px;">قال رسول الله ﷺ: «' + it.q.note.text + '» — ' + it.q.note.ref + '</div>' : '');
+      } else {
+        h += '<div class="dua-title">' + it.h.title + '</div>' + (it.h.desc ? '<div class="hf-meta" style="margin-bottom:6px;">' + it.h.desc + '</div>' : '') +
+          '<div class="dua-text">«' + it.h.text + '»</div><div class="dua-ref">' + it.h.ref + '</div>';
+      }
+      h += '<button class="btn ' + (full ? 'ghost' : 'primary') + ' block sl-count" data-sl="' + it.k + '">' + (full ? '✓ تم' : (it.rep > 1 ? 'اضغط بعد كل مرة • ' + toArabicIndic(n) + ' / ' + toArabicIndic(it.rep) : 'تم ✓')) + '</button></div>';
+    });
+    h += '<button class="btn ghost block" data-sl="reset" style="margin-top:4px;">↺ إعادة الأذكار</button>' +
+      '<p class="muted" style="font-size:0.72rem;text-align:center;">الآيات من نص المصحف (حفص عن عاصم) • الأحاديث منقولة بنصها من صحيح البخاري وصحيح مسلم مع رقم الحديث.</p>';
+    document.getElementById("sleepBody").innerHTML = h;
+  }
+  document.getElementById("sleepBody").addEventListener("click", function(e){
+    var b = e.target.closest("[data-sl]"); if (!b) return;
+    var k = b.getAttribute("data-sl"), st = sleepState();
+    if (k === "reset"){ st.c = {}; }
+    else {
+      var it = sleepItems().filter(function(x){ return x.k === k; })[0]; if (!it) return;
+      st.c[k] = Math.min(it.rep, (st.c[k] || 0) + 1);
+      if (navigator.vibrate) try { navigator.vibrate(15); } catch(err){}
+    }
+    saveJSON(STORE_SLEEP, st);
+    var y = window.scrollY; renderSleep(); window.scrollTo(0, y);
+  });
+  // settings: time of the sleep reminder
+  (function(){
+    var inp = document.getElementById("sleepTimeInput"); if (!inp) return;
+    if (!appSettings.sleepTime) appSettings.sleepTime = "22:30";
+    inp.value = appSettings.sleepTime;
+    inp.addEventListener("change", function(){ appSettings.sleepTime = inp.value || "22:30"; saveSettings(); showToast("تم حفظ الوقت"); });
+  })();
+
+  // ---------------- Adhan in the page: Masjid al-Haram recording, stop bar, full / takbir only ----------------
+  // (The phone app plays it natively with a stop button in the notification — see native.js / AdhanService.)
+  // Sheikh Ali Mulla (muezzin of Masjid al-Haram) for the prayers, a Haram Fajr adhan («الصلاة خير من النوم»).
+  ADHAN_URL = "audio/adhan_makkah.mp3";
+  ADHAN_FAJR_URL = "audio/adhan_makkah_fajr.mp3";
+  (function(){
+    var bar = document.createElement("div");
+    bar.className = "adhan-bar"; bar.hidden = true;
+    bar.innerHTML = '<span>🕌 الأذان — بصوت الحرم المكي</span><button class="btn primary" type="button">⏹ إيقاف الأذان</button>';
+    document.body.appendChild(bar);
+    function stop(){ try { adhanAudioEl.pause(); adhanAudioEl.currentTime = 0; } catch(e){} bar.hidden = true; }
+    bar.querySelector("button").addEventListener("click", stop);
+    adhanAudioEl.addEventListener("playing", function(){ bar.hidden = false; });
+    ["pause", "ended", "error"].forEach(function(ev){ adhanAudioEl.addEventListener(ev, function(){ bar.hidden = true; }); });
+    // "takbir only": stop after the first two takbirs (with a short fade)
+    adhanAudioEl.addEventListener("timeupdate", function(){
+      if (!appSettings.adhanShort || adhanAudioEl.paused) return;
+      var limit = adhanAudioEl.src.indexOf("fajr") !== -1 ? 20 : 33, t = adhanAudioEl.currentTime;
+      if (t > limit) stop();
+      else adhanAudioEl.volume = t > limit - 2 ? Math.max(0, (limit - t) / 2) : 1;
+    });
+    // settings: full adhan / takbir only, and a preview
+    var sel = document.getElementById("adhanLengthSelect");
+    if (sel){
+      sel.value = appSettings.adhanShort ? "short" : "full";
+      sel.addEventListener("change", function(){ appSettings.adhanShort = sel.value === "short"; saveSettings(); if (window.__wirdiReschedule) window.__wirdiReschedule(); });
+    }
+    var pv = document.getElementById("adhanPreviewBtn");
+    if (pv) pv.addEventListener("click", function(){
+      if (!adhanAudioEl.paused){ stop(); return; }
+      adhanAudioEl.src = ADHAN_URL; adhanAudioEl.volume = 1;
+      adhanAudioEl.play().catch(function(){ showToast("تعذر تشغيل الأذان"); });
+    });
+  })();
 
   // ---------------- Playback log (to find out why audio stops with the screen locked on a phone) ----------------
   // Records what happens to the Quran / ruqyah audio and to the page (hidden, frozen, offline…) with the time.
@@ -7089,7 +7228,8 @@ const EVENING_ADHKAR = [
   // ---------------- Native Android app (Capacitor) ----------------
   // When the site runs inside the native وِرْدِي app (window.Capacitor present), notifications are
   // scheduled on the phone itself (they arrive at the exact time even with the app closed): prayers with
-  // the adhan sound, morning / evening adhkar, the daily wird, the streak, the hourly dua for Amira Hamed.
+  // the full adhan of Masjid al-Haram (v15+, AdhanService), morning / evening / sleep adhkar, the daily wird,
+  // the streak, the dua for Amira Hamed (twice a day) and an hourly dhikr.
   // A foreground service keeps the recitation alive with the screen off. In a normal browser nothing changes.
   function wnIsNative(){ return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform() && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications); }
   window.__wirdiNative = wnIsNative();
@@ -7130,7 +7270,8 @@ const EVENING_ADHKAR = [
         LN.createChannel({ id: "wirdi_adhan_fajr", name: "أذان الفجر", description: "صوت أذان الفجر", importance: 5, visibility: 1, sound: "adhan_fajr.mp3", vibration: true }),
         LN.createChannel({ id: "wirdi_prayer", name: "مواقيت الصلاة", description: "تنبيه بدون أذان في وقت الصلاة مع سنة من سننها", importance: 4, visibility: 1, vibration: true }),
         LN.createChannel({ id: "wirdi_reminders", name: "الأذكار والورد", description: "أذكار الصباح والمساء والورد اليومي والسلسلة", importance: 4, visibility: 1, vibration: true }),
-        LN.createChannel({ id: "wirdi_dua", name: "الدعاء لأميرة حامد", description: "تذكير كل ساعة بالدعاء", importance: 3, visibility: 1 })
+        LN.createChannel({ id: "wirdi_dua", name: "الدعاء لأميرة حامد", description: "تذكير بالدعاء مرتين في اليوم", importance: 3, visibility: 1 }),
+        LN.createChannel({ id: "wirdi_dhikr", name: "الذكر والصلاة على النبي ﷺ", description: "تذكير كل ساعة بذكر أو بالصلاة على النبي ﷺ", importance: 3, visibility: 1 })
       ]).catch(function(){});
       return channelsReady;
     }
@@ -7181,35 +7322,39 @@ const EVENING_ADHKAR = [
           var old = (pend.notifications || []).map(function(n){ return { id: n.id }; });
           return old.length ? LN.cancel({ notifications: old }) : null;
         }).then(function(){
-          if (p !== "granted" || !appSettings.notificationsEnabled) return;
+          if (p !== "granted" || !appSettings.notificationsEnabled){ if (WN.scheduleAdhan) WN.scheduleAdhan({ items: [] }).catch(function(){}); return; }
           return ensureChannels().then(function(){ return nextDaysTimes(7); }).then(function(days){
-            var list = [], now = Date.now() + 30000, ic = "ic_stat_wirdi";
+            var list = [], adhans = [], now = Date.now() + 30000, ic = "ic_stat_wirdi", liveAdhan = !!WN.scheduleAdhan;
             function add(id, when, title, body, ch){ if (when.getTime() > now) list.push({ id: id, title: title, body: body, channelId: ch, smallIcon: ic, schedule: { at: when, allowWhileIdle: true } }); }
             days.forEach(function(day, di){
               // prayers (adhan sound if the adhan option is on)
               if (day.t && (appSettings.adhanEnabled || appSettings.prayerSunnahNotif !== false)){
                 PRAYER_NAMES.forEach(function(pn, pi){
                   var tip = prayerSunnah(pn[0]), ch = appSettings.adhanEnabled ? (pn[0] === "Fajr" ? "wirdi_adhan_fajr" : "wirdi_adhan") : "wirdi_prayer";
-                  add(1000 + di * 10 + pi, at(day.date, day.t[pn[0]]), "🕌 حان وقت صلاة " + pn[1], tip ? "🌿 " + tip.title + ": «" + tip.text + "» — " + tip.ref : "", ch);
+                  var when = at(day.date, day.t[pn[0]]), title = "🕌 حان وقت صلاة " + pn[1], body = tip ? "🌿 " + tip.title + ": «" + tip.text + "» — " + tip.ref : "";
+                  // phone app v15+: the full adhan of Masjid al-Haram with a stop button (AdhanService)
+                  if (appSettings.adhanEnabled && liveAdhan){ if (when.getTime() > now) adhans.push({ at: when.getTime(), title: title, body: body, fajr: pn[0] === "Fajr", maxSec: appSettings.adhanShort ? (pn[0] === "Fajr" ? 20 : 33) : 0 }); return; }
+                  add(1000 + di * 10 + pi, when, title, body, ch);
                 });
               }
               // morning / evening adhkar and the daily wird at the times chosen in settings
               add(2000 + di * 10 + 1, at(day.date, appSettings.morningTime || "07:00"), "🌅 أذكار الصباح", "ابدأ صباحك بأذكار الصباح 🤍", "wirdi_reminders");
               add(2000 + di * 10 + 2, at(day.date, appSettings.eveningTime || "18:00"), "🌙 أذكار المساء", "حصّن مساءك بأذكار المساء 🤍", "wirdi_reminders");
               add(2000 + di * 10 + 3, at(day.date, appSettings.wirdTime || "20:00"), "📖 وردك اليومي", "لا تنسَ وردك من القرآن اليوم", "wirdi_reminders");
+              add(2000 + di * 10 + 4, at(day.date, appSettings.sleepTime || "22:30"), "😴 أذكار النوم", "قبل ما تنام: آية الكرسي والمعوذات وأذكار النوم 🤍", "wirdi_reminders");
               // streak: from tomorrow on, a gentle reminder at 18:00 (cancelled and rebuilt every time the app is opened)
               if (di >= 1){
                 var s = visitStreak();
                 add(4000 + di, at(day.date, "18:00"), "🔥 لا تخسر سلسلتك", s > 0 ? "سلسلتك " + toArabicIndic(s + di - 1) + " يوم — دقيقة مع وِرْدِي النهارده تكمّلها 🤍" : "افتح وِرْدِي واقرأ ولو آية 🤍", "wirdi_reminders");
               }
-              // hourly dua for Amira Hamed (08:00–22:00), first 3 days
-              if (di < 3 && (typeof duaRemindOn !== "function" || duaRemindOn())){
-                for (var h = 8; h <= 22; h++){
-                  var when = new Date(day.date.getFullYear(), day.date.getMonth(), day.date.getDate(), h, 0, 0);
-                  add(3000 + di * 100 + h, when, "🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", DUA_AMIRA[Math.floor(when.getTime() / 3600000) % DUA_AMIRA.length], "wirdi_dua");
-                }
+              // dua for Amira Hamed twice a day (DUA_HOURS); a dhikr / salah upon the Prophet ﷺ every other hour 08:00–22:00 (first 3 days)
+              for (var h = 8; h <= 22; h++){
+                var hw = new Date(day.date.getFullYear(), day.date.getMonth(), day.date.getDate(), h, 0, 0), slot = Math.floor(hw.getTime() / 3600000);
+                if (DUA_HOURS.indexOf(h) !== -1){ if (duaRemindOn()) add(3000 + di * 100 + h, hw, "🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", DUA_AMIRA[slot % DUA_AMIRA.length], "wirdi_dua"); }
+                else if (di < 3 && dhikrRemindOn()){ var dk = HOURLY_DHIKR[slot % HOURLY_DHIKR.length]; add(5000 + di * 100 + h, hw, "📿 " + dk.title, dk.say + " — «" + dk.text + "»", "wirdi_dhikr"); }
               }
             });
+            if (liveAdhan) WN.scheduleAdhan({ items: adhans }).then(function(r){ if (typeof diag === "function") diag("native: adhan scheduled " + (r && r.scheduled)); }).catch(function(){});
             var chunks = []; for (var i = 0; i < list.length; i += 40) chunks.push(list.slice(i, i + 40));
             return chunks.reduce(function(pr, c){ return pr.then(function(){ return LN.schedule({ notifications: c }); }); }, Promise.resolve())
               .then(function(){ if (typeof diag === "function") diag("native: scheduled " + list.length + " notifications for 7 days"); });
