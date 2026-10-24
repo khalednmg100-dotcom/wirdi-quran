@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-nHUWRaL0JRhu9A6SiFkkkN/iwM2Ff+ZpL2jJE99R62Q='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-WbhA6oTSF1ZbZH7hxw2CL+dPNAjjHfIzYRojSWol1XE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -719,6 +719,8 @@
   #view-mushaf #mqSmaller, #view-mushaf #mqBigger, #view-mushaf #mqSizeLabel, #toolZoomInBtn, #toolZoomOutBtn{display:none !important;}
   .mushaf-page.m15{overflow:hidden !important;}
   #mushafViewport{touch-action:none;}   /* no browser pinch-zoom on the page (swipes still turn pages) */
+  /* cleanup: browser-only leftovers and duplicate settings are not shown */
+  #installTip, #notificationNotice, #donateHomeCard, .settings-row:has(#fullScreenToggle), .settings-row:has(#quranSizeRange){display:none !important;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -1111,7 +1113,7 @@
     <div class="settings-section">
       <h3>التنبيهات</h3>
       <div class="settings-row">
-        <div><label>تفعيل التنبيهات</label><span class="hint">يطلب إذن المتصفح لإظهار الإشعارات</span></div>
+        <div><label>تفعيل التنبيهات</label><span class="hint">الأذكار والورد والأذان والتذكيرات على موبايلك</span></div>
         <label class="switch"><input type="checkbox" id="notifToggle"><span class="slider"></span></label>
       </div>
       <div class="settings-row"><label>وقت أذكار الصباح</label><input type="time" id="morningTimeInput"></div>
@@ -1126,7 +1128,7 @@
         <div><label>📿 ذكر وصلاة على النبي ﷺ كل ساعة</label><span class="hint">من ٨ الصبح لـ ١١ بالليل: «صلِّ على محمد» أو ذكر من السنة مع فضله</span></div>
         <label class="switch"><input type="checkbox" id="dhikrRemindToggle"><span class="slider"></span></label>
       </div>
-      <div class="settings-row" id="dailyReminderHint"><div><label>🔥 تذكير السلسلة</label><span class="hint">لو ما فتحتش التطبيق طول اليوم، يوصلك تذكير لطيف بعد العصر عشان ماتخسرش سلسلتك. يشتغل على أندرويد لما تكون التنبيهات مفعّلة والتطبيق متثبت (كروم بيحدد الوقت بالظبط).</span></div></div>
+      <div class="settings-row" id="dailyReminderHint"><div><label>🔥 تذكير السلسلة</label><span class="hint">لو ما فتحتش التطبيق طول اليوم، يوصلك تذكير لطيف الساعة ٦ عشان ماتخسرش سلسلتك</span></div></div>
     </div>
 
     <div class="settings-section">
@@ -1141,16 +1143,16 @@
     <div class="settings-section">
       <h3>أذان الصلاة</h3>
       <div class="settings-row">
-        <div><label>تفعيل الأذان في مواعيد الصلاة</label><span class="hint" id="adhanHint">لازم التطبيق يكون مفتوح وقت الأذان عشان يشتغل الصوت — التنبيهات لما التطبيق مقفول محدوديّة زي أي تطبيق ويب.</span></div>
+        <div><label>تفعيل الأذان في مواعيد الصلاة</label><span class="hint" id="adhanHint">الأذان كامل في وقت كل صلاة، حتى والتطبيق مقفول</span></div>
         <label class="switch"><input type="checkbox" id="adhanToggle"><span class="slider"></span></label>
       </div>
       <div class="settings-row">
-        <div><label>🕌 صوت الأذان</label><span class="hint">بصوت الشيخ علي ملا مؤذن الحرم المكي — تقدر توقفه من زرار «إيقاف الأذان» في الإشعار</span></div>
+        <div><label>🕌 صوت الأذان</label><span class="hint">بصوت الشيخ علي ملا مؤذن الحرم المكي</span></div>
         <select id="adhanLengthSelect"><option value="full">الأذان كامل</option><option value="short">التكبير فقط</option></select>
         <button class="btn ghost" id="adhanPreviewBtn">🔊 اسمع</button>
       </div>
       <div class="settings-row">
-        <div><label>🌿 تذكير بسنن الصلاة</label><span class="hint">إشعار في وقت كل صلاة مع سنة من سننها (أحاديث من البخاري ومسلم). يحتاج تفعيل التنبيهات.</span></div>
+        <div><label>🌿 تذكير بسنن الصلاة</label><span class="hint">مع كل صلاة سنة من سننها (من البخاري ومسلم)</span></div>
         <label class="switch"><input type="checkbox" id="prayerSunnahToggle"><span class="slider"></span></label>
       </div>
       <div class="settings-row" id="prayerTimesRow" hidden>
@@ -1197,7 +1199,7 @@
           <input type="range" class="size-range" id="quranSizeRange" min="80" max="250" step="5"></div>
       </div>
       <div class="settings-row">
-        <div><label>حجم الخط</label></div>
+        <div><label>🔠 حجم الخط</label></div>
         <select id="fontSizeSelect">
           <option value="0.9">صغير</option>
           <option value="1">متوسط</option>
@@ -3771,7 +3773,7 @@ const EVENING_ADHKAR = [
       Notification.requestPermission().then(function(perm){
         appSettings.notificationsEnabled = (perm === "granted");
         saveSettings();
-        if (perm !== "granted"){ showToast("لم يتم منح إذن الإشعارات من المتصفح"); }
+        if (perm !== "granted"){ showToast("الإشعارات مقفولة — اسمح بيها لوردي من إعدادات الموبايل"); }
         renderSettings();
       });
     } else {
@@ -5143,7 +5145,7 @@ const EVENING_ADHKAR = [
     var RR = reelReciter(cfg.reciter);
     if (RR.kind !== "surah" && cfg.to - cfg.from + 1 > REEL_MAX_AYAHS){ showToast("الحد الأقصى " + toArabicIndic(REEL_MAX_AYAHS) + " آية في الريل الواحد"); return; }
     if (RR.kind === "surah" && !reelSurahFits(cfg.surah)){ showToast("تلاوة " + RR.name + " متاحة للسور القصيرة فقط (السورة كلها لازم تظهر في شاشة واحدة) — اختر سورة أقصر"); return; }
-    if (record && reelPickMime() === null){ showToast("تسجيل الفيديو غير مدعوم على هذا المتصفح"); return; }
+    if (record && reelPickMime() === null){ showToast("تسجيل الفيديو مش مدعوم على الموبايل ده"); return; }
     reelStop();
     var job = reel.job, AC = window.AudioContext || window.webkitAudioContext, actx = new AC();
     if (actx.state === "suspended" && actx.resume) actx.resume();
