@@ -1,4 +1,4 @@
-const CACHE_NAME = "wirdi-cache-v12";
+const CACHE_NAME = "wirdi-cache-v13";
 const QCF_CACHE = "wirdi-qcf";   // mushaf page fonts: kept across app updates, so pages read once work offline
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./fonts/UthmanicHafs.woff2"];
 
