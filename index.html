@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-N7GC9ey7Aog4Tb+8vbqZQdHaAmtB4OgXo91v9/yJwIk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-T3UnqQkV+W+ovograQ7pda0riLtvQGrqN33w9Klz1UU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -546,7 +546,7 @@
   .prayer-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;}
   .prayer-head b{color:var(--teal-deep); font-size:0.95rem;}
   .prayer-head span{font-size:0.72rem; color:var(--ink-soft);}
-  .prayer-row{display:grid; grid-template-columns:repeat(5,1fr); gap:6px;}
+  .prayer-row{display:grid; grid-template-columns:repeat(6,1fr); gap:5px;}
   .prayer-cell{text-align:center; border-radius:12px; padding:8px 2px; background:var(--paper); border:1px solid transparent;}
   .prayer-cell .pn{font-size:0.75rem; font-weight:800; color:var(--ink-soft);}
   .prayer-cell .pt{font-size:0.85rem; font-weight:800; color:var(--ink); margin-top:2px; font-variant-numeric:tabular-nums; white-space:nowrap;}
@@ -748,6 +748,9 @@
   @keyframes spDot{0%,100%{opacity:.3; transform:translateY(0)} 50%{opacity:1; transform:translateY(-4px)}}
   @keyframes spUp{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
   @media (prefers-reduced-motion: reduce){ .splash.sp2 *, .splash.sp2 *::after{animation:none !important;} }
+  /* sunrise in the prayer card: no adhan, a softer cell */
+  .prayer-cell.sun{background:transparent; border:1px dashed var(--line, #E2DCCB);}
+  .prayer-cell.sun .pn{font-size:0.66rem;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -6450,7 +6453,7 @@ const EVENING_ADHKAR = [
   // so every notification in the app goes through the service worker when one is available.
   function wirdiNotify(title, body, tag){
     if (!("Notification" in window) || Notification.permission !== "granted") return;
-    var opts = { body: body, icon: "icon-192.png", badge: "icon-192.png", lang: "ar", dir: "rtl", tag: tag || undefined, data: { url: "./" } };
+    var opts = { body: body, icon: "icon-192.png", badge: "badge-96.png", lang: "ar", dir: "rtl", tag: tag || undefined, data: { url: "./" } };
     if ("serviceWorker" in navigator){
       navigator.serviceWorker.ready.then(function(reg){ return reg.showNotification(title, opts); })
         .catch(function(){ try { new Notification(title, opts); } catch(e){} });
@@ -6526,6 +6529,8 @@ const EVENING_ADHKAR = [
     PRAYER_NAMES.forEach(function(p){
       var m = hmToMin(prayerTimesToday[p[0]]), cls = (nx && !nx.tomorrow && nx.key === p[0]) || (nx && nx.tomorrow && p[0] === "Fajr") ? " next" : (m <= n ? " past" : "");
       h += '<div class="prayer-cell' + cls + '"><div class="pn">' + p[1] + '</div><div class="pt">' + to12h(prayerTimesToday[p[0]]) + '</div></div>';
+      // sunrise after Fajr: shown for the end of Fajr time, it has no adhan
+      if (p[0] === "Fajr" && prayerTimesToday.Sunrise) h += '<div class="prayer-cell sun' + (hmToMin(prayerTimesToday.Sunrise) <= n ? " past" : "") + '"><div class="pn">☀️ الشروق</div><div class="pt">' + to12h(prayerTimesToday.Sunrise) + '</div></div>';
     });
     h += '</div>';
     if (nx) h += '<div class="prayer-next">⏳ ' + (nx.tomorrow ? 'صلاة الفجر غدًا' : 'صلاة ' + nx.name) + ' بعد ' + durText(nx.inMin) + '</div>';
@@ -6550,14 +6555,43 @@ const EVENING_ADHKAR = [
       wirdiNotify("🕌 حان وقت صلاة " + p[1], tip ? ("🌿 " + tip.title + ": «" + tip.text + "» — " + tip.ref) : "", "prayer-" + p[0]);
     });
   }
-  // prayer times are now needed by the home screen, not only by the adhan option
-  if (!prayerTimesToday) fetchPrayerTimes();
-  setInterval(function(){
-    if (prayerTimesCache && prayerTimesCache.date !== todayStr()){ prayerTimesToday = null; fetchPrayerTimes(); }   // new day
-    checkPrayerReminders();
-  }, 30000);
+  // ---- today's prayer times (with sunrise), refreshed every day ----
+  // The whole month is downloaded once (Aladhan calendar, Cairo, Egyptian authority) and kept on the phone, so
+  // every new day — even without internet — the card switches to that day's times by itself.
+  function ptMonthKey(d){ return "wirdi4-ptm-" + d.getFullYear() + "-" + (d.getMonth() + 1); }
+  function ptFromMonth(d){
+    var m = loadJSON(ptMonthKey(d), null), k = dayKey(d);
+    return m && m[k] ? m[k] : null;
+  }
+  function ptApply(t){
+    prayerTimesToday = t; prayerTimesCache = { date: todayStr(), timings: t }; saveJSON(STORE_PRAYER_TIMES, prayerTimesCache);
+    if (currentView === "home"){ renderPrayerCard(); renderHello(); }
+    if (currentView === "settings" && typeof renderPrayerTimesRow === "function") renderPrayerTimesRow();
+  }
+  var ptLoading = false;
+  function ptRefresh(){
+    var d = new Date(), t = ptFromMonth(d);
+    if (t){ if (!prayerTimesToday || prayerTimesCache.date !== todayStr() || !prayerTimesToday.Sunrise) ptApply(t); return; }
+    if (ptLoading) return; ptLoading = true;
+    fetch("https://api.aladhan.com/v1/calendarByCity/" + d.getFullYear() + "/" + (d.getMonth() + 1) + "?city=Cairo&country=Egypt&method=5")
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        var out = {};
+        (j.data || []).forEach(function(x){
+          var p = x.date.gregorian.date.split("-"), o = {};   // DD-MM-YYYY
+          ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(function(k){ o[k] = String(x.timings[k]).slice(0, 5); });
+          out[p[2] + "-" + p[1] + "-" + p[0]] = o;
+        });
+        if (Object.keys(out).length) saveJSON(ptMonthKey(d), out);
+        var t2 = ptFromMonth(new Date()); if (t2) ptApply(t2);
+      })
+      .catch(function(){ if (!prayerTimesToday) fetchPrayerTimes(); })   // fallback: today only
+      .then(function(){ ptLoading = false; });
+  }
+  ptRefresh();
+  setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   document.addEventListener("visibilitychange", function(){
-    if (document.visibilityState === "visible" && currentView === "home"){ renderHello(); renderPrayerCard(); }
+    if (document.visibilityState === "visible"){ ptRefresh(); if (currentView === "home"){ renderHello(); renderPrayerCard(); } }
   });
   var prayerSunnahToggle = document.getElementById("prayerSunnahToggle");
   if (prayerSunnahToggle){

@@ -1,6 +1,6 @@
-const CACHE_NAME = "wirdi-cache-v13";
+const CACHE_NAME = "wirdi-cache-v14";
 const QCF_CACHE = "wirdi-qcf";   // mushaf page fonts: kept across app updates, so pages read once work offline
-const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./fonts/UthmanicHafs.woff2"];
+const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./badge-96.png", "./fonts/UthmanicHafs.woff2"];
 
 self.addEventListener("install", function(event) {
   event.waitUntil(
@@ -54,9 +54,9 @@ function duaCheck(c, m) {
   if (!dua && !dhikr) return Promise.resolve();
   m.duaAt = now;
   return c.put("meta.json", new Response(JSON.stringify(m), { headers: { "Content-Type": "application/json" } })).then(function() {
-    if (dua) return self.registration.showNotification("🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", { body: DUA_AMIRA[hour % DUA_AMIRA.length], icon: "icon-192.png", badge: "icon-192.png", tag: "dua-amira", lang: "ar", dir: "rtl", data: { url: "./" } });
+    if (dua) return self.registration.showNotification("🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", { body: DUA_AMIRA[hour % DUA_AMIRA.length], icon: "icon-192.png", badge: "badge-96.png", tag: "dua-amira", lang: "ar", dir: "rtl", data: { url: "./" } });
     var d = DHIKR[hour % DHIKR.length];
-    return self.registration.showNotification("📿 " + d[0], { body: d[1], icon: "icon-192.png", badge: "icon-192.png", tag: "dhikr-hourly", lang: "ar", dir: "rtl", data: { url: "./" } });
+    return self.registration.showNotification("📿 " + d[0], { body: d[1], icon: "icon-192.png", badge: "badge-96.png", tag: "dhikr-hourly", lang: "ar", dir: "rtl", data: { url: "./" } });
   });
 }
 function dailyCheck() {
@@ -84,7 +84,7 @@ function streakCheck(c, m) {
       }
       m.notified = today;
       return c.put("meta.json", new Response(JSON.stringify(m), { headers: { "Content-Type": "application/json" } })).then(function() {
-        return self.registration.showNotification(title, { body: body, icon: "icon-192.png", badge: "icon-192.png", tag: "wirdi-daily", lang: "ar", dir: "rtl", data: { url: "./" } });
+        return self.registration.showNotification(title, { body: body, icon: "icon-192.png", badge: "badge-96.png", tag: "wirdi-daily", lang: "ar", dir: "rtl", data: { url: "./" } });
       });
     });
 }
