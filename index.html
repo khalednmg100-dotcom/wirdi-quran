@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-9QSVy+GKOdryrdiRsAY68OpTeOtE+f6m49YbZwNZfbQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-e6h04IFcNZsR1tTPB5qPIrfkGNPaCa3sRkXCSEDhpMI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -5738,10 +5738,10 @@ const EVENING_ADHKAR = [
   // Ayah-by-ayah recordings from everyayah.com (every folder verified complete: 1:1 … 114:6 + random sample).
   // Used by the mushaf player, the stories' Quran quotes and the Quranic duas (all go through ayahAudioUrl).
   var QURAN_RECITERS = [
-    ["Alafasy_128kbps", "مشاري راشد العفاسي"],
+    ["Abdulbadie_AbuHashem", "عبد البديع أبو هاشم"],
     ["Ahmad_Deeban_Hadr", "أحمد ديبان (حدر)"],
     ["Muhammad_Luhaidan", "محمد اللحيدان"],
-    ["Abdulbadie_AbuHashem", "عبد البديع أبو هاشم"],
+    ["Alafasy_128kbps", "مشاري راشد العفاسي"],
     ["Abdul_Basit_Murattal_192kbps", "عبد الباسط عبد الصمد (مرتل)"],
     ["Abdul_Basit_Mujawwad_128kbps", "عبد الباسط عبد الصمد (مجود)"],
     ["Husary_128kbps", "محمود خليل الحصري (مرتل)"],
@@ -5765,10 +5765,10 @@ const EVENING_ADHKAR = [
     ["Ali_Jaber_64kbps", "علي جابر"]
   ];
   // a reciter that was removed from the list (no ayah timings → recitation with gaps) → back to the default
-  if (appSettings.reciter && !QURAN_RECITERS.some(function(r){ return r[0] === appSettings.reciter; })){ appSettings.reciter = QURAN_RECITERS[0][0]; saveSettings(); }
+  if (appSettings.reciter && !QURAN_RECITERS.some(function(r){ return r[0] === appSettings.reciter; })){ appSettings.reciter = "Alafasy_128kbps"; saveSettings(); }
   function currentReciter(){
     var id = appSettings.reciter;
-    return QURAN_RECITERS.filter(function(r){ return r[0] === id; })[0] || QURAN_RECITERS[0];
+    return QURAN_RECITERS.filter(function(r){ return r[0] === (id || "Alafasy_128kbps"); })[0] || QURAN_RECITERS.filter(function(r){ return r[0] === "Alafasy_128kbps"; })[0];
   }
   function reciterOptionsHtml(){
     var cur = currentReciter()[0];
@@ -6787,6 +6787,25 @@ const EVENING_ADHKAR = [
   }
   ptRefresh();
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
+  // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
+  // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
+  var WIRDI_BUILD = "99a6bccfa111", verChecked = 0;
+  function wirdiAudioBusy(){
+    var list = [].slice.call(document.querySelectorAll("audio"));
+    if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
+    if (typeof lecAudio !== "undefined") list.push(lecAudio);
+    return list.some(function(a){ return a && !a.paused; });
+  }
+  function checkNewVersion(){
+    if (Date.now() - verChecked < 5 * 60000 || !navigator.onLine) return;
+    verChecked = Date.now();
+    fetch("version.txt", { cache: "no-store" }).then(function(r){ return r.ok ? r.text() : ""; }).then(function(v){
+      v = v.trim();
+      if (/^[0-9a-f]{12}$/.test(v) && v !== WIRDI_BUILD && !wirdiAudioBusy()) location.reload();
+    }).catch(function(){});
+  }
+  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") checkNewVersion(); });
+  setTimeout(checkNewVersion, 4000);
   document.addEventListener("visibilitychange", function(){
     if (document.visibilityState === "visible"){ ptRefresh(); if (currentView === "home"){ renderHello(); renderPrayerCard(); } }
   });
