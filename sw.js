@@ -1,4 +1,4 @@
-const CACHE_NAME = "wirdi-cache-v14";
+const CACHE_NAME = "wirdi-cache-v15";
 const QCF_CACHE = "wirdi-qcf";   // mushaf page fonts: kept across app updates, so pages read once work offline
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./badge-96.png", "./fonts/UthmanicHafs.woff2"];
 
@@ -115,7 +115,25 @@ self.addEventListener("fetch", function(event) {
     }));
     return;
   }   // always fresh from the network (the owner edits it)
-  if (reqHost === "everyayah.com" || reqHost === "api.quran.com" || reqHost === "verses.quran.com" || /quranicaudio.com$/.test(reqHost) || /mp3quran.net$/.test(reqHost)) return;
+  if (reqHost === "everyayah.com" || reqHost === "api.quran.com" || reqHost === "verses.quran.com" || /quranicaudio.com$/.test(reqHost) || /mp3quran.net$/.test(reqHost) || /(^|\.)archive\.org$/.test(reqHost) || reqHost === "media.way2quran.com" || reqHost === "suwaidan.com" || reqHost === "audio.islamweb.net") return;
+  // our own audio (adhkar, adhan, salawat): the player asks for byte ranges (206), which can't be cached →
+  // fetch the whole file once, keep it, and answer every later request (offline too) from that copy
+  if (reqUrl.origin === self.location.origin && reqUrl.pathname.indexOf("/audio/") !== -1) {
+    event.respondWith(caches.open(CACHE_NAME).then(function(c) {
+      return c.match(reqUrl.href).then(function(hit) {
+        return hit || fetch(reqUrl.href).then(function(r) { if (r.ok && r.status === 200) c.put(reqUrl.href, r.clone()); return r; });
+      });
+    }));
+    return;
+  }
+  // ayah timings of our own reciters: fresh when online (they get improved), the cached copy offline
+  if (reqUrl.origin === self.location.origin && reqUrl.pathname.indexOf("/timings/") !== -1) {
+    event.respondWith(fetch(event.request, { cache: "no-store" }).then(function(r) {
+      if (r.ok) { var copy = r.clone(); caches.open(CACHE_NAME).then(function(c) { c.put(event.request, copy); }); }
+      return r;
+    }).catch(function() { return caches.match(event.request); }));
+    return;
+  }
 
   var isDocument = event.request.mode === "navigate" || event.request.destination === "document";
 
