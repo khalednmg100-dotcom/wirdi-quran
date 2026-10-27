@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-nra6g6fjcDvzjrv1x4iaWr88+5vVufZ6DPRr1lrzC3c='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-9QSVy+GKOdryrdiRsAY68OpTeOtE+f6m49YbZwNZfbQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -698,7 +698,8 @@
   .adhan-bar[hidden]{display:none;}
   /* one bookmark: a ribbon hanging on the marked page, and a home card */
   .mushaf-viewport{position:relative;}
-  .mq-ribbon{position:absolute; top:0; left:3px; width:14px; height:34px; z-index:5; pointer-events:none; background:linear-gradient(#C0392B,#9E2A1F); clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%); box-shadow:0 2px 6px rgba(0,0,0,0.25);}
+  .mq-foot{position:relative;}
+  .mq-ribbon{position:absolute; top:0; right:16px; width:14px; height:28px; z-index:5; pointer-events:none; background:linear-gradient(#C0392B,#9E2A1F); clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%); box-shadow:0 2px 6px rgba(0,0,0,0.25);}
   .mq-ribbon[hidden]{display:none;}
   .bm-home{display:flex; align-items:center; gap:12px; width:100%; text-align:right; font:inherit; color:inherit; cursor:pointer; border-right:4px solid #C0392B;}
   .bm-home[hidden]{display:none;}
@@ -775,13 +776,14 @@
     --aur-grad:linear-gradient(135deg,#0B8F6E,#5A3FD6);
     color-scheme:dark;
   }
-  :root.aurora body{background:radial-gradient(60% 38% at 15% 0%, rgba(46,211,160,.22), transparent 70%) fixed,
-    radial-gradient(50% 32% at 95% 18%, rgba(124,92,255,.22), transparent 70%) fixed,
-    radial-gradient(60% 34% at 50% 105%, rgba(230,199,106,.10), transparent 70%) fixed, #0B0D1A;}
+  :root.aurora body{background:#0B0D1A;}
+  :root.aurora body::before{content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; transform:translateZ(0); background:radial-gradient(60% 38% at 15% 0%, rgba(46,211,160,.22), transparent 70%),
+    radial-gradient(50% 32% at 95% 18%, rgba(124,92,255,.22), transparent 70%),
+    radial-gradient(60% 34% at 50% 105%, rgba(230,199,106,.10), transparent 70%);}
   :root.aurora .hf-card, :root.aurora .prayer-card, :root.aurora .stat-card, :root.aurora .quick-btn, :root.aurora .settings-section{
-    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border-color:rgba(255,255,255,.08);}
+    background:rgba(24,27,52,.92); border-color:rgba(255,255,255,.08);}
   :root.aurora .hello-card, :root[data-theme="dark"].aurora .hello-card{background:linear-gradient(135deg, rgba(46,211,160,.20), rgba(124,92,255,.20)); border:1px solid rgba(155,135,255,.28);
-    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); box-shadow:0 10px 40px rgba(46,211,160,.10);}
+    box-shadow:0 10px 40px rgba(46,211,160,.10);}
   :root.aurora .hello-title{color:#fff;}
   :root.aurora .hello-actions .btn{background:var(--aur-grad); color:#fff; border:none;}
   :root.aurora .hello-actions .btn.alt{background:rgba(255,255,255,.06); color:#ECEAF6; border:1px solid rgba(255,255,255,.18);}
@@ -823,7 +825,7 @@
   .lec-t{flex:1; min-width:0; font-weight:700; font-size:.92rem; display:flex; flex-direction:column;}
   .lec-t small{font-weight:400; font-size:.72rem; color:var(--ink-soft);}
   .lec-p{color:var(--teal-deep); font-size:1rem; flex:none;}
-  .lec-player{position:sticky; bottom:calc(var(--bottom-bar-h, 76px) + 8px); margin-top:12px; background:var(--paper-2); border:1px solid var(--paper-3); border-radius:20px; padding:12px 14px; box-shadow:0 8px 28px var(--shadow); -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); z-index:4;}
+  .lec-player{position:sticky; bottom:calc(var(--bottom-bar-h, 76px) + 8px); margin-top:12px; background:var(--paper-2); border:1px solid var(--paper-3); border-radius:20px; padding:12px 14px; box-shadow:0 8px 28px var(--shadow); z-index:4;}
   .lec-now{display:flex; flex-direction:column;} .lec-now small{font-size:.72rem; color:var(--ink-soft);} .lec-now b{font-size:.95rem;}
   .lec-bar{height:6px; border-radius:9px; background:var(--paper-3); margin:10px 0 8px; overflow:hidden; cursor:pointer;}
   .lec-bar i{display:block; height:100%; background:var(--teal); border-radius:9px;}
@@ -5737,6 +5739,9 @@ const EVENING_ADHKAR = [
   // Used by the mushaf player, the stories' Quran quotes and the Quranic duas (all go through ayahAudioUrl).
   var QURAN_RECITERS = [
     ["Alafasy_128kbps", "مشاري راشد العفاسي"],
+    ["Ahmad_Deeban_Hadr", "أحمد ديبان (حدر)"],
+    ["Muhammad_Luhaidan", "محمد اللحيدان"],
+    ["Abdulbadie_AbuHashem", "عبد البديع أبو هاشم"],
     ["Abdul_Basit_Murattal_192kbps", "عبد الباسط عبد الصمد (مرتل)"],
     ["Abdul_Basit_Mujawwad_128kbps", "عبد الباسط عبد الصمد (مجود)"],
     ["Husary_128kbps", "محمود خليل الحصري (مرتل)"],
@@ -5757,10 +5762,7 @@ const EVENING_ADHKAR = [
     ["Hani_Rifai_192kbps", "هاني الرفاعي"],
     ["Muhammad_Ayyoub_128kbps", "محمد أيوب"],
     ["Fares_Abbad_64kbps", "فارس عباد"],
-    ["Ali_Jaber_64kbps", "علي جابر"],
-    ["Ahmad_Deeban_Hadr", "أحمد ديبان (حدر)"],
-    ["Muhammad_Luhaidan", "محمد اللحيدان"],
-    ["Abdulbadie_AbuHashem", "عبد البديع أبو هاشم"]
+    ["Ali_Jaber_64kbps", "علي جابر"]
   ];
   // a reciter that was removed from the list (no ayah timings → recitation with gaps) → back to the default
   if (appSettings.reciter && !QURAN_RECITERS.some(function(r){ return r[0] === appSettings.reciter; })){ appSettings.reciter = QURAN_RECITERS[0][0]; saveSettings(); }
@@ -7848,7 +7850,10 @@ const EVENING_ADHKAR = [
     bar.querySelector(".mqb-surah").textContent = surahName(run[0]);
     bar.querySelector(".mqb-juz").textContent = "الجزء " + toArabicIndic(pg.j);
     bar.querySelector(".mqb-mark").classList.toggle("on", marked);
-    var rib = document.getElementById("mqRibbon"); if (rib) rib.hidden = !marked;
+    var rib = document.getElementById("mqRibbon"), foot = document.getElementById("mqFoot");
+    // the ribbon hangs from the page footer, never over the words
+    if (rib && foot && rib.parentNode !== foot) foot.appendChild(rib);
+    if (rib) rib.hidden = !marked;
     var num = document.getElementById("mqPageNum"); if (num) num.textContent = toArabicIndic(pg.p);
     mqBookmarkHome();
   }
