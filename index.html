@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-aZyd87ijdQHdecFctyN3hw7EVxYk7yXyKzJkEDDkqUw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-3qogwuFVUMhfdKTyp7f9Ghu5/fKy0EA/gjG03vw03wg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -6821,7 +6821,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "b41299a718cf", verChecked = 0;
+  var WIRDI_BUILD = "071ecfef5bcd", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -6831,9 +6831,14 @@ const EVENING_ADHKAR = [
   function checkNewVersion(){
     if (Date.now() - verChecked < 5 * 60000 || !navigator.onLine) return;
     verChecked = Date.now();
-    fetch("version.txt", { cache: "no-store" }).then(function(r){ return r.ok ? r.text() : ""; }).then(function(v){
+    // a fresh URL every time: an older service worker can never answer it from its cache
+    fetch("version.txt?t=" + Date.now(), { cache: "no-store" }).then(function(r){ return r.ok ? r.text() : ""; }).then(function(v){
       v = v.trim();
-      if (/^[0-9a-f]{12}$/.test(v) && v !== WIRDI_BUILD && !wirdiAudioBusy()) location.reload();
+      if (!/^[0-9a-f]{12}$/.test(v) || v === WIRDI_BUILD || wirdiAudioBusy()) return;
+      // one reload per new version at most — if the page is still old after it, never loop
+      var key = "wirdi-reloaded-for", done = "";
+      try { done = sessionStorage.getItem(key) || ""; sessionStorage.setItem(key, v); } catch(e){ return; }
+      if (done !== v) location.reload();
     }).catch(function(){});
   }
   document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") checkNewVersion(); });

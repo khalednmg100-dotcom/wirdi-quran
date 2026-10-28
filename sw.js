@@ -1,4 +1,4 @@
-const CACHE_NAME = "wirdi-cache-v16";
+const CACHE_NAME = "wirdi-cache-v17";
 const QCF_CACHE = "wirdi-qcf";   // mushaf page fonts: kept across app updates, so pages read once work offline
 const APP_SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./badge-96.png", "./fonts/UthmanicHafs.woff2"];
 
@@ -127,7 +127,7 @@ self.addEventListener("fetch", function(event) {
     return;
   }
   // ayah timings of our own reciters: fresh when online (they get improved), the cached copy offline
-  if (reqUrl.origin === self.location.origin && //version.txt$/.test(reqUrl.pathname)) return;
+  if (reqUrl.origin === self.location.origin && /\/version\.txt$/.test(reqUrl.pathname)) return;
   if (reqUrl.origin === self.location.origin && reqUrl.pathname.indexOf("/timings/") !== -1) {
     event.respondWith(fetch(event.request, { cache: "no-store" }).then(function(r) {
       if (r.ok) { var copy = r.clone(); caches.open(CACHE_NAME).then(function(c) { c.put(event.request, copy); }); }
