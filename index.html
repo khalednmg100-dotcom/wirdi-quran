@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-xGLHUTyvQUjCtwD7UncWjc/cEpuT82qUHHOUnsGrubQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-aZyd87ijdQHdecFctyN3hw7EVxYk7yXyKzJkEDDkqUw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -906,6 +906,14 @@
   .msc-ctrl .msc-stop{background:#FDF8EC; border:1px solid #D9C9A0;}
   .msc-grp{display:inline-flex; align-items:center; gap:4px;}
   .msc-grp small{font-weight:800; color:#7A5A16; min-width:58px; text-align:center;}
+  /* bigger text (أ+): same words and colours, the lines wrap and the page scrolls */
+  .mq-foot .mqf-z{width:32px; font-size:0.85rem;}
+  .mq-foot .mqf-z:last-of-type{margin-right:34px;}
+  #view-mushaf .mushaf-page.m15.ml-flow{display:block; overflow-y:auto !important; overflow-x:hidden !important; -webkit-overflow-scrolling:touch;}
+  .mushaf-page.m15.ml-flow .ml-wrap{display:block; width:auto !important; transform:none !important; text-align:justify; line-height:2.2;}
+  .mushaf-page.m15.ml-flow .ml{display:inline; height:auto; white-space:normal; line-height:inherit;}
+  .mushaf-page.m15.ml-flow .ml-head, .mushaf-page.m15.ml-flow .ml-basm{display:block; text-align:center; margin:0.35em 0;}
+  #view-mushaf .msc .mushaf-page.m15.ml-flow{overflow:visible !important;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -1069,7 +1077,7 @@
       <div class="mq-ribbon" id="mqRibbon" hidden aria-label="علامة الصفحة"></div>
       <div class="mushaf-page" id="mushafPageContent"></div>
     </div>
-    <div class="mq-foot" id="mqFoot"><span id="mqPageNum"></span><button data-mqf="next" aria-label="الصفحة التالية">‹</button><button data-mqf="prev" aria-label="الصفحة السابقة">›</button><button class="mqf-scroll" data-mqf="scroll">⇣ السرد السريع</button></div>
+    <div class="mq-foot" id="mqFoot"><span id="mqPageNum"></span><button data-mqf="next" aria-label="الصفحة التالية">‹</button><button data-mqf="prev" aria-label="الصفحة السابقة">›</button><button class="mqf-scroll" data-mqf="scroll">⇣ السرد السريع</button><button class="mqf-z" data-mqf="zout" aria-label="تصغير الخط">أ−</button><button class="mqf-z" data-mqf="zin" aria-label="تكبير الخط">أ+</button></div>
     <div class="mq-audio" id="mqAudio" hidden><span class="mqa-t"></span><button data-mqa="toggle" aria-label="تشغيل / إيقاف مؤقت">⏸</button><button data-mqa="stop" aria-label="إيقاف">⏹</button></div>
     <div class="mushaf-footer">
       <button class="mushaf-nav-btn" id="mushafPrevBtn" aria-label="الصفحة السابقة"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -6813,7 +6821,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "0c2db6918b71", verChecked = 0;
+  var WIRDI_BUILD = "b41299a718cf", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -7842,13 +7850,13 @@ const EVENING_ADHKAR = [
         var s = g[0], a = g[1], at = ' data-surah="' + s + '" data-ayah="' + a + '"';
         if (qcf){
           var fam = ' style="font-family:' + qcfFam(g[6] || p) + '"', gl = g[5].split(" ");
-          gl.forEach(function(c, i){ h += (g[4] && i === gl.length - 1 ? '<span class="ayah-num ml-end"' : '<span class="ayah-text"') + at + fam + '>' + c + '</span>'; });
+          gl.forEach(function(c, i){ h += (g[4] && i === gl.length - 1 ? '<span class="ayah-num ml-end"' : '<span class="ayah-text"') + at + fam + '>' + c + '</span> '; });
           return;
         }
         QURAN_AYAHS[s - 1][a - 1].slice(g[2], g[3]).split(" ").filter(Boolean).forEach(function(w){
-          h += red ? '<span class="ayah-text ml-rw"' + at + ' data-b="' + mlBare(w) + '">' + w + '</span>' : '<span class="ayah-text"' + at + '>' + w + '</span>';
+          h += (red ? '<span class="ayah-text ml-rw"' + at + ' data-b="' + mlBare(w) + '">' + w + '</span>' : '<span class="ayah-text"' + at + '>' + w + '</span>') + ' ';
         });
-        if (g[4]) h += '<span class="ayah-num ml-end"' + at + '>' + toArabicIndic(a) + '</span>';
+        if (g[4]) h += '<span class="ayah-num ml-end"' + at + '>' + toArabicIndic(a) + '</span> ';
       });
       h += '</div>';
     });
@@ -7857,7 +7865,12 @@ const EVENING_ADHKAR = [
   // The page is FIXED like the printed mushaf: one font size for every page (from the screen size only), the
   // page always fits the screen, and text-size settings / pinch never change it or move it.
   // A typical full line is about EM em wide in each font (measured over the whole mushaf).
-  var ML_EM = { red: 18, plain: 19.5, tajweed: 20 };
+  var ML_EM = { red: 18, plain: 19.5, tajweed: 20 }, ML_ZOOM_MAX = 1.75;
+  // the text size only became visible with أ+ / أ− in the mushaf: a size saved by older versions starts from 100%
+  if (!loadJSON("wirdi4-zoom-v2", false)){
+    saveJSON("wirdi4-zoom-v2", true);
+    if ((mushafZoom || 1) !== 1){ mushafZoom = 1; saveJSON(STORE_MUSHAF_ZOOM, 1); if (typeof mqApplyScale === "function") mqApplyScale(); }
+  }
   function fit15(content, containerH){
     var cs = getComputedStyle(content), padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight), padY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
     var wrap = content.querySelector(".ml-wrap"), rows = [].slice.call(content.querySelectorAll(".ml"));
@@ -7875,6 +7888,14 @@ const EVENING_ADHKAR = [
     content.classList.toggle("ml-short", rows.length < 15);
     content.classList.remove("ml-zoomed");
     // a line a little longer than usual is narrowed on its own (never overflows the page)
+    // a bigger text size (أ+): the same words, font and colours, but the lines wrap and the page scrolls down
+    var z = Math.min(ML_ZOOM_MAX, mushafZoom || 1), flow = z > 1.01;
+    content.classList.toggle("ml-flow", flow);
+    if (flow){
+      content.style.fontSize = (f * z).toFixed(1) + "px";
+      if (content.id === "mushafPageContent" && content._mlp !== mushafPageNum){ content.scrollTop = 0; content._mlp = mushafPageNum; }
+      return;
+    }
     text.forEach(function(r, i){ var need = widths[i] * f / 20; if (need > W * 0.995) r.style.fontSize = (f * W * 0.99 / need).toFixed(2) + "px"; });
   }
   // the look of the mushaf: settings select + the three buttons in the mushaf tools sheet
@@ -7966,6 +7987,14 @@ const EVENING_ADHKAR = [
       e.stopPropagation();
       var b = e.target.closest("[data-mqf]"); if (!b) return;
       if (b.getAttribute("data-mqf") === "scroll"){ mscOpen(); return; }
+      if (b.getAttribute("data-mqf") === "zin" || b.getAttribute("data-mqf") === "zout"){
+        var z = Math.round(((mushafZoom || 1) + (b.getAttribute("data-mqf") === "zin" ? 0.15 : -0.15)) * 100) / 100;
+        z = Math.max(1, Math.min(ML_ZOOM_MAX, z));
+        if (z === (mushafZoom || 1)){ showToast(z > 1 ? "ده أكبر حجم للخط" : "ده الحجم الأصلي للمصحف (١٥ سطر)"); return; }
+        mqSetZoom(z, false);
+        showToast(z > 1 ? "🔍 حجم الخط " + toArabicIndic(Math.round(z * 100)) + "٪" : "📖 رجع شكل المصحف الأصلي (١٥ سطر)");
+        return;
+      }
       mushafGoTo(mushafPageNum + (b.getAttribute("data-mqf") === "next" ? 1 : -1), b.getAttribute("data-mqf") === "next" ? 1 : -1);
     });
   })();
@@ -8014,6 +8043,7 @@ const EVENING_ADHKAR = [
     page.innerHTML = mushaf15Html(p);
     sec.classList.toggle("msc-fb", mushafStyle() !== "red" && !page.querySelector(".ml-qcf"));   // page font still loading
     fit15(page, msc.H);
+    page.style.height = page.classList.contains("ml-flow") ? "auto" : msc.H + "px";   // big text: the page is as long as its words
   }
   function mscAppend(p){
     var sec = document.createElement("section");
