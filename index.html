@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-e6h04IFcNZsR1tTPB5qPIrfkGNPaCa3sRkXCSEDhpMI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YTP9PRrzaBVU7y0mJeRevaJaA3j4x6B7QtyMQ7Mb5fY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -6789,7 +6789,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "99a6bccfa111", verChecked = 0;
+  var WIRDI_BUILD = "b67ad7f08fbd", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -7218,11 +7218,10 @@ const EVENING_ADHKAR = [
   })();
 
   // ---------------- دروس صوتية: قصص الأنبياء (د. طارق السويدان) + السيرة النبوية (الشيخ سمير مصطفى فرج) ----------------
-  // Streamed from the official sites (suwaidan.com / audio.islamweb.net) — nothing is copied into the app.
+  // Streamed from suwaidan.com (official site) and archive.org — nothing is copied into the app.
   // One player for the section: resume from the same second, ✓ for every lesson heard, the next lesson
   // starts by itself, lock-screen controls (media session) and playback with the screen off (native.js).
-  var LEC_SUW = "https://suwaidan.com/wp-content/uploads/2021/06/";
-  var LEC_ORD = ["الأول", "الثاني", "الثالث", "الرابع", "الخامس", "السادس", "السابع", "الثامن", "التاسع", "العاشر", "الحادي عشر", "الثاني عشر", "الثالث عشر", "الرابع عشر", "الخامس عشر", "السادس عشر", "السابع عشر", "الثامن عشر", "التاسع عشر", "العشرون", "الحادي والعشرون"];
+  var LEC_SUW = "https://suwaidan.com/wp-content/uploads/2021/06/", LEC_SEERAH = "https://archive.org/download/islami-888/";
   var LEC_SERIES = [
     { id: "anbiya", icon: "🕊️", t: "قصص الأنبياء", by: "د. طارق السويدان", site: "https://suwaidan.com/audio/stories-prophets-mp3/", siteName: "suwaidan.com",
       items: [
@@ -7256,9 +7255,44 @@ const EVENING_ADHKAR = [
         ["سليمان عليه السلام وملكة سبأ", "قصة-سيدنا-سليمان-عليه-السلام-قصص-الأنبياء-د.-طارق-السويدان"],
         ["زكريا وابنه يحيى عليهما السلام", "قصة-سيدنا-زكريا-عليه-السلام-قصص-الأنبياء-د.-طارق-السويدان"]
       ].map(function(x){ return { t: x[0], u: encodeURI(LEC_SUW + x[1] + ".mp3") }; }) },
-    { id: "seerah", icon: "🌙", t: "السيرة النبوية", by: "الشيخ سمير مصطفى فرج", site: "https://audio.islamweb.net/audio/index.php?page=lecview&sid=1074&lg=1527", siteName: "islamweb.net",
-      items: [318347, 318348, 318349, 318350, 318351, 318352, 318353, 318354, 318356, 318360, 318364, 318362, 318363, 318365, 318379, 318380, 318384, 318394, 318395, 318396, 318397]
-        .map(function(id, i){ return { t: "الدرس " + LEC_ORD[i], u: "https://audio.islamweb.net/audio/downloadmp3.php?audioid=" + id }; }) }
+    { id: "seerah", icon: "🌙", t: "السيرة النبوية", by: "الشيخ سمير مصطفى فرج", site: "https://archive.org/details/islami-888", siteName: "archive.org",
+      // archive.org streams (audio/mpeg + ranges → plays and seeks on every phone); islamweb sent a slow download-only file
+      items: [
+        ["أهمية دراسة السيرة (١)", "السيرة النبوية (01- أهمية دراسة السيرة) لفضيلة الشيخ  سمير مصطفى.mp3"],
+        ["أهمية دراسة السيرة (٢)", "السيرة النبوية (02- أهمية دراسة السيرة) لفضيلة الشيخ  سمير مصطفى.mp3"],
+        ["أسماء النبي ﷺ", "السيرة النبوية (03- أسماء النبي-صلى الله عليه وسلم-) لفضيلة الشيخ  سمير مصطفى.mp3"],
+        ["بقية أسماء النبي وجوانب من عظمته", "السيرة النبوية (04- بقية أسماء النبي وجوانب من عظمته) للشيخ  سمير مصطفى.mp3"],
+        ["تعظيم الصحابة والسلف لرسول الله", "السيرة النبوية (05- تعظيم الصحابة والسلف لرسول الله) للشيخ  سمير مصطفى.mp3"],
+        ["وصف خِلقة رسول الله ﷺ (١)", "السيرة النبوية (06- وصف خِلقة رسول الله- ج1-) للشيخ  سمير مصطفى.mp3"],
+        ["وصف خِلقة رسول الله ﷺ (٢)", "السيرة النبوية (07- وصف خِلقة رسول الله- ج2-) للشيخ  سمير مصطفى.mp3"],
+        ["نسب النبي وزوجاته وأولاده", "السيرة النبوية (08- نسب النبي وزوجاته وأولاده) للشيخ  سمير مصطفى.mp3"],
+        ["أعمام النبي وأزواجه وسراياه", "السيرة النبوية (09- أعمام النبي وأزواجه وسراياه) للشيخ  سمير مصطفى.mp3"],
+        ["مواليه وكُتّابه ﷺ", "السيرة النبوية (10- مَوَالِيه وكتَّابِه-صلى الله عليه وسلم) للشيخ #سمير_مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 11 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 12 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 13 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 14 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 15 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 16 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 17 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 18 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 19 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 20 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية 21 ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية (22) ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال - السيرة النبوية (23) - للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية (24) ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال - السيرة النبوية 25 - للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية (26) ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية (27) ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية (28) ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية (29) ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية (30) ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية (31) ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية (32) ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال ۞ السيرة النبوية (33) ۞ للشيخ سمير مصطفى.mp3"],
+        ["", "مسجد بلال - السيرة النبوية (34) - للشيخ سمير مصطفى.mp3"]
+      ].map(function(x, i){ return { t: x[0] || "الدرس " + toArabicIndic(i + 1), u: LEC_SEERAH + encodeURIComponent(x[1]) }; }) }
   ];
   var STORE_LEC = "wirdi4-lectures";
   var lec = loadJSON(STORE_LEC, null);
