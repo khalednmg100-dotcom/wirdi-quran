@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YTP9PRrzaBVU7y0mJeRevaJaA3j4x6B7QtyMQ7Mb5fY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-U7GQx0Q1mmCmd+JzcNZU3NIcJA0lQfxClpkRuSGX/Ok='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -655,7 +655,7 @@
   .mqb-pill{border:1px solid #D9C9A0; background:#F8F0DC; color:#7A5A16; border-radius:99px; padding:4px 14px; font-family:"Amiri",serif; font-weight:700; font-size:0.95rem; line-height:1.3;}
   .mqb-icon{border:none; background:none; color:#8A6A1F; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; font-weight:800; padding:0;}
   .mqb-icon svg{width:22px; height:22px;}
-  .mqb-icon[data-mqb="next-surah"]{width:26px; height:26px; border-radius:6px; background:#E9D9AE; font-size:1rem;}
+  .mqb-icon.mqb-sj{width:30px; height:30px; border-radius:8px; background:#E9D9AE; font-size:1.15rem;}
   .mqb-mark.on svg{fill:#AD872D;}
   .mq-foot{display:flex; align-items:center; justify-content:flex-start; gap:6px; padding:2px 14px 10px; background:#FDF8EC; flex:none; direction:ltr;}
   .mq-foot span{font-weight:800; color:#7A5A16; background:#F3E7C6; border-radius:99px; padding:3px 12px; font-size:0.9rem;}
@@ -883,6 +883,30 @@
   .gift-foot{font-size:.7rem; color:var(--ink-soft); margin-top:12px;}
   @media (prefers-reduced-motion: reduce){ .gift-ov *, .gift-card-home *, .gift-card-home::after{animation:none !important;} .gift-ov .gift-open{opacity:1; transform:none;} }
 
+  /* surah back / forward: the one-time note */
+  .sj-overlay{align-items:center; padding:16px;}
+  .sj-modal{border-radius:18px; max-width:420px; text-align:center;}
+  .sj-modal .sj-ic{font-size:2.2rem;}
+  .sj-modal h2{margin:4px 0 10px; color:var(--teal-deep);}
+  .sj-modal p{line-height:1.9; margin:0 0 8px;}
+  .sj-modal .sj-tip{color:var(--ink-soft); font-size:0.9rem;}
+  .sj-acts{display:flex; flex-direction:column; gap:8px; margin-top:12px;}
+  /* «السرد السريع» */
+  .mq-foot .mqf-scroll{width:auto; height:28px; padding:0 14px; margin:0 auto; border-radius:99px; font-size:0.85rem; white-space:nowrap; direction:rtl;}
+  body.msc-open{overflow:hidden;}
+  .msc{position:fixed; inset:0; z-index:30; display:flex; flex-direction:column; background:#FDF8EC; color:#231A0F;}
+  .msc[hidden]{display:none;}
+  .msc-top{flex:none; text-align:center; padding:8px 12px 4px; font-weight:800; font-size:0.85rem; color:#7A5A16; background:#FDF8EC;}
+  .msc-box{flex:1; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; padding-bottom:45vh;}
+  #view-mushaf .msc .mushaf-page.m15{width:100%; transition:none; overflow:hidden;}
+  .msc-pn{text-align:center; font-weight:800; font-size:0.8rem; color:#7A5A16; background:#F3E7C6; border-radius:99px; width:max-content; margin:2px auto 10px; padding:1px 14px;}
+  .msc-ctrl{flex:none; display:flex; align-items:center; justify-content:center; gap:10px; padding:8px 10px calc(10px + env(safe-area-inset-bottom)); background:#F3E7C6; border-top:1px solid #D9C9A0;}
+  .msc-ctrl button{border:none; background:#E9D9AE; color:#7A5A16; min-width:38px; height:38px; border-radius:10px; font-weight:800; font-size:1rem; padding:0 10px;}
+  .msc-ctrl .msc-main{background:#7A5A16; color:#FDF8EC; min-width:52px; border-radius:99px;}
+  .msc-ctrl .msc-stop{background:#FDF8EC; border:1px solid #D9C9A0;}
+  .msc-grp{display:inline-flex; align-items:center; gap:4px;}
+  .msc-grp small{font-weight:800; color:#7A5A16; min-width:58px; text-align:center;}
+
 /*/WIRDI4-CSS*/
 </style>
 </head>
@@ -1027,7 +1051,7 @@
   <!-- ================= MUSHAF PAGE READER ================= -->
   <main id="view-mushaf" class="view fixed-screen mushaf-view" hidden>
     <div class="mq-bar" id="mqBar">
-      <div class="mqb-side"><button class="mqb-pill mqb-surah" data-mqb="surah"></button><button class="mqb-icon" data-mqb="next-surah" aria-label="السورة التالية">‹</button><button class="mqb-icon" data-mqb="search" aria-label="بحث"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button></div>
+      <div class="mqb-side"><button class="mqb-icon mqb-sj" data-mqb="prev-surah" aria-label="السورة السابقة">›</button><button class="mqb-pill mqb-surah" data-mqb="surah"></button><button class="mqb-icon mqb-sj" data-mqb="next-surah" aria-label="السورة التالية">‹</button><button class="mqb-icon" data-mqb="search" aria-label="بحث"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button></div>
       <button class="mqb-icon" data-mqb="menu" aria-label="أدوات المصحف"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></button>
       <div class="mqb-side"><button class="mqb-pill mqb-juz" data-mqb="juz"></button><button class="mqb-icon mqb-mark" data-mqb="mark" aria-label="علامة على الصفحة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button></div>
     </div>
@@ -1045,7 +1069,7 @@
       <div class="mq-ribbon" id="mqRibbon" hidden aria-label="علامة الصفحة"></div>
       <div class="mushaf-page" id="mushafPageContent"></div>
     </div>
-    <div class="mq-foot" id="mqFoot"><span id="mqPageNum"></span><button data-mqf="next" aria-label="الصفحة التالية">‹</button><button data-mqf="prev" aria-label="الصفحة السابقة">›</button></div>
+    <div class="mq-foot" id="mqFoot"><span id="mqPageNum"></span><button data-mqf="next" aria-label="الصفحة التالية">‹</button><button data-mqf="prev" aria-label="الصفحة السابقة">›</button><button class="mqf-scroll" data-mqf="scroll">⇣ السرد السريع</button></div>
     <div class="mq-audio" id="mqAudio" hidden><span class="mqa-t"></span><button data-mqa="toggle" aria-label="تشغيل / إيقاف مؤقت">⏸</button><button data-mqa="stop" aria-label="إيقاف">⏹</button></div>
     <div class="mushaf-footer">
       <button class="mushaf-nav-btn" id="mushafPrevBtn" aria-label="الصفحة السابقة"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -6789,7 +6813,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "b67ad7f08fbd", verChecked = 0;
+  var WIRDI_BUILD = "4102e2fab9a9", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -7922,7 +7946,8 @@ const EVENING_ADHKAR = [
       var b = e.target.closest("[data-mqb]"); if (!b) return;
       var a = b.getAttribute("data-mqb");
       if (a === "surah") handleNav("surahs");
-      else if (a === "next-surah"){ var s = MUSHAF_PAGES[mushafPageNum - 1].r[0][0]; if (s < 114) openMushaf(pageOf(s + 1, 1), "surahs"); }
+      else if (a === "next-surah") mqSurahJump(1);
+      else if (a === "prev-surah") mqSurahJump(-1);
       else if (a === "search") document.getElementById("openSearchBtn").click();
       else if (a === "menu") openMushafTools();
       else if (a === "juz") handleNav("juzList");
@@ -7940,9 +7965,194 @@ const EVENING_ADHKAR = [
     if (foot) foot.addEventListener("click", function(e){
       e.stopPropagation();
       var b = e.target.closest("[data-mqf]"); if (!b) return;
+      if (b.getAttribute("data-mqf") === "scroll"){ mscOpen(); return; }
       mushafGoTo(mushafPageNum + (b.getAttribute("data-mqf") === "next" ? 1 : -1), b.getAttribute("data-mqf") === "next" ? 1 : -1);
     });
   })();
+  // ---- a whole surah back / forward from the top bar ----
+  // The surah shown at the top of the page is the reference: forward = the next surah that starts on a later
+  // page, back = the surah before it. The first time, a note says the place you were reading will be left.
+  var STORE_SURAH_JUMP = "wirdi4-surah-jump-ok2";
+  function mqSurahTarget(dir){
+    var p = mushafPageNum, s0 = MUSHAF_PAGES[p - 1].r[0][0], s;
+    if (dir > 0){ for (s = s0 + 1; s <= 114; s++) if (pageOf(s, 1) > p) return s; }
+    else { for (s = s0 - 1; s >= 1; s--) if (pageOf(s, 1) < p) return s; }
+    return 0;
+  }
+  function mqSurahJump(dir){
+    var t = mqSurahTarget(dir);
+    if (!t){ showToast(dir > 0 ? "دي آخر سورة في المصحف" : "دي أول سورة في المصحف"); return; }
+    var go = function(){ openMushaf(pageOf(t, 1), mushafReturnView); showToast((dir > 0 ? "⏭" : "⏮") + " قلبت سورة كاملة ← سورة " + surahName(t)); };
+    if (loadJSON(STORE_SURAH_JUMP, false)){ go(); return; }
+    var ov = document.createElement("div");
+    ov.className = "modal-overlay sj-overlay";
+    ov.innerHTML = '<div class="modal sj-modal"><div class="sj-ic">📖</div><h2>هتقلب سورة كاملة</h2>' +
+      '<p>الزرار ده بيقلب <b>سورة كاملة</b> مرة واحدة (' + (dir > 0 ? "لقدّام" : "لورا") + ')، والصفحة اللي انت واقف عليها دلوقتي <b>هتروح منك</b>.</p>' +
+      '<p class="sj-tip">لو عايز ترجعلها بعدين، حط عليها علامة 🔖 الأول.</p>' +
+      '<div class="sj-acts"><button class="btn primary" data-sj="go">تمام، اقلب</button><button class="btn ghost" data-sj="mark">🔖 علّم الصفحة واقلب</button><button class="btn ghost" data-sj="no">إلغاء</button></div></div>';
+    document.body.appendChild(ov);
+    ov.addEventListener("click", function(e){
+      var b = e.target.closest("[data-sj]");
+      if (!b && e.target !== ov) return;
+      var a = b ? b.getAttribute("data-sj") : "no";
+      ov.remove();
+      if (a === "no") return;
+      saveJSON(STORE_SURAH_JUMP, true);
+      if (a === "mark"){ saveJSON(STORE_BOOKMARK, mushafPageNum); showToast("🔖 اتحطت العلامة على صفحة " + toArabicIndic(mushafPageNum)); }
+      go();
+    });
+  }
+
+  // ---- «السرد السريع»: the mushaf scrolls by itself, page after page ----
+  // The same 15-line pages as the mushaf (same look and font, as wide as the screen allows), one under the
+  // other. A finger on the screen holds it (and lets you scroll by hand); lifting the finger carries on.
+  // ⏸ pauses, ⏹ goes back to the mushaf on the page reached. The speed is remembered; the screen stays on.
+  var STORE_MSC = "wirdi4-autoscroll", MSC_SPEEDS = [6, 9, 13, 18, 24, 31, 40, 52, 68, 90];
+  var msc = { el: null, box: null, on: false, held: false, pos: 0, last: 0, raf: 0, dog: 0, lastPg: 0, cur: 1, resumeT: 0, wake: null, H: 0 };
+  var mscCfg = loadJSON(STORE_MSC, null);
+  if (!mscCfg || typeof mscCfg !== "object") mscCfg = {};
+  if (!(mscCfg.sp >= 1 && mscCfg.sp <= MSC_SPEEDS.length)) mscCfg.sp = 4;
+  function mscRender(sec){
+    var p = +sec.getAttribute("data-p"), page = sec.firstChild;
+    page.innerHTML = mushaf15Html(p);
+    sec.classList.toggle("msc-fb", mushafStyle() !== "red" && !page.querySelector(".ml-qcf"));   // page font still loading
+    fit15(page, msc.H);
+  }
+  function mscAppend(p){
+    var sec = document.createElement("section");
+    sec.className = "msc-pg"; sec.setAttribute("data-p", p);
+    sec.innerHTML = '<div class="mushaf-page m15" style="height:' + msc.H + 'px"></div><div class="msc-pn">' + toArabicIndic(p) + '</div>';
+    msc.box.appendChild(sec);
+    mscRender(sec);
+    if (mushafStyle() !== "red") [p + 1, p + 2].forEach(function(n){ if (n <= 604) qcfPages(n).forEach(qcfLoad); });
+  }
+  function mscBuild(){
+    if (msc.el) return;
+    var el = document.createElement("div");
+    el.className = "msc"; el.hidden = true;
+    el.innerHTML = '<div class="msc-top" id="mscWhere"></div><div class="msc-box" id="mscBox"></div>' +
+      '<div class="msc-ctrl">' +
+        '<button data-msc="stop" class="msc-stop">⏹ وقف</button>' +
+        '<button data-msc="toggle" class="msc-main" id="mscToggle">⏸</button>' +
+        '<span class="msc-grp"><button data-msc="slower" aria-label="أبطأ">−</button><small id="mscSp"></small><button data-msc="faster" aria-label="أسرع">+</button></span>' +
+      '</div>';
+    document.getElementById("view-mushaf").appendChild(el);   // inside the mushaf view → the same page styles
+    msc.el = el; msc.box = el.querySelector("#mscBox");
+    el.querySelector(".msc-ctrl").addEventListener("click", function(e){
+      var b = e.target.closest("[data-msc]"); if (!b) return;
+      var a = b.getAttribute("data-msc");
+      if (a === "stop") mscClose();
+      else if (a === "toggle") mscRun(!msc.on);
+      else { mscCfg.sp = clamp(mscCfg.sp + (a === "faster" ? 1 : -1), 1, MSC_SPEEDS.length); saveJSON(STORE_MSC, mscCfg); mscUi(); }
+    });
+    // a finger on the pages holds the scroll; lifting it carries on (unless ⏸ was pressed)
+    var hold = function(){ msc.held = true; clearTimeout(msc.resumeT); };
+    var release = function(){
+      if (!msc.held) return;
+      clearTimeout(msc.resumeT);
+      msc.resumeT = setTimeout(function(){ msc.held = false; msc.pos = msc.box.scrollTop; msc.last = 0; }, 700);
+    };
+    msc.box.addEventListener("touchstart", hold, { passive: true });
+    msc.box.addEventListener("mousedown", hold);
+    msc.box.addEventListener("wheel", function(){ hold(); release(); }, { passive: true });
+    // the finger may leave the box (or the browser may cancel the touch): any lift anywhere carries on
+    ["touchend", "touchcancel", "mouseup", "pointerup", "pointercancel"].forEach(function(ev){ document.addEventListener(ev, release, { passive: true }); });
+    msc.box.addEventListener("scroll", function(){ if (!msc.on || msc.held) mscFill(); });   // scrolled by hand: keep pages coming
+  }
+  function mscUi(){
+    document.getElementById("mscToggle").textContent = msc.on ? "⏸" : "▶";
+    document.getElementById("mscSp").textContent = "السرعة " + toArabicIndic(mscCfg.sp);
+    var pg = MUSHAF_PAGES[msc.cur - 1];
+    document.getElementById("mscWhere").textContent = "سورة " + surahName(pg.r[0][0]) + " • صفحة " + toArabicIndic(msc.cur) + " • الجزء " + toArabicIndic(pg.j);
+  }
+  function mscTopSection(){
+    var y = msc.box.scrollTop + msc.box.clientHeight * 0.3, secs = msc.box.children, found = secs[0];
+    for (var i = 0; i < secs.length; i++){ if (secs[i].offsetTop <= y) found = secs[i]; else break; }
+    return found;
+  }
+  // keep pages ready below, drop pages far above (the scroll position is kept), swap in the page fonts once loaded
+  function mscFill(){
+    var box = msc.box;
+    while (msc.lastPg < 604 && box.scrollTop + box.clientHeight * 2.5 > box.scrollHeight){ msc.lastPg++; mscAppend(msc.lastPg); }
+    while (box.children.length > 8 && box.children[1].offsetTop + box.children[1].offsetHeight < box.scrollTop){
+      var h = box.children[1].offsetTop - box.children[0].offsetTop;
+      box.removeChild(box.children[0]); box.scrollTop -= h; msc.pos -= h;
+    }
+    [].forEach.call(box.querySelectorAll(".msc-fb"), function(sec){ if (qcfReady(+sec.getAttribute("data-p"))) mscRender(sec); });
+    var sec = mscTopSection(), p = sec ? +sec.getAttribute("data-p") : msc.cur;
+    if (p !== msc.cur){ msc.cur = p; mscUi(); }
+  }
+  function mscStep(t){
+    if (!msc.on || msc.el.hidden) return;
+    var box = msc.box;
+    if (msc.held){ msc.last = 0; return; }
+    if (msc.last){
+      msc.pos += MSC_SPEEDS[mscCfg.sp - 1] * Math.min(0.25, Math.max(0, t - msc.last) / 1000);
+      box.scrollTop = Math.round(msc.pos);
+      if (msc.lastPg >= 604 && box.scrollTop + box.clientHeight >= box.scrollHeight - 2){ mscRun(false); showToast("صدق الله العظيم 🤍"); return; }
+    }
+    msc.last = t;
+    mscFill();
+  }
+  function mscTick(t){
+    msc.raf = 0;
+    if (!msc.on) return;
+    mscStep(t);
+    msc.raf = requestAnimationFrame(mscTick);
+  }
+  function mscWake(on){
+    try {
+      if (on && !msc.wake && navigator.wakeLock) navigator.wakeLock.request("screen").then(function(w){ msc.wake = w; w.addEventListener("release", function(){ msc.wake = null; }); }).catch(function(){});
+      if (!on && msc.wake){ msc.wake.release(); msc.wake = null; }
+    } catch(e){}
+  }
+  function mscRun(on){
+    msc.on = on; msc.held = false; msc.last = 0; msc.pos = msc.box.scrollTop;
+    clearInterval(msc.dog); msc.dog = 0;
+    if (on){
+      if (!msc.raf) msc.raf = requestAnimationFrame(mscTick);
+      // some phones hold back animation frames in a WebView: a timer keeps it moving all the same
+      msc.dog = setInterval(function(){
+        var now = performance.now();
+        if (msc.last && now - msc.last < 120) return;   // frames are running
+        mscStep(now);
+      }, 50);
+    }
+    mscWake(on); mscUi();
+  }
+  function mscOpen(){
+    mscBuild();
+    var box = msc.box;
+    msc.el.hidden = false; document.body.classList.add("msc-open");
+    // every page exactly as big as the mushaf page itself (same lines, same font)
+    msc.H = document.getElementById("mushafViewport").clientHeight || box.clientHeight;
+    box.innerHTML = "";
+    msc.cur = msc.lastPg = mushafPageNum;
+    mscAppend(mushafPageNum);
+    box.scrollTop = 0; msc.pos = 0;
+    mscFill();
+    if (!loadJSON("wirdi4-autoscroll-hint", false)){ showToast("☝️ حط صباعك على الشاشة يوقف، وشيله يكمّل • − + للسرعة"); saveJSON("wirdi4-autoscroll-hint", true); }
+    mscRun(true);
+  }
+  function mscClose(){
+    if (!msc.el || msc.el.hidden) return;
+    mscRun(false);
+    msc.el.hidden = true; document.body.classList.remove("msc-open");
+    if (currentView === "mushaf" && msc.cur !== mushafPageNum){ mushafPageNum = msc.cur; renderMushafPage(); }
+  }
+  // leaving the mushaf (or the app going to the background) never leaves the scroll running
+  (function(){
+    var view = document.getElementById("view-mushaf");
+    new MutationObserver(function(){ if (view.hidden) mscClose(); }).observe(view, { attributes: true, attributeFilter: ["hidden"] });
+    document.addEventListener("visibilitychange", function(){ if (document.hidden && msc.on) mscRun(false); });
+    // the phone's back button first closes the scroll (this listener runs before the one below)
+    window.addEventListener("popstate", function(e){
+      if (!msc.el || msc.el.hidden) return;
+      e.stopImmediatePropagation(); mscClose();
+      history.pushState({ wirdi: true }, "");
+    });
+  })();
+
   // ---- recitation control while reading (the reference page has no play button in its bars) ----
   function mqAudioRender(){
     var pill = document.getElementById("mqAudio"); if (!pill) return;
