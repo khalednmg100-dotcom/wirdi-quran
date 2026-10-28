@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-U7GQx0Q1mmCmd+JzcNZU3NIcJA0lQfxClpkRuSGX/Ok='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-xGLHUTyvQUjCtwD7UncWjc/cEpuT82qUHHOUnsGrubQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -6813,7 +6813,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "4102e2fab9a9", verChecked = 0;
+  var WIRDI_BUILD = "0c2db6918b71", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -7971,8 +7971,7 @@ const EVENING_ADHKAR = [
   })();
   // ---- a whole surah back / forward from the top bar ----
   // The surah shown at the top of the page is the reference: forward = the next surah that starts on a later
-  // page, back = the surah before it. The first time, a note says the place you were reading will be left.
-  var STORE_SURAH_JUMP = "wirdi4-surah-jump-ok2";
+  // page, back = the surah before it. Every time, a note says the place you were reading will be left.
   function mqSurahTarget(dir){
     var p = mushafPageNum, s0 = MUSHAF_PAGES[p - 1].r[0][0], s;
     if (dir > 0){ for (s = s0 + 1; s <= 114; s++) if (pageOf(s, 1) > p) return s; }
@@ -7983,7 +7982,6 @@ const EVENING_ADHKAR = [
     var t = mqSurahTarget(dir);
     if (!t){ showToast(dir > 0 ? "دي آخر سورة في المصحف" : "دي أول سورة في المصحف"); return; }
     var go = function(){ openMushaf(pageOf(t, 1), mushafReturnView); showToast((dir > 0 ? "⏭" : "⏮") + " قلبت سورة كاملة ← سورة " + surahName(t)); };
-    if (loadJSON(STORE_SURAH_JUMP, false)){ go(); return; }
     var ov = document.createElement("div");
     ov.className = "modal-overlay sj-overlay";
     ov.innerHTML = '<div class="modal sj-modal"><div class="sj-ic">📖</div><h2>هتقلب سورة كاملة</h2>' +
@@ -7997,7 +7995,6 @@ const EVENING_ADHKAR = [
       var a = b ? b.getAttribute("data-sj") : "no";
       ov.remove();
       if (a === "no") return;
-      saveJSON(STORE_SURAH_JUMP, true);
       if (a === "mark"){ saveJSON(STORE_BOOKMARK, mushafPageNum); showToast("🔖 اتحطت العلامة على صفحة " + toArabicIndic(mushafPageNum)); }
       go();
     });
