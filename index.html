@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-3qogwuFVUMhfdKTyp7f9Ghu5/fKy0EA/gjG03vw03wg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-1Jf6CSsdaon0BkFum6QkDOwjMdzvvw+OSkDkTxuUebc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -914,6 +914,53 @@
   .mushaf-page.m15.ml-flow .ml{display:inline; height:auto; white-space:normal; line-height:inherit;}
   .mushaf-page.m15.ml-flow .ml-head, .mushaf-page.m15.ml-flow .ml-basm{display:block; text-align:center; margin:0.35em 0;}
   #view-mushaf .msc .mushaf-page.m15.ml-flow{overflow:visible !important;}
+  /* the black layer of the red look sits exactly on the red one in the bigger text too (no half-leading shift) */
+  .mushaf-page.m15.ml-flow .ml-red .ml .ml-rw::after{line-height:normal; white-space:nowrap;}
+  /* ---- the home in tabs (hometabs.js): only the open tab's sections show; a bar docked at the bottom ---- */
+  #view-home{padding-bottom:calc(84px + env(safe-area-inset-bottom));}
+  #view-home[data-tab="home"] > [data-ht]{display:none !important;}
+  #view-home[data-tab="quran"] > :not(.topbar):not([data-ht="quran"]),
+  #view-home[data-tab="adhkar"] > :not(.topbar):not([data-ht="adhkar"]),
+  #view-home[data-tab="listen"] > :not(.topbar):not([data-ht="listen"]){display:none !important;}
+  .home-tabs{position:fixed; left:0; right:0; bottom:0; z-index:16; display:flex; justify-content:center;
+    padding:6px 8px calc(6px + env(safe-area-inset-bottom)); background:var(--paper-2); border-top:1px solid var(--paper-3); box-shadow:0 -2px 12px var(--shadow);}
+  .home-tabs[hidden]{display:none;}
+  .home-tabs button{flex:1; max-width:140px; display:flex; flex-direction:column; align-items:center; gap:3px; border:none; background:none;
+    color:var(--ink-soft); font-family:inherit; font-weight:700; font-size:.74rem; padding:6px 0 4px; position:relative;}
+  .home-tabs svg{width:24px; height:24px;}
+  .home-tabs button.on{color:var(--teal);}
+  .home-tabs button.on::before{content:""; position:absolute; top:-6px; left:30%; right:30%; height:3px; border-radius:0 0 3px 3px; background:var(--gold);}
+  :root.aurora .home-tabs{background:rgba(14,18,30,.92); border-top-color:rgba(155,135,255,.22); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);}
+  /* ---- prayer times: line icons, the time big and ص / م small, no boxes except the next prayer ---- */
+  .prayer-row{gap:2px; background:var(--paper); border-radius:16px; padding:6px 4px;}
+  .prayer-cell{background:none !important; border:none !important; padding:8px 1px 7px; border-radius:13px;}
+  .prayer-cell .pe{display:flex; justify-content:center; margin-bottom:4px; color:var(--teal); font-size:0;}
+  .prayer-cell .pe svg{width:22px; height:22px;}
+  .prayer-cell .pn{font-size:.72rem; font-weight:700; color:var(--ink-soft);}
+  .prayer-cell .pt{display:flex; align-items:baseline; justify-content:center; gap:2px; margin-top:3px;}
+  .prayer-cell .pt b{font-size:.92rem; font-weight:800; color:var(--ink);}
+  .prayer-cell .pt small{font-size:.6rem; font-weight:700; color:var(--ink-soft);}
+  .prayer-cell.past{opacity:.45;}
+  .prayer-cell.next{background:var(--teal) !important; box-shadow:0 6px 16px var(--shadow);}
+  .prayer-cell.next .pe, .prayer-cell.next .pn, .prayer-cell.next .pt b, .prayer-cell.next .pt small{color:#fff !important;}
+  :root.aurora .prayer-row{background:rgba(255,255,255,.035);}
+  :root.aurora .prayer-cell .pe{color:#7FD3C1;}
+  :root.aurora .prayer-cell.next{background:var(--aur-grad) !important; box-shadow:0 6px 18px rgba(124,92,255,.35);}
+  /* ---- the «المصحف» tab: «كمّل قراءتك» on top, the hifz plan as a neat strip under the shortcuts ---- */
+  .qt-hero{display:flex; align-items:center; gap:14px; width:100%; margin:4px 0 14px; padding:16px; border:none; border-radius:18px; text-align:right; font-family:inherit; color:#fff;
+    background:linear-gradient(135deg,var(--teal-deep),var(--teal)); box-shadow:0 8px 22px var(--shadow);}
+  :root.aurora .qt-hero{background:var(--aur-grad);}
+  .qt-hero .qt-ic{flex:none; width:48px; height:48px; border-radius:14px; background:rgba(255,255,255,.16); display:flex; align-items:center; justify-content:center;}
+  .qt-hero .qt-ic svg{width:28px; height:28px;}
+  .qt-hero .qt-tx{flex:1; min-width:0;}
+  .qt-hero b{display:block; font-size:1.08rem; font-weight:800;}
+  .qt-hero small{display:block; font-size:.8rem; opacity:.85; margin-top:2px;}
+  .qt-hero .qt-go{flex:none; font-size:1.5rem; opacity:.85;}
+  #view-home[data-tab="quran"] #hifzHomeCard{margin-top:14px;}
+  #hifzHomeCard:has(> .btn.primary.block:last-child){display:grid; grid-template-columns:1fr auto; align-items:center; column-gap:12px; row-gap:2px; padding:14px 16px;}
+  #hifzHomeCard:has(> .btn.primary.block:last-child) > .hf-label{grid-column:1; font-size:1rem;}
+  #hifzHomeCard:has(> .btn.primary.block:last-child) > .hf-meta{grid-column:1; margin:0 !important; font-size:.78rem; line-height:1.6;}
+  #hifzHomeCard:has(> .btn.primary.block:last-child) > .btn{grid-column:2; grid-row:1 / span 2; width:auto; padding:10px 16px; border-radius:99px; font-size:.85rem; white-space:nowrap;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -5100,7 +5147,7 @@ const EVENING_ADHKAR = [
   // default kind "qc": Quran.com recitation with per-word timings
   function reelReciter(id){ return REEL_RECITERS.filter(function(r){ return String(r.id) === String(id); })[0] || REEL_RECITERS[0]; }
   function pad3(n){ return ("00" + n).slice(-3); }
-  var REEL_STYLES = [ { id: "classic", name: "كلاسيكي" }, { id: "frame", name: "إطار مزخرف" }, { id: "bold", name: "خط كبير" } ];
+  var REEL_STYLES = [ { id: "classic", name: "خط عادي" }, { id: "bold", name: "خط كبير" } ];
   var REEL_BGS = [
     { id: "night", name: "سماء الليل" }, { id: "sky", name: "السماء" }, { id: "sea", name: "البحر" },
     { id: "nature", name: "الطبيعة" }, { id: "mosque", name: "المسجد" }, { id: "dark", name: "داكن بسيط" }, { id: "calm", name: "متحركة هادئة" }
@@ -5254,38 +5301,41 @@ const EVENING_ADHKAR = [
     var lay = reelLayout(g, words, 900, 44);
     return lay.lines.length * 44 * 1.95 <= 940;
   }
-  function reelDrawText(g, cfg, item, wordIdx, surah){
-    var boxX = 90, boxW = 900, boxTop = 560, boxH = 940;
+  // REEL-ONE-LINE: the ayah on its own over the background — no box, no frame — and ONE line on the screen at a
+  // time: a long ayah goes on line after line with the recitation (the word being read when the timings are
+  // known, else by how far the ayah's audio has gone). The ayah number closes the last line.
+  function reelDrawText(g, cfg, item, wordIdx, surah, frac){
+    var boxX = 90, boxW = 900, midY = 1030;
     var words = item.words.slice();
     if (!item.whole) words.push("﴿" + toArabicIndic(item.ayah) + "﴾");
-    var maxSize = cfg.style === "bold" ? 96 : 78, lay = null, lh = 0;
-    for (var s = maxSize; s >= 44; s -= 2){ lay = reelLayout(g, words, boxW, s); lh = s * 1.95; if (lay.lines.length * lh <= boxH) break; }
-    var maxLines = Math.floor(boxH / lh), startLine = 0;
-    if (lay.lines.length > maxLines){
-      var curLine = 0; lay.lines.forEach(function(L, li){ L.items.forEach(function(it){ if (it.i === wordIdx) curLine = li; }); });
-      startLine = Math.max(0, Math.min(lay.lines.length - maxLines, curLine - 1));
+    var lay = reelLayout(g, words, boxW, cfg.style === "bold" ? 92 : 76), lines = lay.lines, li = 0;
+    if (wordIdx >= 0){
+      lines.forEach(function(L, n){ L.items.forEach(function(it){ if (it.i === wordIdx) li = n; }); });
+      item._line = li;
+    } else if (item.segs && item.segs.length) li = item._line || 0;   // between two words: stay on the line
+    else if (lines.length > 1){
+      // no word timings: each line gets its share of the ayah's time, by its length
+      var total = 0, acc = 0, f = Math.max(0, Math.min(0.999, frac || 0));
+      lines.forEach(function(L){ total += L.w; });
+      for (li = 0; li < lines.length - 1; li++){ acc += lines[li].w / total; if (f < acc) break; }
     }
-    var shown = lay.lines.slice(startLine, startLine + maxLines), totalH = shown.length * lh, y0 = boxTop + (boxH - totalH) / 2 + lh * 0.72;
-    if (cfg.style === "classic"){
-      g.fillStyle = "rgba(0,0,0,0.38)"; reelRound(g, 60, y0 - lh * 0.95, 960, totalH + lh * 0.5, 40); g.fill();
-    } else if (cfg.style === "frame"){
-      g.fillStyle = "rgba(0,0,0,0.32)"; reelRound(g, 55, boxTop - 40, 970, boxH + 80, 30); g.fill();
-      g.strokeStyle = "rgba(233,196,106,0.9)"; g.lineWidth = 4; reelRound(g, 55, boxTop - 40, 970, boxH + 80, 30); g.stroke();
-      g.lineWidth = 1.5; reelRound(g, 72, boxTop - 23, 936, boxH + 46, 22); g.stroke();
-      g.fillStyle = "rgba(233,196,106,0.9)"; [[55, boxTop - 40], [1025, boxTop - 40], [55, boxTop + boxH + 40], [1025, boxTop + boxH + 40]].forEach(function(p){ g.beginPath(); g.arc(p[0], p[1], 10, 0, 7); g.fill(); });
+    var L = lines[Math.min(li, lines.length - 1)];
+    // the line count, small under the line, so the viewer knows the ayah goes on
+    if (lines.length > 1){
+      g.textAlign = "center"; g.direction = "rtl"; g.shadowColor = "rgba(0,0,0,0.7)"; g.shadowBlur = 10;
+      g.fillStyle = "rgba(255,255,255,0.55)"; g.font = '30px "Amiri", serif';
+      g.fillText(toArabicIndic(li + 1) + " / " + toArabicIndic(lines.length), RW / 2, midY + lay.size * 1.25);
     }
     g.textBaseline = "alphabetic"; g.direction = "rtl"; g.textAlign = "right";
     g.font = lay.size + 'px "KFGQPC Hafs", "Scheherazade New", serif';
-    shown.forEach(function(L, li){
-      var x = boxX + boxW - (boxW - L.w) / 2, y = y0 + li * lh;
-      L.items.forEach(function(it, k){
-        var isNum = /^﴿/.test(it.text), on = it.i === wordIdx;
-        g.shadowColor = "rgba(0,0,0,0.85)"; g.shadowBlur = cfg.style === "bold" ? 20 : 14;
-        g.fillStyle = isNum ? "#E9C46A" : (on ? "#F4D27A" : "#FFFFFF");
-        if (on){ g.save(); g.shadowColor = "rgba(244,210,122,0.9)"; g.shadowBlur = 26; g.fillText(it.text, x, y); g.restore(); }
-        else g.fillText(it.text, x, y);
-        x -= it.w + lay.space;
-      });
+    var x = boxX + boxW - (boxW - L.w) / 2, y = midY + lay.size * 0.3;
+    L.items.forEach(function(it){
+      var isNum = /^﴿/.test(it.text), on = it.i === wordIdx;
+      g.shadowColor = "rgba(0,0,0,0.9)"; g.shadowBlur = cfg.style === "bold" ? 22 : 16;
+      g.fillStyle = isNum ? "#E9C46A" : (on ? "#F4D27A" : "#FFFFFF");
+      if (on){ g.save(); g.shadowColor = "rgba(244,210,122,0.9)"; g.shadowBlur = 26; g.fillText(it.text, x, y); g.restore(); }
+      else g.fillText(it.text, x, y);
+      x -= it.w + lay.space;
     });
     g.shadowBlur = 0;
   }
@@ -5304,7 +5354,7 @@ const EVENING_ADHKAR = [
     for (var i = 0; i < data.items.length; i++){ if (t >= data.items[i].start) cur = data.items[i]; }
     var local = (t - cur.start + (cur.off || 0)) * 1000;
     if (local >= 0) cur.segs.forEach(function(sg){ if (local >= sg[2] && local < sg[3] + 120) wi = sg[1] - 1; });
-    reelDrawText(g, cfg, cur, wi, cfg.surah);
+    reelDrawText(g, cfg, cur, wi, cfg.surah, (t - cur.start) / Math.max(0.2, cur.speech || 0.2));
     g.textAlign = "center"; g.fillStyle = "rgba(255,255,255,0.85)"; g.font = '36px "Amiri", serif';
     g.fillText("بصوت " + reelReciter(cfg.reciter).name, RW / 2, 1690);
     g.fillStyle = "rgba(255,255,255,0.55)"; g.font = '30px "Amiri", serif'; g.fillText("وِرْدِي", RW / 2, 1760);
@@ -5468,7 +5518,7 @@ const EVENING_ADHKAR = [
     var words = QURAN_AYAHS[s - 1][reelCfg.from - 1].split(/\s+/).filter(function(w){ return w && !/^[ۖ-ۭ۞]+$/.test(w); });
     var item = { ayah: reelCfg.from, words: words, segs: [], start: 0 };
     if (reelReciter(reelCfg.reciter).kind === "surah"){
-      var all = []; QURAN_AYAHS[s - 1].forEach(function(t, i){ all = all.concat(t.split(/s+/).filter(function(w){ return w && !/^[ۖ-ۭ۞]+$/.test(w); })); all.push("﴿" + toArabicIndic(i + 1) + "﴾"); });
+      var all = []; QURAN_AYAHS[s - 1].forEach(function(t, i){ all = all.concat(t.split(/\s+/).filter(function(w){ return w && !/^[ۖ-ۭ۞]+$/.test(w); })); all.push("﴿" + toArabicIndic(i + 1) + "﴾"); });
       item = { ayah: 0, words: all, segs: [], start: 0, whole: true };
     }
     reelFrame(g, reelCfg, { items: [item], total: 1 }, 0);
@@ -5482,7 +5532,7 @@ const EVENING_ADHKAR = [
       document.getElementById("reelStyle").innerHTML = REEL_STYLES.map(function(r){ return '<option value="' + r.id + '">' + r.name + '</option>'; }).join("");
     }
     sel.value = reelCfg.surah; document.getElementById("reelFrom").value = reelCfg.from; document.getElementById("reelTo").value = reelCfg.to;
-    document.getElementById("reelReciter").value = reelCfg.reciter; document.getElementById("reelStyle").value = reelCfg.style;
+    document.getElementById("reelReciter").value = reelCfg.reciter; document.getElementById("reelStyle").value = reelCfg.style === "frame" ? "classic" : reelCfg.style;
     document.getElementById("reelBgs").innerHTML = REEL_BGS.map(function(b){ return '<button class="hf-chip' + (b.id === reelCfg.bg ? " on" : "") + '" data-bg="' + b.id + '">' + b.name + '</button>'; }).join("") +
       '<button class="hf-chip' + (reelCfg.bg === "custom" ? " on" : "") + '" data-bg="custom">📷 ' + (reelMedia ? (reelMedia.kind === "video" ? "فيديو" : "صورة") + " من جهازك ✓" : "صورة أو فيديو من جهازك") + '</button>';
     var RK = reelReciter(reelCfg.reciter).kind;
@@ -6733,7 +6783,18 @@ const EVENING_ADHKAR = [
 
   if (!appSettings.auroraV1){ appSettings.auroraV1 = true; if (!appSettings.darkMode || appSettings.darkMode === "system") appSettings.darkMode = "aurora"; saveSettings(); if (typeof applyTheme === "function") applyTheme(); }
 
-  var PRAYER_EMOJI = { Fajr: "🌌", Sunrise: "🌅", Dhuhr: "☀️", Asr: "🌤️", Maghrib: "🌇", Isha: "🌙" };
+  // the prayers drawn as thin line icons (dawn star, sun rising, high sun, afternoon sun, sun setting, moon)
+  var PRAYER_ICON = {
+    Fajr: '<path d="M16 5a6.5 6.5 0 1 0 3 11.5A7.5 7.5 0 0 1 16 5z"/><path d="M19 4.5v3M17.5 6h3"/>',
+    Sunrise: '<path d="M3 18h18"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 4v5M9.5 6.5L12 4l2.5 2.5"/><path d="M4.5 13.5l1.4 1M19.5 13.5l-1.4 1"/>',
+    Dhuhr: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M5.3 18.7l1.5-1.5M17.2 6.8l1.5-1.5"/>',
+    Asr: '<circle cx="9.5" cy="9" r="3.5"/><path d="M9.5 2.5v1.5M3 9h1.5M4.9 4.4l1 1M14.1 4.4l-1 1"/><path d="M8 20h9a3.5 3.5 0 0 0 0-7 4.5 4.5 0 0 0-8.6 1.5A2.8 2.8 0 0 0 8 20z"/>',
+    Maghrib: '<path d="M3 18h18"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 9V4M9.5 6.5L12 9l2.5-2.5"/><path d="M6 21h12"/>',
+    Isha: '<path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.3 6.3 0 0 0 10 10z"/><path d="M17 4l.6 1.4L19 6l-1.4.6L17 8l-.6-1.4L15 6l1.4-.6z"/>'
+  };
+  function prayerIcon(k){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + PRAYER_ICON[k] + '</svg>'; }
+  // «٥:٣٩ ص» → the time big, ص / م small beside it
+  function prayerTimeHtml(hm){ var t = to12h(hm).split(" "); return '<b>' + t[0] + '</b><small>' + (t[1] || "") + '</small>'; }
   function renderPrayerCard(){
     var box = document.getElementById("prayerCard"); if (!box) return;
     if (!prayerTimesToday){
@@ -6750,14 +6811,14 @@ const EVENING_ADHKAR = [
       h += '<div class="pc-top"><div class="pc-ring"><svg viewBox="0 0 120 120"><defs><linearGradient id="pcGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ED3A0"/><stop offset="1" stop-color="#9B87FF"/></linearGradient></defs>' +
         '<circle class="trk" cx="60" cy="60" r="52" fill="none" stroke-width="9"/><circle class="val" cx="60" cy="60" r="52" fill="none" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + (C * (1 - frac)).toFixed(1) + '"/></svg>' +
         '<div class="pc-in"><b>' + toArabicIndic(hh) + ':' + toArabicIndic(("0" + mm).slice(-2)) + '</b><small>' + (hh ? 'ساعة متبقية' : 'دقيقة متبقية') + '</small></div></div>' +
-        '<div class="pc-info"><span class="pc-lbl">🕌 الصلاة القادمة</span><b class="pc-name">' + (nx.tomorrow ? 'الفجر' : nx.name) + '</b><span class="pc-time"><i>' + to12h(prayerTimesToday[nx.key]) + '</i>' + (nx.tomorrow ? ' • غدًا' : '') + ' • القاهرة</span></div></div>';
+        '<div class="pc-info"><span class="pc-lbl">الصلاة القادمة</span><b class="pc-name">' + (nx.tomorrow ? 'الفجر' : nx.name) + '</b><span class="pc-time"><i>' + to12h(prayerTimesToday[nx.key]) + '</i>' + (nx.tomorrow ? ' • غدًا' : '') + ' • القاهرة</span></div></div>';
     }
     h += '<div class="prayer-row">';
     PRAYER_NAMES.forEach(function(p){
       var m = hmToMin(prayerTimesToday[p[0]]), cls = (nx && !nx.tomorrow && nx.key === p[0]) || (nx && nx.tomorrow && p[0] === "Fajr") ? " next" : (m <= n ? " past" : "");
-      h += '<div class="prayer-cell' + cls + '"><div class="pe">' + PRAYER_EMOJI[p[0]] + '</div><div class="pn">' + p[1] + '</div><div class="pt">' + to12h(prayerTimesToday[p[0]]) + '</div></div>';
+      h += '<div class="prayer-cell' + cls + '"><div class="pe">' + prayerIcon(p[0]) + '</div><div class="pn">' + p[1] + '</div><div class="pt">' + prayerTimeHtml(prayerTimesToday[p[0]]) + '</div></div>';
       // sunrise after Fajr: shown for the end of Fajr time, it has no adhan
-      if (p[0] === "Fajr" && prayerTimesToday.Sunrise) h += '<div class="prayer-cell sun' + (hmToMin(prayerTimesToday.Sunrise) <= n ? " past" : "") + '"><div class="pe">' + PRAYER_EMOJI.Sunrise + '</div><div class="pn">الشروق</div><div class="pt">' + to12h(prayerTimesToday.Sunrise) + '</div></div>';
+      if (p[0] === "Fajr" && prayerTimesToday.Sunrise) h += '<div class="prayer-cell sun' + (hmToMin(prayerTimesToday.Sunrise) <= n ? " past" : "") + '"><div class="pe">' + prayerIcon("Sunrise") + '</div><div class="pn">الشروق</div><div class="pt">' + prayerTimeHtml(prayerTimesToday.Sunrise) + '</div></div>';
     });
     h += '</div>';
     var tip = nx && prayerSunnah(nx.key);
@@ -6821,7 +6882,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "071ecfef5bcd", verChecked = 0;
+  var WIRDI_BUILD = "147485e3940b", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -7611,6 +7672,75 @@ const EVENING_ADHKAR = [
   // a new day while the app stays open → a new gift on the card
   document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") renderGiftCard(); });
 
+  // ---------------- the home in tabs: a bar at the bottom (الرئيسية • المصحف • الأذكار • الدروس) ----------------
+  // Every section of the home goes with the title above it (up to the next title); anything without a title
+  // (the greeting, the prayer, the gift, the wird and reading cards, the sunnah / nasab cards…) lives on
+  // «الرئيسية». The bar shows on the home screen only — the other screens keep their «رجوع» bar, which brings
+  // you back to the tab you came from.
+  (function(){
+    var home = document.getElementById("view-home");
+    if (!home || document.getElementById("homeTabs")) return;
+    var ICON = {
+      home: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>',
+      quran: '<path d="M12 6c-2-1.5-5-2-8-1.5V19c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V4.5C17 4 14 4.5 12 6z"/><path d="M12 6v14.5"/>',
+      adhkar: '<circle cx="12" cy="10" r="6.5" stroke-dasharray="0.01 3.4" stroke-width="3.2"/><path d="M12 16.5v4"/>',
+      listen: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/>'
+    };
+    var tab = null;
+    [].slice.call(home.children).forEach(function(el){
+      if (el.classList.contains("home-sec-title")){
+        var t = el.textContent;
+        tab = /الأذكار/.test(t) ? "adhkar" : /القرآن/.test(t) ? "quran" : /دروس|قصص/.test(t) ? "listen" : null;
+      } else if (el.classList.contains("home-bottom") || el.id === "donateHomeCard") tab = null;
+      if (tab) el.setAttribute("data-ht", tab);
+    });
+    // «المصحف» opens on a big «كمّل قراءتك» card: the surah and page you stopped at, one tap away
+    var qTitle = home.querySelector('.home-sec-title[data-ht="quran"]'), hero = null;
+    if (qTitle){
+      hero = document.createElement("button");
+      hero.type = "button"; hero.className = "qt-hero"; hero.setAttribute("data-ht", "quran");
+      qTitle.insertAdjacentElement("afterend", hero);
+      hero.addEventListener("click", function(){ handleNav("continueReading"); });
+    }
+    function heroRender(){
+      if (!hero) return;
+      var pos = loadJSON("wirdi2-read-pos", null), p = pos && pos.page ? pos.page : loadJSON(STORE_MUSHAF_PAGE, 1);
+      p = Math.max(1, Math.min(604, +p || 1));
+      var pg = MUSHAF_PAGES[p - 1];
+      hero.innerHTML = '<span class="qt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2-1.5-5-2-8-1.5V19c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V4.5C17 4 14 4.5 12 6z"/><path d="M12 6v14.5"/></svg></span>' +
+        '<span class="qt-tx"><b>' + (p > 1 ? "كمّل قراءتك" : "ابدأ القراءة") + '</b><small>سورة ' + surahName(pg.r[0][0]) + ' • صفحة ' + toArabicIndic(p) + ' • الجزء ' + toArabicIndic(pg.j) + '</small></span><span class="qt-go">‹</span>';
+    }
+    var hifz = document.getElementById("hifzHomeCard");
+    if (hifz){ hifz.setAttribute("data-ht", "quran"); home.appendChild(hifz); }
+    var nav = document.createElement("nav");
+    nav.className = "home-tabs"; nav.id = "homeTabs";
+    nav.innerHTML = [["home", "الرئيسية"], ["quran", "المصحف"], ["adhkar", "الأذكار"], ["listen", "الدروس"]].map(function(x){
+      return '<button type="button" data-ht="' + x[0] + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[x[0]] + '</svg><span>' + x[1] + '</span></button>';
+    }).join("");
+    document.body.appendChild(nav);
+    function setTab(t){
+      home.setAttribute("data-tab", t);
+      if (t === "quran") heroRender();
+      [].forEach.call(nav.children, function(b){ b.classList.toggle("on", b.getAttribute("data-ht") === t); });
+      window.scrollTo(0, 0);
+    }
+    // the phone's back button on another tab comes back to «الرئيسية» (and only then leaves the app)
+    var tabState = function(){ return !!(history.state && history.state.wirdiTab); };
+    nav.addEventListener("click", function(e){
+      var b = e.target.closest("[data-ht]"); if (!b) return;
+      var t = b.getAttribute("data-ht");
+      if (t !== "home" && !tabState()) history.pushState({ wirdiTab: true }, "");
+      if (t === "home" && tabState()) history.back();
+      setTab(t);
+    });
+    window.addEventListener("popstate", function(){
+      if (!home.hidden && home.getAttribute("data-tab") !== "home" && !tabState()) setTab("home");
+    });
+    var sync = function(){ nav.hidden = home.hidden; };
+    new MutationObserver(sync).observe(home, { attributes: true, attributeFilter: ["hidden"] });
+    sync(); setTab("home");
+  })();
+
   // ---------------- Adhan in the page: Masjid al-Haram recording, stop bar, full / takbir only ----------------
   // (The phone app plays it natively with a stop button in the notification — see native.js / AdhanService.)
   // Sheikh Ali Mulla (muezzin of Masjid al-Haram) for the prayers, a Haram Fajr adhan («الصلاة خير من النوم»).
@@ -7839,8 +7969,21 @@ const EVENING_ADHKAR = [
     Promise.all(qcfPages(p).map(qcfLoad)).then(function(ok){
       var shown = document.querySelector("#mushafPageContent .ml-qcf"), want = qcfTajweed();
       if (ok.every(Boolean) && currentView === "mushaf" && mushafPageNum === p && (!shown || shown.classList.contains("ml-tajweed") !== want)) renderMushafPage();
-      [p + 1, p - 1, p + 2].forEach(function(n){ if (n >= 1 && n <= 604) qcfPages(n).forEach(qcfLoad); });   // the next pages are ready before the swipe
+      qcfAhead(p);   // the next pages are ready before the swipe
     });
+  }
+  // the neighbouring pages' fonts, one after the other and a moment later: adding a font makes the browser
+  // re-check the whole page, so several at once (or right while the page is drawn) froze weak phones
+  var qcfAheadT = 0;
+  function qcfAhead(p){
+    clearTimeout(qcfAheadT);
+    var todo = [];
+    [p + 1, p - 1, p + 2].forEach(function(n){ if (n >= 1 && n <= 604) qcfPages(n).forEach(function(x){ if (!qcfState[qcfFam(x)] && todo.indexOf(x) === -1) todo.push(x); }); });
+    var next = function(){
+      if (!todo.length || mushafPageNum !== p) return;
+      qcfLoad(todo.shift()).then(function(){ qcfAheadT = setTimeout(next, 250); });
+    };
+    qcfAheadT = setTimeout(next, 400);
   }
   function mushaf15Html(p){
     if (!mushaf15On()) return null;
@@ -7907,8 +8050,17 @@ const EVENING_ADHKAR = [
   var ML_STYLE_NAMES = { red: "خط تقيل + تشكيل أحمر", tajweed: "مصحف التجويد الملوّن", plain: "خط المصحف بالأسود" };
   function mlSetStyle(m){
     appSettings.mushafStyle = m; saveSettings(); mlStyleUi();
-    if (currentView === "mushaf") renderMushafPage();
     showToast("📖 " + ML_STYLE_NAMES[m]);
+    if (currentView !== "mushaf") return;
+    // the page fonts of the new look are not here yet (first time): the page stays as it is until they are,
+    // then it is drawn once — no stand-in page drawn and measured in between
+    var p = mushafPageNum;
+    if (m !== "red" && mushaf15On() && !qcfReady(p)){
+      showToast("⏳ بيجهّز " + ML_STYLE_NAMES[m] + "…");
+      Promise.all(qcfPages(p).map(qcfLoad)).then(function(){ if (currentView === "mushaf" && mushafPageNum === p && mushafStyle() === m) renderMushafPage(); });
+      return;
+    }
+    renderMushafPage();
   }
   function mlStyleUi(){
     var sel = document.getElementById("mushafStyleSelect"); if (sel) sel.value = mushafStyle();
