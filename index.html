@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-1Jf6CSsdaon0BkFum6QkDOwjMdzvvw+OSkDkTxuUebc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-9gvMDo87h0TwOTkxsdzcuss88YyhCMMK3Fk8gDQ9RVo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -6882,7 +6882,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "147485e3940b", verChecked = 0;
+  var WIRDI_BUILD = "8df92039fdf9", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -8568,6 +8568,22 @@ const EVENING_ADHKAR = [
       var fsRefresh = function(){ WN.fullScreenStatus().then(function(r){ document.getElementById("wnFsHint").textContent = r.allowed ? "مسموح ✓ — وقت الأذان بتفتح لوحدها شاشة فيها الأذان جملة جملة وتقول إيه بعد كل جملة" : (r.fullScreen === false ? "اسمح لوردي يفتح شاشة الأذان على الموبايل وقت الصلاة" : "خطوة أخيرة: فعّل «الظهور فوق التطبيقات» عشان شاشة الأذان تفتح لوحدها حتى والموبايل في إيدك"); document.getElementById("wnFsBtn").hidden = !!r.allowed; }).catch(function(){}); };
       fsRefresh(); document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") fsRefresh(); });
       document.getElementById("wnFsBtn").addEventListener("click", function(){ WN.openFullScreenSettings().catch(function(){}); });
+    }
+    // ---- settings: try the adhan screen now, and the Oppo / Realme / OnePlus permission page (phone app v20+) ----
+    if (adhanSec && WN.testAdhan){
+      var tr = document.createElement("div"); tr.className = "settings-row";
+      tr.innerHTML = '<div><label>🧪 جرّب شاشة الأذان</label><span class="hint">دوس «جرّب» واقفل الشاشة أو افتح أي تطبيق تاني — بعد ١٥ ثانية لازم شاشة الأذان تفتح لوحدها</span></div><button class="btn ghost" id="wnTestBtn">جرّب</button>';
+      adhanSec.appendChild(tr);
+      document.getElementById("wnTestBtn").addEventListener("click", function(){
+        WN.testAdhan({ sec: 15 }).then(function(){ showToast("⏳ الأذان التجريبي بعد ١٥ ثانية — اقفل الشاشة دلوقتي"); }).catch(function(){ showToast("مقدرناش نجهّز التجربة"); });
+      });
+      if (WN.openOemSettings && WN.batteryStatus) WN.batteryStatus().then(function(r){
+        if (!/oppo|realme|oneplus/i.test(r.manufacturer || "")) return;
+        var orow = document.createElement("div"); orow.className = "settings-row";
+        orow.innerHTML = '<div><label>📲 إعدادات أوبو</label><span class="hint">موبايلات أوبو بتمنع الشاشات تفتح لوحدها: فعّل «التشغيل التلقائي» لوردي، وفي صفحة التطبيق فعّل «النوافذ المنبثقة / الظهور فوق التطبيقات» و«السماح بالنشاط في الخلفية»</span></div><button class="btn ghost" id="wnOemBtn">افتح</button>';
+        adhanSec.appendChild(orow);
+        document.getElementById("wnOemBtn").addEventListener("click", function(){ WN.openOemSettings().catch(function(){}); });
+      }).catch(function(){});
     }
     // ---- settings: background playback (battery) helper ----
     var sec = document.getElementById("notifToggle"); sec = sec && sec.closest(".settings-section");
