@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-9gvMDo87h0TwOTkxsdzcuss88YyhCMMK3Fk8gDQ9RVo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-/exr4fvqj8gmjvdyuZkBgKMY7+G8qpfrW2EIF31GeP0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -961,6 +961,13 @@
   #hifzHomeCard:has(> .btn.primary.block:last-child) > .hf-label{grid-column:1; font-size:1rem;}
   #hifzHomeCard:has(> .btn.primary.block:last-child) > .hf-meta{grid-column:1; margin:0 !important; font-size:.78rem; line-height:1.6;}
   #hifzHomeCard:has(> .btn.primary.block:last-child) > .btn{grid-column:2; grid-row:1 / span 2; width:auto; padding:10px 16px; border-radius:99px; font-size:.85rem; white-space:nowrap;}
+  /* the coloured tajweed page is heavy to draw on weak phones: its own layer, drawn once and only moved after */
+  #mushafPageContent:has(.ml-tajweed){will-change:transform; contain:layout paint;}
+  /* «loading» sign on the page while a look's fonts arrive (mushaf15.js mlSetStyle) */
+  #mushafViewport.ml-loading{position:relative;}
+  #mushafViewport.ml-loading::after{content:"⏳ بيجهّز المصحف…"; position:absolute; left:50%; top:45%; transform:translate(-50%,-50%); z-index:5;
+    padding:12px 22px; border-radius:99px; background:rgba(20,15,6,.82); color:#fff; font-weight:800; font-size:.95rem; box-shadow:0 8px 24px rgba(0,0,0,.25);}
+  #mushafViewport.ml-loading #mushafPageContent{opacity:.55; transition:opacity .2s;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -6882,7 +6889,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "8df92039fdf9", verChecked = 0;
+  var WIRDI_BUILD = "177ecf05b511", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -7951,13 +7958,16 @@ const EVENING_ADHKAR = [
     }
     return (mlBareCache[w] = out);
   }
-  function qcfFam(p){ return (qcfTajweed() ? "qcft" : "qcf") + p; }
-  function qcfLoad(p){
-    var fam = qcfFam(p);
+  function qcfFam(p, tj){ return ((tj === undefined ? qcfTajweed() : tj) ? "qcft" : "qcf") + p; }
+  var qcfWait = {};   // family → the promise of its load, so a second ask waits for the same one
+  function qcfLoad(p, tj){
+    if (tj === undefined) tj = qcfTajweed();
+    var fam = qcfFam(p, tj);
+    if (qcfState[fam] === "loading" && qcfWait[fam]) return qcfWait[fam];
     if (p < 1 || p > 604 || qcfState[fam] || typeof FontFace === "undefined") return Promise.resolve(qcfState[fam] === "ok");
     qcfState[fam] = "loading";
-    var f = new FontFace(fam, "url(" + QCF_BASE + (qcfTajweed() ? "v4/colrv1/woff2/p" : "v2/woff2/p") + p + ".woff2)", { display: "block" });
-    return f.load().then(function(){ document.fonts.add(f); qcfState[fam] = "ok"; return true; }, function(){ qcfState[fam] = "fail"; return false; });
+    var f = new FontFace(fam, "url(" + QCF_BASE + (tj ? "v4/colrv1/woff2/p" : "v2/woff2/p") + p + ".woff2)", { display: "block" });
+    return (qcfWait[fam] = f.load().then(function(){ document.fonts.add(f); qcfState[fam] = "ok"; return true; }, function(){ qcfState[fam] = "fail"; return false; }));
   }
   function qcfPages(p){   // every font a page needs (a few words are drawn with a neighbouring page's font)
     var out = [p];
@@ -7966,7 +7976,7 @@ const EVENING_ADHKAR = [
   }
   function qcfReady(p){ return qcfPages(p).every(function(x){ return qcfState[qcfFam(x)] === "ok"; }); }
   function qcfPrepare(p){
-    Promise.all(qcfPages(p).map(qcfLoad)).then(function(ok){
+    Promise.all(qcfPages(p).map(function(x){ return qcfLoad(x); })).then(function(ok){
       var shown = document.querySelector("#mushafPageContent .ml-qcf"), want = qcfTajweed();
       if (ok.every(Boolean) && currentView === "mushaf" && mushafPageNum === p && (!shown || shown.classList.contains("ml-tajweed") !== want)) renderMushafPage();
       qcfAhead(p);   // the next pages are ready before the swipe
@@ -8050,18 +8060,36 @@ const EVENING_ADHKAR = [
   var ML_STYLE_NAMES = { red: "خط تقيل + تشكيل أحمر", tajweed: "مصحف التجويد الملوّن", plain: "خط المصحف بالأسود" };
   function mlSetStyle(m){
     appSettings.mushafStyle = m; saveSettings(); mlStyleUi();
-    showToast("📖 " + ML_STYLE_NAMES[m]);
-    if (currentView !== "mushaf") return;
-    // the page fonts of the new look are not here yet (first time): the page stays as it is until they are,
-    // then it is drawn once — no stand-in page drawn and measured in between
-    var p = mushafPageNum;
+    if (currentView !== "mushaf"){ showToast("📖 " + ML_STYLE_NAMES[m]); return; }
+    // the tools sheet closes at once, so the page is in sight
+    if (typeof closeMushafTools === "function") closeMushafTools();
+    // the page fonts of the new look are not here yet (first time): the page stays as it is, with a clear
+    // «loading» sign on it, until they are — then it is drawn once (no stand-in page drawn in between)
+    var p = mushafPageNum, vp = document.getElementById("mushafViewport"), ask = mlSetStyle.ask = (mlSetStyle.ask || 0) + 1;
+    if (vp) vp.classList.remove("ml-loading");   // an earlier choice still loading is dropped
     if (m !== "red" && mushaf15On() && !qcfReady(p)){
-      showToast("⏳ بيجهّز " + ML_STYLE_NAMES[m] + "…");
-      Promise.all(qcfPages(p).map(qcfLoad)).then(function(){ if (currentView === "mushaf" && mushafPageNum === p && mushafStyle() === m) renderMushafPage(); });
+      if (vp) vp.classList.add("ml-loading");
+      var done = false, finish = function(){
+        if (done || ask !== mlSetStyle.ask) return; done = true;
+        if (vp) vp.classList.remove("ml-loading");
+        if (currentView === "mushaf" && mushafPageNum === p && mushafStyle() === m){ renderMushafPage(); showToast("📖 " + ML_STYLE_NAMES[m]); }
+      };
+      Promise.all(qcfPages(p).map(function(x){ return qcfLoad(x); })).then(finish);
+      setTimeout(finish, 12000);   // a very slow line: draw with the stand-in text rather than wait for ever
       return;
     }
     renderMushafPage();
+    showToast("📖 " + ML_STYLE_NAMES[m]);
   }
+  // the tools sheet opened: the other looks' fonts for this page are fetched now, so choosing one is instant
+  (function(){
+    var sheet = document.getElementById("mushafToolsSheet"); if (!sheet) return;
+    new MutationObserver(function(){
+      if (sheet.hidden || currentView !== "mushaf" || !mushaf15On()) return;
+      var p = mushafPageNum;
+      setTimeout(function(){ qcfPages(p).forEach(function(x){ qcfLoad(x, true); qcfLoad(x, false); }); }, 150);
+    }).observe(sheet, { attributes: true, attributeFilter: ["hidden"] });
+  })();
   function mlStyleUi(){
     var sel = document.getElementById("mushafStyleSelect"); if (sel) sel.value = mushafStyle();
     document.querySelectorAll("[data-mlstyle]").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-mlstyle") === mushafStyle()); });
@@ -8208,7 +8236,7 @@ const EVENING_ADHKAR = [
     sec.innerHTML = '<div class="mushaf-page m15" style="height:' + msc.H + 'px"></div><div class="msc-pn">' + toArabicIndic(p) + '</div>';
     msc.box.appendChild(sec);
     mscRender(sec);
-    if (mushafStyle() !== "red") [p + 1, p + 2].forEach(function(n){ if (n <= 604) qcfPages(n).forEach(qcfLoad); });
+    if (mushafStyle() !== "red") [p + 1, p + 2].forEach(function(n){ if (n <= 604) qcfPages(n).forEach(function(x){ qcfLoad(x); }); });
   }
   function mscBuild(){
     if (msc.el) return;
