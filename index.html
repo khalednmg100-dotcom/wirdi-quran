@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-tfZhUguC1tAHoXE/3Q8yBfVwknOyMBJCZKTNuxvEfZs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-xxgvvxFuchlXJ65d3p6MEHNY3iG4I91NdvaXZ3/jbvM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -6889,7 +6889,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "babbbf9d5346", verChecked = 0;
+  var WIRDI_BUILD = "5b4af2757a41", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -8587,6 +8587,7 @@ const EVENING_ADHKAR = [
         LN.createChannel({ id: "wirdi_dua", name: "الدعاء لأميرة حامد", description: "تذكير بالدعاء مرتين في اليوم", importance: 3, visibility: 1 }),
         // the voice file is in the phone app from v16 on (a channel keeps its sound forever, so never create it earlier)
         WN.fullScreenStatus && LN.createChannel({ id: "wirdi_salawat", name: "صلِّ على محمد ﷺ (بالصوت)", description: "تذكير كل ساعتين بالصلاة على النبي ﷺ ويتقال بالصوت", importance: 4, visibility: 1, sound: "salawat.mp3", vibration: true }),
+        LN.createChannel({ id: "wirdi_salawat_quiet", name: "صلِّ على محمد ﷺ (والقرآن شغال)", description: "نفس التذكير من غير صوت، وقت ما التلاوة أو أي صوت شغال في التطبيق", importance: 2, visibility: 1 }),
         LN.createChannel({ id: "wirdi_dhikr", name: "الذكر والصلاة على النبي ﷺ", description: "تذكير كل ساعة بذكر أو بالصلاة على النبي ﷺ", importance: 3, visibility: 1 })
       ]).catch(function(){});
       return channelsReady;
@@ -8631,6 +8632,10 @@ const EVENING_ADHKAR = [
     }
     function at(d, hm){ var p = String(hm).split(":"); return new Date(d.getFullYear(), d.getMonth(), d.getDate(), +p[0], +p[1], 0); }
 
+    // while the Quran (or any sound of the app) is playing, the salah upon the Prophet ﷺ comes as a silent
+    // notification — it never speaks over the recitation; when the sound stops, the voice comes back
+    var quietSalawat = false;
+    function salawatChannel(){ return quietSalawat ? "wirdi_salawat_quiet" : "wirdi_salawat"; }
     // ---- build every notification for the next days, replacing what was scheduled before ----
     function reschedule(){
       if (!isFriday() && LN.getDeliveredNotifications) LN.getDeliveredNotifications().then(function(r){
@@ -8673,15 +8678,15 @@ const EVENING_ADHKAR = [
               // Friday / Thursday night / the Monday-Thursday fast (friday.js; each has its own switch inside);
               // al-Kahf stays at the top of the notifications until it is tapped (the tap plays it)
               fridayNotes(day.date, day.t).forEach(function(n, k){
-                if (n.at.getTime() > now) list.push({ id: 7000 + di * 10 + k, title: n.title, body: n.body, channelId: n.salawat && WN.fullScreenStatus ? "wirdi_salawat" : "wirdi_reminders", smallIcon: ic, ongoing: !!n.kahf, autoCancel: true, schedule: { at: n.at, allowWhileIdle: true } });
+                if (n.at.getTime() > now) list.push({ id: 7000 + di * 10 + k, title: n.title, body: n.body, channelId: n.salawat && WN.fullScreenStatus ? salawatChannel() : "wirdi_reminders", smallIcon: ic, ongoing: !!n.kahf, autoCancel: true, schedule: { at: n.at, allowWhileIdle: true } });
               });
               // Friday: the salah upon the Prophet ﷺ every 20 minutes, said aloud (friday.js fridaySalawatTimes)
-              if (fridayOn()) fridaySalawatTimes(day.date, day.t).forEach(function(w, k){ var dk = FRIDAY_SALAWAT[k % FRIDAY_SALAWAT.length]; add(8000 + di * 100 + k, w, "📿 " + dk.title, dk.say + " — «" + dk.text + "»", WN.fullScreenStatus ? "wirdi_salawat" : "wirdi_dhikr"); });
+              if (fridayOn()) fridaySalawatTimes(day.date, day.t).forEach(function(w, k){ var dk = FRIDAY_SALAWAT[k % FRIDAY_SALAWAT.length]; add(8000 + di * 100 + k, w, "📿 " + dk.title, dk.say + " — «" + dk.text + "»", WN.fullScreenStatus ? salawatChannel() : "wirdi_dhikr"); });
               // dua for Amira Hamed twice a day (DUA_HOURS); a dhikr / salah upon the Prophet ﷺ every other hour 08:00–22:00 (first 3 days)
               for (var h = 8; h <= 22; h++){
                 var hw = new Date(day.date.getFullYear(), day.date.getMonth(), day.date.getDate(), h, 0, 0), slot = Math.floor(hw.getTime() / 3600000);
                 if (DUA_HOURS.indexOf(h) !== -1){ if (duaRemindOn()) add(3000 + di * 100 + h, hw, "🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", DUA_AMIRA[slot % DUA_AMIRA.length], "wirdi_dua"); }
-                else if (di < 3 && dhikrRemindOn() && !(isFriday(day.date) && fridayOn())){ var dk = HOURLY_DHIKR[slot % HOURLY_DHIKR.length]; add(5000 + di * 100 + h, hw, "📿 " + dk.title, dk.say + " — «" + dk.text + "»", dhikrIsSalawat(dk) && WN.fullScreenStatus ? "wirdi_salawat" : "wirdi_dhikr"); }
+                else if (di < 3 && dhikrRemindOn() && !(isFriday(day.date) && fridayOn())){ var dk = HOURLY_DHIKR[slot % HOURLY_DHIKR.length]; add(5000 + di * 100 + h, hw, "📿 " + dk.title, dk.say + " — «" + dk.text + "»", dhikrIsSalawat(dk) && WN.fullScreenStatus ? salawatChannel() : "wirdi_dhikr"); }
               }
             });
             if (liveAdhan) WN.scheduleAdhan({ items: adhans }).then(function(r){ if (typeof diag === "function") diag("native: adhan scheduled " + (r && r.scheduled)); }).catch(function(){});
@@ -8707,6 +8712,7 @@ const EVENING_ADHKAR = [
     function onPlaying(e){
       if (!(e.target instanceof HTMLMediaElement) || e.target.muted) return;
       playing.add(e.target); clearTimeout(stopT);
+      if (!quietSalawat && !/salawat\.mp3/.test(e.target.currentSrc || e.target.src || "")){ quietSalawat = true; nativeRescheduleSoon(); }
       WN.startPlayback({ title: title() }).then(function(){ if (!svcOn && typeof diag === "function") diag("native: background service ON"); svcOn = true; }).catch(function(){});
     }
     function onStop(e){
@@ -8717,6 +8723,7 @@ const EVENING_ADHKAR = [
       stopT = setTimeout(function(){
         playing.forEach(function(m){ if (m.paused || m.ended) playing.delete(m); });
         if (!playing.size && svcOn){ WN.stopPlayback().catch(function(){}); svcOn = false; if (typeof diag === "function") diag("native: background service OFF"); }
+        if (!playing.size && quietSalawat){ quietSalawat = false; nativeRescheduleSoon(); }
       }, 8000);
     }
     // elements in the page: caught on the document. The Quran / ruqyah players are `new Audio()` objects that are
