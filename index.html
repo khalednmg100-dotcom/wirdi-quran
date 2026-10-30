@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-xxgvvxFuchlXJ65d3p6MEHNY3iG4I91NdvaXZ3/jbvM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-rBfM6WSzoqblZB2C64KFs1cK47zVceICdy9Xl36SfJ8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -968,6 +968,24 @@
   #mushafViewport.ml-loading::after{content:"⏳ بيجهّز المصحف…"; position:absolute; left:50%; top:45%; transform:translate(-50%,-50%); z-index:5;
     padding:12px 22px; border-radius:99px; background:rgba(20,15,6,.82); color:#fff; font-weight:800; font-size:.95rem; box-shadow:0 8px 24px rgba(0,0,0,.25);}
   #mushafViewport.ml-loading #mushafPageContent{opacity:.55; transition:opacity .2s;}
+  /* ---- the Prophet's ﷺ full lineage (nasabfull.js) ---- */
+  .quick-btn.nf-btn{grid-column:1 / -1;}
+  .nf-acts{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;}
+  .nf-acts .btn{flex:1;}
+  .nf-now{font-size:.8rem; font-weight:700; color:var(--teal-deep); margin-top:8px; min-height:1em;}
+  .nf-names{font-family:"Amiri",serif; font-size:1.18rem; line-height:2.15; margin-top:6px;}
+  .nf-sec{transition:box-shadow .3s;}
+  .nf-sec.on{box-shadow:0 0 0 2px var(--teal), 0 6px 18px var(--shadow);}
+  .nf-note{font-size:.84rem; line-height:1.95; color:var(--ink-soft);}
+  .nf-note b{color:var(--gold);}
+  /* ---- reels: search by the words of an ayah (reelsmore.js) ---- */
+  .reel-find{margin-bottom:10px;}
+  .reel-find input{width:100%; padding:11px 14px; border-radius:12px; border:1px solid var(--paper-3); background:var(--paper); color:var(--ink); font-family:inherit; font-size:.95rem;}
+  .reel-find-res{max-height:320px; overflow-y:auto; margin-top:6px;}
+  .reel-find-hit{display:block; width:100%; text-align:right; border:none; background:var(--paper-2); color:var(--ink); border-radius:12px; padding:9px 12px; margin-bottom:6px; font-family:inherit;}
+  .reel-find-hit b{display:block; font-size:.8rem; color:var(--teal-deep); margin-bottom:3px;}
+  .reel-find-hit span{font-family:"KFGQPC Hafs","Amiri",serif; font-size:1.05rem; line-height:1.9;}
+  .reel-find-hit mark{background:var(--gold-tint); color:inherit; border-radius:4px;}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -6889,7 +6907,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "5b4af2757a41", verChecked = 0;
+  var WIRDI_BUILD = "970f14925903", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -7652,6 +7670,175 @@ const EVENING_ADHKAR = [
     var r = bar.getBoundingClientRect(), ratio = 1 - (e.clientX - r.left) / r.width;   // RTL: right = start
     lecAudio.currentTime = Math.min(1, Math.max(0, ratio)) * lecAudio.duration;
   });
+
+  // ---------------- The Prophet's ﷺ full lineage up to Ādam, with a sheikh's voice ----------------
+  // Its own page (from «الدروس / استمع», beside the Seerah). The names: Ibn Hishām's Sīrah and al-Ḥāfiẓ al-ʿIrāqī;
+  // up to ʿAdnān is agreed upon, above him the scholars differ (said on the page). The voice: Sheikh Saʿīd al-Kamalī
+  // («أخبار العرب وسيرة سيد البشر», episode 2, archive.org) — only the two parts where he says the names are played
+  // (to ʿAdnān, then ʿAdnān → Ādam); the whole lesson is one tap further.
+  var NASAB_FULL = {
+    agreed: ["محمد ﷺ", "عبد الله", "عبد المطلب", "هاشم", "عبد مناف", "قصي", "كلاب", "مرة", "كعب", "لؤي", "غالب", "فهر", "مالك", "النضر", "كنانة", "خزيمة", "مدركة", "إلياس", "مضر", "نزار", "معد", "عدنان"],
+    toIsmail: ["أُدد", "مُقوِّم", "ناحور", "تيرح", "يعرب", "يشجب", "نابت", "إسماعيل عليه السلام"],
+    toAdam: ["إبراهيم خليل الرحمن عليه السلام", "تارح (وهو آزر)", "ناحور", "ساروغ", "راعو", "فالخ", "عيبر", "شالخ", "أرفخشذ", "سام", "نوح عليه السلام", "لمك", "متوشلخ", "أخنوخ", "يرد", "مهليل", "قينن", "يانش", "شيث عليه السلام", "آدم عليه السلام"]
+  };
+  var NASAB_AUDIO = "https://archive.org/download/Media-way2Allah_2185/" + encodeURIComponent("alhlka_2_mn_albrnamg_algded_.._nsb_rswl_allh_ﷺ_kank_stsm3h_lawl_mra_-_alshekh_s3ed_alkmle.mp3");
+  // [from, to] seconds in the lesson: the agreed lineage, then from ʿAdnān up to Ādam
+  var NASAB_PARTS = [[86.6, 112.6], [269.3, 356.4]];
+  var nf = { el: null, audio: null, part: -1, whole: false };
+  function nasabFullLine(list, first){ return list.map(function(n, i){ return (first && i === 0 ? "" : "بن ") + n; }).join(" "); }
+  function nasabFullBuild(){
+    if (nf.el) return nf.el;
+    var main = document.createElement("main");
+    main.id = "view-nasabfull"; main.className = "view"; main.hidden = true;
+    main.innerHTML = '<div class="view-header"><span class="view-title">🌳 نسب النبي ﷺ كاملًا إلى آدم</span></div>' +
+      '<div class="hf-card nf-audio"><div class="hf-label">🎧 بصوت الشيخ سعيد الكملي</div>' +
+        '<div class="hf-meta">سرد النسب الشريف من سيدنا محمد ﷺ إلى سيدنا آدم عليه السلام</div>' +
+        '<div class="nf-acts"><button class="btn primary" data-nf="names">▶ اسمع النسب</button><button class="btn ghost" data-nf="whole">الدرس كامل (١٠ دقائق)</button></div>' +
+        '<div class="nf-now" id="nfNow"></div></div>' +
+      '<div class="hf-card nf-sec" data-part="0"><div class="hf-label">١. المتفق عليه — إلى عدنان</div><div class="nf-names">' + nasabFullLine(NASAB_FULL.agreed, true) + '</div></div>' +
+      '<div class="hf-card nf-sec" data-part="1"><div class="hf-label">٢. من عدنان إلى إسماعيل عليه السلام</div><div class="nf-names">' + nasabFullLine(NASAB_FULL.toIsmail) + '</div>' +
+        '<div class="hf-label" style="margin-top:12px">٣. من إبراهيم عليه السلام إلى آدم عليه السلام</div><div class="nf-names">' + nasabFullLine(NASAB_FULL.toAdam) + '</div></div>' +
+      '<div class="hf-card nf-note"><b>تنبيه:</b> النسب من النبي ﷺ إلى عدنان متفق عليه بين العلماء. وما فوق عدنان اختلف فيه أهل النسب في عدد الآباء وأسمائهم ' +
+        '(أكثرها أسماء غير عربية)، وهذا الذي هنا هو ما ذكره ابن إسحاق وابن هشام والحافظ العراقي، وكره بعض العلماء — منهم الإمام مالك — رفع النسب فوق عدنان. ' +
+        'أما أنه ﷺ من ذرية إسماعيل وإبراهيم ونوح وآدم عليهم السلام فمُجمَع عليه.</div>';
+    var ref = document.getElementById("view-nasab");
+    (ref ? ref.parentNode : document.body).insertBefore(main, ref ? ref.nextSibling : null);
+    if (VIEW_IDS.indexOf("nasabfull") === -1) VIEW_IDS.push("nasabfull");
+    main.querySelector(".nf-acts").addEventListener("click", function(e){
+      var b = e.target.closest("[data-nf]"); if (!b) return;
+      if (nf.audio && !nf.audio.paused && nf.whole === (b.getAttribute("data-nf") === "whole")){ nasabFullStop(); return; }
+      nasabFullPlay(b.getAttribute("data-nf") === "whole");
+    });
+    // leaving the page stops the voice
+    new MutationObserver(function(){ if (main.hidden) nasabFullStop(); }).observe(main, { attributes: true, attributeFilter: ["hidden"] });
+    nf.el = main;
+    return main;
+  }
+  function nasabFullUi(){
+    if (!nf.el) return;
+    var playing = nf.audio && !nf.audio.paused;
+    nf.el.querySelector('[data-nf="names"]').textContent = playing && !nf.whole ? "⏹ إيقاف" : "▶ اسمع النسب";
+    nf.el.querySelector('[data-nf="whole"]').textContent = playing && nf.whole ? "⏹ إيقاف" : "الدرس كامل (١٠ دقائق)";
+    [].forEach.call(nf.el.querySelectorAll(".nf-sec"), function(s){ s.classList.toggle("on", playing && !nf.whole && +s.getAttribute("data-part") === nf.part); });
+    document.getElementById("nfNow").textContent = !playing ? "" : nf.whole ? "الدرس كامل…" : nf.part === 0 ? "النسب المتفق عليه إلى عدنان…" : "من عدنان إلى آدم عليه السلام…";
+  }
+  function nasabFullStop(){
+    if (nf.audio){ try { nf.audio.pause(); } catch(e){} }
+    nf.part = -1; nasabFullUi();
+  }
+  function nasabFullPlay(whole){
+    if (typeof stopQuranAudio === "function") stopQuranAudio();
+    if (!nf.audio){
+      nf.audio = new Audio(); nf.audio.preload = "auto";
+      nf.audio.addEventListener("timeupdate", function(){
+        if (nf.whole || nf.part < 0) return;
+        if (nf.audio.currentTime >= NASAB_PARTS[nf.part][1]){
+          if (nf.part + 1 < NASAB_PARTS.length){ nf.part++; nf.audio.currentTime = NASAB_PARTS[nf.part][0]; nasabFullUi(); }
+          else { nasabFullStop(); showToast("صلى الله عليه وسلم 🤍"); }
+        }
+      });
+      ["play", "pause", "ended"].forEach(function(ev){ nf.audio.addEventListener(ev, nasabFullUi); });
+      nf.audio.addEventListener("error", function(){ showToast("مقدرناش نشغّل الصوت — اتأكد من النت"); nasabFullStop(); });
+    }
+    nf.whole = whole; nf.part = whole ? -1 : 0;
+    if (nf.audio.src !== NASAB_AUDIO) nf.audio.src = NASAB_AUDIO;
+    var go = function(){ try { nf.audio.currentTime = whole ? 0 : NASAB_PARTS[0][0]; } catch(e){} nf.audio.play().catch(function(){ showToast("دوس تشغيل تاني"); }); };
+    if (nf.audio.readyState >= 1) go(); else nf.audio.addEventListener("loadedmetadata", go, { once: true });
+    try { if ("mediaSession" in navigator) navigator.mediaSession.metadata = new MediaMetadata({ title: "نسب النبي ﷺ إلى آدم", artist: "الشيخ سعيد الكملي", artwork: [{ src: "icon-512.png", sizes: "512x512", type: "image/png" }] }); } catch(e){}
+    nasabFullUi();
+  }
+  function openNasabFull(){ nasabFullBuild(); showView("nasabfull"); }
+  // its button, beside the Seerah in the lessons
+  (function(){
+    var seerah = document.querySelector('#view-home .quick-btn[data-nav="lecSeerah"]');
+    if (!seerah || document.getElementById("nasabFullBtn")) return;
+    var b = document.createElement("button");
+    b.className = "quick-btn nf-btn"; b.id = "nasabFullBtn"; b.type = "button"; b.setAttribute("data-nav", "nasabFull");
+    b.innerHTML = '<span class="emoji">🌳</span>نسب النبي ﷺ كاملًا إلى آدم';
+    seerah.insertAdjacentElement("afterend", b);
+    b.addEventListener("click", openNasabFull);
+  })();
+
+  // ---------------- Reels: every reciter of the app ----------------
+  // The reciters added to the app later, in the reels maker too. Those on everyayah.com: one file per ayah (kind
+  // "ayah"). The three with our own ayah timings (Abu Hāshim, Dībān, al-Luḥaydān — no ayah files anywhere): the
+  // surah file is decoded once and cut into its ayahs with the timings (kind "timed"); a long surah is too heavy for
+  // a phone to decode, so these three take surahs up to REEL_TIMED_MAX_SEC long.
+  [
+    ["Abdul_Basit_Mujawwad_128kbps", "عبد الباسط عبد الصمد (مجود)"], ["Husary_128kbps_Mujawwad", "محمود خليل الحصري (مجود)"],
+    ["Mohammad_al_Tablaway_128kbps", "محمد محمود الطبلاوي"], ["Mustafa_Ismail_48kbps", "مصطفى إسماعيل (مجود)"],
+    ["mahmoud_ali_al_banna_32kbps", "محمود علي البنا (مجود)"], ["Ahmed_Neana_128kbps", "أحمد نعينع"],
+    ["Maher_AlMuaiqly_64kbps", "ماهر المعيقلي"], ["Ghamadi_40kbps", "سعد الغامدي"], ["Yasser_Ad-Dussary_128kbps", "ياسر الدوسري"],
+    ["Nasser_Alqatami_128kbps", "ناصر القطامي"], ["Muhammad_Ayyoub_128kbps", "محمد أيوب"], ["Fares_Abbad_64kbps", "فارس عباد"], ["Ali_Jaber_64kbps", "علي جابر"]
+  ].forEach(function(r){
+    if (!REEL_RECITERS.some(function(x){ return x.base && x.base.indexOf("/" + r[0] + "/") !== -1; }))
+      REEL_RECITERS.push({ id: "ea-" + r[0], name: r[1], kind: "ayah", base: "https://everyayah.com/data/" + r[0] + "/" });
+  });
+  [["Abdulbadie_AbuHashem", "عبد البديع أبو هاشم"], ["Ahmad_Deeban_Hadr", "أحمد ديبان (حدر)"], ["Muhammad_Luhaidan", "محمد اللحيدان"]].forEach(function(r){
+    if (QS_READS[r[0]]) REEL_RECITERS.push({ id: "qs-" + r[0], name: r[1], kind: "timed", qs: r[0] });
+  });
+  var REEL_TIMED_MAX_SEC = 15 * 60;
+  var reelLoadBase = reelLoad;
+  reelLoad = function(cfg, actx, onProgress){
+    var R = reelReciter(cfg.reciter);
+    if (R.kind !== "timed") return reelLoadBase(cfg, actx, onProgress);
+    var read = QS_READS[R.qs], keys = [];
+    for (var a = cfg.from; a <= cfg.to; a++) keys.push(cfg.surah + ":" + a);
+    if (!qs.memo[read[2]]){ qs.memo[read[2]] = fetch(read[2]).then(function(r){ if (!r.ok) throw new Error("http " + r.status); return r.json(); }); qs.memo[read[2]].catch(function(){ delete qs.memo[read[2]]; }); }
+    return qs.memo[read[2]].then(function(j){
+      var list = j[cfg.surah];
+      if (!list){ showToast("السورة دي مش متسجّلة بصوت " + R.name + " — اختار سورة تانية أو شيخ تاني"); throw new Error("no surah"); }
+      var times = {}; list.forEach(function(x, i){ times[i + 1] = x; });
+      var last = list[list.length - 1];
+      if (last && last[1] / 1000 > REEL_TIMED_MAX_SEC){
+        showToast("السورة دي طويلة على الريلز بصوت " + R.name + " — اختار سورة أقصر أو شيخ تاني");
+        throw new Error("too long");
+      }
+      onProgress(0, 1);
+      return Promise.all([Promise.all(keys.map(reelWords)), reelFetchAudio(qsSrc(read, cfg.surah))]).then(function(res){
+        // decoded at a low rate (less memory on a phone), then each ayah is copied out by its timing
+        var OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext, dec = OAC ? new OAC(1, 1, 22050) : actx;
+        return dec.decodeAudioData(res[1]).then(function(all){
+          onProgress(1, 1);
+          return keys.map(function(k, i){
+            var ay = +k.split(":")[1], t = times[ay], sr = all.sampleRate;
+            var s0 = Math.max(0, Math.floor((t[0] / 1000 - 0.15) * sr)), s1 = Math.min(all.length, Math.ceil((t[1] / 1000 + 0.35) * sr));
+            var buf = actx.createBuffer(all.numberOfChannels, Math.max(1, s1 - s0), sr);
+            for (var c = 0; c < all.numberOfChannels; c++) buf.copyToChannel(all.getChannelData(c).subarray(s0, s1), c);
+            return { key: k, ayah: ay, words: res[0][i], segs: [], buf: buf };
+          });
+        });
+      });
+    });
+  };
+  // ---- search by the words of an ayah: type a few words, tap the ayah → surah / from / to are set ----
+  (function(){
+    var row = document.getElementById("reelSurah"); row = row && row.closest(".hf-row");
+    if (!row || document.getElementById("reelAyahSearch")) return;
+    var box = document.createElement("div"); box.className = "reel-find";
+    box.innerHTML = '<input type="search" id="reelAyahSearch" placeholder="🔎 ابحث بكلمات من الآية… (مثال: ألا بذكر الله)" autocomplete="off"><div class="reel-find-res" id="reelFindRes"></div>';
+    row.parentNode.insertBefore(box, row);
+    var inp = box.querySelector("input"), res = box.querySelector(".reel-find-res"), t = 0;
+    function find(){
+      var q = inp.value.trim(), qk = qsrSkeleton(q).k;
+      if (qk.length < 3){ res.innerHTML = q ? '<div class="hf-meta">اكتب كلمة أو اتنين من الآية</div>' : ""; return; }
+      var hits = [];
+      qsrBuild().forEach(function(x){ if (hits.length < 25 && qsrFind(x.sk, qk, 0) !== -1) hits.push(x); });
+      res.innerHTML = hits.length ? hits.map(function(x){
+        return '<button type="button" class="reel-find-hit" data-s="' + x.s + '" data-a="' + x.a + '"><b>سورة ' + surahName(x.s) + ' • آية ' + toArabicIndic(x.a) + '</b><span>' + qsrHighlight(QURAN_AYAHS[x.s - 1][x.a - 1], qk) + '</span></button>';
+      }).join("") : '<div class="hf-meta">مفيش آية بالكلمات دي — جرّب كلمة أقل أو اتأكد من الإملاء</div>';
+    }
+    inp.addEventListener("input", function(){ clearTimeout(t); t = setTimeout(find, 250); });
+    res.addEventListener("click", function(e){
+      var b = e.target.closest(".reel-find-hit"); if (!b) return;
+      var s = +b.getAttribute("data-s"), a = +b.getAttribute("data-a");
+      document.getElementById("reelSurah").value = s;
+      document.getElementById("reelFrom").value = a; document.getElementById("reelTo").value = a;
+      reelReadForm(); res.innerHTML = ""; inp.value = "";
+      if (!reel.running) renderReels();
+      showToast("✓ سورة " + surahName(s) + " — آية " + toArabicIndic(a) + " (تقدر تزوّد «إلى» عشان تاخد آيات بعدها)");
+    });
+  })();
 
   // generated by gen_gift.js from «حصن المسلم» (hisnmuslim.com) — [chapter, text, repeat]
   var GIFT_HISN = [["دعاء الاستفتاح","اللَّهُمَّ بَاعِدْ بَيْنِي وَبَيْنَ خَطَايَايَ كَمَا بَاعَدْتَ بَيْنَ الْمَشْرِقِ وَالْمَغْرِبِ، اللَّهُمَّ نَقِّنِي مِنْ خَطَايَايَ كَمَا يُنَقَّى الثَّوْبُ الْأَبْيَضُ مِنَ الدَّنَسِ، اللَّهُمَّ اغْسِلْني مِنْ خَطَايَايَ، بِالثَّلْجِ وَالْماءِ وَالْبَرَدِ.",1],["دعاء الاستفتاح","اللَّهُمَّ رَبَّ جِبْرَائِيلَ، وَمِيْكَائِيلَ، وَإِسْرَافِيلَ، فَاطِرَ السَّمَوَاتِ وَالأَرْضِ، عَالِمَ الغَيْبِ وَالشَّهَادَةِ أَنْتَ تَحْكُمُ بَيْنَ عِبَادِكَ فِيمَا كَانُوا فِيهِ يَخْتَلِفُونَ. اهْدِنِي لِمَا اخْتُلِفَ فِيهِ مِنَ الْحَقِّ بِإِذْنِكَ إِنَّكَ تَهْدِي مَنْ تَشَاءُ إِلَى صِرَاطٍ مُسْتَقيمٍ.",1],["دعاء الاستفتاح","اللَّهُمَّ لَكَ الْحَمْدُ، أَنْتَ نُورُ السَّمَوَاتِ وَالأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ أَنْتَ قَيِّمُ السَّمَوَاتِ وَالأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ أَنْتَ رَبُّ السَّمَواتِ وَالأَرْضِ وَمَنْ فِيهِنَّ وَلَكَ الْحَمْدُ لَكَ مُلْكُ السَّمَوَاتِ وَالأَرْضِ وَمَنْ فِيهِنَّ وَلَكَ الْحَمْدُ أَنْتَ مَلِكُ السَّمَوَاتِ وَالأَرْضِ وَلَكَ الْحَمْدُ أَنْتَ الْحَقُّ، وَوَعْدُكَ الْحَقُّ، وَقَوْلُكَ الْحَقُّ، وَلِقاؤُكَ الْحَقُّ، وَالْجَنَّةُ حَقٌّ، وَالنَّارُ حَقٌّ، وَالنَّبِيُّونَ حَقٌّ، وَمحَمَّدٌ صلى الله عليه وسلم حَقٌّ، وَالسّاعَةُ حَقٌّ اللَّهُمَّ لَكَ أَسْلَمتُ، وَعَلَيْكَ تَوَكَّلْتُ، وَبِكَ آمَنْتُ، وَإِلَيْكَ أَنَبْتُ، وَبِكَ خاصَمْتُ، وَإِلَيْكَ حاكَمْتُ. فَاغْفِرْ لِي مَا قَدَّمْتُ، وَمَا أَخَّرْتُ، وَمَا أَسْرَرْتُ، وَمَا أَعْلَنْتُ وَمَا أَنْتَ أَعْلَمُ بِهِ مِنِّي أَنْتَ المُقَدِّمُ، وَأَنْتَ المُؤَخِّرُ لاَ إِلَهَ إِلاَّ أَنْتَ أَنْتَ إِلَهِي لاَ إِلَهَ إِلاَّ أَنْتَ وَلاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ.",1],["دعاء الركوع","اللَّهُمَّ لَكَ رَكَعْتُ، وَبِكَ آمَنْتُ، وَلَكَ أَسْلَمْتُ، خَشَعَ لَكَ سَمْعِي، وَبَصَرِي، وَمُخِّي، وَعَــــظْمِي، وَعَصَبِي، وَمَا استَقَلَّتْ بِهِ قَدَمِي.",1],["دعاء الرفع من الركوع","رَبَّنَا وَلَكَ الْحَمْدُ، حَمْداً كَثيراً طَيِّباً مُبارَكاً فِيهِ.",1],["دعاء السجود","اللَّهُمَّ لَكَ سَجَدْتُ وَبِكَ آمَنْتُ، وَلَكَ أَسْلَمْتُ، سَجَدَ وَجْهِيَ لِلَّذِي خَلَقَهُ، وَصَوَّرَهُ، وَشَقَّ سَمْعَهُ وَبَصَرَهُ، تَبَارَكَ اللَّهُ أَحْسنُ الْخَالِقينَ.",1],["دعاء السجود","اللَّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ: دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ، وَعَلاَنِيَّتَهُ وَسِرَّهُ.",1],["دعاء السجود","اللَّهُمَّ إِنِّي أَعُوذُ بِرِضَاكَ مِنْ سَخَطِكَ، وَبِمُعَافَاتِكَ مِنْ عُقوبَتِكَ، وَأَعُوذُ بِكَ مِنْكَ، لاَ أُحْصِي ثَنَاءً عَلَيْكَ، أَنْتَ كَمَا أَثْنَيْتَ عَلَى نَفْسِكَ.",1],["دعاء الجلسة بين السجدتين","رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي.",1],["دعاء الجلسة بين السجدتين","اللَّهُمَّ اغْفِرْ لِي، وَارْحَمْنِي، وَاهْدِنِي، وَاجْبُرْنِي، وَعَافِنِي، وَارْزُقْنِي، وَارْفَعْنِي.",1],["دعاء سجود التلاوة","اللَّهُمَّ اكْتُبْ لِي بِهَا عِنْدَكَ أَجْراً، وَضَعْ عَنِّي بِهَا وِزْراً، وَاجْعَلْهَا لِي عِنْدَكَ ذُخْراً، وَتَقَبَّلْهَا مِنِّي كَمَا تَقَبَّلْتَهَا مِنْ عَبْدِكَ دَاوُدَ.",1],["الصلاة على النبي بعد التشهد","اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ، وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيتَ عَلَى إِبْرَاهِيمَ، وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ.",1],["الصلاة على النبي بعد التشهد","اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى أَزْوَاجِهِ وَذُرِّيَّتِهِ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ. وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى أَزْواجِهِ وَذُرِّيَّتِهِ، كَمَا بَارَكْتَ عَلَى آلِ إِبْرَاهِيمَ. إِنَّكَ حَمِيدٌ مَجِيدٌ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ اغْفِرْ لِي مَا قَدَّمْتُ، وَمَا أَخَّرْتُ، وَمَا أَسْرَرْتُ، وَمَا أَعْلَنْتُ، وَمَا أَسْرَفْتُ، وَمَا أَنْتَ أَعْلَمُ بِهِ مِنِّي. أَنْتَ الْمُقَدِّمُ، وَأَنْتَ الْمُؤَخِّرُ لاَ إِلَهَ إِلاَّ أَنْتَ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ، وَشُكْرِكَ، وَحُسْنِ عِبادَتِكَ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَأَعُوذُ بِكَ مِنَ النَّارِ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ بِعِلْمِكَ الغَيْبَ وَقُدْرَتِكَ عَلَى الْخَلقِ أَحْيِنِي مَا عَلِمْتَ الْحَيَاةَ خَيْراً لِي، وَتَوَفَّنِي إِذَا عَلِمْتَ الْوَفَاةَ خَيْراً لِي، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَشْيَتَكَ فِي الْغَيْبِ وَالشَّهَادَةِ، وَأَسْأَلُكَ كَلِمَةَ الْحَقِّ فِي الرِّضَا وَالْغَضَبِ، وَأَسْأَلُكَ الْقَصْدَ فِي الْغِنَى وَالْفَقْرِ، وَأَسْأَلُكَ نَعِيماً لاَ يَنْفَدُ، وَأَسْأَلُكَ قُرَّةَ عَيْنٍ لاَ تَنْقَطِعُ، وَأَسْأَلُكَ الرِّضَا بَعْدَ الْقَضَاءِ، وَأَسْــــأَلُكَ بَرْدَ الْعَيْشِ بَعْدَ الْمَوْتِ، وَأَسْأَلُكَ لَذَّةَ النَّظَرِ إِلَى وَجْهِكَ، وَالشَّوْقَ إِلَى لِقائِكَ فِي غَيرِ ضَرَّاءَ مُضِرَّةٍ، وَلاَ فِتْنَةٍ مُضِلَّةٍ، اللَّهُمَّ زَيِّنَا بِزِينَةِ الإِيمَانِ، وَاجْعَلْنَا هُدَاةً مُهْتَدِينَ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ إِنِّي أَسْأَلُكَ يَا أَللَّهُ بِأَنَّكَ الْوَاحِدُ الْأَحَدُ الصَّمَدُ الَّذِي لَمْ يَلِدْ وَلَمْ يولَدْ، وَلَمْ يَكنْ لَهُ كُفُواً أَحَدٌ، أَنْ تَغْفِرَ لِي ذُنُوبِي إِنَّكَ أَنْتَ الْغَفُورُ الرَّحِّيمُ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ إِنِّي أَسْأَلُكَ بِأَنَّ لَكَ الْحَمْدَ لَا إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَكَ، الْمَنَّانُ، يَا بَدِيعَ السَّمَوَاتِ وَالْأَرْضِ يَا ذَا الْجَلاَلِ وَالْإِكْرَامِ، يَا حَيُّ يَا قَيُّومُ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَأَعُوذُ بِكَ مِنَ النَّارِ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ إِنِّي أَسْأَلُكَ بِأَنَّي أَشْهَدُ أَنَّكَ أَنْتَ اللَّهُ لاَ إِلَهَ إِلاَّ أَنْتَ الْأَحَدُ الصَّمَدُ الَّذِي لَمْ يَلِدْ وَلَمْ يُولَدْ وَلَمْ يَكُنْ لَهُ كُفُواً أَحَدٌ .",1],["الأذكار بعد السلام من الصلاة","اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْماً نافِعاً، وَرِزْقاً طَيِّباً، وَعَمَلاً مُتَقَبَّلاً بَعْدَ السّلامِ مِنْ صَلاَةِ الفَجْرِ.",1],["أذكار الصباح والمساء","اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا ، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ. وإذا أمسى قال: اللَّهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير.",1],["أذكار الصباح والمساء","اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلاَئِكَتِكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَكَ، وَأَنَّ مُحَمَّداً عَبْدُكَ وَرَسُولُكَ (أربعَ مَرَّاتٍ). وإذا أمسى قال: اللَّهم إني أمسيت...",4],["أذكار الصباح والمساء","اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لاَ شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ. وإذا أمسى قال: اللَّهم ما أمسى بي...",1],["أذكار الصباح والمساء","اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لاَ إِلَهَ إِلاَّ أَنْتَ. اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ، وَالفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ القَبْرِ، لاَ إِلَهَ إِلاَّ أَنْتَ (ثلاثَ مرَّاتٍ).",3],["أذكار الصباح والمساء","حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيهِ تَوَكَّلتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ (سَبْعَ مَرّاتٍ).",1],["أذكار الصباح والمساء","اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ: فِي دِينِي وَدُنْيَايَ وَأَهْلِي، وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَينِ يَدَيَّ، وَمِنْ خَلْفِي، وَعَنْ يَمِينِي، وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي.",1],["أذكار الصباح والمساء","اللَّهُمَّ عَالِمَ الغَيْبِ وَالشَّهَادَةِ فَاطِرَ السَّمَوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطانِ وَشَرَكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِي سُوءاً، أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ.",1],["أذكار الصباح والمساء","يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغيثُ أَصْلِحْ لِي شَأْنِيَ كُلَّهُ وَلاَ تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ.",1],["أذكار الصباح والمساء","اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبَيِّنَا مُحَمَّدٍ (عشرَ مرَّاتٍ).",10],["أذكار النوم","اللَّهُمَّ إِنَّكَ خَلَقْتَ نَفْسِي وَأَنْتَ تَوَفَّاهَا، لَكَ مَمَاتُهَا وَمَحْياهَا، إِنْ أَحْيَيْتَهَا فَاحْفَظْهَا، وَإِنْ أَمَتَّهَا فَاغْفِرْ لَهَا. اللَّهُمَّ إِنِّي أَسْأَلُكَ العَافِيَةَ.",1],["أذكار النوم","اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ.",1],["أذكار النوم","اللَّهُمَّ رَبَّ السَّمَوَاتِ السَّبْعِ وَرَبَّ الأَرْضِ، وَرَبَّ الْعَرْشِ الْعَظِيمِ، رَبَّنَا وَرَبَّ كُلِّ شَيْءٍ، فَالِقَ الْحَبِّ وَالنَّوَى، وَمُنْزِلَ التَّوْرَاةِ وَالْإِنْجِيلِ، وَالْفُرْقَانِ، أَعُوذُ بِكَ مِنْ شَرِّ كُلِّ شَيْءٍ أَنْتَ آخِذٌ بِنَاصِيَتِهِ. اللَّهُمَّ أَنْتَ الأَوَّلُ فَلَيْسَ قَبْلَكَ شَيْءٌ، وَأَنْتَ الآخِرُ فَلَيسَ بَعْدَكَ شَيْءٌ، وَأَنْتَ الظَّاهِرُ فَلَيْسَ فَوْقَكَ شَيْءٌ، وَأَنْتَ الْبَاطِنُ فَلَيْسَ دُونَكَ شَيْءٌ، اقْضِ عَنَّا الدَّيْنَ وَأَغْنِنَا مِنَ الْفَقْرِ.",1],["دعاء قنوت الوتر","اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ، وَعَافِنِي فِيمَنْ عَافَيْتَ، وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ، وَبَارِكْ لِي فِيمَا أَعْطَيْتَ، وَقِنِي شَرَّ مَا قَضَيْتَ؛ فَإِنَّكَ تَقْضِي وَلاَ يُقْضَى عَلَيْكَ، إِنَّهُ لاَ يَذِلُّ مَنْ وَالَيْتَ، وَلاَ يَعِزُّ مَنْ عَادَيْتَ، تَبارَكْتَ رَبَّنا وَتَعَالَيْتَ.",1],["دعاء قنوت الوتر","اللَّهُمَّ إِيَّاكَ نعْبُدُ، وَلَكَ نُصَلِّي وَنَسْجُدُ، وَإِلَيْكَ نَسْعَى وَنَحْفِدُ، نَرْجُو رَحْمَتَكَ، وَنَخْشَى عَذَابَكَ، إِنَّ عَذَابَكَ بِالكَافِرِينَ مُلْحَقٌ. اللَّهُمَّ إِنَّا نَسْتَعينُكَ، وَنَسْتَغْفِرُكَ، وَنُثْنِي عَلَيْكَ الْخَيْرَ، وَلاَ نَكْفُرُكَ، وَنُؤْمِنُ بِكَ، وَنَخْضَعُ لَكَ، وَنَخْلَعُ مَنْ يَكْفرُكَ.",1],["دعاء الهم والحزن","اللَّهُمَّ إِنِّي عَبْدُكَ، ابْنُ عَبْدِكَ، ابْنُ أَمَتِكَ، نَاصِيَتِي بِيَدِكَ، مَاضٍ فِيَّ حُكْمُكَ، عَدْلٌ فِيَّ قَضَاؤُكَ، أَسْأَلُكَ بِكُــــلِّ اسْمٍ هُوَ لَكَ، سَمَّيْتَ بِهِ نَفْسَكَ، أَوْ أَنْزَلْتَهُ فِي كِتَابِكَ، أَوْ عَلَّمْتَهُ أَحَداً مِنْ خَلْقِكَ، أَوِ اسْتَأْثَرْتَ بِهِ فِي عِلْمِ الغَيْبِ عِنْدَكَ، أَنْ تَجْعَلَ القُرْآنَ رَبِيعَ قَلْبِي، وَنُورَ صَدْرِي، وَجَلاَءَ حُزْنِي، وَذَهَابَ هَمِّي.",1],["دعاء الكرب","اللَّهُمَّ رَحْمَتَكَ أَرْجُو، فَلاَ تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ، وَأَصْلِحْ لِي شَأْنِي كُلَّهُ، لاَ إِلَهَ إِلاَّ أَنْتَ.",1],["دعاء الكرب","لاَ إِلَهَ إِلاَّ أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظّالِمِينَ.",1],["دعاء لقاء العدو و ذي السلطان","اللَّهُمَّ إِنَّا نَجْعَلُكَ فِي نُحُورِهِم، وَنَعُوذُ بِكَ مِنْ شُرُورِهِمْ.",1],["دعاء لقاء العدو و ذي السلطان","اللَّهُمَّ أَنْتَ عَضُدِي، وَأَنْتَ نَصِيرِي، بِكَ أَحُولُ وَبِكَ أَصُولُ، وَبِكَ أُقاتِلُ.",1],["الدعاء على العدو","اللَّهُمَّ مُنْزِلَ الْكِتَابِ، سَرِيعَ الْحِسَابِ، اهْزِمِ الأَحْزَابَ، اللَّهُمَّ اهزِمْهُمْ وَزَلْزِلْهُمْ.",1],["ما يقول من خاف قوما","اللَّهُمَّ اكْفِنِيهِمْ بِمَا شِئْتَ.",1],["دعاء قضاء الدين","اللَّهُمَّ اكْفِنِي بِحَلاَلِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكِ عَمَّنْ سِوَاكَ.",1],["دعاء من استصعب عليه أمر","اللَّهُمَّ لاَ سَهْلَ إِلاَّ مَا جَعَلْتَهُ سَهْلاً، وَأَنْتَ تَجْعَلُ الْحَزْنَ إِذَا شِئْتَ سَهْلاً.",1],["دعاء المريض الذي يئس من حياته","اللَّهُمَّ اغْفِرْ لِي، وَارْحَمْنِي، وَأَلْحِقْنِي بِالرَّفِيقِ الْأَعْلَى.",1],["الدعاء عند إفطار الصائم","اللَّهُمَّ إِنِّي أَسْأَلُكَ بِرَحْمَتِكَ الَّتِي وَسِعَتْ كُلَّ شَيْءٍ أَنْ تَغْفِرَ لِي.",1],["دعاء الضيف لصاحب الطعام","اللَّهُمَّ بَارِكْ لَهُمْ فِيمَا رَزَقْتَهُم، وَاغْفِرْ لَهُمْ وَارْحَمْهُمْ.",1],["دعاء الخوف من الشرك","اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَنْ أُشْرِكَ بِكَ وَأَنَا أَعْلَمُ، وَأَسْتَغْفِرُكَ لِمَا لاَ أَعْلَمُ.",1],["ما يقول المسلم إذا زكي","اللَّهُمَّ لاَ تُؤَاخِذْنِي بِمَا يَقُولُونَ، وَاغْفِرْ لِي مَا لاَ يَعْلَمُونَ، وَاجْعَلْنِي خَيْراً مِمَّا يَظُّنُّونَ.",1]];
