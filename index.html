@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-/exr4fvqj8gmjvdyuZkBgKMY7+G8qpfrW2EIF31GeP0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-tfZhUguC1tAHoXE/3Q8yBfVwknOyMBJCZKTNuxvEfZs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -6889,7 +6889,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "177ecf05b511", verChecked = 0;
+  var WIRDI_BUILD = "babbbf9d5346", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -7263,6 +7263,138 @@ const EVENING_ADHKAR = [
     el.checked = t[2]();
     el.addEventListener("change", function(){ appSettings[t[1]] = el.checked; saveSettings(); if (typeof syncReminderMeta === "function") syncReminderMeta(); });
   });
+
+  // ---------------- Friday (يوم الجمعة): more salah upon the Prophet ﷺ, sūrat al-Kahf, the virtues of the day ----------------
+  // On Friday the salah upon the Prophet ﷺ comes every 20 minutes (08:00–22:00), said aloud on the phone — not on
+  // the dua minute, on another Friday reminder, or within 10 minutes of a prayer time (the adhan); and a few Friday
+  // reminders come with a verified hadith: the virtue of the day, al-Kahf (twice — it stays at the top of the
+  // notifications, and a tap plays the surah with the last reciter heard),
+  // the sunan of the day, and the hour of answered dua before Maghrib. Thursday night: «أكثروا الصلاة عليّ».
+  // App open → a card; in the background → a notification (the phone app schedules them itself, native.js).
+  // Sunday and Wednesday nights: a reminder to fast Monday / Thursday, with the hadith.
+  // Switches: settings «🕌 تذكيرات يوم الجمعة» (appSettings.fridayRemind), «🌙 صيام الاتنين والخميس» (appSettings.fastRemind).
+  var FRIDAY_SALAWAT = [
+    { id: "fs1", title: "صلِّ على محمد ﷺ — جمعة مباركة", say: "اللهم صلِّ وسلم على نبينا محمد", text: "إنَّ مِن أفضلِ أيامِكم يومَ الجمعة… فأكثِروا عليَّ مِن الصلاةِ فيه، فإنَّ صلاتَكم معروضةٌ عليَّ", ref: "سنن أبي داود (1047) — صحيح" },
+    { id: "fs2", title: "صلِّ على محمد ﷺ", say: "اللهم صلِّ وسلم وبارك على نبينا محمد", text: "مَن صلَّى عليَّ واحدةً صلَّى اللهُ عليه عشرًا", ref: "صحيح مسلم (408)" },
+    { id: "fs3", title: "أكثِر من الصلاة على النبي ﷺ اليوم", say: "اللهم صلِّ على محمد وعلى آل محمد، كما صليتَ على إبراهيم وعلى آل إبراهيم، إنك حميد مجيد", text: "أكثِروا الصلاةَ عليَّ يومَ الجمعةِ وليلةَ الجمعة", ref: "السلسلة الصحيحة (1407)" }
+  ];
+  function isFriday(d){ return (d || new Date()).getDay() === 5; }
+  function fridayOn(){ return appSettings.fridayRemind !== false; }
+  function fastOn(){ return appSettings.fastRemind !== false; }
+  // the hourly dhikr on Friday is always the salah upon the Prophet ﷺ (said aloud like the others)
+  var dhikrPickWeek = dhikrPick, dhikrIsSalawatWeek = dhikrIsSalawat;
+  dhikrPick = function(){ return isFriday() && fridayOn() ? FRIDAY_SALAWAT[Math.floor(Date.now() / 3600000) % FRIDAY_SALAWAT.length] : dhikrPickWeek(); };
+  dhikrIsSalawat = function(x){ return /^fs\d+$/.test(x.id) || dhikrIsSalawatWeek(x); };
+  // the weekly reminders of a day (d = that day, t = its prayer times or null) — always in this order, so a
+  // notification's place says what it is (on Friday 1 and 3 open al-Kahf when tapped)
+  function fridayNotes(d, t){
+    var out = [], at = function(hm){ var p = String(hm).split(":"); return new Date(d.getFullYear(), d.getMonth(), d.getDate(), +p[0], +p[1], 0); };
+    // Sunday / Wednesday night: tomorrow's sunnah fast
+    if (d.getDay() === 0 || d.getDay() === 3){
+      if (!fastOn()) return out;
+      out.push(d.getDay() === 0
+        ? { at: at("21:30"), title: "🌙 بكرة الاتنين — صيام سنة", body: "سُئل النبي ﷺ عن صوم يوم الاثنين فقال: «ذاك يومٌ وُلدتُ فيه، ويومٌ بُعثتُ — أو أُنزل عليَّ — فيه» — صحيح مسلم (1162). انوِ الصيام ولا تنسَ السحور 🤍" }
+        : { at: at("21:30"), title: "🌙 بكرة الخميس — صيام سنة", body: "قال النبي ﷺ: «تُعرَضُ الأعمالُ يومَ الاثنينِ والخميسِ، فأُحبُّ أن يُعرَضَ عملي وأنا صائم» — سنن الترمذي (747) — صحيح. انوِ الصيام ولا تنسَ السحور 🤍" });
+      return out;
+    }
+    if (!fridayOn()) return out;
+    if (d.getDay() === 4){
+      out.push({ at: at("20:30"), title: "🌙 ليلة الجمعة — أكثِر من الصلاة على النبي ﷺ", body: "«أكثِروا الصلاةَ عليَّ يومَ الجمعةِ وليلةَ الجمعة» — السلسلة الصحيحة (1407)", salawat: true });
+      return out;
+    }
+    if (d.getDay() !== 5) return out;
+    var mg = t && t.Maghrib ? String(t.Maghrib).slice(0, 5).split(":") : null, hour = mg && !isNaN(+mg[0]) ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), +mg[0], +mg[1] - 45, 0) : at("16:30");
+    out.push({ at: at("07:30"), title: "🕌 جمعة مباركة", body: "«خيرُ يومٍ طلعت عليه الشمسُ يومُ الجمعة، فيه خُلق آدم، وفيه أُدخل الجنة، وفيه أُخرج منها» — صحيح مسلم (854)" });
+    out.push({ at: at("08:30"), title: "📖 لا تنسوا قراءة سورة الكهف", body: "دوس هنا وتشتغل سورة الكهف بصوت " + currentReciter()[1] + " 🎧 — «مَن قرأ سورةَ الكهفِ في يومِ الجمعةِ أضاء له مِن النورِ ما بين الجمعتين» — صحيح الجامع (6470)", kahf: true });
+    out.push({ at: at("10:30"), title: "🚿 من سنن الجمعة", body: "الغُسل والطيب والتبكير للصلاة: «مَن اغتسل يومَ الجمعة… ثم راح في الساعة الأولى فكأنما قرّب بَدَنة» — صحيح البخاري (881)" });
+    out.push({ at: at("13:30"), title: "📖 لسه فيه وقت لسورة الكهف", body: "دوس هنا وتشتغل بصوت " + currentReciter()[1] + " 🎧 — اسمعها أو اقرأها قبل المغرب، نورٌ لك ما بين الجمعتين 🤍", kahf: true });
+    out.push({ at: hour, title: "⏳ ساعة الاستجابة", body: "«يومُ الجمعةِ ثنتا عشرةَ ساعة… فالتمِسوها آخرَ ساعةٍ بعد العصر» — سنن أبي داود (1048). أكثِر من الدعاء دلوقتي 🤲" });
+    return out;
+  }
+  // the salah upon the Prophet ﷺ every 10 minutes on Friday (d = that day, t = its prayer times or null)
+  var FRIDAY_EVERY_MIN = 20;
+  function fridaySalawatTimes(d, t){
+    if (d.getDay() !== 5) return [];
+    var busy = fridayNotes(d, t).map(function(n){ return n.at.getTime(); }), near = [];
+    if (t) ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(function(k){ var p = String(t[k] || "").slice(0, 5).split(":"); if (!isNaN(+p[0]) && p[1] !== undefined) near.push(new Date(d.getFullYear(), d.getMonth(), d.getDate(), +p[0], +p[1], 0).getTime()); });
+    var out = [];
+    for (var m = 8 * 60; m <= 22 * 60; m += FRIDAY_EVERY_MIN){
+      var w = new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(m / 60), m % 60, 0), x = w.getTime();
+      if (m % 60 === 0 && DUA_HOURS.indexOf(m / 60) !== -1) continue;                          // the dua for her
+      if (busy.indexOf(x) !== -1) continue;                                                      // another Friday reminder
+      if (near.some(function(y){ return Math.abs(y - x) < 10 * 60000; })) continue;              // the adhan
+      out.push(w);
+    }
+    return out;
+  }
+  // al-Kahf: the mushaf opens on it and the recitation starts by itself, with the reciter heard last
+  function fridayOpenKahf(){
+    if (typeof openMushaf !== "function") return;
+    openMushaf(pageOf(18, 1), "home");
+    setTimeout(function(){
+      if (currentView !== "mushaf") return;
+      startQueue(18, 1);
+      showToast("🎧 سورة الكهف بصوت " + currentReciter()[1]);
+    }, 700);
+  }
+  // app open: the card of a Friday reminder whose time came in the last 40 minutes (once each)
+  function fridayCheck(){
+    var now = new Date(), notes = fridayNotes(now, typeof prayerTimesToday !== "undefined" ? prayerTimesToday : null);
+    if (!notes.length || document.visibilityState !== "visible") return;
+    var splash = document.getElementById("splashScreen");
+    if (splash && splash.isConnected && !splash.hidden && getComputedStyle(splash).display !== "none") return;
+    notes.forEach(function(n, k){
+      var key = "wirdi4-friday-" + dayKey(now) + "-" + k, age = now - n.at;
+      if (age < 0 || age > 40 * 60000 || loadJSON(key, false)) return;
+      saveJSON(key, true);
+      remindCard(n.title, n.body, "", n.kahf ? "🎧 شغّل الكهف" : "آمين 🤍", "جزاك الله خيرًا 🤍");
+      if (n.kahf){ var c = document.getElementById("duaAmiraCard"), b = c && c.querySelector('[data-da="ok"]'); if (b) b.addEventListener("click", fridayOpenKahf); }
+    });
+  }
+  // app open on Friday: a card (and the voice) every 20 minutes; the hourly dhikr is then not shown again
+  var STORE_FRIDAY_SALAWAT = "wirdi4-friday-salawat", fridayVoice = null;
+  function fridaySalawatNow(){
+    if (!isFriday() || !fridayOn() || document.visibilityState !== "visible") return;
+    var now = new Date(), h = now.getHours();
+    if (h < 8 || h >= 22 || (now.getMinutes() < 10 && DUA_HOURS.indexOf(h) !== -1)) return;
+    var slot = Math.floor(now.getTime() / (FRIDAY_EVERY_MIN * 60000));
+    if (+loadJSON(STORE_FRIDAY_SALAWAT, 0) >= slot) return;
+    var splash = document.getElementById("splashScreen");
+    if (splash && splash.isConnected && !splash.hidden && getComputedStyle(splash).display !== "none") return;
+    if (document.getElementById("duaAmiraCard")) return;                                       // a card is already up
+    saveJSON(STORE_FRIDAY_SALAWAT, slot);
+    try { localStorage.setItem(STORE_DHIKR_LAST, String(Date.now())); } catch(e){}
+    var d = FRIDAY_SALAWAT[slot % FRIDAY_SALAWAT.length];
+    remindCard("📿 " + d.title, d.say, "قال رسول الله ﷺ: «" + d.text + "» — " + d.ref, "صليت عليه ﷺ ✓", "جزاك الله خيرًا 🤍");
+    // said aloud too — unless the Quran or the ruqyah is playing
+    if (!(typeof quranAlive === "function" && quranAlive()) && !(typeof ruq !== "undefined" && ruq.all)){
+      try { fridayVoice = fridayVoice || new Audio("audio/salawat.mp3"); fridayVoice.currentTime = 0; fridayVoice.play().catch(function(){}); } catch(e){}
+    }
+  }
+  setTimeout(fridaySalawatNow, 15000);
+  setInterval(fridaySalawatNow, 60000);
+  setTimeout(fridayCheck, 12000);
+  setInterval(fridayCheck, 60000);
+  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") setTimeout(fridayCheck, 2500); });
+  // the switch in settings, under the hourly dhikr one
+  (function(){
+    var ref = document.getElementById("dhikrRemindToggle"), row = ref && ref.closest(".settings-row");
+    if (!row || document.getElementById("fridayRemindToggle")) return;
+    var r = document.createElement("div"); r.className = "settings-row";
+    r.innerHTML = '<div><label>🕌 تذكيرات يوم الجمعة</label><span class="hint">يوم الجمعة: الصلاة على النبي ﷺ كل ٢٠ دقيقة، وتذكير بسورة الكهف (دوسة وتشتغل)، وأحاديث عن فضل اليوم وساعة الاستجابة</span></div>' +
+      '<label class="switch"><input type="checkbox" id="fridayRemindToggle"><span class="slider"></span></label>';
+    row.insertAdjacentElement("afterend", r);
+    var el = document.getElementById("fridayRemindToggle");
+    el.checked = fridayOn();
+    el.addEventListener("change", function(){ appSettings.fridayRemind = el.checked; saveSettings(); });
+    var f = document.createElement("div"); f.className = "settings-row";
+    f.innerHTML = '<div><label>🌙 صيام الاتنين والخميس</label><span class="hint">ليلة الاتنين وليلة الخميس (٩:٣٠ بالليل): تذكير بالصيام مع حديث النبي ﷺ</span></div>' +
+      '<label class="switch"><input type="checkbox" id="fastRemindToggle"><span class="slider"></span></label>';
+    r.insertAdjacentElement("afterend", f);
+    var fe = document.getElementById("fastRemindToggle");
+    fe.checked = fastOn();
+    fe.addEventListener("change", function(){ appSettings.fastRemind = fe.checked; saveSettings(); });
+  })();
 
   // ---------------- أذكار النوم ----------------
   // Quran parts (Hafs text of the app) and sunnah adhkar (verbatim from al-Bukhari / Muslim, see gen_content.js),
@@ -8415,6 +8547,8 @@ const EVENING_ADHKAR = [
     try { LN.addListener("localNotificationActionPerformed", function(e){
       var id = e && e.notification && e.notification.id;
       if (id >= 6000 && id < 6100) setTimeout(function(){ if (typeof showView === "function") showView("home"); openGift(); }, 600);
+      // the Friday al-Kahf reminders (places 1 and 3 of fridayNotes) open the surah
+      if (id >= 7000 && id < 7100 && (id % 10 === 1 || id % 10 === 3) && typeof fridayOpenKahf === "function") setTimeout(fridayOpenKahf, 600);
     }); } catch(e){}
     var perm = "default";
     function readPerm(){ return LN.checkPermissions().then(function(r){ perm = r.display === "granted" ? "granted" : (r.display === "denied" ? "denied" : "default"); return perm; }); }
@@ -8499,6 +8633,10 @@ const EVENING_ADHKAR = [
 
     // ---- build every notification for the next days, replacing what was scheduled before ----
     function reschedule(){
+      if (!isFriday() && LN.getDeliveredNotifications) LN.getDeliveredNotifications().then(function(r){
+        var k = (r.notifications || []).filter(function(n){ return n.id >= 7000 && n.id < 7100; }).map(function(n){ return { id: n.id }; });
+        if (k.length) LN.removeDeliveredNotifications({ notifications: k });
+      }).catch(function(){});
       return readPerm().then(function(p){
         return LN.getPending().then(function(pend){
           var old = (pend.notifications || []).map(function(n){ return { id: n.id }; });
@@ -8531,11 +8669,19 @@ const EVENING_ADHKAR = [
                 var s = visitStreak();
                 add(4000 + di, at(day.date, "18:00"), "🔥 لا تخسر سلسلتك", s > 0 ? "سلسلتك " + toArabicIndic(s + di - 1) + " يوم — دقيقة مع وِرْدِي النهارده تكمّلها 🤍" : "افتح وِرْدِي واقرأ ولو آية 🤍", "wirdi_reminders");
               }
+              // Thursday night and Friday (friday.js): al-Kahf, the virtues of the day, the hour of answered dua
+              // Friday / Thursday night / the Monday-Thursday fast (friday.js; each has its own switch inside);
+              // al-Kahf stays at the top of the notifications until it is tapped (the tap plays it)
+              fridayNotes(day.date, day.t).forEach(function(n, k){
+                if (n.at.getTime() > now) list.push({ id: 7000 + di * 10 + k, title: n.title, body: n.body, channelId: n.salawat && WN.fullScreenStatus ? "wirdi_salawat" : "wirdi_reminders", smallIcon: ic, ongoing: !!n.kahf, autoCancel: true, schedule: { at: n.at, allowWhileIdle: true } });
+              });
+              // Friday: the salah upon the Prophet ﷺ every 20 minutes, said aloud (friday.js fridaySalawatTimes)
+              if (fridayOn()) fridaySalawatTimes(day.date, day.t).forEach(function(w, k){ var dk = FRIDAY_SALAWAT[k % FRIDAY_SALAWAT.length]; add(8000 + di * 100 + k, w, "📿 " + dk.title, dk.say + " — «" + dk.text + "»", WN.fullScreenStatus ? "wirdi_salawat" : "wirdi_dhikr"); });
               // dua for Amira Hamed twice a day (DUA_HOURS); a dhikr / salah upon the Prophet ﷺ every other hour 08:00–22:00 (first 3 days)
               for (var h = 8; h <= 22; h++){
                 var hw = new Date(day.date.getFullYear(), day.date.getMonth(), day.date.getDate(), h, 0, 0), slot = Math.floor(hw.getTime() / 3600000);
                 if (DUA_HOURS.indexOf(h) !== -1){ if (duaRemindOn()) add(3000 + di * 100 + h, hw, "🤍 لا تنسَ الدعاء لأميرة حامد عبد الفتاح", DUA_AMIRA[slot % DUA_AMIRA.length], "wirdi_dua"); }
-                else if (di < 3 && dhikrRemindOn()){ var dk = HOURLY_DHIKR[slot % HOURLY_DHIKR.length]; add(5000 + di * 100 + h, hw, "📿 " + dk.title, dk.say + " — «" + dk.text + "»", dhikrIsSalawat(dk) && WN.fullScreenStatus ? "wirdi_salawat" : "wirdi_dhikr"); }
+                else if (di < 3 && dhikrRemindOn() && !(isFriday(day.date) && fridayOn())){ var dk = HOURLY_DHIKR[slot % HOURLY_DHIKR.length]; add(5000 + di * 100 + h, hw, "📿 " + dk.title, dk.say + " — «" + dk.text + "»", dhikrIsSalawat(dk) && WN.fullScreenStatus ? "wirdi_salawat" : "wirdi_dhikr"); }
               }
             });
             if (liveAdhan) WN.scheduleAdhan({ items: adhans }).then(function(r){ if (typeof diag === "function") diag("native: adhan scheduled " + (r && r.scheduled)); }).catch(function(){});
