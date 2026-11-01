@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-otL/ioF0+AZykPhjydip2/A85qFp06es9ZywJaf/6aY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-dOMcO4Q/YfQRzLIkQO03IjNyoSyyXTERPY3yirLcmWc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -1043,7 +1043,26 @@
   .sh-main{width:100%; margin-bottom:8px;} .sh-save{width:100%;}
   .sh-or{margin:14px 0 8px; font-size:.8rem; color:var(--ink-soft);}
 
+  .mom-card{position:relative; margin:4px 16px 14px; padding:20px 18px 14px; border-radius:26px; text-align:center; overflow:hidden;
+    background:linear-gradient(160deg,#E6F2EE 0%,#F4EEDC 60%,#F1E4BE 100%); border:1px solid #D9C48A; box-shadow:0 10px 30px rgba(9,75,65,.12); color:#2A2015;}
+  .mc-top{font-size:1.5rem;} .mc-name{font-family:"Amiri",serif; font-size:1.65rem; font-weight:700; color:#094B41; margin-top:2px;}
+  .mc-sub{font-size:.84rem; color:#6B5C42; margin-top:2px;}
+  .mc-dua{margin:12px auto 0; max-width:30em; font-family:"Amiri",serif; font-size:1.16rem; line-height:1.9; max-height:11.4em; overflow-y:auto; transition:opacity .22s ease, transform .22s ease;}
+  .mc-dua.swap{opacity:0; transform:translateY(4px);}
+  .mc-acts{display:flex; gap:8px; justify-content:center; margin-top:12px;}
+  .mc-btn{border:none; border-radius:99px; padding:9px 28px; font:inherit; font-weight:800; color:#fff; background:linear-gradient(135deg,#0E6E5F,#094B41); cursor:pointer;}
+  .mc-sh{border:1px solid #D9C48A; border-radius:99px; padding:9px 16px; font:inherit; font-weight:800; color:#094B41; background:rgba(255,255,255,.75); cursor:pointer;}
+  .mc-btn:active, .mc-sh:active{transform:scale(.97);}
+  .mc-count{margin-top:8px; font-size:.82rem; color:#6B5C42;}
+  :root[data-theme="dark"] .mom-card, :root.aurora .mom-card{background:linear-gradient(160deg,#16302B,#211A13); border-color:#3B301F; color:#F0E6CE;}
+  :root[data-theme="dark"] .mc-name, :root.aurora .mc-name{color:#7FD3C1;} :root[data-theme="dark"] .mc-sub, :root[data-theme="dark"] .mc-count, :root.aurora .mc-sub, :root.aurora .mc-count{color:#C4B392;}
+  :root[data-theme="dark"] .mc-sh, :root.aurora .mc-sh{background:#211A13; color:#7FD3C1; border-color:#3B301F;}
+
 /*/WIRDI4-CSS*/
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
   html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
@@ -7074,11 +7093,10 @@ const EVENING_ADHKAR = [
       top += cardH + 50;
       if (o.foot){ g.font = "700 44px " + AF; g.fillStyle = "#fff"; shWrap(g, o.foot, W - 200).slice(0, 2).forEach(function(l, i){ g.fillText(l, W / 2, top + 30 + i * 62); }); }
       // the app
-      var by = H - 250;
+      var by = H - 210;
       if (ic){ g.save(); shRound(g, W / 2 - 60, by - 190, 120, 120, 30); g.clip(); g.drawImage(ic, W / 2 - 60, by - 190, 120, 120); g.restore(); }
       g.fillStyle = "#fff"; g.font = "700 72px " + AF; g.fillText(document.title.split(" - ")[0], W / 2, by + 10);
       g.font = "400 34px " + UF; g.fillStyle = "rgba(255,255,255,.85)"; g.fillText(SH_LINE, W / 2, by + 85);
-      g.font = "700 32px " + UF; g.fillStyle = "rgba(255,255,255,.7)"; g.direction = "ltr"; g.fillText(location.host + location.pathname.replace(/\/$/, ""), W / 2, by + 140);
       return c;
     });
   }
@@ -7281,7 +7299,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "55dd07936c23", verChecked = 0;
+  var WIRDI_BUILD = "bbb403aa6174", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -7586,13 +7604,38 @@ const EVENING_ADHKAR = [
   // a notification. The phone app schedules the same reminders itself (native.js); sw.js covers Chrome's periodic sync.
   var DUA_AMIRA = [
     "اللهم احفظها بحفظك، وبارك في عمرها وصحتها، وألبسها ثوب العافية",
+    "﴿ رَّبِّ ٱرۡحَمۡهُمَا كَمَا رَبَّيَانِي صَغِيرٗا ﴾ [الإسراء: ٢٤]",
     "اللهم اشفها وعافها، واجعل القرآن ربيع قلبها ونور صدرها",
     "اللهم ارزقها السعادة في الدنيا والآخرة، وتقبّل منها صالح الأعمال",
+    "﴿ رَبَّنَا ٱغۡفِرۡ لِي وَلِوَٰلِدَيَّ وَلِلۡمُؤۡمِنِينَ يَوۡمَ يَقُومُ ٱلۡحِسَابُ ﴾ [إبراهيم: ٤١]",
     "اللهم اغفر لها وارحمها، وأطل عمرها في طاعتك، وأحسن خاتمتها",
     "اللهم اجعل هذا التطبيق في ميزان حسناتها، وأجرًا لا ينقطع لها",
     "اللهم أسعد قلبها، واقضِ حوائجها، واكفها ما أهمّها",
+    "﴿ رَّبِّ ٱغۡفِرۡ لِي وَلِوَٰلِدَيَّ وَلِمَن دَخَلَ بَيۡتِيَ مُؤۡمِنٗا وَلِلۡمُؤۡمِنِينَ وَٱلۡمُؤۡمِنَٰتِۖ ﴾ [نوح: ٢٨]",
     "اللهم ارزقها الفردوس الأعلى من الجنة بغير حساب ولا سابقة عذاب",
-    "اللهم بارك لها في رزقها وأهلها، واجعلها من أهل القرآن"
+    "اللهم بارك لها في رزقها وأهلها، واجعلها من أهل القرآن",
+    "اللهم متّعها بسمعها وبصرها وقوّتها ما أحييتها، ولا تُحوجها لأحد سواك",
+    "اللهم كما ربّتني صغيرًا وسهرت عليّ، فارحمها رحمة واسعة، واجزها عني خير الجزاء",
+    "اللهم اجعل كل تعب تعبته في تربيتنا في ميزان حسناتها، ونورًا لها يوم القيامة",
+    "﴿ رَبِّ أَوۡزِعۡنِيٓ أَنۡ أَشۡكُرَ نِعۡمَتَكَ ٱلَّتِيٓ أَنۡعَمۡتَ عَلَيَّ وَعَلَىٰ وَٰلِدَيَّ وَأَنۡ أَعۡمَلَ صَٰلِحٗا تَرۡضَىٰهُ وَأَصۡلِحۡ لِي فِي ذُرِّيَّتِيٓۖ إِنِّي تُبۡتُ إِلَيۡكَ وَإِنِّي مِنَ ٱلۡمُسۡلِمِينَ ﴾ [الأحقاف: ١٥]",
+    "اللهم أقرّ عينها بأولادها، واجعلنا برّة بها، ولا تُرِها فينا مكروهًا أبدًا",
+    "اللهم اشرح صدرها، وفرّج همّها، وأزل عنها كل ضيق وحزن",
+    "اللهم أذهب عنها البأس، واشفها شفاءً لا يغادر سقمًا، وارفع عنها كل وجع",
+    "اللهم اجعل لها من كل همّ فرجًا، ومن كل ضيق مخرجًا، وارزقها من حيث لا تحتسب",
+    "اللهم اجعل أيامها كلها طمأنينة وراحة بال، وبيتها عامرًا بذكرك",
+    "اللهم احفظها من بين يديها ومن خلفها، وعن يمينها وعن شمالها ومن فوقها",
+    "اللهم اجعلها من الذاكرات لك كثيرًا، وتقبّل صلاتها ودعاءها وصيامها",
+    "اللهم ارزقها حج بيتك الحرام وزيارة نبيك ﷺ، وتقبّل منها",
+    "اللهم اغفر لها ذنوبها كلها، دِقّها وجِلّها، أولها وآخرها، علانيتها وسرّها",
+    "اللهم كن لها عونًا ونصيرًا، ولا تكِلها إلى نفسها طرفة عين",
+    "اللهم استجب دعاءها لنا ولنفسها، وحقّق لها كل ما تتمنى من الخير",
+    "اللهم اجعل آخر كلامها من الدنيا لا إله إلا الله، بعد عمر طويل في طاعتك",
+    "اللهم ارضَ عنها وأرضها، واجعلها راضية مرضية",
+    "اللهم اجمعني بها في الفردوس الأعلى، كما جمعتني بها في الدنيا",
+    "اللهم اجعل لها نصيبًا من كل آية تُقرأ في هذا التطبيق، ومن كل ذكر يُذكر فيه",
+    "اللهم بارك في قلبها الطيب، وارزقها من الخير فوق ما تتمنى",
+    "اللهم احفظ لها دينها وعقلها وصحتها، وأدم عليها نعمتك",
+    "اللهم اجعل الجنة تحت قدميها، واجعلني بارًّا بها ما حييت"
   ];
   var STORE_DUA_LAST = "wirdi4-dua-last", STORE_DHIKR_LAST = "wirdi4-dhikr-last", DUA_HOURS = [10, 21];
   function duaRemindOn(){ return appSettings.duaRemind !== false; }
@@ -8851,6 +8894,40 @@ const EVENING_ADHKAR = [
   renderGiftCard();
   // a new day while the app stays open → a new gift on the card
   document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") renderGiftCard(); });
+
+  // ---------------- «وِرْدِي»: a card for Amira Hamed Abdel-Fattah (alive — may Allah keep her) ----------------
+  // First on the home screen: her name, a dua for her (DUA_AMIRA, duaremind.js — it changes every hour and with each
+  // «آمين»), the «آمين» count on this phone, and the dua shared as a picture (v4/share.js).
+  var STORE_MOM = "wirdi4-mom-prayed";
+  (function(){
+    var home = document.getElementById("view-home");
+    if (!home || document.getElementById("momCard")) return;
+    var i = Math.floor(Date.now() / 3600000) % DUA_AMIRA.length;
+    var count = function(){ try { return +localStorage.getItem(STORE_MOM) || 0; } catch(e){ return 0; } };
+    var countText = function(n){ return n ? "دعوتَ لها " + (n === 1 ? "مرة" : n === 2 ? "مرتين" : toArabicIndic(n) + (n <= 10 ? " مرات" : " مرة")) + " — جزاك الله خيرًا 🤍" : "ادعُ لها بظهر الغيب، والملك يقول: ولك بمثل 🤍"; };
+    var card = document.createElement("div");
+    card.className = "mom-card"; card.id = "momCard";
+    card.innerHTML = '<div class="mc-top">🤍</div><div class="mc-name">أميرة حامد عبد الفتاح</div>' +
+      '<div class="mc-sub">حفظها الله وبارك في عمرها • هذا التطبيق صدقة جارية لها</div>' +
+      '<div class="mc-dua" id="mcDua">' + DUA_AMIRA[i] + '</div>' +
+      '<div class="mc-acts"><button class="mc-btn" id="mcPray" type="button">🤲 آمين</button><button class="mc-sh" id="mcShare" type="button">📤 شارك صورة</button></div>' +
+      '<div class="mc-count" id="mcCount">' + countText(count()) + '</div>';
+    card.querySelector("#mcPray").addEventListener("click", function(){
+      var n = count() + 1;
+      try { localStorage.setItem(STORE_MOM, String(n)); } catch(e){}
+      document.getElementById("mcCount").textContent = countText(n);
+      var el = document.getElementById("mcDua");
+      el.classList.add("swap");
+      setTimeout(function(){ i = (i + 1) % DUA_AMIRA.length; el.textContent = DUA_AMIRA[i]; el.classList.remove("swap"); }, 220);
+      showToast("تقبّل الله دعاءك، وحفظها 🤍");
+    });
+    card.querySelector("#mcShare").addEventListener("click", function(){
+      var d = DUA_AMIRA[i], m = String(d).match(/^([\s\S]*?)\s*\[([^\[\]]+)\]$/), body = m ? m[1] : d, kick = "🤲 ادعُ لأميرة حامد عبد الفتاح — حفظها الله";
+      shareSheet(kick + "\n\n" + d + "\n\nاللهم آمين 🤍", { kicker: kick, body: body, ref: m ? m[2] : "", quran: /[ۡۖۚ]/.test(body), foot: "اللهم آمين 🤍" });
+    });
+    var after = document.getElementById("installTip") || home.querySelector(".topbar");
+    if (after) after.insertAdjacentElement("afterend", card); else home.insertBefore(card, home.firstChild);
+  })();
 
   // ---------------- the home in tabs: a bar at the bottom (الرئيسية • المصحف • الأذكار • الدروس) ----------------
   // Every section of the home goes with the title above it (up to the next title); anything without a title
