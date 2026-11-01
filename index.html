@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-rBfM6WSzoqblZB2C64KFs1cK47zVceICdy9Xl36SfJ8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-Qvi6Q3e8ndu0AKT5NW6xxPGiorfbRNsQaxQoVGbemPU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -986,6 +986,42 @@
   .reel-find-hit b{display:block; font-size:.8rem; color:var(--teal-deep); margin-bottom:3px;}
   .reel-find-hit span{font-family:"KFGQPC Hafs","Amiri",serif; font-size:1.05rem; line-height:1.9;}
   .reel-find-hit mark{background:var(--gold-tint); color:inherit; border-radius:4px;}
+  /* ---- reels: the WhatsApp status parts (reelsmore.js) ---- */
+  .reel-parts{margin-top:12px;}
+  .reel-part{display:flex; align-items:center; gap:8px; padding:8px 10px; margin-top:6px; border-radius:12px; background:var(--paper-2);}
+  .reel-part b{font-size:.9rem;} .reel-part small{flex:1; color:var(--ink-soft); font-size:.78rem;}
+  .reel-part .btn{padding:7px 12px; font-size:.82rem;}
+  /* prayer card: the place and the qibla (prayloc.js) */
+  .pc-acts{display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;}
+  .pc-chip{font:inherit; font-size:.72rem; font-weight:700; color:var(--teal-deep); background:var(--teal-tint); border:1px solid var(--paper-3); border-radius:999px; padding:3px 10px; cursor:pointer;}
+  .prayer-head .pc-chip{font-size:.7rem;}
+  .pt-sheet{position:fixed; inset:0; z-index:9000; background:rgba(0,0,0,.45); display:flex; align-items:flex-end; justify-content:center;}
+  .pt-box{position:relative; width:100%; max-width:520px; max-height:88vh; overflow:auto; background:var(--paper); color:var(--ink); border-radius:22px 22px 0 0; padding:18px 16px calc(18px + env(safe-area-inset-bottom)); box-shadow:var(--shadow); text-align:center;}
+  .pt-box h3{margin:4px 0 6px; color:var(--teal-deep); font-size:1.05rem;}
+  .pt-x{position:absolute; top:10px; left:12px; border:0; background:var(--paper-2); color:var(--ink); width:32px; height:32px; border-radius:50%; font-size:.9rem; cursor:pointer;}
+  .pt-now{font-size:.85rem; color:var(--ink-soft); margin:0 0 12px;}
+  .pt-now b{color:var(--ink);}
+  .pt-gps{width:100%;}
+  .pt-hint{font-size:.75rem; color:var(--ink-soft); line-height:1.6; margin:10px 0;}
+  .pt-q{width:100%; box-sizing:border-box; font:inherit; padding:10px 12px; border-radius:12px; border:1px solid var(--paper-3); background:var(--paper-2); color:var(--ink); margin-bottom:10px;}
+  .pt-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:8px;}
+  .pt-city{font:inherit; font-size:.85rem; padding:9px 6px; border-radius:12px; border:1px solid var(--paper-3); background:var(--paper-2); color:var(--ink); cursor:pointer;}
+  .pt-city.on{background:var(--teal-tint); color:var(--teal-deep); font-weight:700; border-color:var(--teal);}
+  .qb-wrap{position:relative; width:min(78vw,300px); margin:22px auto 6px;}
+  .qb-mark{position:absolute; top:-20px; left:50%; transform:translateX(-50%); color:var(--teal-deep); font-size:1.1rem; line-height:1;}
+  .qb-dial{display:block; width:100%; height:auto; transition:transform .12s linear;}
+  .qb-ring{fill:var(--paper-2); stroke:var(--paper-3); stroke-width:2;}
+  .qb-ticks line{stroke:var(--ink-soft); stroke-width:1.2; opacity:.6;}
+  .qb-dial text{font:700 15px sans-serif; text-anchor:middle; fill:var(--ink-soft);}
+  .qb-dial .qb-n{fill:#D64545;}
+  .qb-line{stroke:var(--teal); stroke-width:3; stroke-linecap:round;}
+  .qb-kaaba{fill:#1E1E1E;}
+  .qb-band{fill:#D4AF37;}
+  .qb-dot{fill:var(--teal-deep);}
+  .qb-wrap.ok .qb-ring{fill:rgba(46,211,160,.18); stroke:#2ED3A0;}
+  .qb-wrap.ok .qb-mark{color:#2ED3A0;}
+  .qb-deg{font-size:.95rem; margin:6px 0 0;}
+  .qb-deg b{color:var(--teal-deep);}
 
 /*/WIRDI4-CSS*/
 </style>
@@ -1077,7 +1113,6 @@
 
     <div class="home-bottom">
       <div class="hf-card sunnah-card" id="sunnahHomeCard"></div>
-      <div class="nasab-card" id="nasabCard"></div>
     </div>
 
     <div class="home-section home-progress">
@@ -6735,6 +6770,208 @@ const EVENING_ADHKAR = [
     window.__wirdiSearchDebounce = function(v){ clearTimeout(timer); timer = setTimeout(function(){ quranSearchInput(v); }, 120); };
   })();
 
+  // ---- the prayer times, computed on the phone itself (no website, works offline, any place) ----
+  // The Egyptian General Authority of Survey method: Fajr at 19.5°, Isha at 17.5°, Asr when a shadow equals its
+  // object (Shafi'i), Maghrib at sunset; in Saudi Arabia Umm al-Qura (Fajr 18.5°, Isha 90 minutes after Maghrib).
+  // The phone's own clock gives the time zone and summer time of each day.
+  function ptCompute(date, loc){
+    var R = Math.PI / 180, sin = function(d){ return Math.sin(d * R); }, cos = function(d){ return Math.cos(d * R); }, tan = function(d){ return Math.tan(d * R); };
+    var asin = function(x){ return Math.asin(x) / R; }, acos = function(x){ return Math.acos(x) / R; }, atan2 = function(y, x){ return Math.atan2(y, x) / R; };
+    var fix = function(a, b){ a = a - b * Math.floor(a / b); return a < 0 ? a + b : a; };
+    var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
+    if (m <= 2){ y -= 1; m += 12; }
+    var A = Math.floor(y / 100), jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + (2 - A + Math.floor(A / 4)) - 1524.5 - loc.lng / 360;
+    function sun(j){
+      var D = j - 2451545.0, g = fix(357.529 + 0.98560028 * D, 360), q = fix(280.459 + 0.98564736 * D, 360);
+      var L = fix(q + 1.915 * sin(g) + 0.020 * sin(2 * g), 360), e = 23.439 - 0.00000036 * D;
+      var ra = atan2(cos(e) * sin(L), cos(L)) / 15;
+      return { decl: asin(sin(e) * sin(L)), eqt: q / 15 - fix(ra, 24) };
+    }
+    function noon(t){ return fix(12 - sun(jd + t).eqt, 24); }
+    function angleTime(a, t, before){
+      var s = sun(jd + t), x = (-sin(a) - sin(s.decl) * sin(loc.lat)) / (cos(s.decl) * cos(loc.lat));
+      var h = acos(Math.max(-1, Math.min(1, x))) / 15;
+      return noon(t) + (before ? -h : h);
+    }
+    function asrTime(t){ var s = sun(jd + t); return angleTime(-(Math.atan(1 / (1 + tan(Math.abs(loc.lat - s.decl)))) / R), t); }
+    var uq = ptUmmAlQura(loc);
+    var fa = uq ? 18.5 : 19.5;
+    var t = { Fajr: 5, Sunrise: 6, Dhuhr: 12, Asr: 13, Maghrib: 18, Isha: 18 };
+    for (var it = 0; it < 1; it++){
+      t = { Fajr: angleTime(fa, t.Fajr / 24, true), Sunrise: angleTime(0.833, t.Sunrise / 24, true), Dhuhr: noon(t.Dhuhr / 24), Asr: asrTime(t.Asr / 24),
+            Maghrib: angleTime(0.833, t.Maghrib / 24), Isha: uq ? 0 : angleTime(17.5, t.Isha / 24) };
+    }
+    if (uq) t.Isha = t.Maghrib + 1.5;
+    var tz = -new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12).getTimezoneOffset() / 60, out = {};
+    for (var k in t){
+      var v = fix(t[k] + tz - loc.lng / 15 + 0.5 / 60, 24), hh = Math.floor(v), mm = Math.floor((v - hh) * 60);
+      out[k] = pad2(hh) + ":" + pad2(mm);
+    }
+    return out;
+  }
+  function ptUmmAlQura(l){ return l.lat > 16.3 && l.lat < 32.2 && l.lng > 34.6 && l.lng < 51.5 && !(l.lat < 22 && l.lng < 38.6) && !(l.lat > 29.2 && l.lng < 38.5) && !(l.lat > 28.5 && l.lng > 46.5) && !(l.lng > 50.3 && l.lat > 24.4 && l.lat < 26.4); }
+
+  // ---- where the prayer times are for: the phone's location (asked once, refreshed by itself), or a city ----
+  // Only the rounded coordinates (about 100 m) are kept, on this phone; nothing is sent anywhere.
+  var STORE_PT_LOC = "wirdi4-pt-loc", STORE_PT_ASKED = "wirdi4-pt-asked";
+  var PT_CITIES = [
+    ["القاهرة", 30.0444, 31.2357], ["الجيزة", 30.0131, 31.2089], ["الإسكندرية", 31.2001, 29.9187], ["بنها", 30.4660, 31.1848],
+    ["شبرا الخيمة", 30.1286, 31.2422], ["الزقازيق", 30.5877, 31.5020], ["المنصورة", 31.0409, 31.3785], ["طنطا", 30.7865, 31.0004],
+    ["المحلة الكبرى", 30.9697, 31.1681], ["شبين الكوم", 30.5594, 31.0119], ["كفر الشيخ", 31.1107, 30.9388], ["دمنهور", 31.0341, 30.4682],
+    ["دمياط", 31.4165, 31.8133], ["بورسعيد", 31.2653, 32.3019], ["الإسماعيلية", 30.5965, 32.2715], ["السويس", 29.9668, 32.5498],
+    ["العاشر من رمضان", 30.2965, 31.7420], ["السادس من أكتوبر", 29.9285, 30.9188], ["الفيوم", 29.3084, 30.8428], ["بني سويف", 29.0661, 31.0994],
+    ["المنيا", 28.0871, 30.7618], ["أسيوط", 27.1783, 31.1859], ["سوهاج", 26.5591, 31.6957], ["قنا", 26.1551, 32.7160],
+    ["الأقصر", 25.6872, 32.6396], ["أسوان", 24.0889, 32.8998], ["الغردقة", 27.2579, 33.8116], ["شرم الشيخ", 27.9158, 34.3300],
+    ["العريش", 31.1316, 33.7984], ["مرسى مطروح", 31.3543, 27.2373], ["الخارجة", 25.4390, 30.5586], ["العلمين", 30.8300, 28.9550],
+    ["مكة المكرمة", 21.4225, 39.8262], ["المدينة المنورة", 24.4672, 39.6111], ["جدة", 21.4858, 39.1925], ["الرياض", 24.7136, 46.6753],
+    ["الدمام", 26.4207, 50.0888], ["الكويت", 29.3759, 47.9774], ["دبي", 25.2048, 55.2708], ["أبوظبي", 24.4539, 54.3773],
+    ["الدوحة", 25.2854, 51.5310], ["المنامة", 26.2285, 50.5860], ["مسقط", 23.5880, 58.3829], ["عمّان", 31.9454, 35.9284],
+    ["الخرطوم", 15.5007, 32.5599], ["طرابلس (ليبيا)", 32.8872, 13.1913], ["لندن", 51.5074, -0.1278], ["باريس", 48.8566, 2.3522]
+  ];
+  function ptEsc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
+  var PT_CAIRO = { lat: 30.0444, lng: 31.2357, name: "القاهرة" };
+  function ptLoc(){
+    var l = loadJSON(STORE_PT_LOC, null);
+    return l && isFinite(l.lat) && isFinite(l.lng) && Math.abs(l.lat) <= 65 && Math.abs(l.lng) <= 180 ? l : PT_CAIRO;
+  }
+  function ptDistKm(a, b){
+    var R = Math.PI / 180, x = (b.lng - a.lng) * R * Math.cos((a.lat + b.lat) / 2 * R), y = (b.lat - a.lat) * R;
+    return Math.sqrt(x * x + y * y) * 6371;
+  }
+  function ptNearName(l){
+    var best = null, bd = 1e9;
+    PT_CITIES.forEach(function(c){ var d = ptDistKm(l, { lat: c[1], lng: c[2] }); if (d < bd){ bd = d; best = c[0]; } });
+    return bd < 30 ? best : bd < 120 ? "قرب " + best : "موقعك الحالي";
+  }
+  function ptSetLoc(l){
+    saveJSON(STORE_PT_LOC, l);
+    if (typeof ptRefresh === "function") ptRefresh(true);
+    if (window.__wirdiReschedule) window.__wirdiReschedule();
+    if (typeof renderPrayerCard === "function" && currentView === "home") renderPrayerCard();
+  }
+  // the phone's location → the times; silent = no message when it fails (the automatic refresh)
+  function ptLocate(silent, done){
+    function fail(msg){ if (!silent) showToast(msg); if (done) done(false); }
+    if (!navigator.geolocation) return fail("الموبايل ده مش بيدّي الموقع — اختار مدينتك من القايمة");
+    navigator.geolocation.getCurrentPosition(function(p){
+      var l = { lat: Math.round(p.coords.latitude * 1000) / 1000, lng: Math.round(p.coords.longitude * 1000) / 1000, auto: true, at: Date.now() };
+      l.name = ptNearName(l);
+      ptSetLoc(l);
+      if (!silent) showToast("📍 المواقيت دلوقتي على " + l.name);
+      if (done) done(true);
+    }, function(e){
+      fail(e && e.code === 1 ? "مفيش إذن للموقع — اختار مدينتك من القايمة، أو اسمح بالموقع من إعدادات الموبايل" : "مقدرناش نحدد مكانك دلوقتي — اتأكد إن الـ GPS شغال أو اختار مدينتك");
+    }, { enableHighAccuracy: false, timeout: 20000, maximumAge: 30 * 60000 });
+  }
+  // automatic: asked once on the first open; afterwards refreshed quietly (at most every 3 hours) while on «تلقائي»
+  setTimeout(function(){
+    var l = loadJSON(STORE_PT_LOC, null);
+    if (!l){
+      if (loadJSON(STORE_PT_ASKED, false)) return;
+      saveJSON(STORE_PT_ASKED, true);
+      ptLocate(true, function(ok){ if (!ok) showToast("📍 المواقيت على القاهرة — غيّر مدينتك من كارت الصلاة"); });
+    } else if (l.auto && Date.now() - (l.at || 0) > 3 * 3600000) ptLocate(true);
+  }, 2500);
+  document.addEventListener("visibilitychange", function(){
+    var l = loadJSON(STORE_PT_LOC, null);
+    if (document.visibilityState === "visible" && l && l.auto && Date.now() - (l.at || 0) > 3 * 3600000) ptLocate(true);
+  });
+
+  // ---- the sheet: «حدد مكاني» + every city, with a search ----
+  function ptSheet(html){
+    var old = document.getElementById("ptSheet"); if (old) old.remove();
+    var s = document.createElement("div");
+    s.id = "ptSheet"; s.className = "pt-sheet";
+    s.innerHTML = '<div class="pt-box" role="dialog" aria-modal="true"><button class="pt-x" type="button" aria-label="إغلاق">✕</button>' + html + '</div>';
+    document.body.appendChild(s);
+    s.addEventListener("click", function(e){ if (e.target === s || e.target.closest(".pt-x")) ptSheetClose(); });
+    history.pushState({ ptSheet: true }, "");
+    return s;
+  }
+  function ptSheetClose(fromBack){
+    var s = document.getElementById("ptSheet"); if (!s) return;
+    if (s.__stop) s.__stop();
+    s.remove();
+    if (!fromBack && history.state && history.state.ptSheet) history.back();
+  }
+  window.addEventListener("popstate", function(){ ptSheetClose(true); });
+  function ptLocSheet(){
+    var l = ptLoc();
+    var s = ptSheet('<h3>📍 مكانك لمواقيت الصلاة</h3><p class="pt-now">دلوقتي: <b>' + ptEsc(l.name || "القاهرة") + '</b>' + (l.auto ? ' • تلقائي' : '') + '</p>' +
+      '<button class="btn primary pt-gps" type="button">📍 حدد مكاني تلقائيًا</button>' +
+      '<p class="pt-hint">المواقيت بتتحسب على موبايلك بطريقة الهيئة المصرية العامة للمساحة، ومكانك مش بيتبعت لأي حد.</p>' +
+      '<input class="pt-q" type="search" placeholder="ابحث عن مدينتك…" aria-label="ابحث عن مدينة"><div class="pt-list"></div>');
+    var list = s.querySelector(".pt-list"), q = s.querySelector(".pt-q");
+    function draw(){
+      var v = q.value.trim();
+      list.innerHTML = PT_CITIES.filter(function(c){ return !v || c[0].indexOf(v) !== -1; }).map(function(c){
+        return '<button type="button" class="pt-city' + (l.name === c[0] && !l.auto ? ' on' : '') + '" data-c="' + ptEsc(c[0]) + '">' + ptEsc(c[0]) + '</button>';
+      }).join("") || '<p class="pt-hint">مفيش مدينة بالاسم ده — جرّب «حدد مكاني تلقائيًا»</p>';
+    }
+    q.addEventListener("input", draw); draw();
+    list.addEventListener("click", function(e){
+      var b = e.target.closest("[data-c]"); if (!b) return;
+      var c = PT_CITIES.filter(function(x){ return x[0] === b.getAttribute("data-c"); })[0]; if (!c) return;
+      ptSetLoc({ lat: c[1], lng: c[2], name: c[0], auto: false });
+      showToast("📍 المواقيت دلوقتي على " + c[0]); ptSheetClose();
+    });
+    s.querySelector(".pt-gps").addEventListener("click", function(){
+      var b = this; b.disabled = true; b.textContent = "⏳ بنحدد مكانك…";
+      ptLocate(false, function(ok){ if (ok) ptSheetClose(); else { b.disabled = false; b.textContent = "📍 حدد مكاني تلقائيًا"; } });
+    });
+  }
+
+  // ---- the qibla: the direction of the Kaaba from here, with a live compass when the phone has one ----
+  function qiblaBearing(l){
+    var R = Math.PI / 180, f1 = l.lat * R, f2 = 21.4225 * R, dl = (39.8262 - l.lng) * R;
+    var b = Math.atan2(Math.sin(dl) * Math.cos(f2), Math.cos(f1) * Math.sin(f2) - Math.sin(f1) * Math.cos(f2) * Math.cos(dl)) / R;
+    return (b + 360) % 360;
+  }
+  function qiblaSide(b){ return ["الشمال", "الشمال الشرقي", "الشرق", "الجنوب الشرقي", "الجنوب", "الجنوب الغربي", "الغرب", "الشمال الغربي"][Math.round(b / 45) % 8]; }
+  function qiblaSheet(){
+    var l = ptLoc(), qb = qiblaBearing(l), km = Math.round(ptDistKm(l, { lat: 21.4225, lng: 39.8262 }));
+    var ticks = ""; for (var i = 0; i < 72; i++) ticks += '<line x1="100" y1="' + (i % 18 === 0 ? 8 : i % 2 ? 12 : 10) + '" x2="100" y2="17" transform="rotate(' + (i * 5) + ' 100 100)"/>';
+    var s = ptSheet('<h3>🧭 اتجاه القبلة</h3><p class="pt-now">من <b>' + ptEsc(l.name || "القاهرة") + '</b> • مكة على بُعد ' + toArabicIndic(km.toLocaleString("en").replace(/,/g, "٬")) + ' كم</p>' +
+      '<div class="qb-wrap"><div class="qb-mark" aria-hidden="true">▼</div><svg class="qb-dial" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="96" class="qb-ring"/><g class="qb-ticks">' + ticks + '</g>' +
+      '<text x="100" y="34" class="qb-n">ش</text><text x="168" y="105" class="qb-c">ق</text><text x="100" y="176" class="qb-c">ج</text><text x="32" y="105" class="qb-c">غ</text>' +
+      '<g transform="rotate(' + qb.toFixed(1) + ' 100 100)"><line x1="100" y1="100" x2="100" y2="40" class="qb-line"/><g transform="translate(100 34)"><rect x="-11" y="-11" width="22" height="22" rx="3" class="qb-kaaba"/><rect x="-11" y="-6" width="22" height="3.5" class="qb-band"/></g></g>' +
+      '<circle cx="100" cy="100" r="5" class="qb-dot"/></svg></div>' +
+      '<p class="qb-deg">القبلة <b>' + toArabicIndic(Math.round(qb)) + '°</b> من الشمال — ناحية ' + qiblaSide(qb) + '</p>' +
+      '<p class="pt-hint qb-st">حط الموبايل مفرود على كف إيدك، ولفّ لحد ما الكعبة تيجي تحت السهم ▼ اللي فوق</p>' +
+      '<button class="btn ghost pt-loc2" type="button">📍 غيّر المكان</button>');
+    s.querySelector(".pt-loc2").addEventListener("click", function(){ ptSheetClose(); setTimeout(ptLocSheet, 50); });
+    var dial = s.querySelector(".qb-dial"), wrap = s.querySelector(".qb-wrap"), st = s.querySelector(".qb-st"), got = false, aligned = false, smooth = null;
+    function onHead(h){
+      if (h == null || isNaN(h)) return;
+      var so = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+      h = (h + so + 360) % 360;
+      // smooth the needle (the sensor shakes), going the short way round 0°/360°
+      if (smooth == null) smooth = h; else { var d = ((h - smooth + 540) % 360) - 180; smooth = (smooth + d * 0.25 + 360) % 360; }
+      if (!got){ got = true; st.textContent = "لفّ بالموبايل لحد ما الكعبة تيجي تحت السهم ▼ — ولو البوصلة مش مظبوطة حرّك الموبايل على شكل ٨"; }
+      dial.style.transform = "rotate(" + (-smooth).toFixed(1) + "deg)";
+      var off = Math.abs(((qb - smooth + 540) % 360) - 180), ok = off < 4;
+      if (ok !== aligned){ aligned = ok; wrap.classList.toggle("ok", ok); if (ok){ st.textContent = "✓ إنت متجه للقبلة دلوقتي"; try { navigator.vibrate && navigator.vibrate(60); } catch(e){} } }
+    }
+    function abs(e){ if (e.absolute !== false && e.alpha != null) onHead(360 - e.alpha); }
+    function rel(e){ if (e.webkitCompassHeading != null) onHead(e.webkitCompassHeading); }
+    var hasAbs = "ondeviceorientationabsolute" in window;
+    if (hasAbs) window.addEventListener("deviceorientationabsolute", abs);
+    else window.addEventListener("deviceorientation", rel);
+    s.__stop = function(){ window.removeEventListener("deviceorientationabsolute", abs); window.removeEventListener("deviceorientation", rel); };
+    // iPhone: the compass needs a permission, asked from a tap
+    if (!hasAbs && window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === "function"){
+      var bp = document.createElement("button"); bp.type = "button"; bp.className = "btn primary"; bp.textContent = "🧭 شغّل البوصلة";
+      st.insertAdjacentElement("afterend", bp);
+      bp.addEventListener("click", function(){ DeviceOrientationEvent.requestPermission().then(function(r){ if (r === "granted") bp.remove(); }).catch(function(){}); });
+    }
+    setTimeout(function(){ if (!got && document.getElementById("ptSheet") === s) st.textContent = "الموبايل ده مفيهوش بوصلة: القبلة " + toArabicIndic(Math.round(qb)) + "° من الشمال — ناحية " + qiblaSide(qb) + " (استخدم الشمس أو بوصلة عادية)"; }, 3500);
+  }
+  // the prayer card: tap the place to change it, «القبلة» for the compass
+  document.addEventListener("click", function(e){
+    if (e.target.closest("[data-ptloc]")) ptLocSheet();
+    else if (e.target.closest("[data-qibla]")) qiblaSheet();
+  });
+
   // ---------------- Home (v4): greeting by time of day, prayer times card, prayer-sunnah reminders ----------------
   // Notifications: on Android Chrome `new Notification()` throws ("use ServiceWorkerRegistration.showNotification"),
   // so every notification in the app goes through the service worker when one is available.
@@ -6823,7 +7060,7 @@ const EVENING_ADHKAR = [
   function renderPrayerCard(){
     var box = document.getElementById("prayerCard"); if (!box) return;
     if (!prayerTimesToday){
-      box.innerHTML = '<div class="prayer-head"><b>🕌 مواقيت الصلاة</b><span>القاهرة</span></div><div class="hf-meta" style="text-align:center;">جارٍ تحميل المواقيت… (تحتاج الإنترنت أول مرة كل يوم)</div>';
+      box.innerHTML = '<div class="prayer-head"><b>🕌 مواقيت الصلاة</b><button type="button" class="pc-chip" data-ptloc>📍 ' + ptEsc(ptLoc().name || "القاهرة") + '</button></div>';
       return;
     }
     var n = nowMin(), nx = nextPrayer(), h = '';
@@ -6836,7 +7073,8 @@ const EVENING_ADHKAR = [
       h += '<div class="pc-top"><div class="pc-ring"><svg viewBox="0 0 120 120"><defs><linearGradient id="pcGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ED3A0"/><stop offset="1" stop-color="#9B87FF"/></linearGradient></defs>' +
         '<circle class="trk" cx="60" cy="60" r="52" fill="none" stroke-width="9"/><circle class="val" cx="60" cy="60" r="52" fill="none" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + (C * (1 - frac)).toFixed(1) + '"/></svg>' +
         '<div class="pc-in"><b>' + toArabicIndic(hh) + ':' + toArabicIndic(("0" + mm).slice(-2)) + '</b><small>' + (hh ? 'ساعة متبقية' : 'دقيقة متبقية') + '</small></div></div>' +
-        '<div class="pc-info"><span class="pc-lbl">الصلاة القادمة</span><b class="pc-name">' + (nx.tomorrow ? 'الفجر' : nx.name) + '</b><span class="pc-time"><i>' + to12h(prayerTimesToday[nx.key]) + '</i>' + (nx.tomorrow ? ' • غدًا' : '') + ' • القاهرة</span></div></div>';
+        '<div class="pc-info"><span class="pc-lbl">الصلاة القادمة</span><b class="pc-name">' + (nx.tomorrow ? 'الفجر' : nx.name) + '</b><span class="pc-time"><i>' + to12h(prayerTimesToday[nx.key]) + '</i>' + (nx.tomorrow ? ' • غدًا' : '') + '</span>' +
+        '<span class="pc-acts"><button type="button" class="pc-chip" data-ptloc>📍 ' + ptEsc(ptLoc().name || "القاهرة") + '</button><button type="button" class="pc-chip" data-qibla>🧭 القبلة</button></span></div></div>';
     }
     h += '<div class="prayer-row">';
     PRAYER_NAMES.forEach(function(p){
@@ -6868,14 +7106,7 @@ const EVENING_ADHKAR = [
     });
   }
   // ---- today's prayer times (with sunrise), refreshed every day ----
-  // The whole month is downloaded once (Aladhan calendar, Cairo, Egyptian authority) and kept on the phone, so
-  // every new day — even without internet — the card switches to that day's times by itself.
-  function ptMonthKey(d){ return "wirdi4-ptm-" + d.getFullYear() + "-" + (d.getMonth() + 1); }
-  function ptFromMonth(d){
-    var m = loadJSON(ptMonthKey(d), null), k = dayKey(d);
-    return m && m[k] ? m[k] : null;
-  }
-  // only real "HH:MM" times are accepted (a broken or tampered reply can never reach the page)
+  // only real "HH:MM" times are accepted
   function ptValid(t){ return !!t && ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"].every(function(k){ return /^([01]?\d|2[0-3]):[0-5]\d$/.test(String(t[k])); }); }
   function ptApply(t){
     if (!ptValid(t)) return;
@@ -6883,31 +7114,18 @@ const EVENING_ADHKAR = [
     if (currentView === "home"){ renderPrayerCard(); renderHello(); }
     if (currentView === "settings" && typeof renderPrayerTimesRow === "function") renderPrayerTimesRow();
   }
-  var ptLoading = false;
-  function ptRefresh(){
-    var d = new Date(), t = ptFromMonth(d);
-    if (t && ptValid(t)){ if (!prayerTimesToday || prayerTimesCache.date !== todayStr() || !prayerTimesToday.Sunrise) ptApply(t); return; }
-    if (ptLoading) return; ptLoading = true;
-    fetch("https://api.aladhan.com/v1/calendarByCity/" + d.getFullYear() + "/" + (d.getMonth() + 1) + "?city=Cairo&country=Egypt&method=5")
-      .then(function(r){ return r.json(); })
-      .then(function(j){
-        var out = {};
-        (j.data || []).forEach(function(x){
-          var p = x.date.gregorian.date.split("-"), o = {};   // DD-MM-YYYY
-          ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(function(k){ o[k] = String(x.timings[k]).slice(0, 5); });
-          out[p[2] + "-" + p[1] + "-" + p[0]] = o;
-        });
-        if (Object.keys(out).length) saveJSON(ptMonthKey(d), out);
-        var t2 = ptFromMonth(new Date()); if (t2) ptApply(t2);
-      })
-      .catch(function(){ if (!prayerTimesToday) fetchPrayerTimes(); })   // fallback: today only
-      .then(function(){ ptLoading = false; });
+  // the times are computed on the phone (prayloc.js: the chosen place, Egyptian authority method) — no website,
+  // so they are right offline, in any city, and follow the phone's own summer / winter time
+  function ptRefresh(force){
+    var t = ptCompute(new Date(), ptLoc());
+    if (force || !prayerTimesToday || prayerTimesCache.date !== todayStr() || JSON.stringify(t) !== JSON.stringify(prayerTimesToday)) ptApply(t);
   }
-  ptRefresh();
+  fetchPrayerTimes = function(){ ptRefresh(true); };
+  ptRefresh(true);
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "970f14925903", verChecked = 0;
+  var WIRDI_BUILD = "4100e3fbfa38", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -7759,11 +7977,11 @@ const EVENING_ADHKAR = [
     b.addEventListener("click", openNasabFull);
   })();
 
-  // ---------------- Reels: every reciter of the app ----------------
+  // ---------------- Reels: every reciter of the app, any length ----------------
   // The reciters added to the app later, in the reels maker too. Those on everyayah.com: one file per ayah (kind
-  // "ayah"). The three with our own ayah timings (Abu Hāshim, Dībān, al-Luḥaydān — no ayah files anywhere): the
-  // surah file is decoded once and cut into its ayahs with the timings (kind "timed"); a long surah is too heavy for
-  // a phone to decode, so these three take surahs up to REEL_TIMED_MAX_SEC long.
+  // "ayah"). The three with our own ayah timings (Abu Hāshim, Dībān, al-Luḥaydān — no ayah files anywhere): only the
+  // part of the surah file that is needed is fetched and decoded (mp3Window), then cut into its ayahs with the
+  // timings (kind "timed") — so any surah works, even al-Baqarah, without a phone decoding a two-hour file.
   [
     ["Abdul_Basit_Mujawwad_128kbps", "عبد الباسط عبد الصمد (مجود)"], ["Husary_128kbps_Mujawwad", "محمود خليل الحصري (مجود)"],
     ["Mohammad_al_Tablaway_128kbps", "محمد محمود الطبلاوي"], ["Mustafa_Ismail_48kbps", "مصطفى إسماعيل (مجود)"],
@@ -7777,36 +7995,91 @@ const EVENING_ADHKAR = [
   [["Abdulbadie_AbuHashem", "عبد البديع أبو هاشم"], ["Ahmad_Deeban_Hadr", "أحمد ديبان (حدر)"], ["Muhammad_Luhaidan", "محمد اللحيدان"]].forEach(function(r){
     if (QS_READS[r[0]]) REEL_RECITERS.push({ id: "qs-" + r[0], name: r[1], kind: "timed", qs: r[0] });
   });
-  var REEL_TIMED_MAX_SEC = 15 * 60;
+
+  // ---- a piece of an mp3 file by time (from / to in seconds) → { data: ArrayBuffer of whole frames, t0: its start } ----
+  // CBR files: the byte offset follows from the bitrate, and only that piece is downloaded (Range). VBR files (a Xing
+  // header): the file is read once and its frame headers counted to find the exact frames.
+  var MP3_BR = { 1: [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320], 2: [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160] };
+  var MP3_SR = { 3: [44100, 48000, 32000], 2: [22050, 24000, 16000], 0: [11025, 12000, 8000] };
+  function mp3Head(b, i){   // the frame header at byte i, or null
+    if (i + 4 > b.length || b[i] !== 0xFF || (b[i + 1] & 0xE0) !== 0xE0) return null;
+    var ver = (b[i + 1] >> 3) & 3, layer = (b[i + 1] >> 1) & 3, bri = b[i + 2] >> 4, sri = (b[i + 2] >> 2) & 3, pad = (b[i + 2] >> 1) & 1;
+    if (ver === 1 || layer !== 1 || bri === 0 || bri === 15 || sri === 3) return null;   // Layer III only
+    var kbps = MP3_BR[ver === 3 ? 1 : 2][bri], sr = MP3_SR[ver][sri], spf = ver === 3 ? 1152 : 576;
+    return { len: Math.floor((ver === 3 ? 144000 : 72000) * kbps / sr) + pad, kbps: kbps, sr: sr, spf: spf };
+  }
+  function mp3Sync(b, i){   // the first real frame from byte i (two headers in a row)
+    for (; i < b.length - 4; i++){ var h = mp3Head(b, i); if (h && (i + h.len >= b.length - 4 || mp3Head(b, i + h.len))) return i; }
+    return -1;
+  }
+  function mp3Fetch(url, a, z){ return fetch(url, { headers: { Range: "bytes=" + a + "-" + z } }).then(function(r){ if (!r.ok) throw new Error("http " + r.status); return r.arrayBuffer().then(function(d){ return { d: d, part: r.status === 206 }; }); }); }
+  function mp3Window(url, from, to){
+    from = Math.max(0, from);
+    return mp3Fetch(url, 0, 262143).then(function(first){
+      var b = new Uint8Array(first.d), start = 0;
+      if (b[0] === 0x49 && b[1] === 0x44 && b[2] === 0x33) start = 10 + ((b[6] << 21) | (b[7] << 14) | (b[8] << 7) | b[9]);
+      function scan(all){   // count the frames of the whole file (VBR, or a server without Range)
+        var u = new Uint8Array(all), i = mp3Sync(u, start), t = 0, a = -1, ta = 0, z = u.length;
+        while (i >= 0 && i < u.length){
+          var h = mp3Head(u, i); if (!h){ i = mp3Sync(u, i + 1); continue; }
+          if (a < 0 && t + h.spf / h.sr > from){ a = i; ta = t; }
+          if (t > to){ z = i; break; }
+          t += h.spf / h.sr; i += h.len;
+        }
+        if (a < 0) throw new Error("range");
+        return { data: all.slice(a, z), t0: ta };
+      }
+      if (!first.part) return scan(first.d);
+      if (start + 4096 > b.length) return mp3Fetch(url, 0, start + 65535).then(function(f){ b = new Uint8Array(f.d); return go(); });
+      return go();
+      function go(){
+        var i0 = mp3Sync(b, start); if (i0 < 0) throw new Error("no mp3");
+        var h = mp3Head(b, i0), tag = String.fromCharCode.apply(null, b.subarray(i0 + 4, Math.min(b.length, i0 + 200)));
+        if (/Xing|VBRI/.test(tag)) return fetch(url).then(function(r){ return r.arrayBuffer(); }).then(scan);   // VBR
+        var bps = h.kbps * 125, a = i0 + Math.floor(from * bps), z = i0 + Math.ceil(to * bps);
+        return mp3Fetch(url, a, z).then(function(w){
+          var u = new Uint8Array(w.d), s = mp3Sync(u, 0); if (s < 0) throw new Error("no frames");
+          return { data: w.d.slice(s), t0: (a + s - i0) / bps };
+        });
+      }
+    });
+  }
+  function reelDecodeLight(ab){   // decoded at a lower rate: half the memory on a phone
+    var OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    return (OAC ? new OAC(1, 1, 22050) : new (window.AudioContext || window.webkitAudioContext)()).decodeAudioData(ab);
+  }
+  function reelCut(actx, all, fromSec, toSec){   // a part of a decoded buffer as a new buffer
+    var sr = all.sampleRate, s0 = Math.max(0, Math.floor(fromSec * sr)), s1 = Math.min(all.length, Math.ceil(toSec * sr));
+    var buf = actx.createBuffer(all.numberOfChannels, Math.max(1, s1 - s0), sr);
+    for (var c = 0; c < all.numberOfChannels; c++) buf.copyToChannel(all.getChannelData(c).subarray(s0, s1), c);
+    return buf;
+  }
   var reelLoadBase = reelLoad;
   reelLoad = function(cfg, actx, onProgress){
     var R = reelReciter(cfg.reciter);
+    // a whole-surah voice without timings: decoded light, whatever the surah's length
+    if (R.kind === "surah"){
+      var keys = []; for (var a = 1; a <= ayahCount(cfg.surah); a++) keys.push(cfg.surah + ":" + a);
+      return Promise.all([Promise.all(keys.map(reelWords)), reelFetchAudio(R.base + pad3(cfg.surah) + ".mp3").then(function(ab){ onProgress(1, 1); return reelDecodeLight(ab); })]).then(function(res){
+        var words = []; res[0].forEach(function(ws, i){ words = words.concat(ws); words.push("﴿" + toArabicIndic(i + 1) + "﴾"); });
+        return [{ key: cfg.surah + ":all", ayah: 0, words: words, segs: [], buf: res[1], whole: true }];
+      });
+    }
     if (R.kind !== "timed") return reelLoadBase(cfg, actx, onProgress);
-    var read = QS_READS[R.qs], keys = [];
-    for (var a = cfg.from; a <= cfg.to; a++) keys.push(cfg.surah + ":" + a);
+    var read = QS_READS[R.qs], ks = [];
+    for (var b = cfg.from; b <= cfg.to; b++) ks.push(cfg.surah + ":" + b);
     if (!qs.memo[read[2]]){ qs.memo[read[2]] = fetch(read[2]).then(function(r){ if (!r.ok) throw new Error("http " + r.status); return r.json(); }); qs.memo[read[2]].catch(function(){ delete qs.memo[read[2]]; }); }
     return qs.memo[read[2]].then(function(j){
       var list = j[cfg.surah];
       if (!list){ showToast("السورة دي مش متسجّلة بصوت " + R.name + " — اختار سورة تانية أو شيخ تاني"); throw new Error("no surah"); }
-      var times = {}; list.forEach(function(x, i){ times[i + 1] = x; });
-      var last = list[list.length - 1];
-      if (last && last[1] / 1000 > REEL_TIMED_MAX_SEC){
-        showToast("السورة دي طويلة على الريلز بصوت " + R.name + " — اختار سورة أقصر أو شيخ تاني");
-        throw new Error("too long");
-      }
+      var from = list[cfg.from - 1][0] / 1000 - 1.5, to = list[cfg.to - 1][1] / 1000 + 1.5;
       onProgress(0, 1);
-      return Promise.all([Promise.all(keys.map(reelWords)), reelFetchAudio(qsSrc(read, cfg.surah))]).then(function(res){
-        // decoded at a low rate (less memory on a phone), then each ayah is copied out by its timing
-        var OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext, dec = OAC ? new OAC(1, 1, 22050) : actx;
-        return dec.decodeAudioData(res[1]).then(function(all){
-          onProgress(1, 1);
-          return keys.map(function(k, i){
-            var ay = +k.split(":")[1], t = times[ay], sr = all.sampleRate;
-            var s0 = Math.max(0, Math.floor((t[0] / 1000 - 0.15) * sr)), s1 = Math.min(all.length, Math.ceil((t[1] / 1000 + 0.35) * sr));
-            var buf = actx.createBuffer(all.numberOfChannels, Math.max(1, s1 - s0), sr);
-            for (var c = 0; c < all.numberOfChannels; c++) buf.copyToChannel(all.getChannelData(c).subarray(s0, s1), c);
-            return { key: k, ayah: ay, words: res[0][i], segs: [], buf: buf };
-          });
+      return Promise.all([Promise.all(ks.map(reelWords)), mp3Window(qsSrc(read, cfg.surah), from, to).then(function(w){ return reelDecodeLight(w.data).then(function(all){ return { all: all, t0: w.t0 }; }); })]).then(function(res){
+        onProgress(1, 1);
+        var all = res[1].all, t0 = res[1].t0;
+        return ks.map(function(k, i){
+          var ay = +k.split(":")[1], t = list[ay - 1];
+          return { key: k, ayah: ay, words: res[0][i], segs: [], buf: reelCut(actx, all, t[0] / 1000 - 0.15 - t0, t[1] / 1000 + 0.35 - t0) };
         });
       });
     });
@@ -7839,6 +8112,178 @@ const EVENING_ADHKAR = [
       showToast("✓ سورة " + surahName(s) + " — آية " + toArabicIndic(a) + " (تقدر تزوّد «إلى» عشان تاخد آيات بعدها)");
     });
   })();
+  // ---- no length limit, and «حالة واتساب»: the video is split by itself into parts of up to 60 (or 30) seconds ----
+  // Every length is made (no «too long» message). For WhatsApp status the reel is recorded part after part; a part
+  // ends between two ayahs when one falls in its last half, else in the middle of a long ayah (the one-line text
+  // follows the voice, so the next part simply goes on). Each part has its own save / share buttons.
+  var STORE_REEL_SPLIT = "wirdi4-reel-split";
+  (function(){
+    var st = document.getElementById("reelStyle"), row = st && st.closest(".hf-row");
+    if (!row || document.getElementById("reelSplit")) return;
+    var r = document.createElement("div"); r.className = "hf-row";
+    r.innerHTML = '<label>نوع الفيديو</label><select id="reelSplit">' +
+      '<option value="0">فيديو واحد (ريلز / تيك توك)</option>' +
+      '<option value="60">حالة واتساب — يتقسم كل دقيقة</option>' +
+      '<option value="30">حالة واتساب — يتقسم كل ٣٠ ثانية</option></select>';
+    row.insertAdjacentElement("afterend", r);
+    var sel = r.querySelector("select"); sel.value = String(loadJSON(STORE_REEL_SPLIT, 0));
+    sel.addEventListener("change", function(){ saveJSON(STORE_REEL_SPLIT, +sel.value); });
+    var out = document.getElementById("reelOut");
+    if (out){ var p = document.createElement("div"); p.id = "reelParts"; p.className = "reel-parts"; p.hidden = true; out.insertAdjacentElement("afterend", p); }
+  })();
+  function reelSplitSec(){ return +loadJSON(STORE_REEL_SPLIT, 0) || 0; }
+  // where each part starts and ends on the reel's timeline
+  function reelParts(data, lim){
+    if (!lim || data.total <= lim + 0.5) return [[0, data.total]];
+    var parts = [], a = 0, starts = data.items.map(function(it){ return it.start; });
+    while (data.total - a > lim + 0.5){
+      var z = a + lim, cut = 0;
+      starts.forEach(function(s){ if (s - 0.05 > a + lim * 0.5 && s - 0.05 <= z) cut = s - 0.05; });
+      if (!cut) cut = z;
+      parts.push([a, cut]); a = cut;
+    }
+    parts.push([a, data.total]);
+    return parts;
+  }
+  function reelPartsUi(){
+    var box = document.getElementById("reelParts"); if (!box) return;
+    var list = reel.parts || [];
+    box.hidden = !list.length;
+    if (!list.length){ box.innerHTML = ""; return; }
+    box.innerHTML = '<div class="hf-label">📱 حالة واتساب — ' + toArabicIndic(list.length) + ' أجزاء (انشرهم بالترتيب)</div>' + list.map(function(p, i){
+      return '<div class="reel-part"><b>الجزء ' + toArabicIndic(i + 1) + '</b><small>' + toArabicIndic(Math.round(p.sec)) + ' ثانية</small>' +
+        '<button class="btn ghost" data-rp="dl" data-i="' + i + '">⬇ تنزيل</button><button class="btn primary" data-rp="share" data-i="' + i + '">↗ واتساب</button></div>';
+    }).join("");
+  }
+  (function(){
+    var box = document.getElementById("reelParts"); if (!box) return;
+    box.addEventListener("click", function(e){
+      var b = e.target.closest("[data-rp]"); if (!b) return;
+      var p = reel.parts[+b.getAttribute("data-i")]; if (!p) return;
+      var name = "wirdi-" + surahName(reelCfg.surah) + "-" + (+b.getAttribute("data-i") + 1) + "." + p.ext;
+      if (b.getAttribute("data-rp") === "dl"){
+        var u = URL.createObjectURL(p.blob), a = document.createElement("a");
+        a.href = u; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(u); }, 5000);
+      } else {
+        var f = new File([p.blob], name, { type: p.blob.type });
+        if (navigator.canShare && navigator.canShare({ files: [f] })) navigator.share({ files: [f], title: "سورة " + surahName(reelCfg.surah) + " — الجزء " + toArabicIndic(+b.getAttribute("data-i") + 1) }).catch(function(){});
+        else showToast("المشاركة المباشرة مش مدعومة — استخدم زرار التنزيل");
+      }
+    });
+  })();
+  // the reel itself (preview / record): as before, without the length limits, recorded in parts for WhatsApp
+  reelRun = function(record){
+    reelReadForm();
+    var cfg = JSON.parse(JSON.stringify(reelCfg)), lim = record ? reelSplitSec() : 0;
+    if (record && reelPickMime() === null){ showToast("تسجيل الفيديو مش مدعوم على الموبايل ده"); return; }
+    reelStop();
+    var job = reel.job, AC = window.AudioContext || window.webkitAudioContext, actx = new AC();
+    if (actx.state === "suspended" && actx.resume) actx.resume();
+    reel.ctx = actx; reel.running = true; reel.blob = null; reel.parts = []; reelPartsUi(); reelUpdateButtons();
+    var st = document.getElementById("reelStatus"), canvas = document.getElementById("reelCanvas"), g = canvas.getContext("2d");
+    st.textContent = "جاري تحميل الآيات والتلاوة…";
+    Promise.all([
+      document.fonts ? Promise.all([document.fonts.load('70px "KFGQPC Hafs"'), document.fonts.load('70px "Amiri"')]) : Promise.resolve(),
+      reelLoad(cfg, actx, function(d, n){ if (job === reel.job) st.textContent = "جاري التحميل " + toArabicIndic(d) + " / " + toArabicIndic(n); })
+    ]).then(function(res){
+      if (job !== reel.job) return;
+      var items = res[1], t = 0.9;
+      items.forEach(function(it){ reelTrim(it); it.start = t; t += it.speech + (it.clipped ? 0.06 : REEL_GAP); });
+      t += REEL_TAIL;
+      var data = { items: items, total: t + 0.8 };
+      reel.lastData = data; reel.lastCfg = cfg;
+      var parts = reelParts(data, lim), stream = null, dest = null, master = actx.createGain();
+      master.connect(actx.destination);
+      if (record){
+        dest = actx.createMediaStreamDestination(); master.connect(dest);
+        stream = canvas.captureStream(30);
+        dest.stream.getAudioTracks().forEach(function(tr){ stream.addTrack(tr); });
+      }
+      function fmt(x){ x = Math.max(0, Math.floor(x)); return toArabicIndic(Math.floor(x / 60)) + ":" + toArabicIndic(pad2(x % 60)); }
+      function finish(){
+        reel.job++; reel.running = false;
+        if (reelMedia && reelMedia.kind === "video"){ try { reelMedia.el.pause(); } catch(e){} }
+        setTimeout(function(){ try { actx.close(); } catch(e){} }, 300);
+        reelUpdateButtons();
+      }
+      // one part [a, z] of the timeline: its sounds, its frames, its recording
+      function runPart(pi){
+        var a = parts[pi][0], z = parts[pi][1], len = z - a, many = parts.length > 1;
+        reelFrame(g, cfg, data, a + (pi ? 0 : 0));
+        var t0 = actx.currentTime + (record ? 0.6 : 0.25);
+        if (cfg.bg === "custom" && reelMedia && reelMedia.kind === "video" && !pi){ try { reelMedia.el.currentTime = 0; reelMedia.el.play(); } catch(e){} }
+        items.forEach(function(it){
+          var on = it.start, off = it.start + it.dur;
+          if (off <= a || on >= z) return;
+          // each ayah: 15 ms fade-in, full voice, then a smooth fade of the echo; cut cleanly at the part's edges
+          var src = actx.createBufferSource(), env = actx.createGain(), from = Math.max(on, a), till = Math.min(off, z), s0 = t0 + (from - a);
+          src.buffer = it.buf; src.connect(env); env.connect(master);
+          env.gain.setValueAtTime(0, s0); env.gain.linearRampToValueAtTime(1, s0 + 0.015);
+          if (on + it.speech < till){ env.gain.setValueAtTime(1, t0 + (on + it.speech - a)); env.gain.linearRampToValueAtTime(0, t0 + (till - a)); }
+          else { env.gain.setValueAtTime(1, t0 + (till - a) - 0.04); env.gain.linearRampToValueAtTime(0, t0 + (till - a)); }
+          src.start(s0, it.off + (from - on), till - from);
+        });
+        var rec = null, chunks = [];
+        if (record){
+          var mime = reelPickMime(), opts = { videoBitsPerSecond: 8000000, audioBitsPerSecond: 160000, videoKeyFrameIntervalDuration: 1000 };
+          if (mime) opts.mimeType = mime;
+          try { rec = new MediaRecorder(stream, opts); } catch(e){ delete opts.videoKeyFrameIntervalDuration; rec = new MediaRecorder(stream, opts); }
+          reel.rec = rec;
+          rec.ondataavailable = function(e){ if (e.data && e.data.size) chunks.push(e.data); };
+          rec.onstop = function(){
+            if (!chunks.length || job !== reel.job) return;
+            var raw = new Blob(chunks, { type: (rec.mimeType || mime || "video/webm").split(";")[0] });
+            st.textContent = "⏳ تجهيز " + (many ? "الجزء " + toArabicIndic(pi + 1) : "الفيديو") + " للنشر…";
+            reelFixContainer(raw, len).then(function(fixed){
+              if (job !== reel.job) return;
+              var ext = /mp4/.test(fixed.type) ? "mp4" : "webm";
+              if (!many){
+                reel.blob = fixed; reel.blobExt = ext;
+                st.textContent = "✓ الفيديو جاهز (" + (fixed.size / 1048576).toFixed(1) + " ميجا، " + ext.toUpperCase() + "، " + toArabicIndic(Math.round(len)) + " ثانية)";
+                finish(); return;
+              }
+              reel.parts.push({ blob: fixed, ext: ext, sec: len }); reelPartsUi();
+              if (pi + 1 < parts.length){ runPart(pi + 1); return; }
+              st.textContent = "✓ " + toArabicIndic(parts.length) + " أجزاء جاهزة لحالة واتساب — انشرهم بالترتيب";
+              finish();
+            });
+          };
+          rec.start(1000);
+        }
+        var label = record ? (many ? "⏺ الجزء " + toArabicIndic(pi + 1) + " من " + toArabicIndic(parts.length) + "… أبقِ الشاشة مفتوحة" : "⏺ جاري إنشاء الفيديو… أبقِ الشاشة مفتوحة") : "▶ معاينة", lastSec = -1;
+        st.textContent = label;
+        function loop(){
+          if (job !== reel.job) return;
+          var tt = actx.currentTime - t0;
+          reelFrame(g, cfg, data, a + Math.max(0, tt));
+          if (many){   // «١ / ٣» in the corner of every part
+            g.save(); g.direction = "rtl"; g.textAlign = "left"; g.shadowColor = "rgba(0,0,0,0.6)"; g.shadowBlur = 10;
+            g.fillStyle = "rgba(255,255,255,0.8)"; g.font = '700 40px "Amiri", serif'; g.fillText(toArabicIndic(pi + 1) + " / " + toArabicIndic(parts.length), 60, 120); g.restore();
+          }
+          if (Math.floor(tt) !== lastSec && tt >= 0){ lastSec = Math.floor(tt); st.textContent = label + " " + fmt(tt) + " / " + fmt(len); }
+          if (tt >= len){
+            if (rec && rec.state !== "inactive"){ rec.stop(); return; }   // the next part starts when this one is saved
+            st.textContent = "انتهت المعاينة"; finish(); return;
+          }
+          reel.raf = requestAnimationFrame(loop);
+        }
+        loop();
+      }
+      runPart(0);
+    }).catch(function(){
+      if (job !== reel.job) return;
+      reelStop();
+      st.textContent = "تعذر تحميل التلاوة. صانع الريلز يحتاج اتصالًا بالإنترنت — أو جرّب قارئًا آخر.";
+    });
+  };
+  // the old «short surahs only» line under the surah: this reciter now reads any surah, in full
+  var renderReelsBase = renderReels;
+  renderReels = function(){
+    renderReelsBase();
+    var R = reelReciter(reelCfg.reciter), el = document.getElementById("reelAyahCount");
+    if (el && R.kind === "surah") el.textContent = "عدد آيات السورة: " + toArabicIndic(ayahCount(reelCfg.surah)) + " • هذا القارئ: السورة كاملة";
+  };
 
   // generated by gen_gift.js from «حصن المسلم» (hisnmuslim.com) — [chapter, text, repeat]
   var GIFT_HISN = [["دعاء الاستفتاح","اللَّهُمَّ بَاعِدْ بَيْنِي وَبَيْنَ خَطَايَايَ كَمَا بَاعَدْتَ بَيْنَ الْمَشْرِقِ وَالْمَغْرِبِ، اللَّهُمَّ نَقِّنِي مِنْ خَطَايَايَ كَمَا يُنَقَّى الثَّوْبُ الْأَبْيَضُ مِنَ الدَّنَسِ، اللَّهُمَّ اغْسِلْني مِنْ خَطَايَايَ، بِالثَّلْجِ وَالْماءِ وَالْبَرَدِ.",1],["دعاء الاستفتاح","اللَّهُمَّ رَبَّ جِبْرَائِيلَ، وَمِيْكَائِيلَ، وَإِسْرَافِيلَ، فَاطِرَ السَّمَوَاتِ وَالأَرْضِ، عَالِمَ الغَيْبِ وَالشَّهَادَةِ أَنْتَ تَحْكُمُ بَيْنَ عِبَادِكَ فِيمَا كَانُوا فِيهِ يَخْتَلِفُونَ. اهْدِنِي لِمَا اخْتُلِفَ فِيهِ مِنَ الْحَقِّ بِإِذْنِكَ إِنَّكَ تَهْدِي مَنْ تَشَاءُ إِلَى صِرَاطٍ مُسْتَقيمٍ.",1],["دعاء الاستفتاح","اللَّهُمَّ لَكَ الْحَمْدُ، أَنْتَ نُورُ السَّمَوَاتِ وَالأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ أَنْتَ قَيِّمُ السَّمَوَاتِ وَالأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ أَنْتَ رَبُّ السَّمَواتِ وَالأَرْضِ وَمَنْ فِيهِنَّ وَلَكَ الْحَمْدُ لَكَ مُلْكُ السَّمَوَاتِ وَالأَرْضِ وَمَنْ فِيهِنَّ وَلَكَ الْحَمْدُ أَنْتَ مَلِكُ السَّمَوَاتِ وَالأَرْضِ وَلَكَ الْحَمْدُ أَنْتَ الْحَقُّ، وَوَعْدُكَ الْحَقُّ، وَقَوْلُكَ الْحَقُّ، وَلِقاؤُكَ الْحَقُّ، وَالْجَنَّةُ حَقٌّ، وَالنَّارُ حَقٌّ، وَالنَّبِيُّونَ حَقٌّ، وَمحَمَّدٌ صلى الله عليه وسلم حَقٌّ، وَالسّاعَةُ حَقٌّ اللَّهُمَّ لَكَ أَسْلَمتُ، وَعَلَيْكَ تَوَكَّلْتُ، وَبِكَ آمَنْتُ، وَإِلَيْكَ أَنَبْتُ، وَبِكَ خاصَمْتُ، وَإِلَيْكَ حاكَمْتُ. فَاغْفِرْ لِي مَا قَدَّمْتُ، وَمَا أَخَّرْتُ، وَمَا أَسْرَرْتُ، وَمَا أَعْلَنْتُ وَمَا أَنْتَ أَعْلَمُ بِهِ مِنِّي أَنْتَ المُقَدِّمُ، وَأَنْتَ المُؤَخِّرُ لاَ إِلَهَ إِلاَّ أَنْتَ أَنْتَ إِلَهِي لاَ إِلَهَ إِلاَّ أَنْتَ وَلاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ.",1],["دعاء الركوع","اللَّهُمَّ لَكَ رَكَعْتُ، وَبِكَ آمَنْتُ، وَلَكَ أَسْلَمْتُ، خَشَعَ لَكَ سَمْعِي، وَبَصَرِي، وَمُخِّي، وَعَــــظْمِي، وَعَصَبِي، وَمَا استَقَلَّتْ بِهِ قَدَمِي.",1],["دعاء الرفع من الركوع","رَبَّنَا وَلَكَ الْحَمْدُ، حَمْداً كَثيراً طَيِّباً مُبارَكاً فِيهِ.",1],["دعاء السجود","اللَّهُمَّ لَكَ سَجَدْتُ وَبِكَ آمَنْتُ، وَلَكَ أَسْلَمْتُ، سَجَدَ وَجْهِيَ لِلَّذِي خَلَقَهُ، وَصَوَّرَهُ، وَشَقَّ سَمْعَهُ وَبَصَرَهُ، تَبَارَكَ اللَّهُ أَحْسنُ الْخَالِقينَ.",1],["دعاء السجود","اللَّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ: دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ، وَعَلاَنِيَّتَهُ وَسِرَّهُ.",1],["دعاء السجود","اللَّهُمَّ إِنِّي أَعُوذُ بِرِضَاكَ مِنْ سَخَطِكَ، وَبِمُعَافَاتِكَ مِنْ عُقوبَتِكَ، وَأَعُوذُ بِكَ مِنْكَ، لاَ أُحْصِي ثَنَاءً عَلَيْكَ، أَنْتَ كَمَا أَثْنَيْتَ عَلَى نَفْسِكَ.",1],["دعاء الجلسة بين السجدتين","رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي.",1],["دعاء الجلسة بين السجدتين","اللَّهُمَّ اغْفِرْ لِي، وَارْحَمْنِي، وَاهْدِنِي، وَاجْبُرْنِي، وَعَافِنِي، وَارْزُقْنِي، وَارْفَعْنِي.",1],["دعاء سجود التلاوة","اللَّهُمَّ اكْتُبْ لِي بِهَا عِنْدَكَ أَجْراً، وَضَعْ عَنِّي بِهَا وِزْراً، وَاجْعَلْهَا لِي عِنْدَكَ ذُخْراً، وَتَقَبَّلْهَا مِنِّي كَمَا تَقَبَّلْتَهَا مِنْ عَبْدِكَ دَاوُدَ.",1],["الصلاة على النبي بعد التشهد","اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ، وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيتَ عَلَى إِبْرَاهِيمَ، وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ.",1],["الصلاة على النبي بعد التشهد","اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى أَزْوَاجِهِ وَذُرِّيَّتِهِ، كَمَا صَلَّيْتَ عَلَى آلِ إِبْرَاهِيمَ. وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى أَزْواجِهِ وَذُرِّيَّتِهِ، كَمَا بَارَكْتَ عَلَى آلِ إِبْرَاهِيمَ. إِنَّكَ حَمِيدٌ مَجِيدٌ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ اغْفِرْ لِي مَا قَدَّمْتُ، وَمَا أَخَّرْتُ، وَمَا أَسْرَرْتُ، وَمَا أَعْلَنْتُ، وَمَا أَسْرَفْتُ، وَمَا أَنْتَ أَعْلَمُ بِهِ مِنِّي. أَنْتَ الْمُقَدِّمُ، وَأَنْتَ الْمُؤَخِّرُ لاَ إِلَهَ إِلاَّ أَنْتَ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ، وَشُكْرِكَ، وَحُسْنِ عِبادَتِكَ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَأَعُوذُ بِكَ مِنَ النَّارِ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ بِعِلْمِكَ الغَيْبَ وَقُدْرَتِكَ عَلَى الْخَلقِ أَحْيِنِي مَا عَلِمْتَ الْحَيَاةَ خَيْراً لِي، وَتَوَفَّنِي إِذَا عَلِمْتَ الْوَفَاةَ خَيْراً لِي، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَشْيَتَكَ فِي الْغَيْبِ وَالشَّهَادَةِ، وَأَسْأَلُكَ كَلِمَةَ الْحَقِّ فِي الرِّضَا وَالْغَضَبِ، وَأَسْأَلُكَ الْقَصْدَ فِي الْغِنَى وَالْفَقْرِ، وَأَسْأَلُكَ نَعِيماً لاَ يَنْفَدُ، وَأَسْأَلُكَ قُرَّةَ عَيْنٍ لاَ تَنْقَطِعُ، وَأَسْأَلُكَ الرِّضَا بَعْدَ الْقَضَاءِ، وَأَسْــــأَلُكَ بَرْدَ الْعَيْشِ بَعْدَ الْمَوْتِ، وَأَسْأَلُكَ لَذَّةَ النَّظَرِ إِلَى وَجْهِكَ، وَالشَّوْقَ إِلَى لِقائِكَ فِي غَيرِ ضَرَّاءَ مُضِرَّةٍ، وَلاَ فِتْنَةٍ مُضِلَّةٍ، اللَّهُمَّ زَيِّنَا بِزِينَةِ الإِيمَانِ، وَاجْعَلْنَا هُدَاةً مُهْتَدِينَ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ إِنِّي أَسْأَلُكَ يَا أَللَّهُ بِأَنَّكَ الْوَاحِدُ الْأَحَدُ الصَّمَدُ الَّذِي لَمْ يَلِدْ وَلَمْ يولَدْ، وَلَمْ يَكنْ لَهُ كُفُواً أَحَدٌ، أَنْ تَغْفِرَ لِي ذُنُوبِي إِنَّكَ أَنْتَ الْغَفُورُ الرَّحِّيمُ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ إِنِّي أَسْأَلُكَ بِأَنَّ لَكَ الْحَمْدَ لَا إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَكَ، الْمَنَّانُ، يَا بَدِيعَ السَّمَوَاتِ وَالْأَرْضِ يَا ذَا الْجَلاَلِ وَالْإِكْرَامِ، يَا حَيُّ يَا قَيُّومُ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَأَعُوذُ بِكَ مِنَ النَّارِ.",1],["الدعاء بعد التشهد الأخير قبل السلام","اللَّهُمَّ إِنِّي أَسْأَلُكَ بِأَنَّي أَشْهَدُ أَنَّكَ أَنْتَ اللَّهُ لاَ إِلَهَ إِلاَّ أَنْتَ الْأَحَدُ الصَّمَدُ الَّذِي لَمْ يَلِدْ وَلَمْ يُولَدْ وَلَمْ يَكُنْ لَهُ كُفُواً أَحَدٌ .",1],["الأذكار بعد السلام من الصلاة","اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْماً نافِعاً، وَرِزْقاً طَيِّباً، وَعَمَلاً مُتَقَبَّلاً بَعْدَ السّلامِ مِنْ صَلاَةِ الفَجْرِ.",1],["أذكار الصباح والمساء","اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا ، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ. وإذا أمسى قال: اللَّهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير.",1],["أذكار الصباح والمساء","اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلاَئِكَتِكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَكَ، وَأَنَّ مُحَمَّداً عَبْدُكَ وَرَسُولُكَ (أربعَ مَرَّاتٍ). وإذا أمسى قال: اللَّهم إني أمسيت...",4],["أذكار الصباح والمساء","اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لاَ شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ. وإذا أمسى قال: اللَّهم ما أمسى بي...",1],["أذكار الصباح والمساء","اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لاَ إِلَهَ إِلاَّ أَنْتَ. اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ، وَالفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ القَبْرِ، لاَ إِلَهَ إِلاَّ أَنْتَ (ثلاثَ مرَّاتٍ).",3],["أذكار الصباح والمساء","حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيهِ تَوَكَّلتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ (سَبْعَ مَرّاتٍ).",1],["أذكار الصباح والمساء","اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ: فِي دِينِي وَدُنْيَايَ وَأَهْلِي، وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَينِ يَدَيَّ، وَمِنْ خَلْفِي، وَعَنْ يَمِينِي، وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي.",1],["أذكار الصباح والمساء","اللَّهُمَّ عَالِمَ الغَيْبِ وَالشَّهَادَةِ فَاطِرَ السَّمَوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطانِ وَشَرَكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِي سُوءاً، أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ.",1],["أذكار الصباح والمساء","يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغيثُ أَصْلِحْ لِي شَأْنِيَ كُلَّهُ وَلاَ تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ.",1],["أذكار الصباح والمساء","اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبَيِّنَا مُحَمَّدٍ (عشرَ مرَّاتٍ).",10],["أذكار النوم","اللَّهُمَّ إِنَّكَ خَلَقْتَ نَفْسِي وَأَنْتَ تَوَفَّاهَا، لَكَ مَمَاتُهَا وَمَحْياهَا، إِنْ أَحْيَيْتَهَا فَاحْفَظْهَا، وَإِنْ أَمَتَّهَا فَاغْفِرْ لَهَا. اللَّهُمَّ إِنِّي أَسْأَلُكَ العَافِيَةَ.",1],["أذكار النوم","اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ.",1],["أذكار النوم","اللَّهُمَّ رَبَّ السَّمَوَاتِ السَّبْعِ وَرَبَّ الأَرْضِ، وَرَبَّ الْعَرْشِ الْعَظِيمِ، رَبَّنَا وَرَبَّ كُلِّ شَيْءٍ، فَالِقَ الْحَبِّ وَالنَّوَى، وَمُنْزِلَ التَّوْرَاةِ وَالْإِنْجِيلِ، وَالْفُرْقَانِ، أَعُوذُ بِكَ مِنْ شَرِّ كُلِّ شَيْءٍ أَنْتَ آخِذٌ بِنَاصِيَتِهِ. اللَّهُمَّ أَنْتَ الأَوَّلُ فَلَيْسَ قَبْلَكَ شَيْءٌ، وَأَنْتَ الآخِرُ فَلَيسَ بَعْدَكَ شَيْءٌ، وَأَنْتَ الظَّاهِرُ فَلَيْسَ فَوْقَكَ شَيْءٌ، وَأَنْتَ الْبَاطِنُ فَلَيْسَ دُونَكَ شَيْءٌ، اقْضِ عَنَّا الدَّيْنَ وَأَغْنِنَا مِنَ الْفَقْرِ.",1],["دعاء قنوت الوتر","اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ، وَعَافِنِي فِيمَنْ عَافَيْتَ، وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ، وَبَارِكْ لِي فِيمَا أَعْطَيْتَ، وَقِنِي شَرَّ مَا قَضَيْتَ؛ فَإِنَّكَ تَقْضِي وَلاَ يُقْضَى عَلَيْكَ، إِنَّهُ لاَ يَذِلُّ مَنْ وَالَيْتَ، وَلاَ يَعِزُّ مَنْ عَادَيْتَ، تَبارَكْتَ رَبَّنا وَتَعَالَيْتَ.",1],["دعاء قنوت الوتر","اللَّهُمَّ إِيَّاكَ نعْبُدُ، وَلَكَ نُصَلِّي وَنَسْجُدُ، وَإِلَيْكَ نَسْعَى وَنَحْفِدُ، نَرْجُو رَحْمَتَكَ، وَنَخْشَى عَذَابَكَ، إِنَّ عَذَابَكَ بِالكَافِرِينَ مُلْحَقٌ. اللَّهُمَّ إِنَّا نَسْتَعينُكَ، وَنَسْتَغْفِرُكَ، وَنُثْنِي عَلَيْكَ الْخَيْرَ، وَلاَ نَكْفُرُكَ، وَنُؤْمِنُ بِكَ، وَنَخْضَعُ لَكَ، وَنَخْلَعُ مَنْ يَكْفرُكَ.",1],["دعاء الهم والحزن","اللَّهُمَّ إِنِّي عَبْدُكَ، ابْنُ عَبْدِكَ، ابْنُ أَمَتِكَ، نَاصِيَتِي بِيَدِكَ، مَاضٍ فِيَّ حُكْمُكَ، عَدْلٌ فِيَّ قَضَاؤُكَ، أَسْأَلُكَ بِكُــــلِّ اسْمٍ هُوَ لَكَ، سَمَّيْتَ بِهِ نَفْسَكَ، أَوْ أَنْزَلْتَهُ فِي كِتَابِكَ، أَوْ عَلَّمْتَهُ أَحَداً مِنْ خَلْقِكَ، أَوِ اسْتَأْثَرْتَ بِهِ فِي عِلْمِ الغَيْبِ عِنْدَكَ، أَنْ تَجْعَلَ القُرْآنَ رَبِيعَ قَلْبِي، وَنُورَ صَدْرِي، وَجَلاَءَ حُزْنِي، وَذَهَابَ هَمِّي.",1],["دعاء الكرب","اللَّهُمَّ رَحْمَتَكَ أَرْجُو، فَلاَ تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ، وَأَصْلِحْ لِي شَأْنِي كُلَّهُ، لاَ إِلَهَ إِلاَّ أَنْتَ.",1],["دعاء الكرب","لاَ إِلَهَ إِلاَّ أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظّالِمِينَ.",1],["دعاء لقاء العدو و ذي السلطان","اللَّهُمَّ إِنَّا نَجْعَلُكَ فِي نُحُورِهِم، وَنَعُوذُ بِكَ مِنْ شُرُورِهِمْ.",1],["دعاء لقاء العدو و ذي السلطان","اللَّهُمَّ أَنْتَ عَضُدِي، وَأَنْتَ نَصِيرِي، بِكَ أَحُولُ وَبِكَ أَصُولُ، وَبِكَ أُقاتِلُ.",1],["الدعاء على العدو","اللَّهُمَّ مُنْزِلَ الْكِتَابِ، سَرِيعَ الْحِسَابِ، اهْزِمِ الأَحْزَابَ، اللَّهُمَّ اهزِمْهُمْ وَزَلْزِلْهُمْ.",1],["ما يقول من خاف قوما","اللَّهُمَّ اكْفِنِيهِمْ بِمَا شِئْتَ.",1],["دعاء قضاء الدين","اللَّهُمَّ اكْفِنِي بِحَلاَلِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكِ عَمَّنْ سِوَاكَ.",1],["دعاء من استصعب عليه أمر","اللَّهُمَّ لاَ سَهْلَ إِلاَّ مَا جَعَلْتَهُ سَهْلاً، وَأَنْتَ تَجْعَلُ الْحَزْنَ إِذَا شِئْتَ سَهْلاً.",1],["دعاء المريض الذي يئس من حياته","اللَّهُمَّ اغْفِرْ لِي، وَارْحَمْنِي، وَأَلْحِقْنِي بِالرَّفِيقِ الْأَعْلَى.",1],["الدعاء عند إفطار الصائم","اللَّهُمَّ إِنِّي أَسْأَلُكَ بِرَحْمَتِكَ الَّتِي وَسِعَتْ كُلَّ شَيْءٍ أَنْ تَغْفِرَ لِي.",1],["دعاء الضيف لصاحب الطعام","اللَّهُمَّ بَارِكْ لَهُمْ فِيمَا رَزَقْتَهُم، وَاغْفِرْ لَهُمْ وَارْحَمْهُمْ.",1],["دعاء الخوف من الشرك","اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَنْ أُشْرِكَ بِكَ وَأَنَا أَعْلَمُ، وَأَسْتَغْفِرُكَ لِمَا لاَ أَعْلَمُ.",1],["ما يقول المسلم إذا زكي","اللَّهُمَّ لاَ تُؤَاخِذْنِي بِمَا يَقُولُونَ، وَاغْفِرْ لِي مَا لاَ يَعْلَمُونَ، وَاجْعَلْنِي خَيْراً مِمَّا يَظُّنُّونَ.",1]];
@@ -8792,30 +9237,11 @@ const EVENING_ADHKAR = [
       }).catch(function(){});
     }
 
-    // ---- prayer times for the coming days (Aladhan monthly calendar, cached per month) ----
-    function monthTimes(y, m){
-      var key = "wirdi4-pt-" + y + "-" + m, c = loadJSON(key, null);
-      if (c) return Promise.resolve(c);
-      return fetch("https://api.aladhan.com/v1/calendarByCity/" + y + "/" + m + "?city=Cairo&country=Egypt&method=5")
-        .then(function(r){ return r.json(); })
-        .then(function(j){
-          var out = {};
-          (j.data || []).forEach(function(d){
-            var p = d.date.gregorian.date.split("-");   // DD-MM-YYYY
-            var t = {}; ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(function(k){ t[k] = String(d.timings[k]).slice(0, 5); });
-            out[p[2] + "-" + p[1] + "-" + p[0]] = t;
-          });
-          saveJSON(key, out);
-          return out;
-        });
-    }
+    // ---- prayer times for the coming days: computed on the phone for the chosen place (prayloc.js) ----
     function nextDaysTimes(n){
-      var now = new Date(), months = {}, days = [];
-      for (var i = 0; i < n; i++){ var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i); days.push(d); months[d.getFullYear() + "-" + (d.getMonth() + 1)] = [d.getFullYear(), d.getMonth() + 1]; }
-      return Promise.all(Object.keys(months).map(function(k){ return monthTimes(months[k][0], months[k][1]).catch(function(){ return {}; }); })).then(function(all){
-        var merged = {}; all.forEach(function(o){ for (var k in o) merged[k] = o[k]; });
-        return days.map(function(d){ return { date: d, t: merged[dayKey(d)] || null }; });
-      });
+      var now = new Date(), loc = ptLoc(), days = [];
+      for (var i = 0; i < n; i++){ var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i); days.push({ date: d, t: ptCompute(d, loc) }); }
+      return Promise.resolve(days);
     }
     function at(d, hm){ var p = String(hm).split(":"); return new Date(d.getFullYear(), d.getMonth(), d.getDate(), +p[0], +p[1], 0); }
 
