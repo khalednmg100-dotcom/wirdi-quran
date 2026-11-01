@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-AD76rvPjp3Cl/NxK/enwDYC8F9JEZY+78kRq9o3zK60='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-tS5IEYNbkxSrXzp0ZDLax8/UHQpOLq4c3EYfpfs3H08='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -1059,6 +1059,10 @@
   :root[data-theme="dark"] .mc-sh, :root.aurora .mc-sh{background:#211A13; color:#7FD3C1; border-color:#3B301F;}
 
 /*/WIRDI4-CSS*/
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
   html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
@@ -7302,7 +7306,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "bc92e3d51bd3", verChecked = 0;
+  var WIRDI_BUILD = "51acf41f7cb0", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -9059,6 +9063,17 @@ const EVENING_ADHKAR = [
     var after = document.getElementById("installTip") || home.querySelector(".topbar");
     if (after) after.insertAdjacentElement("afterend", card); else home.insertBefore(card, home.firstChild);
   })();
+  // ---- settings: «عندك اقتراح؟» opens WhatsApp to the developer, above «عن وِرْدِي» ----
+  (function(){
+    var about = Array.prototype.filter.call(document.querySelectorAll(".settings-section h3"), function(h){ return h.textContent.indexOf("عن وِرْدِي") !== -1; })[0];
+    if (!about || document.getElementById("suggestBtn")) return;
+    var sec = document.createElement("div"); sec.className = "settings-section";
+    sec.innerHTML = '<h3>💡 عندك اقتراح؟</h3><div class="settings-row"><div><label>فكرة أو تعديل أو مشكلة</label><span class="hint">ابعتها على واتساب، وكل فكرة بتتسمع وأجرها لصاحبها 🌿</span></div><button class="btn primary" id="suggestBtn">ابعت</button></div>';
+    about.parentNode.parentNode.insertBefore(sec, about.parentNode);
+    document.getElementById("suggestBtn").addEventListener("click", function(){
+      shOpen("https://api.whatsapp.com/send?phone=201090170289&text=" + encodeURIComponent("السلام عليكم، عندي اقتراح لتطبيق وِرْدِي:\n"));
+    });
+  })();
 
   // ---------------- the home in tabs: a bar at the bottom (الرئيسية • المصحف • الأذكار • الدروس) ----------------
   // Every section of the home goes with the title above it (up to the next title); anything without a title
@@ -9132,12 +9147,24 @@ const EVENING_ADHKAR = [
   // ---------------- Adhan in the page: Masjid al-Haram recording, stop bar, full / takbir only ----------------
   // (The phone app plays it natively with a stop button in the notification — see native.js / AdhanService.)
   // Sheikh Ali Mulla (muezzin of Masjid al-Haram) for the prayers, a Haram Fajr adhan («الصلاة خير من النوم»).
-  ADHAN_URL = "audio/adhan_makkah.mp3";
+  // The muezzin is chosen in the settings (appSettings.adhanVoice). Fajr stays the Haram recording: it is the one with
+  // «الصلاة خير من النوم». short: the second at which the two takbirs end (for «التكبير فقط»).
+  var ADHAN_VOICES = [
+    { id: "makkah", name: "الحرم المكي — الشيخ علي ملا", short: 33 },
+    { id: "refaat", name: "🇪🇬 الشيخ محمد رفعت", short: 29 },
+    { id: "abdulbasit", name: "🇪🇬 الشيخ عبد الباسط عبد الصمد", short: 28 },
+    { id: "minshawi", name: "🇪🇬 الشيخ محمد صديق المنشاوي", short: 43 },
+    { id: "afasy", name: "الشيخ مشاري العفاسي", short: 37 },
+    { id: "qatami", name: "الشيخ ناصر القطامي", short: 26 },
+    { id: "zahrani", name: "الشيخ منصور الزهراني", short: 22 },
+  ];
+  function adhanVoice(){ var id = appSettings.adhanVoice; return ADHAN_VOICES.filter(function(v){ return v.id === id; })[0] || ADHAN_VOICES[0]; }
+  ADHAN_URL = "audio/adhan_" + adhanVoice().id + ".mp3";
   ADHAN_FAJR_URL = "audio/adhan_makkah_fajr.mp3";
   (function(){
     var bar = document.createElement("div");
     bar.className = "adhan-bar"; bar.hidden = true;
-    bar.innerHTML = '<span>🕌 الأذان — بصوت الحرم المكي</span><button class="btn primary" type="button">⏹ إيقاف الأذان</button>';
+    bar.innerHTML = '<span>🕌 الأذان</span><button class="btn primary" type="button">⏹ إيقاف الأذان</button>';
     document.body.appendChild(bar);
     function stop(){ try { adhanAudioEl.pause(); adhanAudioEl.currentTime = 0; } catch(e){} bar.hidden = true; }
     bar.querySelector("button").addEventListener("click", stop);
@@ -9146,11 +9173,30 @@ const EVENING_ADHKAR = [
     // "takbir only": stop after the first two takbirs (with a short fade)
     adhanAudioEl.addEventListener("timeupdate", function(){
       if (!appSettings.adhanShort || adhanAudioEl.paused) return;
-      var limit = adhanAudioEl.src.indexOf("fajr") !== -1 ? 20 : 33, t = adhanAudioEl.currentTime;
+      var limit = adhanAudioEl.src.indexOf("fajr") !== -1 ? 20 : adhanVoice().short, t = adhanAudioEl.currentTime;
       if (t > limit) stop();
       else adhanAudioEl.volume = t > limit - 2 ? Math.max(0, (limit - t) / 2) : 1;
     });
     // settings: full adhan / takbir only, and a preview
+    // settings: the muezzin (a row above the full / takbir-only row)
+    var lenSel = document.getElementById("adhanLengthSelect"), row = lenSel && lenSel.closest(".settings-row");
+    if (row && !document.getElementById("adhanVoiceSelect")){
+      var vr = document.createElement("div"); vr.className = "settings-row";
+      vr.innerHTML = '<div><label>🎙️ المؤذن</label><span class="hint">أذان الفجر بصوت الحرم المكي («الصلاة خير من النوم»)</span></div>' +
+        '<select id="adhanVoiceSelect">' + ADHAN_VOICES.map(function(v){ return '<option value="' + v.id + '">' + v.name + '</option>'; }).join("") + '</select>';
+      row.parentNode.insertBefore(vr, row);
+      var hint = row.querySelector(".hint"); if (hint) hint.textContent = "تقدر توقفه من زرار «إيقاف الأذان» في الإشعار";
+      var vs = vr.querySelector("select");
+      vs.value = adhanVoice().id;
+      vs.addEventListener("change", function(){
+        appSettings.adhanVoice = vs.value; saveSettings();
+        ADHAN_URL = "audio/adhan_" + adhanVoice().id + ".mp3";
+        try { fetch(ADHAN_URL).catch(function(){}); } catch(e){}   // kept for offline (sw.js caches /audio/)
+        if (window.__wirdiReschedule) window.__wirdiReschedule();
+        stop(); adhanAudioEl.src = ADHAN_URL; adhanAudioEl.volume = 1;
+        adhanAudioEl.play().catch(function(){ showToast("تعذر تشغيل الأذان — محتاج نت أول مرة"); });
+      });
+    }
     var sel = document.getElementById("adhanLengthSelect");
     if (sel){
       sel.value = appSettings.adhanShort ? "short" : "full";
@@ -9888,7 +9934,7 @@ const EVENING_ADHKAR = [
                   var tip = prayerSunnah(pn[0]), ch = appSettings.adhanEnabled ? (pn[0] === "Fajr" ? "wirdi_adhan_fajr" : "wirdi_adhan") : "wirdi_prayer";
                   var when = at(day.date, day.t[pn[0]]), title = "🕌 حان وقت صلاة " + pn[1], body = tip ? "🌿 " + tip.title + ": «" + tip.text + "» — " + tip.ref : "";
                   // phone app v15+: the full adhan of Masjid al-Haram with a stop button (AdhanService)
-                  if (appSettings.adhanEnabled && liveAdhan){ if (when.getTime() > now) adhans.push({ at: when.getTime(), title: title, body: body, prayer: pn[1], fajr: pn[0] === "Fajr", maxSec: appSettings.adhanShort ? (pn[0] === "Fajr" ? 20 : 33) : 0 }); return; }
+                  if (appSettings.adhanEnabled && liveAdhan){ if (when.getTime() > now) adhans.push({ at: when.getTime(), title: title, body: body, prayer: pn[1], fajr: pn[0] === "Fajr", voice: adhanVoice().id, maxSec: appSettings.adhanShort ? (pn[0] === "Fajr" ? 20 : adhanVoice().short) : 0 }); return; }
                   add(1000 + di * 10 + pi, when, title, body, ch);
                 });
               }
