@@ -2,10 +2,19 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-+NwummLmgEfUyi3FNThJ605ArSTklrelZGsEBNb4aXg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-GTAEGUI598JlnUPt6yqmT0B44EPjh8UpDuUC1sGJ43w='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
+<meta name="description" content="وِرْدِي: تطبيق مجاني للقرآن الكريم بدون إعلانات — المصحف كامل بالتلاوة والتفسير، حفظ القرآن، أذكار الصباح والمساء، مواقيت الصلاة والأذان، السبحة، والرقية الشرعية.">
+<link rel="canonical" href="https://khalednmg100-dotcom.github.io/wirdi-quran/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_EG">
+<meta property="og:site_name" content="وِرْدِي">
+<meta property="og:title" content="وِرْدِي - حفظ القرآن الكريم والأذكار">
+<meta property="og:description" content="المصحف بالتلاوة والتفسير، حفظ القرآن، الأذكار، مواقيت الصلاة والأذان — مجانًا وبدون إعلانات">
+<meta property="og:url" content="https://khalednmg100-dotcom.github.io/wirdi-quran/">
+<meta property="og:image" content="https://khalednmg100-dotcom.github.io/wirdi-quran/icon-512.png">
 <meta name="theme-color" content="#0E6E5F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1059,6 +1068,8 @@
   :root[data-theme="dark"] .mc-sh, :root.aurora .mc-sh{background:#211A13; color:#7FD3C1; border-color:#3B301F;}
 
 /*/WIRDI4-CSS*/
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
   html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
@@ -7331,7 +7342,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "c65adad92cab", verChecked = 0;
+  var WIRDI_BUILD = "9c5c6af01a9a", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
