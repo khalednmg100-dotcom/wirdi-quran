@@ -454,6 +454,7 @@ self.addEventListener("fetch", function(event) {
   if (event.request.method !== "GET") return;
   var reqUrl = new URL(event.request.url), reqHost = reqUrl.hostname;
   if (reqUrl.pathname.slice(-12) === "/donate.json") return;
+  if (reqUrl.pathname.slice(-16) === "/app-config.json") return;   // the control panel's file: always from the network
   if (reqHost === "verses.quran.com" && reqUrl.pathname.indexOf("/fonts/quran/") === 0) {
     event.respondWith(caches.open(QCF_CACHE).then(function(c) {
       return c.match(event.request).then(function(hit) {
