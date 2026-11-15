@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-Hj5lsnVYlrgTBvEKmlKPuBQJL5Ty0IF4FDUbA1FAZhI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-8AW94MJqUlxSyLgvVIZITHBPy+3U9461+K/714bhJwA='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -1209,8 +1209,23 @@
   .mushaf-page.m15 .ml{gap:0.25em;}
   .mushaf-page.m15.ml-short .ml{gap:0.28em;}
   .mushaf-page.m15.ml-flow .ml{gap:0;}
+  /* the mushaf pages drawn ahead: the same box as the page, out of sight, until the turn shows one */
+  .mushaf-page.ml-ready{position:absolute; left:0; top:0; visibility:hidden; pointer-events:none; transition:none;}
+  .mushaf-page.ml-ready:has(.ml-tajweed){will-change:transform; contain:layout paint;}
+  /* full screen (the status bar is hidden): the bars stay clear of the camera */
+  body.mq-fs .mq-bar{padding-top:calc(6px + max(env(safe-area-inset-top), 28px));}
+  body.mq-fs .msc-top{padding-top:calc(8px + max(env(safe-area-inset-top), 28px));}
+  body.mq-fs.mq-immersive #mushafViewport{margin-top:max(env(safe-area-inset-top), 28px);}
+  /* a short line (the last surahs): its words together in the middle, not pulled to both edges */
+  .mushaf-page.m15 .ml.ml-loose{justify-content:center; gap:0.3em;}
 
 /*/WIRDI4-CSS*/
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
   html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
@@ -3500,9 +3515,12 @@ const EVENING_ADHKAR = [
     var mpHq = (pg.hq - 1) % 4, mpQuarter = ["", "¼ ", "½ ", "¾ "][mpHq];
     var mpHead = '<div class="mp-head"><span class="mp-surah">سورة ' + surahNames.join(" • ") + '</span><span class="mp-juz">الجزء ' + JUZ_ORDINALS[pg.j - 1] + ' • ' + mpQuarter + 'الحزب ' + toArabicIndic(Math.ceil(pg.hq / 4)) + '</span></div>';
     var mpFoot = '<div class="mp-foot"><span>' + toArabicIndic(pg.p) + '</span></div>';
-    var m15 = typeof mushaf15Html === "function" ? mushaf15Html(mushafPageNum) : null, mpc = document.getElementById("mushafPageContent");
-    mpc.classList.toggle("m15", !!m15);
-    mpc.innerHTML = m15 || (mpHead + html + mpFoot);
+    var mlAd = typeof mlAdopt === "function" && mlAdopt(mushafPageNum), m15 = null, mpc = document.getElementById("mushafPageContent");
+    if (!mlAd){
+      m15 = typeof mushaf15Html === "function" ? mushaf15Html(mushafPageNum) : null;
+      mpc.classList.toggle("m15", !!m15);
+      mpc.innerHTML = m15 || (mpHead + html + mpFoot);
+    }
     if (typeof mqBarRender === "function") mqBarRender();
     document.getElementById("mushafSurahLine").textContent = surahNames.join(" • ");
 
@@ -7537,7 +7555,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "822a4b31150d", verChecked = 0;
+  var WIRDI_BUILD = "02a76fba510f", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -10300,7 +10318,7 @@ const EVENING_ADHKAR = [
       };
       var sum = measure(), n = toks.length, need = sum + fs * 0.25 * (n - 1);
       if (need > w * 0.995){ fs = fs * w * 0.99 / need; sum = measure(); }
-      var center = short || L[0] === "b" || n < 2, gap = center ? fs * 0.28 : (w - sum) / (n - 1);
+      var center = short || L[0] === "b" || n < 2 || need < w * 0.8, gap = center ? fs * 0.28 : (w - sum) / (n - 1);   // (a short line is not stretched)
       var cx = x + w - (center ? (w - sum - gap * (n - 1)) / 2 : 0);
       g.font = fs.toFixed(2) + "px " + FONT;
       var m = g.measureText("ب"), asc = m.fontBoundingBoxAscent || fs * 0.9, desc = m.fontBoundingBoxDescent || fs * 0.4;
@@ -10904,8 +10922,10 @@ const EVENING_ADHKAR = [
     var ask = ++mlTurnAsk, el = document.getElementById("mushafPageContent");
     var draw = function(){
       if (ask !== mlTurnAsk) return;   // a newer turn came first
+      mlDir = newPage > mushafPageNum ? 1 : -1;
       mushafPageNum = newPage;
       renderMushafPage();
+      el = document.getElementById("mushafPageContent");   // (may be the layer that was waiting)
       el.classList.remove("turn-next", "turn-prev");
       var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (el.animate && !still){
@@ -10935,6 +10955,7 @@ const EVENING_ADHKAR = [
     return w;
   }
   // toks: [[text, family, isAyahEnd]] → the line's own font size in px, or 0 when the page's size fits
+  var mlRowLoose = false;
   function mlRowSize(toks, W, f, qcf, short){
     var sum = 0, px = 0;
     for (var i = 0; i < toks.length; i++){
@@ -10942,58 +10963,71 @@ const EVENING_ADHKAR = [
       sum += mlW(toks[i][0], toks[i][1]) * (end ? 1.05 : 1); if (end) px += 2;
     }
     var need = sum * f / 100 + px + (short ? 0.28 : 0.25) * f * Math.max(0, toks.length - 1);   // (a page of fewer lines: wider spaces)
+    mlRowLoose = toks.length > 1 && need < W * 0.8;   // a short line: its words stay together in the middle
     return need > W * 0.995 ? Math.floor(f * W * 0.985 / need * 100) / 100 : 0;
   }
-  // The heavy look splits every word into its letters and its marks, and that takes measuring the word several
-  // times — a page of new words froze a phone for a moment on every turn. So the next pages' words are measured
-  // ahead, a few at a time between frames, while the page in front is being read: the turn then only draws.
-  // …and the page itself is laid out ahead, out of sight, a few lines at a time: the browser keeps the shapes of
-  // the words it has drawn at a size, so the same page put on the screen a moment later costs a fraction.
-  var mlWarmT = 0, mlWarmJob = 0, mlWarmBox = null, mlWarmNext = null;
-  function mlWarmDraw(p, job){
-    var real = document.getElementById("mushafPageContent");
-    if (!mlDim || !real || !real.parentNode || (mushafZoom || 1) > 1.01){ if (mlWarmNext) mlWarmNext(); return; }
-    if (!mlWarmBox){
-      mlWarmBox = document.createElement("div"); mlWarmBox.setAttribute("aria-hidden", "true");
-      mlWarmBox.style.cssText = "position:absolute; left:0; top:0; width:100%; height:0; overflow:hidden; visibility:hidden; pointer-events:none; contain:strict;";
-      real.parentNode.appendChild(mlWarmBox);
-    }
-    var html = mushaf15Html(p), tmp = document.createElement("div"); tmp.innerHTML = html;
-    var src = tmp.firstChild, lines = [].slice.call(src.children);
-    var pg = document.createElement("div"); pg.className = "mushaf-page m15" + (lines.length < 15 ? " ml-short" : ""); pg.setAttribute("data-wp", p);
-    pg.style.cssText = "width:" + real.offsetWidth + "px; font-size:" + real.style.fontSize + "; --ml-row:" + real.style.getPropertyValue("--ml-row") + ";";
-    var wrap = document.createElement("div"); wrap.className = src.className; pg.appendChild(wrap); mlWarmBox.appendChild(pg);
-    var add = function(){
-      if (job !== mlWarmJob) return;
-      for (var k = 0; k < 2 && lines.length; k++) wrap.appendChild(lines.shift());
-      void pg.offsetHeight;
-      if (lines.length) mlWarmT = setTimeout(add, 30); else { pg.setAttribute("data-ok", "1"); if (mlWarmNext) mlWarmNext(); }
-    };
-    add();
-  }
+  // ---- the next pages wait, already drawn, behind the one in front ----
+  // Laying out a page of this font is slow on a phone (every word is shaped, and in the heavy look twice), and it
+  // used to happen at the moment of the turn. Now, while a page is being read, its neighbours are drawn a couple
+  // of lines at a time in hidden layers of exactly the same size; a turn then only shows the layer (mlAdopt) and
+  // nothing is laid out. A layer that does not fit the screen / look any more is thrown away.
+  var mlWarmT = 0, mlWarmJob = 0, mlDir = 1;
+  function mlLayerKey(real){ return mushafStyle() + "|" + (mlDim ? mlDim.W + "|" + mlDim.f : "") + "|" + real.style.fontSize + "|" + real.style.getPropertyValue("--ml-row"); }
+  function mlLayersOk(real){ return !!mlDim && (mushafZoom || 1) <= 1.01 && real.classList.contains("m15") && !real.classList.contains("ml-flow"); }
   function mlWarm(p){
     clearTimeout(mlWarmT);
-    if (mushafStyle() !== "red" || !mlFontReady()) return;
-    var job = ++mlWarmJob, pages = [p + 1, p - 1, p + 2, p + 3].filter(function(n){ return n >= 1 && n <= 604; }), words = null, i = 0, cur = 0;
-    mlWarmNext = function(){ mlWarmT = setTimeout(step, 40); };
-    if (mlWarmBox) [].slice.call(mlWarmBox.children).forEach(function(c){ if (Math.abs(+c.getAttribute("data-wp") - p) > 3 || !c.getAttribute("data-ok")) mlWarmBox.removeChild(c); });
+    var real = document.getElementById("mushafPageContent"), vp = real && real.parentNode; if (!vp) return;
+    var job = ++mlWarmJob, red = mushafStyle() === "red", key = mlLayerKey(real), ok = mlLayersOk(real) && (!red || mlFontReady());
+    [].slice.call(vp.querySelectorAll(".ml-ready")).forEach(function(c){
+      if (!ok || !c.getAttribute("data-ok") || c.getAttribute("data-key") !== key || Math.abs(+c.getAttribute("data-rp") - p) > 3) vp.removeChild(c);
+    });
+    if (!ok) return;
+    var pages = [p + mlDir, p + 2 * mlDir, p - mlDir].filter(function(n){ return n >= 1 && n <= 604 && !vp.querySelector('.ml-ready[data-rp="' + n + '"]'); });
+    var words = null, i = 0, cur = 0, pg = null, wrap = null, lines = null;
     var step = function(){
-      if (job !== mlWarmJob) return;
+      if (job !== mlWarmJob || currentView !== "mushaf") return;
+      if (lines){   // a couple of lines of the layer, laid out now
+        for (var k = 0; k < 2 && lines.length; k++) wrap.appendChild(lines.shift());
+        void pg.offsetHeight;
+        if (!lines.length){ pg.setAttribute("data-ok", "1"); lines = null; }
+        mlWarmT = setTimeout(step, 24); return;
+      }
       if (!words){
         if (!pages.length) return;
-        words = []; i = 0; cur = pages.shift();
-        if (mlWarmBox && mlWarmBox.querySelector('[data-wp="' + cur + '"]')){ words = null; mlWarmT = setTimeout(step, 0); return; }
-        MUSHAF_LINES[cur - 1].forEach(function(L){
+        cur = pages.shift(); words = []; i = 0;
+        if (!red && !qcfReady(cur)){ qcfPages(cur).forEach(function(x){ qcfLoad(x); }); words = null; mlWarmT = setTimeout(step, 24); return; }   // its font is on the way: next time
+        if (red) MUSHAF_LINES[cur - 1].forEach(function(L){
           if (L[0] === "h" || L[0] === "b") return;
           L.forEach(function(g){ QURAN_AYAHS[g[0] - 1][g[1] - 1].slice(g[2], g[3]).split(" ").forEach(function(w){ if (w && mlBareCache[w] === undefined) words.push(w); }); });
         });
       }
+      // the words' letters and marks (several measurings each), a few milliseconds at a time
       var t0 = Date.now();
       while (i < words.length && Date.now() - t0 < 5) mlBare(words[i++]);
-      if (i >= words.length){ words = null; mlWarmDraw(cur, job); return; }
-      mlWarmT = setTimeout(step, 40);
+      if (i >= words.length){
+        words = null;
+        var tmp = document.createElement("div"); tmp.innerHTML = mushaf15Html(cur);
+        var src = tmp.firstChild; lines = [].slice.call(src.children);
+        pg = document.createElement("div"); pg.className = "mushaf-page m15 ml-ready" + (lines.length < 15 ? " ml-short" : "");
+        pg.setAttribute("data-rp", cur); pg.setAttribute("data-key", key); pg.setAttribute("aria-hidden", "true");
+        pg.style.fontSize = real.style.fontSize; pg.style.setProperty("--ml-row", real.style.getPropertyValue("--ml-row"));
+        wrap = document.createElement("div"); wrap.className = src.className; pg.appendChild(wrap); vp.appendChild(pg);
+      }
+      mlWarmT = setTimeout(step, 24);
     };
-    mlWarmT = setTimeout(step, 350);
+    mlWarmT = setTimeout(step, 120);
+  }
+  // the turn: is page p waiting in a layer? then it becomes the page (renderMushafPage skips drawing it)
+  function mlAdopt(p){
+    var real = document.getElementById("mushafPageContent"), vp = real && real.parentNode; if (!vp) return false;
+    var lay = vp.querySelector('.ml-ready[data-ok][data-rp="' + p + '"]');
+    if (!lay || !mlLayersOk(real) || lay.getAttribute("data-key") !== mlLayerKey(real)) return false;
+    clearTimeout(mlWarmT); mlWarmJob++;
+    real.removeAttribute("id"); vp.removeChild(real);
+    lay.id = "mushafPageContent"; lay.classList.remove("ml-ready"); lay.removeAttribute("aria-hidden");
+    lay.removeAttribute("data-rp"); lay.removeAttribute("data-key"); lay.removeAttribute("data-ok");
+    mlWarm(p);
+    return true;
   }
   function mushaf15Html(p){
     if (!mushaf15On()) return null;
@@ -11024,9 +11058,12 @@ const EVENING_ADHKAR = [
         if (g[4]){ toks.push([toArabicIndic(a), ML_RED_FAM, 1]); h += '<span class="ayah-num ml-end"' + at + '>' + toArabicIndic(a) + '</span> '; }
       });
       h += '</div>';
-      if (dim){ var rs = mlRowSize(toks, dim.W, dim.f, qcf, lines.length < 15); if (rs) h = h.slice(0, at0) + '<div class="ml" style="font-size:' + rs + 'px">' + h.slice(at0 + 16); }
+      if (dim){
+        var rs = mlRowSize(toks, dim.W, dim.f, qcf, lines.length < 15);
+        if (rs || mlRowLoose) h = h.slice(0, at0) + '<div class="ml' + (mlRowLoose ? ' ml-loose' : '') + '"' + (rs ? ' style="font-size:' + rs + 'px"' : '') + '>' + h.slice(at0 + 16);
+      }
     });
-    if (red && p === mushafPageNum) mlWarm(p);
+    if (p === mushafPageNum && currentView === "mushaf") setTimeout(function(){ if (p === mushafPageNum) mlWarm(p); }, 0);
     return h + '</div>';
   }
   // The page is FIXED like the printed mushaf: one font size for every page (from the screen size only), the
@@ -11070,6 +11107,7 @@ const EVENING_ADHKAR = [
       else if (canMeasure && !r.classList.contains("ml-head")){
         var toks = [].map.call(r.children, function(sp){ return [sp.textContent, sp.style.fontFamily || ML_RED_FAM, sp.classList.contains("ml-end")]; });
         var rs = mlRowSize(toks, W, f, qcf, rows.length < 15); want = rs ? rs + "px" : "";
+        if (r.classList.contains("ml-loose") !== mlRowLoose) r.classList.toggle("ml-loose", mlRowLoose);
       }
       if (r.style.fontSize !== want) r.style.fontSize = want;
     });
@@ -11307,7 +11345,11 @@ const EVENING_ADHKAR = [
   // keep pages ready below, drop pages far above (the scroll position is kept), swap in the page fonts once loaded
   function mscFill(){
     var box = msc.box;
-    while (msc.lastPg < 604 && box.scrollTop + box.clientHeight * 2.5 > box.scrollHeight){ msc.lastPg++; mscAppend(msc.lastPg); }
+    // one page at a time (drawing three at the press of the button froze the phone for a moment)
+    if (msc.lastPg < 604 && box.scrollTop + box.clientHeight * 2.5 > box.scrollHeight){
+      msc.lastPg++; mscAppend(msc.lastPg);
+      clearTimeout(msc.fillT); msc.fillT = setTimeout(function(){ if (msc.el && !msc.el.hidden) mscFill(); }, 60);
+    }
     while (box.children.length > 8 && box.children[1].offsetTop + box.children[1].offsetHeight < box.scrollTop){
       var h = box.children[1].offsetTop - box.children[0].offsetTop;
       box.removeChild(box.children[0]); box.scrollTop -= h; msc.pos -= h;
@@ -11420,6 +11462,12 @@ const EVENING_ADHKAR = [
     document.querySelectorAll("main.view").forEach(function(v){
       new MutationObserver(function(){ setTimeout(arm, 0); }).observe(v, { attributes: true, attributeFilter: ["hidden"] });
     });
+  })();
+  // full screen hides the phone's status bar, and the page then starts under the camera: the mushaf's bars keep
+  // clear of it (styles: body.mq-fs)
+  (function(){
+    var set = function(){ document.body.classList.toggle("mq-fs", !!document.fullscreenElement); };
+    document.addEventListener("fullscreenchange", set); set();
   })();
 
   // ---------------- Native Android app (Capacitor) ----------------
