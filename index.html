@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-dxNZZeSwa0DxyzPeG1wJPNE0SIktwkhlTNxqU8L3Mwk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-Hj5lsnVYlrgTBvEKmlKPuBQJL5Ty0IF4FDUbA1FAZhI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -1205,8 +1205,32 @@
   .mq-bar .mqb-icon.mqb-sj{width:26px; height:26px; font-size:1rem;}
   .mq-bar .mqb-pill{font-size:.86rem; padding:3px 9px;}
   #view-mushaf{overflow-x:hidden;}
+  /* the words of a line never touch: the smallest space between them (the line is then stretched edge to edge) */
+  .mushaf-page.m15 .ml{gap:0.25em;}
+  .mushaf-page.m15.ml-short .ml{gap:0.28em;}
+  .mushaf-page.m15.ml-flow .ml{gap:0;}
 
 /*/WIRDI4-CSS*/
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
   html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
@@ -7513,7 +7537,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "2ce82f26d5b2", verChecked = 0;
+  var WIRDI_BUILD = "822a4b31150d", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -10793,7 +10817,7 @@ const EVENING_ADHKAR = [
   var ML_MARKS = /[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]/g;
   // the word without its marks, for the black layer \u2014 but a mark whose removal changes the word's width (the
   // font shapes some letters differently with it) is kept, so both layers stay exactly on top of each other
-  var mlBareCache = {}, mlCtx = null, mlFontOk = false;
+  var mlBareCache = {}, mlCtx = null, mlFontOk = false, mlWMemo = {}, ML_RED_FAM = '"KFGQPC Hafs"';
   function mlFontReady(){
     if (mlFontOk || !document.fonts) return mlFontOk;
     document.fonts.forEach(function(f){ if (f.family.replace(/["']/g, "") === "KFGQPC Hafs" && f.status === "loaded") mlFontOk = true; });
@@ -10809,6 +10833,7 @@ const EVENING_ADHKAR = [
     if (!mlCtx){ mlCtx = document.createElement("canvas").getContext("2d"); mlCtx.font = '40px "KFGQPC Hafs"'; }
     if (!mlFontReady()) return all;   // font not loaded yet: measured later (not cached)
     var full = mlCtx.measureText(w).width, out = all;
+    mlWMemo[ML_RED_FAM + "|" + w] = full * 2.5;   // (measured at 40px; the line sizes want it at 100px)
     if (Math.abs(mlCtx.measureText(all).width - full) > 0.3){
       out = w;   // drop the marks one by one, keeping those that move the letters
       for (var i = out.length - 1; i >= 0; i--){
@@ -10895,29 +10920,113 @@ const EVENING_ADHKAR = [
     }
     draw();
   }
+  // ---- the size of each line, worked out WITHOUT asking the browser to lay the page out ----
+  // A full line is a little wider than the page at the page's size, so most lines get their own (slightly smaller)
+  // size. Measuring that on the page itself meant laying it out three times per turn — and shaping a page of this
+  // font is the slow part on a phone. The words are measured on a canvas instead (each word once, then remembered),
+  // the sizes are written with the page, and the browser lays it out once.
+  var mlWCtx = null, mlDim = null;   // mlDim: { W, f } of the last fitted mushaf page
+  function mlW(t, fam){
+    var k = fam + "|" + t, w = mlWMemo[k];
+    if (w === undefined){
+      if (!mlWCtx) mlWCtx = document.createElement("canvas").getContext("2d");
+      mlWCtx.font = "100px " + fam; w = mlWMemo[k] = mlWCtx.measureText(t).width;
+    }
+    return w;
+  }
+  // toks: [[text, family, isAyahEnd]] → the line's own font size in px, or 0 when the page's size fits
+  function mlRowSize(toks, W, f, qcf, short){
+    var sum = 0, px = 0;
+    for (var i = 0; i < toks.length; i++){
+      var end = toks[i][2] && !qcf;
+      sum += mlW(toks[i][0], toks[i][1]) * (end ? 1.05 : 1); if (end) px += 2;
+    }
+    var need = sum * f / 100 + px + (short ? 0.28 : 0.25) * f * Math.max(0, toks.length - 1);   // (a page of fewer lines: wider spaces)
+    return need > W * 0.995 ? Math.floor(f * W * 0.985 / need * 100) / 100 : 0;
+  }
+  // The heavy look splits every word into its letters and its marks, and that takes measuring the word several
+  // times — a page of new words froze a phone for a moment on every turn. So the next pages' words are measured
+  // ahead, a few at a time between frames, while the page in front is being read: the turn then only draws.
+  // …and the page itself is laid out ahead, out of sight, a few lines at a time: the browser keeps the shapes of
+  // the words it has drawn at a size, so the same page put on the screen a moment later costs a fraction.
+  var mlWarmT = 0, mlWarmJob = 0, mlWarmBox = null, mlWarmNext = null;
+  function mlWarmDraw(p, job){
+    var real = document.getElementById("mushafPageContent");
+    if (!mlDim || !real || !real.parentNode || (mushafZoom || 1) > 1.01){ if (mlWarmNext) mlWarmNext(); return; }
+    if (!mlWarmBox){
+      mlWarmBox = document.createElement("div"); mlWarmBox.setAttribute("aria-hidden", "true");
+      mlWarmBox.style.cssText = "position:absolute; left:0; top:0; width:100%; height:0; overflow:hidden; visibility:hidden; pointer-events:none; contain:strict;";
+      real.parentNode.appendChild(mlWarmBox);
+    }
+    var html = mushaf15Html(p), tmp = document.createElement("div"); tmp.innerHTML = html;
+    var src = tmp.firstChild, lines = [].slice.call(src.children);
+    var pg = document.createElement("div"); pg.className = "mushaf-page m15" + (lines.length < 15 ? " ml-short" : ""); pg.setAttribute("data-wp", p);
+    pg.style.cssText = "width:" + real.offsetWidth + "px; font-size:" + real.style.fontSize + "; --ml-row:" + real.style.getPropertyValue("--ml-row") + ";";
+    var wrap = document.createElement("div"); wrap.className = src.className; pg.appendChild(wrap); mlWarmBox.appendChild(pg);
+    var add = function(){
+      if (job !== mlWarmJob) return;
+      for (var k = 0; k < 2 && lines.length; k++) wrap.appendChild(lines.shift());
+      void pg.offsetHeight;
+      if (lines.length) mlWarmT = setTimeout(add, 30); else { pg.setAttribute("data-ok", "1"); if (mlWarmNext) mlWarmNext(); }
+    };
+    add();
+  }
+  function mlWarm(p){
+    clearTimeout(mlWarmT);
+    if (mushafStyle() !== "red" || !mlFontReady()) return;
+    var job = ++mlWarmJob, pages = [p + 1, p - 1, p + 2, p + 3].filter(function(n){ return n >= 1 && n <= 604; }), words = null, i = 0, cur = 0;
+    mlWarmNext = function(){ mlWarmT = setTimeout(step, 40); };
+    if (mlWarmBox) [].slice.call(mlWarmBox.children).forEach(function(c){ if (Math.abs(+c.getAttribute("data-wp") - p) > 3 || !c.getAttribute("data-ok")) mlWarmBox.removeChild(c); });
+    var step = function(){
+      if (job !== mlWarmJob) return;
+      if (!words){
+        if (!pages.length) return;
+        words = []; i = 0; cur = pages.shift();
+        if (mlWarmBox && mlWarmBox.querySelector('[data-wp="' + cur + '"]')){ words = null; mlWarmT = setTimeout(step, 0); return; }
+        MUSHAF_LINES[cur - 1].forEach(function(L){
+          if (L[0] === "h" || L[0] === "b") return;
+          L.forEach(function(g){ QURAN_AYAHS[g[0] - 1][g[1] - 1].slice(g[2], g[3]).split(" ").forEach(function(w){ if (w && mlBareCache[w] === undefined) words.push(w); }); });
+        });
+      }
+      var t0 = Date.now();
+      while (i < words.length && Date.now() - t0 < 5) mlBare(words[i++]);
+      if (i >= words.length){ words = null; mlWarmDraw(cur, job); return; }
+      mlWarmT = setTimeout(step, 40);
+    };
+    mlWarmT = setTimeout(step, 350);
+  }
   function mushaf15Html(p){
     if (!mushaf15On()) return null;
     var red = mushafStyle() === "red", qcf = !red && qcfReady(p);
     if (!red){ if (!qcf) qcfPrepare(p); else setTimeout(function(){ qcfPrepare(p); }, 0); }
+    var dim = mlDim && (qcf || mlFontReady()) && (mushafZoom || 1) <= 1.01 ? mlDim : null;
     var lines = MUSHAF_LINES[p - 1], h = '<div class="ml-wrap' + (qcf ? ' ml-qcf' + (qcfTajweed() ? ' ml-tajweed' : '') : (red ? ' ml-red' : '')) + '">';
     lines.forEach(function(L){
       if (L[0] === "h"){ h += '<div class="ml ml-head"><span>سورة ' + surahName(L[1]) + '</span></div>'; return; }
-      if (L[0] === "b"){ h += '<div class="ml ml-basm">' + BISMILLAH + '</div>'; return; }
+      if (L[0] === "b"){
+        // (the basmala is wider than the page on a narrow phone: it gets its own size too, so the page keeps its width)
+        var bs = dim ? mlRowSize([[BISMILLAH, ML_RED_FAM, 0]], dim.W, dim.f * 0.95, true, false) : 0;
+        h += '<div class="ml ml-basm"' + (bs ? ' style="font-size:' + bs + 'px"' : '') + '>' + BISMILLAH + '</div>'; return;
+      }
+      var toks = [], at0 = h.length;
       h += '<div class="ml">';
       L.forEach(function(g){
         var s = g[0], a = g[1], at = ' data-surah="' + s + '" data-ayah="' + a + '"';
         if (qcf){
           var fam = ' style="font-family:' + qcfFam(g[6] || p) + '"', gl = g[5].split(" ");
-          gl.forEach(function(c, i){ h += (g[4] && i === gl.length - 1 ? '<span class="ayah-num ml-end"' : '<span class="ayah-text"') + at + fam + '>' + c + '</span> '; });
+          gl.forEach(function(c, i){ toks.push([c, qcfFam(g[6] || p), g[4] && i === gl.length - 1]); h += (g[4] && i === gl.length - 1 ? '<span class="ayah-num ml-end"' : '<span class="ayah-text"') + at + fam + '>' + c + '</span> '; });
           return;
         }
         QURAN_AYAHS[s - 1][a - 1].slice(g[2], g[3]).split(" ").filter(Boolean).forEach(function(w){
+          toks.push([w, ML_RED_FAM, 0]);
           h += (red ? '<span class="ayah-text ml-rw"' + at + ' data-b="' + mlBare(w) + '">' + w + '</span>' : '<span class="ayah-text"' + at + '>' + w + '</span>') + ' ';
         });
-        if (g[4]) h += '<span class="ayah-num ml-end"' + at + '>' + toArabicIndic(a) + '</span> ';
+        if (g[4]){ toks.push([toArabicIndic(a), ML_RED_FAM, 1]); h += '<span class="ayah-num ml-end"' + at + '>' + toArabicIndic(a) + '</span> '; }
       });
       h += '</div>';
+      if (dim){ var rs = mlRowSize(toks, dim.W, dim.f, qcf, lines.length < 15); if (rs) h = h.slice(0, at0) + '<div class="ml" style="font-size:' + rs + 'px">' + h.slice(at0 + 16); }
     });
+    if (red && p === mushafPageNum) mlWarm(p);
     return h + '</div>';
   }
   // The page is FIXED like the printed mushaf: one font size for every page (from the screen size only), the
@@ -10934,27 +11043,40 @@ const EVENING_ADHKAR = [
     var wrap = content.querySelector(".ml-wrap"), rows = [].slice.call(content.querySelectorAll(".ml"));
     var W = content.clientWidth - padX, H = containerH - padY;
     var text = rows.filter(function(r){ return !r.classList.contains("ml-head") && !r.classList.contains("ml-basm"); });
-    rows.forEach(function(r){ r.style.fontSize = ""; });
-    if (wrap){ wrap.style.width = ""; wrap.style.transform = ""; }
-    content.style.fontSize = "20px"; content.classList.add("ml-measure");
-    var widths = text.map(function(r){ return r.scrollWidth; });
-    content.classList.remove("ml-measure");
+    // ONE layout per page: the final size is set at once, and only a line that turns out longer than the page
+    // is narrowed on its own. (It used to be laid out three times — at a test size, at the real one, then the
+    // long lines — and shaping a page of this font is the slow part on a phone.)
     var qcf = !!content.querySelector(".ml-qcf"), em = qcf ? ML_EM[qcfTajweed() ? "tajweed" : "plain"] : ML_EM.red;
     var rowH = H / 15, f = Math.max(8, Math.floor(Math.min(W * 0.985 / em, rowH / (qcf ? 1.6 : 1.75)) * 10) / 10);
-    content.style.fontSize = f + "px";
-    content.style.setProperty("--ml-row", Math.floor(rowH) + "px");
+    var z = Math.min(ML_ZOOM_MAX, mushafZoom || 1), flow = z > 1.01, fs = (flow ? (f * z).toFixed(1) : f) + "px", row = Math.floor(rowH) + "px";
+    if (wrap && (wrap.style.width || wrap.style.transform)){ wrap.style.width = ""; wrap.style.transform = ""; }
+    if (content.style.fontSize !== fs) content.style.fontSize = fs;
+    if (content.style.getPropertyValue("--ml-row") !== row) content.style.setProperty("--ml-row", row);
     content.classList.toggle("ml-short", rows.length < 15);
     content.classList.remove("ml-zoomed");
-    // a line a little longer than usual is narrowed on its own (never overflows the page)
     // a bigger text size (أ+): the same words, font and colours, but the lines wrap and the page scrolls down
-    var z = Math.min(ML_ZOOM_MAX, mushafZoom || 1), flow = z > 1.01;
     content.classList.toggle("ml-flow", flow);
     if (flow){
-      content.style.fontSize = (f * z).toFixed(1) + "px";
+      rows.forEach(function(r){ if (r.style.fontSize) r.style.fontSize = ""; });
       if (content.id === "mushafPageContent" && content._mlp !== mushafPageNum){ content.scrollTop = 0; content._mlp = mushafPageNum; }
       return;
     }
-    text.forEach(function(r, i){ var need = widths[i] * f / 20; if (need > W * 0.995) r.style.fontSize = (f * W * 0.99 / need).toFixed(2) + "px"; });
+    if (content.id === "mushafPageContent") mlDim = { W: W, f: f };
+    // each line's own size (already written with the page when it was drawn for this screen: nothing changes then)
+    var canMeasure = qcf || mlFontReady();
+    rows.forEach(function(r){
+      var want = "";
+      if (canMeasure && r.classList.contains("ml-basm")){ var bs = mlRowSize([[r.textContent, ML_RED_FAM, 0]], W, f * 0.95, true, false); want = bs ? bs + "px" : ""; }
+      else if (canMeasure && !r.classList.contains("ml-head")){
+        var toks = [].map.call(r.children, function(sp){ return [sp.textContent, sp.style.fontFamily || ML_RED_FAM, sp.classList.contains("ml-end")]; });
+        var rs = mlRowSize(toks, W, f, qcf, rows.length < 15); want = rs ? rs + "px" : "";
+      }
+      if (r.style.fontSize !== want) r.style.fontSize = want;
+    });
+    // the safety net: a line that still runs past the page (a font that was not in yet) is narrowed on the page
+    var over = [];
+    text.forEach(function(r){ var sw = r.scrollWidth; if (sw > r.clientWidth + 1) over.push([r, sw]); });
+    over.forEach(function(o){ o[0].style.fontSize = ((parseFloat(o[0].style.fontSize) || f) * o[0].clientWidth * 0.985 / o[1]).toFixed(2) + "px"; });
   }
   // the look of the mushaf: settings select + the three buttons in the mushaf tools sheet
   var ML_STYLE_NAMES = { red: "خط تقيل + تشكيل أحمر", tajweed: "مصحف التجويد الملوّن", plain: "خط المصحف بالأسود" };
