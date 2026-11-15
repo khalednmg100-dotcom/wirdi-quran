@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-o3SrdgYLsrlJt77oeaU9Ralwe6K1U8BQLTc7eIgiMDM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-dxNZZeSwa0DxyzPeG1wJPNE0SIktwkhlTNxqU8L3Mwk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -1194,8 +1194,25 @@
   .ps-reel{display:grid; place-items:center; margin:8px 0;}
   .ps-reel canvas{width:auto; height:38vh; max-width:100%; border-radius:12px; background:#000;}
   .ps-done{display:flex; gap:8px; margin-top:8px;} .ps-done[hidden]{display:none;} .ps-done .btn{flex:1;}
+  /* the mushaf bar with the share button: always inside the screen, on narrow phones too */
+  .mq-bar{padding-left:8px; padding-right:8px; gap:4px; overflow:hidden;}
+  .mq-bar .mqb-side{gap:4px; min-width:0;}
+  .mq-bar .mqb-icon{width:30px; flex:none;}
+  .mq-bar .mqb-pill{padding:4px 10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+  .mq-bar{max-width:100%; box-sizing:border-box; padding-top:6px;}
+  .mq-bar .mqb-icon{width:28px; height:30px;}
+  .mq-bar .mqb-icon svg{width:19px; height:19px;}
+  .mq-bar .mqb-icon.mqb-sj{width:26px; height:26px; font-size:1rem;}
+  .mq-bar .mqb-pill{font-size:.86rem; padding:3px 9px;}
+  #view-mushaf{overflow-x:hidden;}
 
 /*/WIRDI4-CSS*/
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
   html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
@@ -7496,7 +7513,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "9991b801763f", verChecked = 0;
+  var WIRDI_BUILD = "2ce82f26d5b2", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -10207,23 +10224,80 @@ const EVENING_ADHKAR = [
   // The page is drawn on a canvas with the King Fahd Complex page fonts (QCF v2 — or the coloured tajweed edition
   // when that is the mushaf's look), line by line from MUSHAF_LINES, stretched edge to edge like the printed page.
   //   📄 the page        1080×1920 (a WhatsApp status / a story), with the surah, juz and page number;
-  //   📖 two pages       2000×1560, the right page and the left one side by side, like the open mushaf;
+  //   📖 two pages       this page and the next, each a picture of its own;
   //   📚 the juz         every page of the juz as a picture, handed to the phone together (or saved in the photos);
   //   🎬 a page reel     a 1080×1920 video: the page, the ayah being recited lit up, the reciter's voice — for
   //                      TikTok / Reels / WhatsApp (built on the phone with the reels maker's loader; nothing uploaded).
   var PS_GOLD = "#B8892B";
   function psTajweed(){ return typeof qcfTajweed === "function" && qcfTajweed(); }
+  function psLook(){ return typeof mushafStyle === "function" && typeof mlBare === "function" ? mushafStyle() : "plain"; }
   function psFonts(pages, tj){
     var fams = [];
-    pages.forEach(function(p){ qcfPages(p).forEach(function(x){ if (fams.indexOf(x) === -1) fams.push(x); }); });
+    if (psLook() !== "red") pages.forEach(function(p){ qcfPages(p).forEach(function(x){ if (fams.indexOf(x) === -1) fams.push(x); }); });
     return Promise.all([Promise.all(fams.map(function(x){ return qcfLoad(x, tj); })),
       document.fonts ? Promise.all([document.fonts.load('40px "KFGQPC Hafs"'), document.fonts.load('700 40px "Amiri"')]).catch(function(){}) : null])
       .then(function(r){ if (!r[0].every(Boolean)) throw new Error("fonts"); });
   }
-  // draws page p in the box (x, y, w, h); returns the words' boxes [{ s, a, x, y, w, h }] for the reel's highlight
+  // draws page p in the box (x, y, w, h) in the mushaf's own look (the one chosen in the app: heavy font with red
+  // marks, the coloured tajweed page fonts, or the black ones); returns the words' boxes [{ s, a, x, y, w, h }]
   function psDrawPage(g, p, x, y, w, h, o){
     o = o || {};
-    var tj = !!o.tj, ink = o.ink || "#1B1A17", lines = MUSHAF_LINES[p - 1], rowH = h / 15, boxes = [];
+    return (o.look || psLook()) === "red" ? psDrawRed(g, p, x, y, w, h, o) : psDrawQcf(g, p, x, y, w, h, o);
+  }
+  function psHeadRow(g, name, x, cy, w, rowH, f, night){
+    g.save(); g.direction = "rtl"; g.textAlign = "center"; g.textBaseline = "middle";
+    g.font = "700 " + (f * 0.85).toFixed(1) + 'px "Amiri", serif';
+    var t = "سورة " + name, bw = g.measureText(t).width + f * 0.85 * 4.4, bh = Math.min(rowH * 0.86, f * 1.5), bx = x + (w - bw) / 2, by = cy + (rowH - bh) / 2;
+    if (!night){ var gr = g.createLinearGradient(0, by, 0, by + bh); gr.addColorStop(0, "#F6E9C6"); gr.addColorStop(1, "#EBD8A6"); g.fillStyle = gr; psRound(g, bx, by, bw, bh, bh * 0.22); g.fill(); }
+    g.strokeStyle = "#B08A2E"; g.lineWidth = Math.max(1.5, f * 0.035); psRound(g, bx, by, bw, bh, bh * 0.22); g.stroke();
+    psRound(g, bx + f * 0.1, by + f * 0.1, bw - f * 0.2, bh - f * 0.2, bh * 0.16); g.stroke();
+    g.fillStyle = night ? "#E9C46A" : "#5A3E0C"; g.fillText(t, x + w / 2, cy + rowH / 2 + f * 0.04);
+    g.restore();
+  }
+  // the app's first look: the KFGQPC Hafs font, heavy, the marks in red (each word drawn in red, then the same
+  // word without its marks in black over it) and the lines stretched from edge to edge
+  function psDrawRed(g, p, x, y, w, h, o){
+    var night = !!o.night, ink = night ? "#F4ECD6" : "#140F06", red = night ? "#FF7A6B" : "#E1251B", gold = night ? "#E9C46A" : "#9A7424";
+    var lines = MUSHAF_LINES[p - 1], rowH = h / 15, boxes = [], FONT = '"KFGQPC Hafs", "Amiri", serif';
+    var f = Math.min(w * 0.985 / 18, rowH / 1.75), short = lines.length < 15;
+    var top = y + (short ? (15 - lines.length) * rowH / 2 : 0);
+    g.save(); g.direction = "rtl"; g.textAlign = "right"; g.textBaseline = "alphabetic"; g.lineJoin = "round";
+    lines.forEach(function(L, i){
+      var cy = top + rowH * i;
+      if (L[0] === "h"){ psHeadRow(g, surahName(L[1]), x, cy, w, rowH, f, night); return; }
+      var toks = [];
+      if (L[0] === "b") toks.push({ t: BISMILLAH, basm: 1 });
+      else L.forEach(function(sg){
+        QURAN_AYAHS[sg[0] - 1][sg[1] - 1].slice(sg[2], sg[3]).split(" ").filter(Boolean).forEach(function(wd){ toks.push({ t: wd, b: mlBare(wd), s: sg[0], a: sg[1] }); });
+        if (sg[4]) toks.push({ t: toArabicIndic(sg[1]), end: 1, s: sg[0], a: sg[1] });
+      });
+      var fs = L[0] === "b" ? f * 0.95 : f, measure = function(){
+        var sum = 0; toks.forEach(function(t){ g.font = (t.end ? fs * 1.05 : fs).toFixed(2) + "px " + FONT; t.w = g.measureText(t.t).width + (t.end ? 2 : 0); sum += t.w; }); return sum;
+      };
+      var sum = measure(), n = toks.length, need = sum + fs * 0.25 * (n - 1);
+      if (need > w * 0.995){ fs = fs * w * 0.99 / need; sum = measure(); }
+      var center = short || L[0] === "b" || n < 2, gap = center ? fs * 0.28 : (w - sum) / (n - 1);
+      var cx = x + w - (center ? (w - sum - gap * (n - 1)) / 2 : 0);
+      g.font = fs.toFixed(2) + "px " + FONT;
+      var m = g.measureText("ب"), asc = m.fontBoundingBoxAscent || fs * 0.9, desc = m.fontBoundingBoxDescent || fs * 0.4;
+      var base = cy + rowH / 2 + (asc - desc) / 2;
+      toks.forEach(function(t){
+        g.font = (t.end ? fs * 1.05 : fs).toFixed(2) + "px " + FONT;
+        if (t.end){ g.fillStyle = gold; g.fillText(t.t, cx - 1, base); }
+        else if (t.basm){ g.fillStyle = ink; g.strokeStyle = ink; g.lineWidth = fs * 0.028; g.strokeText(t.t, cx, base); g.fillText(t.t, cx, base); }
+        else {
+          g.fillStyle = red; g.strokeStyle = red; g.lineWidth = fs * 0.006; g.strokeText(t.t, cx, base); g.fillText(t.t, cx, base);
+          g.fillStyle = ink; g.strokeStyle = ink; g.lineWidth = fs * 0.046; g.strokeText(t.b, cx, base); g.fillText(t.b, cx, base);
+        }
+        if (t.s) boxes.push({ s: t.s, a: t.a, x: cx - t.w, y: cy + rowH * 0.1, w: t.w, h: rowH * 0.84 });
+        cx -= t.w + gap;
+      });
+    });
+    g.restore();
+    return boxes;
+  }
+  function psDrawQcf(g, p, x, y, w, h, o){
+    var tj = !!o.tj, night = !!o.night, ink = night ? "#F4ECD6" : "#140F06", lines = MUSHAF_LINES[p - 1], rowH = h / 15, boxes = [];
     var top = y + (lines.length < 15 ? (15 - lines.length) * rowH / 2 : 0);
     // natural widths at 100px
     var rows = lines.map(function(L){
@@ -10243,14 +10317,7 @@ const EVENING_ADHKAR = [
     g.save(); g.direction = "rtl"; g.textBaseline = "alphabetic";
     rows.forEach(function(r, i){
       var cy = top + rowH * i, base = cy + rowH * 0.7;
-      if (r.kind === "h"){
-        var fh = rowH * 0.78, fy = cy + (rowH - fh) / 2, fw = w * 0.92, fx = x + (w - fw) / 2;
-        g.strokeStyle = PS_GOLD; g.lineWidth = Math.max(2, rowH * 0.035); psRound(g, fx, fy, fw, fh, fh * 0.3); g.stroke();
-        g.lineWidth = 1; psRound(g, fx + 6, fy + 6, fw - 12, fh - 12, fh * 0.26); g.stroke();
-        g.fillStyle = ink; g.textAlign = "center"; g.font = Math.round(rowH * 0.42) + 'px "KFGQPC Hafs", "Amiri", serif';
-        g.fillText("سورة " + surahName(r.L[1]), x + w / 2, fy + fh * 0.68);
-        return;
-      }
+      if (r.kind === "h"){ psHeadRow(g, surahName(r.L[1]), x, cy, w, rowH, S * 0.62, night); return; }
       if (r.kind === "b"){
         g.fillStyle = ink; g.textAlign = "center"; g.font = Math.round(rowH * 0.5) + 'px "KFGQPC Hafs", "Amiri", serif';
         g.fillText(BISMILLAH, x + w / 2, base);
@@ -10297,25 +10364,14 @@ const EVENING_ADHKAR = [
   function psPageCanvas(p, tj){
     var c = document.createElement("canvas"); c.width = 1080; c.height = 1920;
     var g = c.getContext("2d");
-    psPaper(g, 0, 0, 1080, 1920); psFrame(g, 24, 24, 1032, 1872);
-    psHead(g, p, 80, 128, 920, 40);
-    psDrawPage(g, p, 70, 170, 940, 1540, { tj: tj });
-    psFoot(g, p, 540, 1790, 38);
-    g.save(); g.direction = "rtl"; g.textAlign = "center"; g.fillStyle = "#8A7444"; g.font = '30px "Amiri", serif';
-    g.fillText(SH_LINE + " • وِرْدِي", 540, 1862); g.restore();
-    return c;
-  }
-  // two pages side by side: the right page is the odd one, like the printed mushaf
-  function psSpreadCanvas(p, tj){
-    var r = p % 2 ? p : p - 1, l = r + 1;
-    var c = document.createElement("canvas"); c.width = 2000; c.height = 1560;
-    var g = c.getContext("2d");
-    psPaper(g, 0, 0, 2000, 1560);
-    var sh = g.createLinearGradient(960, 0, 1040, 0); sh.addColorStop(0, "rgba(120,90,30,0)"); sh.addColorStop(0.5, "rgba(120,90,30,.22)"); sh.addColorStop(1, "rgba(120,90,30,0)");
-    g.fillStyle = sh; g.fillRect(960, 0, 80, 1560);
-    psFrame(g, 1016, 20, 964, 1520);
-    psHead(g, r, 1060, 100, 876, 34); psDrawPage(g, r, 1052, 130, 892, 1310, { tj: tj }); psFoot(g, r, 1498, 1500, 30);
-    if (l <= 604){ psFrame(g, 20, 20, 964, 1520); psHead(g, l, 64, 100, 876, 34); psDrawPage(g, l, 56, 130, 892, 1310, { tj: tj }); psFoot(g, l, 502, 1500, 30); }
+    // the page as it is in the app: the same paper, the same font and colours, the surah and the juz above it
+    g.fillStyle = "#FDF8EC"; g.fillRect(0, 0, 1080, 1920);
+    psHead(g, p, 60, 104, 960, 38);
+    g.fillStyle = "#E3D3A4"; g.fillRect(60, 128, 960, 2);
+    psDrawPage(g, p, 50, 146, 980, 1620, { tj: tj });
+    psFoot(g, p, 540, 1822, 34);
+    g.save(); g.direction = "rtl"; g.textAlign = "center"; g.fillStyle = "#A8935C"; g.font = '26px "Amiri", serif';
+    g.fillText(SH_LINE + " • وِرْدِي", 540, 1890); g.restore();
     return c;
   }
   function psJuzPages(j){ var out = []; MUSHAF_PAGES.forEach(function(pg){ if (pg.j === j) out.push(pg.p); }); return out; }
@@ -10345,12 +10401,11 @@ const EVENING_ADHKAR = [
   // ---- the sheet ----
   function psOpen(p){
     p = p || mushafPageNum;
-    var pg = MUSHAF_PAGES[p - 1], r = p % 2 ? p : p - 1;
+    var pg = MUSHAF_PAGES[p - 1], p2 = Math.min(604, p + 1);
     var s = ptSheet('<h3>📤 شارك من المصحف</h3><div class="ps-prev"><span>بتتعمل الصورة…</span></div>' +
       '<div class="ps-opts">' +
         '<button type="button" class="ps-opt" data-ps="page"><span>📄</span><b>الصفحة دي</b><small>صفحة ' + toArabicIndic(p) + ' — حالة أو رسالة</small></button>' +
-        '<button type="button" class="ps-opt" data-ps="spread"><span>📖</span><b>صفحتين</b><small>' + toArabicIndic(r) + ' و' + toArabicIndic(Math.min(604, r + 1)) + ' زي المصحف المفتوح</small></button>' +
-        '<button type="button" class="ps-opt" data-ps="juz"><span>📚</span><b>الجزء كله</b><small>الجزء ' + toArabicIndic(pg.j) + ' — ' + toArabicIndic(psJuzPages(pg.j).length) + ' صورة</small></button>' +
+        '' + (p2 > p ? '<button type="button" class="ps-opt" data-ps="two"><span>📖</span><b>صفحتين</b><small>' + toArabicIndic(p) + ' و' + toArabicIndic(p2) + ' — كل صفحة صورة لوحدها</small></button>' : '') + '<button type="button" class="ps-opt" data-ps="juz"><span>📚</span><b>الجزء كله</b><small>الجزء ' + toArabicIndic(pg.j) + ' — ' + toArabicIndic(psJuzPages(pg.j).length) + ' صفحة، كل صفحة صورة لوحدها</small></button>' +
         '<button type="button" class="ps-opt" data-ps="reel"><span>🎬</span><b>ريلز للصفحة</b><small>فيديو بالتلاوة — تيك توك وريلز وحالة</small></button>' +
       '</div>');
     s.classList.add("ps-sheet");
@@ -10364,15 +10419,14 @@ const EVENING_ADHKAR = [
       var k = b.getAttribute("data-ps");
       if (k === "reel"){ psReelSheet(p); return; }
       b.disabled = true; var old = b.querySelector("small").textContent; b.querySelector("small").textContent = "⏳ بتتجهز…";
-      var pages = k === "page" ? [p] : k === "spread" ? [r, Math.min(604, r + 1)] : psJuzPages(pg.j);
+      var pages = k === "page" ? [p] : k === "two" ? (p2 > p ? [p, p2] : [p]) : psJuzPages(pg.j);
       psFonts(pages, tj).then(function(){
         if (k === "page") return psBlob(psPageCanvas(p, tj)).then(function(bl){ return [{ blob: bl, name: "page-" + p + ".jpg" }]; });
-        if (k === "spread") return psBlob(psSpreadCanvas(p, tj)).then(function(bl){ return [{ blob: bl, name: "pages-" + r + "-" + (r + 1) + ".jpg" }]; });
         // the juz: one picture after the other (a phone keeps only one canvas at a time)
         var out = [];
         return pages.reduce(function(pr, q, i){ return pr.then(function(){
-          b.querySelector("small").textContent = "⏳ صفحة " + toArabicIndic(i + 1) + " من " + toArabicIndic(pages.length);
-          return psBlob(psPageCanvas(q, tj)).then(function(bl){ out.push({ blob: bl, name: "juz" + pg.j + "-page-" + q + ".jpg" }); });
+          if (pages.length > 2) b.querySelector("small").textContent = "⏳ صفحة " + toArabicIndic(i + 1) + " من " + toArabicIndic(pages.length);
+          return psBlob(psPageCanvas(q, tj)).then(function(bl){ out.push({ blob: bl, name: "page-" + q + ".jpg" }); });
         }); }, Promise.resolve()).then(function(){ return out; });
       }).then(function(files){ return psShareFiles(files); })
         .catch(function(){ showToast("تعذر تجهيز الصور — اتأكد من الإنترنت"); })
@@ -10409,7 +10463,7 @@ const EVENING_ADHKAR = [
   // the page drawn once: the paper / night card and the words on their own layer (so the highlight goes under them)
   function psReelStatic(p, tj, bg){
     var night = bg === "night", t = document.createElement("canvas"); t.width = 1000; t.height = 1440;
-    var boxes = psDrawPage(t.getContext("2d"), p, 40, 40, 920, 1360, { tj: tj, ink: night ? "#F4ECD6" : "#1B1A17" });
+    var boxes = psDrawPage(t.getContext("2d"), p, 40, 40, 920, 1360, { tj: tj, night: night });
     return { p: p, text: t, boxes: boxes, night: night };
   }
   function psReelFrame(g, st, key, t, total, reciter){
