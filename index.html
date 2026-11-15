@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-8AW94MJqUlxSyLgvVIZITHBPy+3U9461+K/714bhJwA='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-0hhGvfczAeD0rVJ0ebpnjrYf2l9EPwwPwbmdtRUB8Vs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -1212,14 +1212,24 @@
   /* the mushaf pages drawn ahead: the same box as the page, out of sight, until the turn shows one */
   .mushaf-page.ml-ready{position:absolute; left:0; top:0; visibility:hidden; pointer-events:none; transition:none;}
   .mushaf-page.ml-ready:has(.ml-tajweed){will-change:transform; contain:layout paint;}
-  /* full screen (the status bar is hidden): the bars stay clear of the camera */
-  body.mq-fs .mq-bar{padding-top:calc(6px + max(env(safe-area-inset-top), 28px));}
-  body.mq-fs .msc-top{padding-top:calc(8px + max(env(safe-area-inset-top), 28px));}
-  body.mq-fs.mq-immersive #mushafViewport{margin-top:max(env(safe-area-inset-top), 28px);}
   /* a short line (the last surahs): its words together in the middle, not pulled to both edges */
   .mushaf-page.m15 .ml.ml-loose{justify-content:center; gap:0.3em;}
+  /* the heavy look: the black letters are a second line pulled up over the red word (the lines are exactly 1em
+     high) — no positioned boxes: a page of them was a thousand separate layers for the phone to keep track of.
+     (With a bigger text size the words flow in a paragraph, and the old positioned way stays.) */
+  .mushaf-page.m15:not(.ml-flow) .ml-red .ml .ml-rw{position:static;}
+  .mushaf-page.m15:not(.ml-flow) .ml-red .ml .ml-rw::after{position:static; display:block; margin-top:-1em; line-height:1;}
+  /* السرد السريع: the strip of pages is its own layer, moved by the compositor */
+  .msc-in{will-change:transform;}
+  /* the tools button sits next to the search, a little smaller */
+  .mq-bar .mqb-icon[data-mqb="menu"]{width:26px;}
+  .mq-bar .mqb-icon[data-mqb="menu"] svg{width:17px; height:17px;}
 
 /*/WIRDI4-CSS*/
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
   html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
@@ -7555,7 +7565,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "02a76fba510f", verChecked = 0;
+  var WIRDI_BUILD = "bb7eaa3599a9", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -11294,7 +11304,7 @@ const EVENING_ADHKAR = [
     var sec = document.createElement("section");
     sec.className = "msc-pg"; sec.setAttribute("data-p", p);
     sec.innerHTML = '<div class="mushaf-page m15" style="height:' + msc.H + 'px"></div><div class="msc-pn">' + toArabicIndic(p) + '</div>';
-    msc.box.appendChild(sec);
+    msc.inn.appendChild(sec);
     mscRender(sec);
     if (mushafStyle() !== "red") [p + 1, p + 2].forEach(function(n){ if (n <= 604) qcfPages(n).forEach(function(x){ qcfLoad(x); }); });
   }
@@ -11302,27 +11312,27 @@ const EVENING_ADHKAR = [
     if (msc.el) return;
     var el = document.createElement("div");
     el.className = "msc"; el.hidden = true;
-    el.innerHTML = '<div class="msc-top" id="mscWhere"></div><div class="msc-box" id="mscBox"></div>' +
+    el.innerHTML = '<div class="msc-top" id="mscWhere"></div><div class="msc-box" id="mscBox"><div class="msc-in" id="mscIn"></div></div>' +
       '<div class="msc-ctrl">' +
         '<button data-msc="stop" class="msc-stop">⏹ وقف</button>' +
         '<button data-msc="toggle" class="msc-main" id="mscToggle">⏸</button>' +
         '<span class="msc-grp"><button data-msc="slower" aria-label="أبطأ">−</button><small id="mscSp"></small><button data-msc="faster" aria-label="أسرع">+</button></span>' +
       '</div>';
     document.getElementById("view-mushaf").appendChild(el);   // inside the mushaf view → the same page styles
-    msc.el = el; msc.box = el.querySelector("#mscBox");
+    msc.el = el; msc.box = el.querySelector("#mscBox"); msc.inn = el.querySelector("#mscIn");
     el.querySelector(".msc-ctrl").addEventListener("click", function(e){
       var b = e.target.closest("[data-msc]"); if (!b) return;
       var a = b.getAttribute("data-msc");
       if (a === "stop") mscClose();
       else if (a === "toggle") mscRun(!msc.on);
-      else { mscCfg.sp = clamp(mscCfg.sp + (a === "faster" ? 1 : -1), 1, MSC_SPEEDS.length); saveJSON(STORE_MSC, mscCfg); mscUi(); }
+      else { mscCfg.sp = clamp(mscCfg.sp + (a === "faster" ? 1 : -1), 1, MSC_SPEEDS.length); saveJSON(STORE_MSC, mscCfg); mscUi(); if (msc.on && !msc.held) mscGlide(); }
     });
     // a finger on the pages holds the scroll; lifting it carries on (unless ⏸ was pressed)
-    var hold = function(){ msc.held = true; clearTimeout(msc.resumeT); };
+    var hold = function(){ msc.held = true; clearTimeout(msc.resumeT); clearTimeout(msc.glT); mscGlideStop(); };
     var release = function(){
       if (!msc.held) return;
       clearTimeout(msc.resumeT);
-      msc.resumeT = setTimeout(function(){ msc.held = false; msc.pos = msc.box.scrollTop; msc.last = 0; }, 700);
+      msc.resumeT = setTimeout(function(){ msc.held = false; mscGlide(); }, 700);
     };
     msc.box.addEventListener("touchstart", hold, { passive: true });
     msc.box.addEventListener("mousedown", hold);
@@ -11338,7 +11348,7 @@ const EVENING_ADHKAR = [
     document.getElementById("mscWhere").textContent = "سورة " + surahName(pg.r[0][0]) + " • صفحة " + toArabicIndic(msc.cur) + " • الجزء " + toArabicIndic(pg.j);
   }
   function mscTopSection(){
-    var y = msc.box.scrollTop + msc.box.clientHeight * 0.3, secs = msc.box.children, found = secs[0];
+    var y = msc.box.scrollTop + msc.box.clientHeight * 0.3, secs = msc.inn.children, found = secs[0];
     for (var i = 0; i < secs.length; i++){ if (secs[i].offsetTop <= y) found = secs[i]; else break; }
     return found;
   }
@@ -11350,31 +11360,49 @@ const EVENING_ADHKAR = [
       msc.lastPg++; mscAppend(msc.lastPg);
       clearTimeout(msc.fillT); msc.fillT = setTimeout(function(){ if (msc.el && !msc.el.hidden) mscFill(); }, 60);
     }
-    while (box.children.length > 8 && box.children[1].offsetTop + box.children[1].offsetHeight < box.scrollTop){
-      var h = box.children[1].offsetTop - box.children[0].offsetTop;
-      box.removeChild(box.children[0]); box.scrollTop -= h; msc.pos -= h;
+    var kids = msc.inn.children;
+    while (kids.length > 8 && kids[1].offsetTop + kids[1].offsetHeight < box.scrollTop){
+      var h = kids[1].offsetTop - kids[0].offsetTop;
+      msc.inn.removeChild(kids[0]); box.scrollTop -= h;
     }
     [].forEach.call(box.querySelectorAll(".msc-fb"), function(sec){ if (qcfReady(+sec.getAttribute("data-p"))) mscRender(sec); });
     var sec = mscTopSection(), p = sec ? +sec.getAttribute("data-p") : msc.cur;
     if (p !== msc.cur){ msc.cur = p; mscUi(); }
   }
-  function mscStep(t){
-    if (!msc.on || msc.el.hidden) return;
-    var box = msc.box;
-    if (msc.held){ msc.last = 0; return; }
-    if (msc.last){
-      msc.pos += MSC_SPEEDS[mscCfg.sp - 1] * Math.min(0.25, Math.max(0, t - msc.last) / 1000);
-      box.scrollTop = Math.round(msc.pos);
-      if (msc.lastPg >= 604 && box.scrollTop + box.clientHeight >= box.scrollHeight - 2){ mscRun(false); showToast("صدق الله العظيم 🤍"); return; }
-    }
-    msc.last = t;
-    mscFill();
+  // ---- the motion ----
+  // The strip of pages GLIDES: one long, even animation that the phone's compositor runs by itself, frame by frame,
+  // whatever the page's own code is doing. (It used to be moved a pixel at a time from the code, on every frame;
+  // on phones that hold those frames back it crawled at a few frames a second.) Every couple of seconds — and when
+  // a finger touches the page, or the speed changes — where the glide got to is handed to the box's own scroll
+  // position, more pages are added below, and the glide starts again from there.
+  function mscGlideStop(){
+    var an = msc.an; msc.an = null;
+    if (!an) return;
+    var d = (msc.frac || 0) + msc.anSp * (+an.currentTime || 0) / 1000;
+    if (msc.anMax != null) d = Math.min(d, msc.anMax);
+    try { an.cancel(); } catch(e){}
+    var box = msc.box, want = box.scrollTop + d;
+    box.scrollTop = Math.floor(want);
+    msc.frac = Math.max(0, Math.min(0.999, want - box.scrollTop));
   }
-  function mscTick(t){
-    msc.raf = 0;
-    if (!msc.on) return;
-    mscStep(t);
-    msc.raf = requestAnimationFrame(mscTick);
+  function mscGlide(){
+    clearTimeout(msc.glT);
+    mscGlideStop();
+    if (!msc.on || msc.held || !msc.el || msc.el.hidden) return;
+    mscFill();
+    var box = msc.box, sp = MSC_SPEEDS[mscCfg.sp - 1], left = box.scrollHeight - box.clientHeight - box.scrollTop;
+    if (msc.lastPg >= 604 && left <= 2){ mscRun(false); showToast("صدق الله العظيم 🤍"); return; }
+    var dist = sp * 60, last = msc.lastPg >= 604 && left < dist;
+    if (last) dist = Math.max(1, left - (msc.frac || 0));   // the end of the mushaf: no further than the last line
+    var dur = dist / sp * 1000, from = -(msc.frac || 0);
+    msc.anSp = sp; msc.anMax = last ? dist + (msc.frac || 0) : null;
+    if (msc.inn.animate){
+      msc.an = msc.inn.animate([{ transform: "translate3d(0," + from.toFixed(2) + "px,0)" }, { transform: "translate3d(0," + (from - dist).toFixed(2) + "px,0)" }],
+        { duration: dur, easing: "linear", fill: "forwards" });
+      msc.glT = setTimeout(mscGlide, Math.min(2500, dur + 30));
+    } else {   // (a very old phone: a small step, four times a second)
+      box.scrollTop += Math.max(1, Math.round(sp / 4)); msc.glT = setTimeout(mscGlide, 250);
+    }
   }
   function mscWake(on){
     try {
@@ -11383,17 +11411,9 @@ const EVENING_ADHKAR = [
     } catch(e){}
   }
   function mscRun(on){
-    msc.on = on; msc.held = false; msc.last = 0; msc.pos = msc.box.scrollTop;
-    clearInterval(msc.dog); msc.dog = 0;
-    if (on){
-      if (!msc.raf) msc.raf = requestAnimationFrame(mscTick);
-      // some phones hold back animation frames in a WebView: a timer keeps it moving all the same
-      msc.dog = setInterval(function(){
-        var now = performance.now();
-        if (msc.last && now - msc.last < 120) return;   // frames are running
-        mscStep(now);
-      }, 50);
-    }
+    msc.on = on; msc.held = false;
+    clearTimeout(msc.glT);
+    if (on) mscGlide(); else mscGlideStop();
     mscWake(on); mscUi();
   }
   function mscOpen(){
@@ -11402,10 +11422,10 @@ const EVENING_ADHKAR = [
     msc.el.hidden = false; document.body.classList.add("msc-open");
     // every page exactly as big as the mushaf page itself (same lines, same font)
     msc.H = document.getElementById("mushafViewport").clientHeight || box.clientHeight;
-    box.innerHTML = "";
+    msc.inn.innerHTML = ""; msc.frac = 0;
     msc.cur = msc.lastPg = mushafPageNum;
     mscAppend(mushafPageNum);
-    box.scrollTop = 0; msc.pos = 0;
+    box.scrollTop = 0;
     mscFill();
     if (!loadJSON("wirdi4-autoscroll-hint", false)){ showToast("☝️ حط صباعك على الشاشة يوقف، وشيله يكمّل • − + للسرعة"); saveJSON("wirdi4-autoscroll-hint", true); }
     mscRun(true);
@@ -11468,6 +11488,11 @@ const EVENING_ADHKAR = [
   (function(){
     var set = function(){ document.body.classList.toggle("mq-fs", !!document.fullscreenElement); };
     document.addEventListener("fullscreenchange", set); set();
+  })();
+  (function(){
+    var bar = document.getElementById("mqBar"); if (!bar) return;
+    var menu = bar.querySelector('[data-mqb="menu"]'), search = bar.querySelector('[data-mqb="search"]');
+    if (menu && search && search.nextElementSibling !== menu) search.insertAdjacentElement("afterend", menu);
   })();
 
   // ---------------- Native Android app (Capacitor) ----------------
