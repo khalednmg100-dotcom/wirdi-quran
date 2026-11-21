@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-eWLUn6xPvZ6SUPWENLhDuhZ9Vk99GgAgapjGb1/MxsY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-Z6A+3fNXOy6CiTM1s4kt1mUW7hMjM2iD2wBFuKNTnB8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://verses.quran.com; img-src 'self' data: blob:; media-src 'self' data: blob: https://media.way2quran.com https://archive.org https://*.archive.org https://cdn.mp3quran.net https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://suwaidan.com; connect-src 'self' https://www.mp3quran.net https://cdn.mp3quran.net https://api.quran.com https://api.aladhan.com https://fonts.googleapis.com https://fonts.gstatic.com https://everyayah.com https://verses.quran.com https://mirrors.quranicaudio.com https://server14.mp3quran.net https://audio.islamweb.net https://archive.org https://*.archive.org https://media.way2quran.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>وِرْدِي - حفظ القرآن الكريم والأذكار</title>
@@ -1226,6 +1226,8 @@
   .mq-bar .mqb-icon[data-mqb="menu"] svg{width:17px; height:17px;}
 
 /*/WIRDI4-CSS*/
+  :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
+  html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
   html.wn-app{--sab:max(12px, var(--sab), var(--safe-area-inset-bottom, 0px));}
   :root{--sab:max(var(--sab), var(--safe-area-inset-bottom, 0px));}
@@ -7567,7 +7569,7 @@ const EVENING_ADHKAR = [
   setInterval(function(){ ptRefresh(); checkPrayerReminders(); }, 30000);
   // Android keeps the app alive in the background, so a new deploy only shows after a real restart:
   // on coming back, ask the site for its build stamp and reload if it is newer (never mid-recitation)
-  var WIRDI_BUILD = "51990e27f06d", verChecked = 0;
+  var WIRDI_BUILD = "c52254dd9f5b", verChecked = 0;
   function wirdiAudioBusy(){
     var list = [].slice.call(document.querySelectorAll("audio"));
     if (typeof quranPlayers !== "undefined") list = list.concat(quranPlayers);
@@ -11718,9 +11720,12 @@ const EVENING_ADHKAR = [
         WN.testAdhan({ sec: 15 }).then(function(){ showToast("⏳ الأذان التجريبي بعد ١٥ ثانية — اقفل الشاشة دلوقتي"); }).catch(function(){ showToast("مقدرناش نجهّز التجربة"); });
       });
       if (WN.openOemSettings && WN.batteryStatus) WN.batteryStatus().then(function(r){
-        if (!/oppo|realme|oneplus/i.test(r.manufacturer || "")) return;
+        var mf = r.manufacturer || "", oem = /oppo|realme|oneplus/i.test(mf) ? { n: "أوبو", t: "موبايلات أوبو بتمنع الشاشات تفتح لوحدها: فعّل «التشغيل التلقائي» لوردي، وفي صفحة التطبيق فعّل «النوافذ المنبثقة / الظهور فوق التطبيقات» و«السماح بالنشاط في الخلفية»" }
+          : /vivo|iqoo/i.test(mf) ? { n: "ڤيڤو", t: "موبايلات ڤيڤو بتمنع شاشة الأذان تفتح لوحدها: فعّل «عرض النوافذ المنبثقة أثناء التشغيل في الخلفية» و«الظهور على شاشة القفل» و«التشغيل التلقائي» لوردي" }
+          : /xiaomi|redmi|poco/i.test(mf) ? { n: "شاومي", t: "موبايلات شاومي بتمنع شاشة الأذان تفتح لوحدها: فعّل «عرض النوافذ المنبثقة أثناء التشغيل في الخلفية» و«عرض على شاشة القفل» و«التشغيل التلقائي» لوردي" } : null;
+        if (!oem) return;
         var orow = document.createElement("div"); orow.className = "settings-row";
-        orow.innerHTML = '<div><label>📲 إعدادات أوبو</label><span class="hint">موبايلات أوبو بتمنع الشاشات تفتح لوحدها: فعّل «التشغيل التلقائي» لوردي، وفي صفحة التطبيق فعّل «النوافذ المنبثقة / الظهور فوق التطبيقات» و«السماح بالنشاط في الخلفية»</span></div><button class="btn ghost" id="wnOemBtn">افتح</button>';
+        orow.innerHTML = '<div><label>📲 إعدادات ' + oem.n + '</label><span class="hint">' + oem.t + '</span></div><button class="btn ghost" id="wnOemBtn">افتح</button>';
         adhanSec.appendChild(orow);
         document.getElementById("wnOemBtn").addEventListener("click", function(){ WN.openOemSettings().catch(function(){}); });
       }).catch(function(){});
