@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "hideInAndroidApp": false,
+  "hideInAndroidApp": true,
   "ownerName": "Amira Hamed",
   "instapay": "01097247991",
   "instapayLink": "",
